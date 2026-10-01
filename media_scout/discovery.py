@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 from .client import Client, SourceError
 from .configuration import load_config
-from .planning import search_plan
+from .planning import plan_digest, repository_query, search_id, search_plan
 from .storage import ROOT, locked, now, read_json, report_date, write_json, write_text
 
 # Conservative allowlist: unrecognized/custom licenses require an editorial check.
@@ -77,8 +77,9 @@ def repository_search(client, spec, cutoff, folder, query_index, per_page):
     """Archive each page and disclose incomplete or truncated search coverage."""
     if not isinstance(per_page, int) or not 1 <= per_page <= 100:
         raise ValueError("GitHub results per page must be between 1 and 100")
-    query = f"{spec['terms']} {spec['window']}:>={cutoff} is:public fork:false archived:false"
+    query = repository_query(spec, cutoff)
     record = {"provider": "github", "category": spec["category"], "query": query,
+              "search_id": search_id(spec),
               "checked_at": now(), "sampled": 0, "pages_collected": 0,
               "pages_requested": spec["pages"], "incomplete_results": False}
     items = []
@@ -129,6 +130,8 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
         if existing:
             update_discovery_catalog(root, day, existing["candidates"])
             return existing  # Resume the same observation; do not silently refresh it.
+        if (root / "reports" / day / "manifest.json").exists():
+            raise ValueError("This day's report is sealed; restore its original observation instead of recollecting")
         plan = search_plan(config, day, read_json(plan_path) if plan_path else None)
         categories = plan["categories"]
         write_json(folder / "queries" / "search-plan.json", plan)
@@ -155,6 +158,9 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
                 merge(repo, spec["category"], record["query"])
             if record.get("error"):
                 warnings.append(f"{spec['category']}: {record['error']}")
+            if record["truncated"] or record["incomplete_results"]:
+                warnings.append(f"{spec['category']}: bounded or incomplete query: {record['query']} "
+                                f"({record['sampled']} of {record.get('total_matches', 0)} matches sampled)")
             coverage.append(record)
 
         # Baselines are checked separately; mature tools needn't have been created this month.
@@ -177,7 +183,7 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
                     warnings.append(f"Watchlist {repository}: {error}")
 
         models = []
-        for pipeline in config["huggingface_pipelines"]:
+        for pipeline in plan["huggingface_pipelines"]:
             url = "https://huggingface.co/api/models?" + urlencode({
                 "pipeline_tag": pipeline, "sort": "lastModified", "direction": -1,
                 "limit": config.get("model_items_per_pipeline", 10), "full": "true", "cardData": "true",
@@ -255,6 +261,7 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
             item.setdefault("novelty", "not-yet-reviewed")
         ordered = sorted(candidates.values(), key=lambda item: item["discovery_priority"], reverse=True)
         result = {"report_date": day, "started_at": started_at, "completed_at": now(),
+                  "plan_version": plan["version"], "search_plan_sha256": plan_digest(plan),
                   "window_start": cutoff, "window_days": config["lookback_days"],
                   "categories": [{"id": c["id"], "name": c["name"]} for c in categories],
                   "scope": plan["scope"],
@@ -347,4 +354,5 @@ def review_license(repository, spdx, note, day=None, root=ROOT, client=None):
         catalog = read_json(root / "state/catalog.json", {})
         item["novelty"] = novelty(item, catalog.get(item["id"]), discovery["window_start"])
         write_json(path, discovery)
+        update_discovery_catalog(root, day, [item])
         return item["license_review"]

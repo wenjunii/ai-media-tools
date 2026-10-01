@@ -5,7 +5,7 @@ import json
 import unittest
 
 import test_workflow
-from media_scout.library import library_files, make_library
+from media_scout.library import SEARCH_COUNTS, library_files, make_library
 
 
 class LibraryTests(unittest.TestCase):
@@ -69,6 +69,17 @@ class LibraryTests(unittest.TestCase):
         self.report["tools"][0]["installation"]["private_notes"] = "private@example.com"
         data = make_library([self.report], self.config)
         self.assertNotIn("private@example.com", json.dumps(data))
+
+    def test_report_search_counts_are_preserved_without_private_research_metadata(self):
+        self.report["search_coverage"] = {name: 0 for name in SEARCH_COUNTS}
+        self.report["search_coverage"].update(source_candidates=540, full_profiles=1,
+                                            private_notes="private@example.com")
+        data = make_library([self.report], self.config)
+        self.assertEqual(data["editions"][0]["search_coverage"]["source_candidates"], 540)
+        self.assertNotIn("private@example.com", json.dumps(data))
+        self.report["search_coverage"]["source_candidates"] = "private@example.com"
+        with self.assertRaisesRegex(ValueError, "nonnegative counts"):
+            make_library([self.report], self.config)
 
     def test_inline_source_text_cannot_break_out_of_the_data_script(self):
         data = make_library([self.report], self.config)

@@ -10,6 +10,8 @@ from . import delivery
 from .discovery import add_repository, collect, review_license
 from .external import add_project
 from .configuration import load_config
+from .coverage import plan_summary, review_backlog, verify_search
+from .planning import search_plan
 from .publication import audit_publication, export_report, rebuild_library, record_sync, verify_public_archive, verify_sync
 from .report import build, verify_report
 from .storage import ROOT, read_json, report_date
@@ -18,11 +20,15 @@ from .storage import ROOT, read_json, report_date
 def main():
     parser = argparse.ArgumentParser(description="Open-ended open-source AI discovery for all digital media")
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ("discover", "status", "verify", "export-report", "record-sync", "verify-sync", "prepare-email", "mark-uncertain"):
+    for name in ("plan", "discover", "verify-search", "status", "verify", "export-report", "record-sync", "verify-sync", "prepare-email", "mark-uncertain"):
         command = sub.add_parser(name)
         command.add_argument("--date")
-        if name == "discover":
+        if name in {"plan", "discover"}:
             command.add_argument("--plan", type=Path, help="Additional daily fields and queries")
+        if name == "plan":
+            command.add_argument("--full", action="store_true")
+    command = sub.add_parser("review-backlog")
+    command.add_argument("--full", action="store_true")
     command = sub.add_parser("build")
     command.add_argument("--editorial", required=True, type=Path)
     command = sub.add_parser("record-delivery")
@@ -49,11 +55,22 @@ def main():
     try:
         config = load_config()
         day = report_date(getattr(args, "date", None), config["timezone"])
-        if args.command == "discover":
+        if args.command == "plan":
+            plan = search_plan(config, day, read_json(args.plan) if args.plan else None)
+            output = plan if args.full else plan_summary(plan)
+        elif args.command == "review-backlog":
+            output = review_backlog()
+            if not args.full:
+                output.pop("items")
+                output["candidate_catalog"] = str(ROOT / "state/discovery_catalog.json")
+        elif args.command == "verify-search":
+            output = verify_search(day)
+        elif args.command == "discover":
             result = collect(day, plan_path=args.plan)
             output = {"report_date": day, "repositories": len(result["candidates"]),
                       "model_candidates": len(result["model_watchlist"]), "warnings": result["warnings"],
                       "discovery_file": str(ROOT / "research" / day / "discovery.json")}
+            output["search_coverage"] = verify_search(day, discovery=result, require_expanded=False)
         elif args.command == "build":
             output = build(args.editorial)
         elif args.command == "verify":

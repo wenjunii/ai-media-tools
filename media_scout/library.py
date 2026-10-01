@@ -17,6 +17,11 @@ PLATFORMS = {"macOS": r"\b(?:macos|mac|apple silicon|os x)\b",
              "Browser": r"\b(?:browser|webgpu|webgl|wasm|webassembly)\b",
              "XR / headset": r"\b(?:headset|webxr|vr|xr|visionos)\b",
              "Cloud": r"\b(?:cloud|colab|hosted)\b"}
+SEARCH_COUNTS = ("fields", "planned_github_queries", "attempted_github_queries",
+                 "successful_github_queries", "failed_github_queries", "partial_github_queries",
+                 "truncated_github_queries", "planned_model_queries", "attempted_model_queries",
+                 "failed_model_queries", "source_candidates", "model_candidates",
+                 "full_profiles", "screened_leads", "ecosystems_searched", "ecosystem_gaps")
 
 
 def _text(value):
@@ -72,6 +77,11 @@ def make_library(documents, config):
         names.update(report.get("category_labels", {}))
         editions.append({"report_date": day, "summary": _text(report["summary"]),
                          "profile_count": len(report["tools"]), "lead_count": len(report.get("leads", []))})
+        if report.get("search_coverage"):
+            counts = {key: report["search_coverage"][key] for key in SEARCH_COUNTS}
+            if any(not isinstance(v, int) or isinstance(v, bool) or v < 0 for v in counts.values()):
+                raise ValueError("Published search coverage must contain nonnegative counts")
+            editions[-1]["search_coverage"] = counts
         seen = set()
         for kind, profiles in (("profile", report["tools"]), ("screened", report.get("leads", []))):
             for source in profiles:

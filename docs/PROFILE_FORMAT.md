@@ -8,6 +8,10 @@ The expanded scope requires a cited `ai_relevance` explanation. Cover all fields
 from the effective daily plan, including added categories. There is no fixed
 profile limit. Projects outside GitHub use their collected `external:https://...`
 ID and actual primary-source URLs.
+For new editions, run `verify-search` before building and archive the complete
+license review for every profile or screened lead. Include `ecosystem_checks`
+as described in DAILY_WORKFLOW.md. The builder derives `search_coverage` counts
+from the archived collection; do not invent those counts in editorial JSON.
 
 ```json
 {
@@ -69,5 +73,6 @@ ID and actual primary-source URLs.
 }
 ```
 
-Include all ten configured categories in `category_notes`. An edition with no
+Include every field from the effective daily plan in `category_notes`, including
+the 30 starter fields and any added fields. An edition with no
 qualified new tools uses `"tools": []` and still includes its coverage findings.

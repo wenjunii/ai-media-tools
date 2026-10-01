@@ -7,6 +7,16 @@ represented. Email delivery requires authorization from the owning user.
 The search is open-ended across all digital media and creative workflows. The
 user confirmed **only open-source AI tools**. Examples and starter fields are not
 eligibility boundaries. There is no fixed daily tool/profile quota or cap.
+Every new edition must run the full expanded plan, never only a pilot subset.
+Preview `plan`, run the collector once, and require `verify-search` before building.
+Default searches cover every term in active, newly-created and established lanes.
+Inspect `review-backlog`, including retained pilot candidates, beyond the automatic
+README shortlist. Missing query attempts block new builds; source failures and
+bounded searches stay visible in report/library counts. Complete as many supported
+profiles as possible and publish additional eligible screened leads without a quota.
+Archive a full license review for every new profile or screened lead, even when
+GitHub provides an SPDX label. Record researched findings or honest gaps for each
+configured web ecosystem, and add other source groups whenever useful.
 
 Read `docs/DAILY_WORKFLOW.md` and `docs/SEARCH_SCOPE.md` before a scheduled run. Use this repository and its
 existing Codex chat automation. Keep one scheduler. Create additional automations,

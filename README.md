@@ -17,7 +17,14 @@ raw research, and delivery records remain local.
 
 **[Search the live tool library](https://wenjunii.github.io/ai-media-tools/)**.
 The same web UI runs locally, with full-text search, filters, detailed profiles,
-and dated review history. Every published daily edition expands the collection.
+and dated review history. Published profiles and screened discoveries accumulate
+without a fixed count limit. An edition with no qualifying discoveries preserves
+the existing collection.
+
+The October 1 initial edition contains **12 detailed profiles**. The later scope
+pilot retained additional raw candidates, which are not verified recommendations.
+Every newly collected edition now runs the **full expanded plan**, rather than a
+pilot subset. Existing reports and delivery receipts remain preserved.
 
 ## What an edition contains
 
@@ -53,23 +60,37 @@ for adaptive search plans, projects beyond GitHub, and the review queue.
 
 ## How it works
 
-The **Python collector** searches GitHub in recent-activity and newly-created
-lanes across all fields, checks an established-tool watchlist, and scans recent
+The **Python collector** searches every GitHub term in recent-activity,
+newly-created, and established-project lanes across all fields, checks a tool
+watchlist, and scans recent
 Hugging Face model updates. It archives responses, READMEs, release information,
 source fingerprints, and collection failures. Search results are bounded samples,
 not an exhaustive inventory. Star counts help shortlist candidates; they do not
 establish creative quality.
 GitHub searches now use up to 100 results per page and two pages per query,
-without a minimum-star filter. The default plan has 63 queries; the research
-agent can add queries, categories, and deeper pagination each day. Hugging Face
+without a minimum-star filter. The default plan has **63 terms × 3 lanes = 189
+repository queries**. Recent activity and creation searches sort by updates;
+the established-project lane has no age filter. The research agent can add
+queries, categories, model tasks and deeper pagination each day. Hugging Face
 searches cover 13 model tasks with up to 50 leads per task. Collected metadata
-is retained for subsequent review.
+is retained for subsequent review, including earlier pilot discoveries.
+`plan` previews the full plan without collecting sources; `verify-search` checks
+that every planned GitHub query and model task was attempted. Missing attempts
+block new report builds. Failed, partial and truncated sources are explicitly
+counted as coverage gaps; an attempted query is not proof of complete results.
+Reports and the library distinguish raw candidates, screened discoveries and
+complete profiles.
 
 The **Codex research agent** supplements discovery with broad live web searches,
-checks official documentation, model cards and licenses, and writes structured
+checks official documentation, model cards and complete software licenses, and writes structured
 profiles. This is an agent-assisted workflow: the collector itself does not
 invent installation instructions or call an additional LLM API. Profiles must cite
-their sources, and unsupported facts remain unknown.
+their sources, and unsupported facts remain unknown. Each new edition records
+research or explicit gaps for GitLab, Codeberg, SourceHut, package registries,
+creative plugin ecosystems, project sites, released research code and
+international projects. These source groups are starting points too.
+`review-backlog` exposes all retained candidates without a full profile, with
+screened leads first; the automatic evidence shortlist is never a profile quota.
 
 The **report builder** validates the profiles, produces HTML/Markdown/JSON,
 seals artifacts with SHA-256 hashes, and updates a searchable static archive.
@@ -133,8 +154,11 @@ From the project root:
 ```sh
 python3 -m media_scout doctor
 python3 -m media_scout status
+python3 -m media_scout plan
+python3 -m media_scout review-backlog
 python3 -m media_scout discover
 # Optional: discover --plan research/YYYY-MM-DD/search-plan.json
+python3 -m media_scout verify-search
 # The research agent now writes research/YYYY-MM-DD/editorial.json.
 python3 -m media_scout build --editorial research/YYYY-MM-DD/editorial.json
 python3 -m media_scout verify --date YYYY-MM-DD
@@ -164,8 +188,11 @@ Supplementary repositories found on the web can be archived before sealing:
 python3 -m media_scout add-repository OWNER/REPO --categories video interactive
 ```
 
-If GitHub cannot classify a license, read its full LICENSE and review any extra
-terms before using `review-license`. An open-source claim in a README is not enough.
+For every new full profile or screened lead, read its complete LICENSE and any
+extra terms, then archive the review with `review-license OWNER/REPO --spdx ID
+--note 'A substantive account of the reviewed terms'`. GitHub's recognized SPDX
+label alone does not fulfill this requirement. Cite the archived license URL.
+An open-source claim in a README is not enough.
 Non-commercial source licenses cannot be relabeled as open source.
 
 ## Library and files
@@ -176,6 +203,9 @@ installation commands, licenses, and earlier reviews. Combine creative-field,
 platform-mention, software-license, review-depth, and daily-edition filters.
 Open a tool to read its full guide, choose a dated review, or copy a profile link.
 The Daily reports view provides HTML, Markdown, and JSON editions.
+New editions also show executed-search counts, raw source/model candidates,
+review counts and collection gaps. The initial edition predates this tracking;
+the web UI labels it accordingly instead of claiming expanded research was done.
 
 The library deduplicates tools by ID while keeping every published profile and
 screened discovery. A completed guide remains available when a later edition
@@ -246,6 +276,9 @@ acceptance by Gmail; it does not independently prove inbox placement.
 Checks also cover pagination, partial source failures, zero-star candidates,
 new daily fields, external-project evidence, creative AI eligibility, editions
 above 12 profiles, and complete large-report attachments.
+Expanded-search checks cover all three lanes, omitted queries/model tasks,
+altered plan identities, deeper-page overrides, source-gap disclosure,
+historical pilot candidates, archived license evidence and web ecosystem coverage.
 Publication checks cover report byte integrity, private-data screening, actual
 Git commit agreement, current main CI, stale checkpoints, and blocking email
 before reservation when publication is incomplete.
