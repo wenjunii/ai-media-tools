@@ -12,7 +12,8 @@ destination is `github_sync.repository` and `github_sync.branch` in
 seal time, and report hashes, with no recipient or delivery state. Public reports
 are immutable. The command also updates `public/index.html` and `public/README.md`.
 The latter provides a browsable list of Markdown editions on GitHub. HTML can be
-downloaded and opened locally; this workflow does not configure website hosting.
+downloaded and opened locally. Main CI publishes the searchable library to GitHub
+Pages after verification; see `LIBRARY.md`.
 
 The original `reports/`, raw `research/`, local `site/`, private configuration,
 catalogs, outbox payloads, and delivery/sync receipts remain ignored. The public
@@ -39,7 +40,7 @@ match all finished public editions and the current UI source.
    ```
 
 3. Start from current main, or resume the existing publication branch/PR. Use a
-   branch such as `scout/report-YYYY-MM-DD` for a new edition. Preserve unrelated
+   branch such as `codex/report-YYYY-MM-DD` for a new edition. Preserve unrelated
    changes. Include public exports and only reviewed, authorized source/doc changes;
    stage those paths explicitly. Never force-add ignored research or state.
 

@@ -5,6 +5,10 @@ an archived candidate, a matching recognized open-source software license, two
 primary sources, a concrete cited creative AI use, and today's check date.
 There is no count cap. A lead must not duplicate a full profile or repeat an
 unchanged lead from an earlier edition.
+For new editions, the candidate must also include an archived complete software
+license review, even if the GitHub SPDX label is recognized. Use `review-license`
+after reading the complete terms and cite its license URL below. `add-project`
+provides the equivalent review for projects outside GitHub.
 
 ```json
 {

@@ -335,11 +335,28 @@
     "mode": "open-ended",
     "focus": "Only open-source AI tools for any digital media or creative workflow",
     "require_ai_relevance": true,
-    "category_policy": "Starter fields, never an eligibility boundary; add emerging fields to each daily search plan."
+    "category_policy": "Starter fields, never an eligibility boundary; add emerging fields to each daily search plan.",
+    "require_expanded_search": true,
+    "require_license_review": true,
+    "required_ecosystems": [
+      "gitlab",
+      "codeberg",
+      "sourcehut",
+      "packages",
+      "creative-plugins",
+      "project-sites",
+      "research-code",
+      "international"
+    ]
   },
   "pages_per_query": 2,
   "model_items_per_pipeline": 50,
   "enrichment_per_category": 6,
   "emerging_per_category": 3,
-  "email_inline_max_bytes": 90000
+  "email_inline_max_bytes": 90000,
+  "search_windows": [
+    "pushed",
+    "created",
+    "any"
+  ]
 }

@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const {matches, searchText, primaryVersion, sortTools} = require("../media_scout/ui/library.js");
+const {matches, searchText, primaryVersion, sortTools, coverageText} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -36,4 +36,18 @@ test("sort is deterministic and preserves the source library", () => {
   assert.equal(sortTools(input, "added")[0], tool);
   assert.equal(sortTools(input, "name")[0], older);
   assert.equal(input[0], older);
+});
+test("legacy editions do not claim a completed expanded search", () => {
+  assert.match(coverageText({}), /predates expanded search tracking/);
+});
+test("query attempts, raw candidates and source gaps remain distinct from profiles", () => {
+  const text = coverageText({search_coverage: {fields: 30, attempted_github_queries: 189,
+    planned_github_queries: 189, source_candidates: 2345, model_candidates: 100,
+    failed_github_queries: 2, partial_github_queries: 1, failed_model_queries: 0,
+    ecosystem_gaps: 1, truncated_github_queries: 5}});
+  assert.match(text, /189\/189 repository queries attempted/);
+  assert.match(text, /2,345 source candidates/);
+  assert.match(text, /4 source gaps/);
+  assert.match(text, /5 bounded repository queries/);
+  assert.match(text, /Candidates require review/);
 });

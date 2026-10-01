@@ -15,7 +15,9 @@ media, fashion, accessibility, mobile creation, learning, and preservation.
 
 ## Discovery breadth and evidence
 
-- GitHub: 63 starter queries, recent activity and newly-created lanes; 100
+- GitHub: 63 starter terms, each in recent activity, newly-created and
+  established-project lanes: **189 queries per full default run**. Updated/new
+  lanes sort by updates; the established lane has no age filter. There are 100
   results per page and two pages per query by default. There is no minimum-star
   filter. A daily plan can add queries and request deeper pagination.
 - Hugging Face: 13 model-task searches, up to 50 leads per task. A model update
@@ -31,6 +33,21 @@ media, fashion, accessibility, mobile creation, learning, and preservation.
   A project does not have to fit a starter field to qualify.
 - History: keep all collected metadata in `state/discovery_catalog.json`; preserve
   complete daily observations, reviewed profiles and the pending-review queue.
+  Run `review-backlog` and inspect the full candidate catalog, including pilot
+  results from earlier runs. `review-backlog --full` prints the complete retained
+  unprofiled list with no star floor or category quota. Its unreviewed entries
+  have not established eligibility and do not enter the public library.
+
+Every new edition must run the complete effective plan, not a handpicked pilot.
+Preview it with `python3 -m media_scout plan --date YYYY-MM-DD --plan PATH.json`
+(omit `--plan` when no additions exist); `--full` prints the exact query plan.
+After discovery, run `verify-search --date YYYY-MM-DD`. The builder repeats this
+check, using the archived plan rather than mutable current defaults. Every planned
+repository query and model task needs an execution record. Missing records block
+building; source failures, incomplete results and bounded queries remain visible
+gaps. Do not claim the full search succeeded merely because all queries started.
+Existing sealed editions remain unchanged and are not retroactively labeled as
+expanded searches.
 
 Each GitHub query records pages retrieved, total matches, incomplete results,
 truncation and failures. If a query is too broad, split it by dates, topic,
@@ -49,6 +66,7 @@ Before discovery, the research agent can save
   "additional_categories": [
     {"id": "haptics", "name": "Tactile and haptic AI media", "queries": ["AI haptic art"]}
   ],
+  "additional_pipelines": ["audio-classification"],
   "queries": [
     {"category": "haptics", "terms": "generative tactile media", "window": "pushed", "sort": "updated", "pages": 3},
     {"category": "frontier", "terms": "AI creative toolkit", "window": "created", "sort": "updated"}
@@ -57,9 +75,39 @@ Before discovery, the research agent can save
 ```
 
 Run `python3 -m media_scout discover --date YYYY-MM-DD --plan research/YYYY-MM-DD/search-plan.json`.
-The observation archives the effective plan and configuration. Include one sourced
+The observation archives the effective plan and configuration. Duplicate terms
+in the same lane retain the deeper requested page count. The `any` window can
+search without a date filter. Additional model tasks are archived and checked
+alongside the configured tasks. Include one sourced
 coverage finding for every observed field, including the new categories. Do not
 rewrite a day's existing observation or sealed edition to change its scope.
+Prepare adaptive queries before collection. Follow truncated queries with live
+web research and explicit gap notes; carry useful deeper repository queries into
+the next daily plan. Re-running `discover` resumes the original observation and
+does not apply a changed plan to it.
+
+## Review and reporting
+
+The automatic README enrichment settings are a first-pass evidence shortlist,
+not a limit on tools to screen or publish. Inspect all collected candidate
+metadata and retained backlog for concrete creative AI uses; archive other
+promising repositories with `add-repository` before profiling. Complete as many
+well-supported guides as possible and preserve all additional eligible discoveries
+as clearly marked screened leads. Unknown or restricted licenses remain private
+unreviewed/excluded candidates rather than being published to inflate the count.
+
+For every newly published profile or lead, archive a review of the complete
+software license using `review-license`, even when GitHub already reports an
+open-source SPDX ID. External projects supply that review through `add-project`.
+The builder requires matching license evidence and its citation.
+
+New report JSON includes derived `search_coverage` counts, and the HTML, Markdown,
+local library and Pages edition cards expose them. Counts distinguish attempted
+queries, failed/partial/bounded sources, source candidates, model leads, complete
+profiles and screened discoveries. Candidates are not recommendations.
+Record the source-group checks described in DAILY_WORKFLOW.md, including explicit
+gaps when a source could not be searched. No tool/profile count is a daily target
+or a cap.
 
 ## Projects outside GitHub
 

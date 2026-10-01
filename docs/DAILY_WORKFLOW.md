@@ -28,11 +28,21 @@ Run `python3 -m media_scout status --date YYYY-MM-DD`.
 ## 2. Search broadly
 
 Read the configuration, profile catalog, discovery catalog and review queue.
+Run `python3 -m media_scout review-backlog`; inspect the complete catalog or use
+`--full` to include retained pilot discoveries and earlier unprofiled candidates.
+The previous edition's profile count is never a target for the next edition.
 Use preliminary live searches to find emerging terms, adjacent creative practices
 and unfamiliar ecosystems. Save useful extra queries and new fields in
 `research/YYYY-MM-DD/search-plan.json`, using the format in SEARCH_SCOPE.md.
+Preview the effective plan with `python3 -m media_scout plan --date YYYY-MM-DD`
+(add the same `--plan` path when using additions). The default is 189 repository
+queries across 30 starter fields in three lanes, plus 13 model tasks.
 Run `python3 -m media_scout discover --date YYYY-MM-DD --plan research/YYYY-MM-DD/search-plan.json`
 when a plan exists; otherwise omit `--plan`.
+Run `python3 -m media_scout verify-search --date YYYY-MM-DD`. A pilot subset is
+not a full expanded run. Missing planned queries block building. If a source
+failed, was incomplete or was bounded, disclose the gap and pursue additional
+live research. A completed attempt is not proof of exhaustive source coverage.
 
 Read discovery JSON, coverage, warnings and model leads. Supplement the collector
 with live web research across every observed field, including the 30 starter
@@ -41,8 +51,16 @@ use emerges. Review GitLab, Codeberg, SourceHut, package registries, host/plugin
 ecosystems, project sites, current releases, official demos and primary research
 with released software. Search international/non-English projects when useful.
 Community announcements and curated lists reveal leads; recommendations require
-the actual project's primary sources. If a query is truncated, refine it by
-workflow, date, topic or platform, or add deeper pagination to the daily plan.
+the actual project's primary sources. If a query is truncated, refine live web
+searches by workflow, date, topic or platform, and save useful deeper repository
+queries for the next daily plan. Plan repository pagination before collection:
+resuming today's observation does not replace it with a revised plan.
+
+Inspect candidate metadata beyond the automatic README shortlist; six enriched
+projects per field and three emerging projects are evidence-collection settings,
+not editorial caps. Archive and screen every additional promising project the
+research supports. Retain raw unreviewed candidates locally, publish eligible
+screened leads with pending full profiles, and complete queue entries on later runs.
 
 Archive good web discoveries using `add-repository OWNER/REPO --categories ...`.
 For projects outside GitHub, save official documentation and complete license
@@ -67,10 +85,14 @@ compare against the prior evidence and find a concrete creator-relevant change;
 a push timestamp or formatting edit is insufficient. Cite the release/commit.
 An unchanged source fingerprint must not be featured again.
 
-GitHub's license classification is a screen, not a legal determination. For an
-ambiguous license, read the full file and restrictions. Only after confirming a
+GitHub's license classification is a screen, not a legal determination. For every
+profile and screened lead, read the complete license and additional restrictions.
+Only after confirming a
 recognized open-source license may you run `review-license OWNER/REPO --spdx ID
---note 'Explanation of reviewed terms'`. Custom/non-commercial software remains
+--note 'Explanation of reviewed terms'`. This command is required even for a
+recognized GitHub SPDX label: it saves the complete license snapshot and review.
+Cite that license URL in the profile/lead sources. External `add-project` metadata
+supplies the equivalent reviewed snapshot. Custom/non-commercial software remains
 an excluded/watchlist finding. Check code, weights, dependencies, hosted APIs,
 required proprietary software and commercial terms independently. Source code
 openness does not imply open model weights or zero operating cost.
@@ -95,6 +117,20 @@ The builder adds these to the persistent review queue. Use the exact lead schema
 in `docs/LEADS_FORMAT.md`. Prioritize queue completion on later runs; do not
 re-list unchanged pending leads in daily editions.
 Include one sourced finding per observed field, including new plan categories.
+Also include `ecosystem_checks` for each configured `scope.required_ecosystems`
+source group: GitLab, Codeberg, SourceHut, package registries, creative plugins,
+project sites, released research code and international projects. Example:
+
+```json
+{"ecosystem": "gitlab", "status": "searched", "checked_on": "YYYY-MM-DD",
+ "finding": "Concrete result of this source-group research.",
+ "source_urls": ["https://gitlab.com/owner/project"]}
+```
+
+Use `status: "gap"` with an honest explanation and an empty source list if the
+source group could not be searched. A searched finding requires primary links;
+do not substitute a generic source-group homepage for research that was not done.
+These checks are starting points, not limits on source ecosystems or creative uses.
 Explain excluded promising projects and collection gaps. A quiet day can have
 zero profiles without recycling old tools. Hardware advice covers all platforms.
 
@@ -103,7 +139,9 @@ zero profiles without recycling old tools. Hardware advice covers all platforms.
 Run `python3 -m media_scout build --editorial research/YYYY-MM-DD/editorial.json`,
 then `python3 -m media_scout verify --date YYYY-MM-DD`. Fix validation problems
 before a report is sealed. Inspect the resulting HTML and Markdown, including
-links, requirements, category coverage and warnings. The builder creates the
+links, requirements, category coverage, warnings, derived execution/review counts
+and source-group gaps. Counts distinguish raw candidates from featured profiles
+and screened leads. The builder creates the
 archive and seals hashes. Do not edit sealed files or evidence.
 
 ## 6. Synchronize GitHub before email

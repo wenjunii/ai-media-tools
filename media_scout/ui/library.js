@@ -41,8 +41,18 @@
       return b[field].localeCompare(a[field]) || a.name.localeCompare(b.name);
     });
   }
+  function coverageText(edition) {
+    const c = edition.search_coverage;
+    if (!c) return "This edition predates expanded search tracking. Its tool count reflects the published reviews; new editions use the full expanded search.";
+    const gaps = c.failed_github_queries + c.partial_github_queries + c.failed_model_queries + c.ecosystem_gaps;
+    return c.fields + " fields · " + c.attempted_github_queries + "/" + c.planned_github_queries +
+      " repository queries attempted · " + c.source_candidates.toLocaleString("en-US") + " source candidates · " +
+      c.model_candidates.toLocaleString("en-US") + " model leads. " + gaps + " source gaps; " +
+      c.truncated_github_queries + " bounded repository queries. Candidates require review.";
+  }
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools};
+    module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
+                      coverageText: coverageText};
   }
   if (typeof document === "undefined") return;
   const data = JSON.parse(document.getElementById("library-data").textContent);
@@ -221,6 +231,7 @@
       const node = element("article", "edition-card");
       node.append(element("span", "eyebrow", "DAILY FIELD REPORT"), element("h3", "", date(edition.report_date)));
       node.append(element("p", "", edition.summary));
+      node.append(element("p", "filter-note", coverageText(edition)));
       node.append(element("span", "badge", edition.profile_count + " profiles · " + edition.lead_count + " screened discoveries"));
       const links = element("div", "edition-links");
       [["Read report ↗", "html"], ["Markdown", "md"], ["JSON", "json"]].forEach(function (item) {
@@ -239,6 +250,7 @@
   if (data.editions.length) {
     const latest = data.editions[0]; $("latest-date").textContent = date(latest.report_date);
     $("latest-summary").textContent = latest.summary.length > 105 ? latest.summary.slice(0, 102) + "…" : latest.summary;
+    $("latest-coverage").textContent = coverageText(latest);
     $("latest-report").href = reportPath(latest.report_date, "html"); $("latest-report").hidden = false;
   }
   const params = new URLSearchParams(location.search);

@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 from .discovery import OSI_LICENSES
 from .configuration import load_config
+from .coverage import verify_search
 from .storage import ROOT, locked, now, read_json, report_date, sha256, write_json, write_text
 
 SECTIONS = ("introduction", "good_for", "demo", "installation", "usage", "requirements", "license", "quality", "limitations")
@@ -36,6 +37,16 @@ def validate_ai_relevance(entry, sources):
         raise ValueError("Explain the concrete creative AI use and cite declared primary sources")
 
 
+def validate_license_review(candidate, sources, config):
+    if not config.get("scope", {}).get("require_license_review"):
+        return
+    review = candidate.get("license_review", {})
+    if (review.get("reviewed_spdx") != candidate["code_license"] or not review.get("sha256")
+            or not review.get("path") or len(review.get("note", "").strip()) < 30
+            or review.get("url") not in sources):
+        raise ValueError("Archive and cite the complete reviewed software license before publishing a profile or lead")
+
+
 def validate(editorial, discovery, config, catalog, queue=None):
     if editorial.get("report_date") != discovery["report_date"]:
         raise ValueError("Editorial date does not match the source observation")
@@ -49,6 +60,22 @@ def validate(editorial, discovery, config, catalog, queue=None):
         if not note.get("text") or not note.get("source_urls"):
             raise ValueError("Each coverage note needs a finding and source links")
         for url in note["source_urls"]:
+            safe_url(url)
+    ecosystems = config.get("scope", {}).get("required_ecosystems", [])
+    checks = editorial.get("ecosystem_checks", [])
+    if (not isinstance(checks, list) or any(not isinstance(c, dict) or not isinstance(c.get("ecosystem"), str)
+                                          or not c["ecosystem"].strip() for c in checks)):
+        raise ValueError("Web ecosystem checks need named source groups")
+    checked = {c["ecosystem"] for c in checks}
+    if len(checked) != len(checks) or not set(ecosystems).issubset(checked):
+        raise ValueError("Record a searched finding or explicit gap for every required web ecosystem")
+    for check in checks:
+        if (check.get("status") not in {"searched", "gap"} or not check.get("finding")
+                or check.get("checked_on") != editorial["report_date"]):
+            raise ValueError("Web ecosystem checks need today's date, searched/gap status and a finding")
+        if check["status"] == "searched" and not check.get("source_urls"):
+            raise ValueError("Searched ecosystems need primary-source links")
+        for url in check.get("source_urls", []):
             safe_url(url)
     tools = editorial.get("tools", [])
     maximum = config.get("max_profiles")
@@ -75,6 +102,7 @@ def validate(editorial, discovery, config, catalog, queue=None):
         source_urls = {safe_url(source["url"]) for source in tool.get("sources", [])}
         if len(source_urls) < 2:
             raise ValueError(f"Use at least two primary-source pages for {key}")
+        validate_license_review(candidate, source_urls, config)
         if config.get("scope", {}).get("require_ai_relevance"):
             validate_ai_relevance(tool, source_urls)
         for section in SECTIONS:
@@ -126,12 +154,29 @@ def validate(editorial, discovery, config, catalog, queue=None):
         sources = {safe_url(source["url"]) for source in lead.get("sources", [])}
         if len(sources) < 2:
             raise ValueError("Pending leads need official documentation and license sources")
+        validate_license_review(candidate, sources, config)
         validate_ai_relevance(lead, sources)
         previous = (queue or {}).get(key, {})
         if (previous.get("last_listed") and previous["last_listed"] != editorial["report_date"]
                 and previous.get("source_fingerprint") == candidate["source_fingerprint"]):
             raise ValueError("Already listed as a pending lead without a source change")
     return editorial
+
+
+def search_coverage_text(value):
+    text = (f"{value['fields']} creative fields; "
+            f"{value['attempted_github_queries']}/{value['planned_github_queries']} repository queries attempted; "
+            f"{value['attempted_model_queries']}/{value['planned_model_queries']} model-task queries attempted. "
+            f"{value['source_candidates']} distinct source candidates and {value['model_candidates']} model leads. "
+            f"{value['full_profiles']} detailed profiles and {value['screened_leads']} additional screened discoveries.")
+    text += (f" Source gaps: {value['failed_github_queries']} failed repository queries, "
+             f"{value['partial_github_queries']} partial repository queries, "
+             f"{value['truncated_github_queries']} bounded repository queries, "
+             f"{value['failed_model_queries']} failed model-task queries and "
+             f"{value['ecosystem_gaps']} web ecosystem gaps. "
+             "Raw search candidates include duplicates of known tools, excluded projects and projects awaiting review; "
+             "they are not verified recommendations.")
+    return text
 
 
 def refs_html(section, sources):
@@ -204,11 +249,22 @@ def render_html(editorial, discovery, config):
            f'<div><strong>{len(names)}</strong><span>Creative fields searched</span></div><div><strong>{len(discovery["candidates"])}</strong><span>Source candidates</span></div></div></header>']
     if discovery["warnings"]:
         out.append('<div class="notice"><strong>Collection limitations</strong><ul>' + ''.join(f'<li>{escape(warning)}</li>' for warning in discovery["warnings"]) + '</ul></div>')
+    if editorial.get("search_coverage"):
+        out.append('<section><h2>Search and review counts</h2><p>' +
+                   escape(search_coverage_text(editorial["search_coverage"])) + '</p></section>')
     out.append('<div class="notice">Profiles are based on current primary documentation. Creative quality and performance claims are attributed to the developers unless hands-on testing is explicitly recorded. Unknown hardware requirements stay unknown. Code, model weights, hosted services, and required proprietary hosts can have different terms.</div>')
     out.append('<h2 style="margin-top:28px">Today’s field coverage</h2><table class="coverage"><thead><tr><th scope="col">Field</th><th scope="col">Finding</th></tr></thead><tbody>')
     for note in editorial["category_notes"]:
         out.append(f'<tr><td>{escape(names[note["category"]])}</td><td>{escape(note["text"])} ' + ' '.join(f'<a href="{escape(url, quote=True)}">Source {index+1}</a>' for index, url in enumerate(note["source_urls"])) + '</td></tr>')
     out.append('</tbody></table>')
+    if editorial.get("ecosystem_checks"):
+        out.append('<h2>Research beyond GitHub</h2><ul>')
+        for check in editorial["ecosystem_checks"]:
+            out.append('<li><strong>' + escape(check["ecosystem"]) + '</strong> · ' +
+                       escape(check["status"] + ': ' + check["finding"]) + ' ' +
+                       ' '.join('<a href="' + escape(url, quote=True) + '">Source</a>'
+                                for url in check.get("source_urls", [])) + '</li>')
+        out.append('</ul>')
     for tool in editorial["tools"]:
         out.append(card_html(tool, candidates[tool["id"]], names))
     if editorial.get("leads"):
@@ -230,6 +286,13 @@ def render_markdown(editorial, discovery, config):
     for note in editorial["category_notes"]:
         references = ' '.join(f'[Source {i+1}]({url})' for i, url in enumerate(note["source_urls"]))
         out.append(f'| {names[note["category"]]} | {note["text"].replace("|", "/")} {references} |')
+    if editorial.get("search_coverage"):
+        out += ['', '## Search and review counts', '', search_coverage_text(editorial["search_coverage"])]
+    if editorial.get("ecosystem_checks"):
+        out += ['', '## Research beyond GitHub', '']
+        for check in editorial["ecosystem_checks"]:
+            out.append('- **' + check["ecosystem"] + '** · ' + check["status"] + ': ' + check["finding"] + ' ' +
+                       ' '.join(f'[Source]({url})' for url in check.get("source_urls", [])))
     if discovery["warnings"]:
         out += ['', '## Collection limitations', ''] + ['- ' + warning for warning in discovery["warnings"]]
     for tool in editorial["tools"]:
@@ -299,12 +362,28 @@ def build(editorial_path, root=ROOT):
             raise ValueError("Collect source evidence before building the report")
         catalog = read_json(root / "state/catalog.json", {})
         queue = read_json(root / "state/review_queue.json", {})
+        search_coverage = None
+        if config.get("scope", {}).get("require_expanded_search") or discovery.get("plan_version") == 2:
+            search_coverage = verify_search(day, root, discovery)
         validate(editorial, discovery, config, catalog, queue)
         report = dict(editorial, source_observation=discovery["completed_at"], source_warnings=discovery["warnings"],
                       category_labels=category_names(config, discovery))
+        if search_coverage:
+            report["search_coverage"] = dict(search_coverage, full_profiles=len(editorial["tools"]),
+                screened_leads=len(editorial.get("leads", [])),
+                ecosystems_searched=sum(c["status"] == "searched" for c in editorial.get("ecosystem_checks", [])),
+                ecosystem_gaps=sum(c["status"] == "gap" for c in editorial.get("ecosystem_checks", [])))
+        if config.get("scope", {}).get("require_license_review"):
+            candidates = {c["id"]: c for c in discovery["candidates"]}
+            for entry in editorial["tools"] + editorial.get("leads", []):
+                review = candidates[entry["id"]]["license_review"]
+                path = (root / review["path"]).resolve()
+                evidence = (root / "research" / day / "evidence").resolve()
+                if evidence not in path.parents or sha256(path) != review["sha256"]:
+                    raise ValueError("Reviewed license must match the archived daily evidence")
         write_json(folder / "report.json", report)
-        write_text(folder / "report.html", render_html(editorial, discovery, config))
-        write_text(folder / "report.md", render_markdown(editorial, discovery, config))
+        write_text(folder / "report.html", render_html(report, discovery, config))
+        write_text(folder / "report.md", render_markdown(report, discovery, config))
         artifacts = [folder / name for name in ("report.json", "report.html", "report.md")]
         artifacts.append(root / "research" / day / "discovery.json")
         artifacts.extend(sorted((root / "research" / day / "evidence").glob("*")))

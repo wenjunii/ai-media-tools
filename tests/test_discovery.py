@@ -71,7 +71,7 @@ class DiscoveryTests(unittest.TestCase):
                  "queries": [{"category": "haptics", "terms": "generative tactile media", "pages": 3}]}
         plan = search_plan(config, "2026-10-01", extra)
         self.assertEqual(len(plan["categories"]), 2)
-        self.assertEqual(len(plan["queries"]), 3)
+        self.assertEqual(len(plan["queries"]), 7)
         self.assertEqual(plan["queries"][-1]["pages"], 3)
         self.assertEqual(len(config["categories"]), 1)
 

@@ -27,6 +27,13 @@ One library entry is kept per stable tool ID. Every published dated review remai
 in `versions`; profile completion promotes a screened lead without duplicating it.
 New category labels are included in future reports. Older editions keep their
 original bytes. Results load 24 at a time, with no fixed collection size limit.
+The initial October 1 edition's 12 guides predate expanded-search tracking.
+The UI identifies that fact. New daily editions execute the entire expanded
+plan and display field/query counts, raw source/model candidates and source gaps
+on their report cards. Library totals represent complete guides and screened
+discoveries; raw candidates await eligibility checks and remain local.
+Each daily export publishes all eligible profiles and screened leads from that
+edition. Later full reviews replace pending status while preserving earlier versions.
 
 ## Local use and regeneration
 
