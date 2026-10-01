@@ -14,6 +14,7 @@ from .coverage import plan_summary, review_backlog, verify_search
 from .planning import read_search_plan, search_plan
 from .publication import audit_publication, export_report, rebuild_library, record_sync, verify_public_archive, verify_sync
 from .report import build, verify_report
+from .status import report_status
 from .storage import ROOT, read_json, report_date
 from .updates import export_update, prepare_update, update_workspace
 
@@ -29,7 +30,8 @@ def main():
         if name == "plan":
             command.add_argument("--full", action="store_true")
         if name in {"plan", "discover", "verify-search", "status", "verify"}:
-            command.add_argument("--revision", type=int, help="Prepared same-day update revision")
+            help_text = "Inspect a prepared or published update revision" if name == "status" else "Prepared same-day update revision"
+            command.add_argument("--revision", type=int, help=help_text)
     for name in ("prepare-update", "export-update"):
         command = sub.add_parser(name)
         command.add_argument("--date")
@@ -66,14 +68,14 @@ def main():
     command.add_argument("--revision", type=int)
     args = parser.parse_args()
     try:
-        config = load_config()
+        config = load_config(ROOT)
         requested_day = getattr(args, "date", None)
         if args.command == "build":
             requested_day = read_json(args.editorial)["report_date"]
         day = report_date(requested_day, config["timezone"])
         root = ROOT
-        if getattr(args, "revision", None) is not None and args.command not in {"prepare-update", "export-update"}:
-            root = update_workspace(day, args.revision)
+        if getattr(args, "revision", None) is not None and args.command not in {"prepare-update", "export-update", "status"}:
+            root = update_workspace(day, args.revision, ROOT)
             config = load_config(root)
         if args.command == "plan":
             plan = search_plan(config, day, read_search_plan(args.plan) if args.plan else None)
@@ -127,16 +129,7 @@ def main():
             item = add_project(args.metadata, day, root)
             output = {key: item.get(key) for key in ("id", "url", "code_license", "readme_path", "novelty")}
         elif args.command == "status":
-            observation = read_json(root / "research" / day / "discovery.json")
-            manifest = read_json(root / "reports" / day / "manifest.json")
-            receipt = read_json(root / "state/deliveries" / (day + ".json"))
-            publication = read_json(root / "state/publications" / (day + ".json"))
-            if manifest:
-                verify_report(day, root)
-            output = {"report_date": day, "discovered": bool(observation), "built": bool(manifest),
-                      "delivery": receipt, "publication": publication,
-                      "profile_count": manifest.get("profile_count") if manifest else None,
-                      "warnings": observation.get("warnings", []) if observation else []}
+            output = report_status(day, ROOT, args.revision)
         else:
             output = {"python": sys.version.split()[0], "github_cli_available": bool(shutil.which("gh")),
                       "recipient": config["recipient"], "timezone": config["timezone"],

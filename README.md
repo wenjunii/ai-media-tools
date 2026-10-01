@@ -195,6 +195,30 @@ checks; the last one contacts GitHub to check the actual commit and CI.
 `verify-public-archive` checks the published files without private research,
 delivery settings, or GitHub access, so it also works in a fresh clone.
 
+`status` now shows every original and updated edition for the requested date,
+including prepared, built and exported state, full-guide counts, screened-lead
+counts and available search coverage. Its top-level counts describe the original
+edition by default; `latest_completed_edition` identifies the newest built or
+exported revision. `library` gives the verified, deduplicated totals from all
+finished public editions, separating full guides from pending discoveries.
+For October 1, these totals are 77 tools: 39 full guides and 38 screened leads.
+
+```sh
+python3 -m media_scout status --date YYYY-MM-DD
+# Inspect an existing first update without preparing or rebuilding it:
+python3 -m media_scout status --date YYYY-MM-DD --revision 2
+```
+
+Status verifies local seals, update identities, matching local/public report bytes
+and the public library. A fresh clone can inspect published revisions without
+private research; `built: false` means no local seal, while `exported: true` means
+the verified public files exist. A prepared, unfinished revision is not counted
+as the latest completed edition. The default status retains the original email
+receipt; revision-specific status does not imply a separate send. Its publication
+checkpoint is a saved record, and `publication_remote_checked` is always false.
+Use `verify-sync` to check the actual GitHub commit and CI. Inspection never
+collects sources, writes artifacts, reserves email or contacts GitHub.
+
 An explicitly requested same-day update can add a separately sealed edition
 without replacing the original report or resetting its email receipt. Use
 `prepare-update`, the research commands with `--revision 2`, and `export-update`;
