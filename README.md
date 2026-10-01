@@ -26,6 +26,11 @@ pilot retained additional raw candidates, which are not verified recommendations
 Every newly collected edition now runs the **full expanded plan**, rather than a
 pilot subset. Existing reports and delivery receipts remain preserved.
 
+The [October 1 expanded update](public/reports/2026-10-01/updates/r2/report.md)
+adds **27 detailed guides and 38 screened discoveries**. The cumulative library
+now contains **77 tools**, including the original 12 guides; pending discoveries
+remain clearly labeled until their complete profiles are finished.
+
 ## What an edition contains
 
 Every featured tool includes an introduction, useful creative workflows, demos,
@@ -190,6 +195,13 @@ checks; the last one contacts GitHub to check the actual commit and CI.
 `verify-public-archive` checks the published files without private research,
 delivery settings, or GitHub access, so it also works in a fresh clone.
 
+An explicitly requested same-day update can add a separately sealed edition
+without replacing the original report or resetting its email receipt. Use
+`prepare-update`, the research commands with `--revision 2`, and `export-update`;
+see [the update workflow](docs/REPORT_UPDATES.md). Both editions enter the searchable
+library with distinct filters, review history and report links. Updates follow
+the same expanded search, license review and protected GitHub publication checks.
+
 Supplementary repositories found on the web can be archived before sealing:
 
 ```sh
@@ -234,9 +246,14 @@ complete public library without private research or email settings.
 Open `site/index.html` for the local web UI, or serve the checkout locally:
 
 ```sh
+cd /path/to/ai-media-tools
 python3 -m http.server 8766 --bind 127.0.0.1
 # http://127.0.0.1:8766/site/
 ```
+
+Keep that terminal running. Stop it with Ctrl+C. If the library is already
+running, open the URL instead of starting another server. A fresh clone needs
+`build-library` once to create `site/` from its public editions.
 
 | Path | Purpose |
 | --- | --- |
@@ -301,7 +318,8 @@ the browser search checks using the runner's Node.js. Node is only needed for
 those development tests; the library requires no backend or JavaScript build step.
 The publication audit also rejects
 changes or removal of previously committed editions, even if their metadata is
-changed to match. Publish new findings in a new dated edition.
+changed to match. Publish new findings in a new dated edition or an explicitly
+requested, separately sealed update.
 
 For code or documentation maintenance, run these checks, stage the reviewed
 changes explicitly, and run `python3 -m media_scout audit-publication`. Follow the

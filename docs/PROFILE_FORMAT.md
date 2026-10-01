@@ -76,3 +76,9 @@ from the archived collection; do not invent those counts in editorial JSON.
 Include every field from the effective daily plan in `category_notes`, including
 the 30 starter fields and any added fields. An edition with no
 qualified new tools uses `"tools": []` and still includes its coverage findings.
+
+An optional `watchlist` retains excluded or unresolved findings in the readable
+edition without adding them to the eligible library. Each entry needs `name`,
+`reason`, `checked_on`, HTTPS `source_urls`, and `status` (`excluded` or
+`needs-license-review`). Explain restricted software, incomplete license evidence,
+archived projects or unverified dependencies; never relabel them as screened leads.

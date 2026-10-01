@@ -97,6 +97,11 @@ The checkpoint covers the cumulative library JSON, HTML, styles and browser
 code as well as the current edition. Main CI must finish its Pages deployment
 before the sync can authorize email.
 
+Explicitly requested same-day updates use [REPORT_UPDATES.md](REPORT_UPDATES.md).
+Their separately sealed exports are also checked against the actual main commit
+and included in the refreshed checkpoint. The original report and its delivery
+receipt remain unchanged.
+
 `prepare-email` repeats publication verification before creating its outbox and
 send reservation. It records the verified GitHub commit and public report URL in
 the local delivery receipt. Continue the Gmail delivery step in

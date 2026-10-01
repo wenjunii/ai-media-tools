@@ -1,6 +1,7 @@
 """Regression checks for the report integrity and external-send boundary."""
 
 import copy
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -53,6 +54,19 @@ class WorkflowTests(unittest.TestCase):
         manifest = self.build()
         self.assertEqual(manifest, self.build())
         self.assertEqual(manifest, verify_report(self.day, self.root))
+
+    def test_restricted_findings_remain_notes_without_entering_library(self):
+        self.editorial["watchlist"] = [{"name": "Restricted <tool>", "status": "excluded",
+            "checked_on": self.day, "reason": "Software has non-commercial terms.",
+            "source_urls": ["https://github.com/test/restricted/blob/main/LICENSE"]}]
+        write_json(self.editorial_path, self.editorial)
+        self.build()
+        html = (self.root / "reports" / self.day / "report.html").read_text()
+        self.assertIn("Restricted &lt;tool&gt;", html)
+        self.assertIn("Excluded and unresolved findings", html)
+        library = read_json(self.root / "site/library.json")
+        self.assertEqual(library["counts"]["tools"], 1)
+        self.assertNotIn("Restricted", json.dumps(library))
 
     def test_tampered_source_or_report_blocks_delivery(self):
         self.build()
