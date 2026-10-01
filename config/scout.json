@@ -1,0 +1,339 @@
+{
+  "name": "AI Media Scout",
+  "recipient": null,
+  "timezone": "America/New_York",
+  "daily_time": "08:00",
+  "hardware_preference": "All platforms equally",
+  "lookback_days": 30,
+  "items_per_query": 100,
+  "max_profiles": null,
+  "categories": [
+    {
+      "id": "images",
+      "name": "Images & design",
+      "queries": [
+        "topic:diffusion",
+        "AI image generation"
+      ],
+      "seeds": [
+        "Comfy-Org/ComfyUI",
+        "invoke-ai/InvokeAI"
+      ]
+    },
+    {
+      "id": "video",
+      "name": "Video, animation & film",
+      "queries": [
+        "AI video",
+        "topic:video-generation"
+      ],
+      "seeds": [
+        "VelornLabs/velorn",
+        "Lightricks/LTX-2",
+        "AlexanderIstomin/h3ddle"
+      ]
+    },
+    {
+      "id": "audio",
+      "name": "Audio, music & voice",
+      "queries": [
+        "topic:music-generation",
+        "AI audio"
+      ],
+      "seeds": [
+        "ace-step/ACE-Step-1.5"
+      ]
+    },
+    {
+      "id": "3d",
+      "name": "3D, reconstruction & assets",
+      "queries": [
+        "3D generation",
+        "topic:3d-reconstruction"
+      ],
+      "seeds": [
+        "microsoft/TRELLIS.2",
+        "Tencent-Hunyuan/Hunyuan3D-2"
+      ]
+    },
+    {
+      "id": "web",
+      "name": "Browser tools & web media",
+      "queries": [
+        "AI creative browser",
+        "topic:webgpu"
+      ],
+      "seeds": [
+        "huggingface/transformers.js",
+        "imweb-project/ImWeb"
+      ]
+    },
+    {
+      "id": "xr",
+      "name": "WebXR, VR & AR",
+      "queries": [
+        "AI WebXR",
+        "AI VR"
+      ],
+      "seeds": [
+        "google/xrblocks",
+        "DecartAI/Decart-XR"
+      ]
+    },
+    {
+      "id": "computational",
+      "name": "Computational art & creative coding",
+      "queries": [
+        "AI creative coding",
+        "topic:generative-art"
+      ],
+      "seeds": [
+        "ml5js/ml5-library"
+      ]
+    },
+    {
+      "id": "interactive",
+      "name": "Interactive, immersive & live media",
+      "queries": [
+        "StreamDiffusion",
+        "AI interactive art"
+      ],
+      "seeds": [
+        "daydreamlive/scope",
+        "chenfengxu714/StreamDiffusionV2",
+        "imweb-project/ImWeb"
+      ]
+    },
+    {
+      "id": "fabrication",
+      "name": "3D printing & generative CAD",
+      "queries": [
+        "AI CAD",
+        "AI 3D printing"
+      ],
+      "seeds": [
+        "taucad/tau"
+      ]
+    },
+    {
+      "id": "gaming",
+      "name": "Games & production pipelines",
+      "queries": [
+        "AI game assets",
+        "AI blender"
+      ],
+      "seeds": [
+        "ahujasid/mcp-for-blender"
+      ]
+    },
+    {
+      "id": "motion",
+      "name": "Motion capture & character animation",
+      "queries": [
+        "AI motion capture",
+        "motion generation"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "avatars",
+      "name": "Avatars, digital humans & lip sync",
+      "queries": [
+        "AI avatar",
+        "lip sync"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "vfx",
+      "name": "VFX, compositing & relighting",
+      "queries": [
+        "AI visual effects",
+        "AI relighting"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "spatial",
+      "name": "Spatial audio & volumetric media",
+      "queries": [
+        "AI spatial audio",
+        "volumetric neural rendering"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "capture",
+      "name": "Photogrammetry, scanning & neural rendering",
+      "queries": [
+        "topic:gaussian-splatting",
+        "neural reconstruction"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "editing",
+      "name": "Editing, captions & post-production",
+      "queries": [
+        "AI video editing",
+        "AI subtitle"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "vector",
+      "name": "Vector graphics, illustration & textures",
+      "queries": [
+        "AI SVG",
+        "AI texture generation"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "typography",
+      "name": "Typography, fonts & layout",
+      "queries": [
+        "AI typography",
+        "font generation"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "storytelling",
+      "name": "Storyboarding, narrative & comics",
+      "queries": [
+        "AI storyboard",
+        "AI comic"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "publishing",
+      "name": "Creative publishing & presentation",
+      "queries": [
+        "AI presentation",
+        "AI publishing"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "photography",
+      "name": "Photography, restoration & color",
+      "queries": [
+        "AI photo restoration",
+        "AI colorization"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "visualization",
+      "name": "Data art & scientific visualization",
+      "queries": [
+        "AI visualization",
+        "AI data art"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "installation",
+      "name": "Physical, robotic & kinetic installations",
+      "queries": [
+        "AI art installation",
+        "AI kinetic art"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "performance",
+      "name": "Performance, projection & stage media",
+      "queries": [
+        "AI projection mapping",
+        "AI live visuals"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "fashion",
+      "name": "Fashion, textiles & wearable media",
+      "queries": [
+        "AI fashion design",
+        "AI textile"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessible media & assistive creation",
+      "queries": [
+        "AI audio description",
+        "AI media accessibility"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile, edge & on-device creation",
+      "queries": [
+        "on-device AI creative",
+        "AI mobile media"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "education",
+      "name": "Creative learning & authoring",
+      "queries": [
+        "AI creative education",
+        "AI explainer"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "preservation",
+      "name": "Archives, media restoration & collections",
+      "queries": [
+        "AI archive media",
+        "AI film restoration"
+      ],
+      "seeds": []
+    },
+    {
+      "id": "frontier",
+      "name": "Emerging & cross-disciplinary creative AI",
+      "queries": [
+        "AI creative tools",
+        "AI digital art",
+        "AI multimedia",
+        "creative AI toolkit",
+        "AI new media"
+      ],
+      "seeds": []
+    }
+  ],
+  "huggingface_pipelines": [
+    "text-to-image",
+    "image-to-image",
+    "image-to-video",
+    "text-to-video",
+    "video-to-video",
+    "text-to-audio",
+    "text-to-speech",
+    "automatic-speech-recognition",
+    "audio-to-audio",
+    "image-to-3d",
+    "text-to-3d",
+    "image-segmentation",
+    "depth-estimation"
+  ],
+  "scope": {
+    "mode": "open-ended",
+    "focus": "Only open-source AI tools for any digital media or creative workflow",
+    "require_ai_relevance": true,
+    "category_policy": "Starter fields, never an eligibility boundary; add emerging fields to each daily search plan."
+  },
+  "pages_per_query": 2,
+  "model_items_per_pipeline": 50,
+  "enrichment_per_category": 6,
+  "emerging_per_category": 3,
+  "email_inline_max_bytes": 90000
+}

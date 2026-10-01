@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-media-scout"
+version = "0.1.0"
+description = "Evidence-backed daily open-source AI discovery for digital media creators"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+media-scout = "media_scout.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["media_scout*"]
