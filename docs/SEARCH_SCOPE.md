@@ -75,6 +75,11 @@ Before discovery, the research agent can save
 ```
 
 Run `python3 -m media_scout discover --date YYYY-MM-DD --plan research/YYYY-MM-DD/search-plan.json`.
+The file must contain a JSON object. `additional_categories`, `queries` and
+`additional_pipelines` must be lists, with category/query objects and model-task
+strings as shown above. Category `queries` and optional `seeds` are lists of
+search terms and `owner/repository` names. Missing files and malformed entries
+fail with a JSON error before collecting sources.
 The observation archives the effective plan and configuration. Duplicate terms
 in the same lane retain the deeper requested page count. The `any` window can
 search without a date filter. Additional model tasks are archived and checked
@@ -83,8 +88,13 @@ coverage finding for every observed field, including the new categories. Do not
 rewrite a day's existing observation or sealed edition to change its scope.
 Prepare adaptive queries before collection. Follow truncated queries with live
 web research and explicit gap notes; carry useful deeper repository queries into
-the next daily plan. Re-running `discover` resumes the original observation and
-does not apply a changed plan to it.
+the next daily plan. Re-running `discover` without `--plan` resumes the original
+observation. When `--plan` is supplied again, the collector compiles it against
+that day's archived configuration and verifies that it matches the archived
+plan and observation hash. Changed plans, missing archives and failed integrity
+checks are rejected before updating the candidate catalog or collecting sources.
+Keep changed queries for the next edition. Older observations without an archived
+expanded plan remain resumable when `--plan` is omitted.
 
 ## Review and reporting
 

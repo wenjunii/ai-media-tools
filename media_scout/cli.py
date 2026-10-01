@@ -11,7 +11,7 @@ from .discovery import add_repository, collect, review_license
 from .external import add_project
 from .configuration import load_config
 from .coverage import plan_summary, review_backlog, verify_search
-from .planning import search_plan
+from .planning import read_search_plan, search_plan
 from .publication import audit_publication, export_report, rebuild_library, record_sync, verify_public_archive, verify_sync
 from .report import build, verify_report
 from .storage import ROOT, read_json, report_date
@@ -56,7 +56,7 @@ def main():
         config = load_config()
         day = report_date(getattr(args, "date", None), config["timezone"])
         if args.command == "plan":
-            plan = search_plan(config, day, read_json(args.plan) if args.plan else None)
+            plan = search_plan(config, day, read_search_plan(args.plan) if args.plan else None)
             output = plan if args.full else plan_summary(plan)
         elif args.command == "review-backlog":
             output = review_backlog()
