@@ -184,3 +184,7 @@ acceptance by Gmail; it does not independently prove inbox placement.
 Checks also cover pagination, partial source failures, zero-star candidates,
 new daily fields, external-project evidence, creative AI eligibility, editions
 above 12 profiles, and complete large-report attachments.
+
+## License
+
+AI Media Scout is licensed under the [MIT License](LICENSE).
