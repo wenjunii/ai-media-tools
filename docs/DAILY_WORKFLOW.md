@@ -25,6 +25,10 @@ Run `python3 -m media_scout status --date YYYY-MM-DD`.
   A sealed report never skips the sync checkpoint.
 - Otherwise continue discovery. Never overwrite a sealed report.
 
+The normal schedule does not create same-day revisions. If the owning user
+explicitly requests an update to a completed edition, follow REPORT_UPDATES.md
+to create a separate sealed update while preserving the original send record.
+
 ## 2. Search broadly
 
 Read the configuration, profile catalog, discovery catalog and review queue.

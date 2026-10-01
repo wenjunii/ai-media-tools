@@ -276,6 +276,30 @@ class PublicationCheckpointTests(unittest.TestCase):
         self.assertEqual(history[0].read_bytes(), original_bytes)
         self.assertEqual(delivery.prepare(self.day, self.root)["status"], "reserved")
 
+    def test_sync_checkpoint_covers_same_day_update_files(self):
+        from media_scout.report import build
+        from media_scout.updates import export_update, prepare_update
+        original = publication.record_sync(self.day, self.root)
+        workspace = prepare_update(self.day, 2, self.root)
+        write_json(workspace / "research" / self.day / "discovery.json", self.fixture.discovery)
+        write_text(workspace / self.fixture.candidate["readme_path"], "Updated source example")
+        editorial = copy.deepcopy(self.fixture.editorial)
+        editorial["tools"][0]["requirements"]["hardware"] = "Updated documented requirement"
+        path = workspace / "research" / self.day / "editorial.json"
+        write_json(path, editorial)
+        build(path, workspace)
+        export_update(self.day, 2, self.root)
+        self.git("add", "public")
+        self.git("commit", "-m", "Publish requested update")
+        self.git("push", "origin", "main")
+        refreshed = publication.record_sync(self.day, self.root)
+        prefix = f"public/reports/{self.day}/updates/r2/"
+        self.assertEqual({name for name in refreshed["public_files_sha256"] if name.startswith(prefix)},
+                         {prefix + name for name in publication.REPORT_FILES + ("publication.json",)})
+        self.assertNotEqual(original["commit"], refreshed["commit"])
+        self.assertEqual(publication.verify_sync(self.day, self.root), refreshed)
+        self.assert_unreserved()
+
     def test_uncommitted_project_change_blocks_email(self):
         publication.record_sync(self.day, self.root)
         write_text(self.root / "README.md", "Not synchronized\n")

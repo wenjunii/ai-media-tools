@@ -16,7 +16,7 @@ import subprocess
 from .configuration import load_config
 from .library import library_files, make_library, write_library_files
 from .report import verify_report
-from .storage import ROOT, locked, now, read_json, report_date, write_json, write_text
+from .storage import ROOT, edition_revision, locked, now, read_json, report_date, write_json, write_text
 
 REPORT_FILES = ("report.html", "report.md", "report.json")
 SECRET_PATTERNS = (
@@ -71,6 +71,8 @@ def _finished_files(day, root, manifest):
         "profile_count": manifest["profile_count"], "lead_count": manifest.get("lead_count", 0),
         "sha256": {Path(name).name: _digest(value) for name, value in contents.items()},
     }
+    if manifest.get("revision", 1) > 1:
+        public_manifest["revision"] = edition_revision(manifest["revision"])
     contents[f"{prefix}/publication.json"] = _json_bytes(public_manifest)
     return contents
 
@@ -91,42 +93,67 @@ def _public_editions(root):
         except ValueError as error:
             raise ValueError("Public edition directories must use YYYY-MM-DD dates") from error
         expected_names = set(REPORT_FILES) | {"publication.json"}
-        if not folder.is_dir() or {p.name for p in folder.iterdir() if p.name != ".DS_Store"} != expected_names:
+        actual_names = {p.name for p in folder.iterdir() if p.name != ".DS_Store"} if folder.is_dir() else set()
+        if not folder.is_dir() or actual_names - {"updates"} != expected_names:
             raise ValueError("Public edition is missing required files or contains extra material")
-        for name in expected_names:
-            path = _safe_path(root, str((folder / name).relative_to(root)))
-            if not path.is_file():
-                raise ValueError("Public edition files must be regular files")
-        metadata = read_json(folder / "publication.json")
-        fields = {"report_date", "sealed_at", "profile_count", "lead_count", "sha256"}
-        if not isinstance(metadata, dict) or set(metadata) != fields or metadata["report_date"] != day:
-            raise ValueError("Public publication metadata has an invalid date or schema")
-        for name in ("profile_count", "lead_count"):
-            value = metadata[name]
-            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
-                raise ValueError("Public edition counts must be nonnegative integers")
-        try:
-            sealed = metadata["sealed_at"]
-            if not isinstance(sealed, str) or datetime.fromisoformat(sealed.replace("Z", "+00:00")).tzinfo is None:
-                raise ValueError("Invalid timestamp")
-        except ValueError as error:
-            raise ValueError("Public edition seal time must include a valid time-zone offset") from error
-        hashes = metadata["sha256"]
-        if not isinstance(hashes, dict) or set(hashes) != set(REPORT_FILES):
-            raise ValueError("Public publication hashes must cover exactly the finished report files")
-        for name, expected in hashes.items():
-            if not isinstance(expected, str) or not re.fullmatch(r"[a-f0-9]{64}", expected):
-                raise ValueError("Public publication hashes must be SHA-256 digests")
-            if _digest((folder / name).read_bytes()) != expected:
-                raise ValueError("Public report content does not match its publication hash")
-        report = read_json(folder / "report.json")
-        if (not isinstance(report, dict) or report.get("report_date") != day
-                or not isinstance(report.get("tools"), list) or not isinstance(report.get("leads", []), list)
-                or len(report["tools"]) != metadata["profile_count"]
-                or len(report.get("leads", [])) != metadata["lead_count"]):
-            raise ValueError("Public report date or profile counts disagree with publication metadata")
-        editions[day] = metadata
+        editions[day] = _verify_public_folder(root, folder, day)
+        if "updates" in actual_names:
+            updates = _safe_path(root, str((folder / "updates").relative_to(root)))
+            if not updates.is_dir():
+                raise ValueError("Public updates must be a directory of revision folders")
+            for update in sorted(updates.iterdir()):
+                if update.name == ".DS_Store":
+                    continue
+                match = re.fullmatch(r"r([0-9]+)", update.name)
+                if not match or int(match[1]) < 2 or update.name != f"r{int(match[1])}":
+                    raise ValueError("Public update directories must use revisions r2 and above")
+                key = f"{day}/updates/{update.name}"
+                editions[key] = _verify_public_folder(root, update, day, int(match[1]))
     return editions
+
+
+def _verify_public_folder(root, folder, day, revision=1):
+    _safe_path(root, str(folder.relative_to(root)))
+    expected_names = set(REPORT_FILES) | {"publication.json"}
+    actual_names = {p.name for p in folder.iterdir() if p.name != ".DS_Store"} if folder.is_dir() else set()
+    if actual_names - ({"updates"} if revision == 1 else set()) != expected_names:
+        raise ValueError("Public edition is missing required files or contains extra material")
+    for name in expected_names:
+        if not _safe_path(root, str((folder / name).relative_to(root))).is_file():
+            raise ValueError("Public edition files must be regular files")
+    metadata = read_json(folder / "publication.json")
+    fields = {"report_date", "sealed_at", "profile_count", "lead_count", "sha256"}
+    if revision > 1:
+        fields.add("revision")
+    if (not isinstance(metadata, dict) or set(metadata) != fields or metadata["report_date"] != day
+            or edition_revision(metadata.get("revision", 1)) != revision):
+        raise ValueError("Public publication metadata has an invalid date or schema")
+    for name in ("profile_count", "lead_count"):
+        value = metadata[name]
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            raise ValueError("Public edition counts must be nonnegative integers")
+    try:
+        sealed = metadata["sealed_at"]
+        if not isinstance(sealed, str) or datetime.fromisoformat(sealed.replace("Z", "+00:00")).tzinfo is None:
+            raise ValueError("Invalid timestamp")
+    except ValueError as error:
+        raise ValueError("Public edition seal time must include a valid time-zone offset") from error
+    hashes = metadata["sha256"]
+    if not isinstance(hashes, dict) or set(hashes) != set(REPORT_FILES):
+        raise ValueError("Public publication hashes must cover exactly the finished report files")
+    for name, expected in hashes.items():
+        if not isinstance(expected, str) or not re.fullmatch(r"[a-f0-9]{64}", expected):
+            raise ValueError("Public publication hashes must be SHA-256 digests")
+        if _digest((folder / name).read_bytes()) != expected:
+            raise ValueError("Public report content does not match its publication hash")
+    report = read_json(folder / "report.json")
+    if (not isinstance(report, dict) or report.get("report_date") != day
+            or edition_revision(report.get("revision", 1)) != revision
+            or not isinstance(report.get("tools"), list) or not isinstance(report.get("leads", []), list)
+            or len(report["tools"]) != metadata["profile_count"]
+            or len(report.get("leads", [])) != metadata["lead_count"]):
+        raise ValueError("Public report date or profile counts disagree with publication metadata")
+    return metadata
 
 
 def _readme_for_editions(editions):
@@ -138,7 +165,8 @@ def _readme_for_editions(editions):
         profiles, leads = metadata["profile_count"], metadata["lead_count"]
         links = " · ".join(f"[{label}](reports/{day}/{name})" for label, name in
                            (("Markdown", "report.md"), ("HTML", "report.html"), ("JSON", "report.json")))
-        lines.append(f"| {day} | {profiles} | {leads} | {links} |")
+        label = metadata["report_date"] + (f" · Update {metadata['revision'] - 1}" if metadata.get("revision", 1) > 1 else "")
+        lines.append(f"| {label} | {profiles} | {leads} | {links} |")
     return ("\n".join(lines) + "\n").encode("utf-8")
 
 
@@ -200,7 +228,7 @@ def verify_public_archive(root=ROOT):
         parser = _ReportLinks()
         parser.feed(index.read_text())
         for target in parser.targets:
-            match = re.fullmatch(r"reports/(\d{4}-\d{2}-\d{2})/(report\.(?:html|md|json))", target)
+            match = re.fullmatch(r"reports/(\d{4}-\d{2}-\d{2}(?:/updates/r[0-9]+)?)/(report\.(?:html|md|json))", target)
             if not match or match[1] not in editions:
                 raise ValueError("The public searchable index links to an unpublished or invalid edition")
     data, contents = _public_library_contents(root)
@@ -297,6 +325,10 @@ def _verified_remote(day, root, manifest, config):
     contents = _finished_files(day, root, manifest)
     _, library = _public_library_contents(root, config)
     contents.update(library)
+    for key, metadata in _public_editions(root).items():
+        if metadata.get("revision", 1) > 1:
+            contents.update({f"public/reports/{key}/{name}": (root / "public/reports" / key / name).read_bytes()
+                             for name in REPORT_FILES + ("publication.json",)})
     for name, expected in contents.items():
         _check_public_content(expected, root, config)
         actual = _run(["git", "show", head + ":" + name], root)

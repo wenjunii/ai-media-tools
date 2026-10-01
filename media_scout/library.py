@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 
 from .report import LABELS, SECTIONS, safe_url
-from .storage import read_json, report_date, sha256, write_text
+from .storage import edition_key, edition_revision, read_json, report_date, sha256, write_text
 
 UI = Path(__file__).with_name("ui")
 ASSETS = ("library.css", "library.js")
@@ -68,15 +68,21 @@ def _profile(source, kind):
 def make_library(documents, config):
     """Deduplicate tools by stable ID while retaining every published version."""
     names = {c["id"]: c["name"] for c in config["categories"]}
-    tools, editions, dates = {}, [], set()
-    for report in sorted(documents, key=lambda r: r["report_date"]):
+    tools, editions, dates, identities = {}, [], set(), set()
+    for report in sorted(documents, key=lambda r: (r["report_date"], edition_revision(r.get("revision", 1)))):
         day = report_date(report["report_date"])
-        if day in dates:
-            raise ValueError("Library editions must have unique dates")
+        revision = edition_revision(report.get("revision", 1))
+        identity = edition_key(day, revision)
+        if identity in identities:
+            raise ValueError("Library editions must have unique dates and revisions")
+        identities.add(identity)
         dates.add(day)
         names.update(report.get("category_labels", {}))
         editions.append({"report_date": day, "summary": _text(report["summary"]),
                          "profile_count": len(report["tools"]), "lead_count": len(report.get("leads", []))})
+        if revision > 1:
+            editions[-1].update(revision=revision, edition_id=identity,
+                                report_directory=f"{day}/updates/r{revision}/")
         if report.get("search_coverage"):
             counts = {key: report["search_coverage"][key] for key in SEARCH_COUNTS}
             if any(not isinstance(v, int) or isinstance(v, bool) or v < 0 for v in counts.values()):
@@ -93,6 +99,8 @@ def make_library(documents, config):
                 entry = tools.setdefault(key, {"id": key, "first_seen": day, "last_seen": day, "versions": []})
                 entry["last_seen"] = day
                 entry["versions"].insert(0, {"date": day, "kind": kind, "profile": profile})
+                if revision > 1:
+                    entry["versions"][0].update(revision=revision, edition_id=identity)
     for entry in tools.values():
         # A later brief mention never replaces an existing complete installation guide.
         primary = next((v for v in entry["versions"] if v["kind"] == "profile"), entry["versions"][0])
@@ -122,8 +130,9 @@ def library_files(data, report_prefix="reports/"):
     # Source text is data, including literal HTML and command snippets.
     embedded = serialized.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
     fallback = "<ul>" + "".join(
-        '<li><a href="' + e.get("report_path", report_prefix + e["report_date"] + "/") + 'report.html">' +
-        escape(e["report_date"]) + " — " + str(e["profile_count"]) + " full profiles</a></li>"
+        '<li><a href="' + e.get("report_path", report_prefix + e.get("report_directory", e["report_date"] + "/")) + 'report.html">' +
+        escape(e["report_date"] + (f" · Update {e['revision'] - 1}" if e.get("revision", 1) > 1 else "")) +
+        " — " + str(e["profile_count"]) + " full profiles</a></li>"
         for e in data["editions"]) + "</ul>"
     html = (UI / "library.html").read_text().replace("{{LIBRARY_JSON}}", embedded)
     html = html.replace("{{REPORT_PREFIX}}", report_prefix).replace("{{REPORT_LINKS}}", fallback)
@@ -144,7 +153,11 @@ def write_library_files(folder, files):
 def write_local_library(root, config):
     """Update a local view from sealed reports plus previously public editions."""
     from .publication import _public_editions
-    reports = {day: read_json(root / "public/reports" / day / "report.json") for day in _public_editions(root)}
+    reports, paths = {}, {}
+    for directory, metadata in _public_editions(root).items():
+        identity = edition_key(metadata["report_date"], metadata.get("revision", 1))
+        reports[identity] = read_json(root / "public/reports" / directory / "report.json")
+        paths[identity] = "../public/reports/" + directory + "/"
     for path in sorted((root / "reports").glob("*/manifest.json")):
         manifest = read_json(path)
         day = report_date(path.parent.name)
@@ -154,11 +167,12 @@ def write_local_library(root, config):
             report_path = path.parent / name
             if sha256(report_path) != manifest["sha256"].get(f"reports/{day}/{name}"):
                 raise ValueError("Local library report differs from its seal")
-        reports[day] = read_json(path.parent / "report.json")
+        identity = edition_key(day, manifest.get("revision", 1))
+        reports[identity] = read_json(path.parent / "report.json")
+        paths[identity] = "../reports/" + day + "/"
     data = make_library(list(reports.values()), config)
     for edition in data["editions"]:
-        day = edition["report_date"]
-        edition["report_path"] = ("../reports/" if (root / "reports" / day / "manifest.json").exists()
-                                  else "../public/reports/") + day + "/"
+        identity = edition_key(edition["report_date"], edition.get("revision", 1))
+        edition["report_path"] = paths[identity]
     write_library_files(root / "site", library_files(data, "../reports/"))
     return data

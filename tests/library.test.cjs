@@ -51,3 +51,14 @@ test("query attempts, raw candidates and source gaps remain distinct from profil
   assert.match(text, /5 bounded repository queries/);
   assert.match(text, /Candidates require review/);
 });
+
+test("same-day updates have independent filters and preserved original reviews", () => {
+  const revised = {...tool, versions: [
+    {...tool.versions[0], date: "2026-10-01", revision: 2, edition_id: "2026-10-01-r2"}, tool.versions[1]
+  ]};
+  assert.equal(primaryVersion(revised, "2026-10-01-r2").profile.license.code, "Apache-2.0");
+  assert.equal(primaryVersion(revised, "2026-10-01").profile.license.code, "MIT");
+  assert.ok(matches(revised, {edition: "2026-10-01-r2", field: "video"}));
+  assert.equal(matches(revised, {edition: "2026-10-01", field: "video"}), false);
+  assert.equal(matches(revised, {edition: "2026-10-01-r3"}), false);
+});

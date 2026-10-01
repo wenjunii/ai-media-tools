@@ -9,8 +9,9 @@
     if (value && typeof value === "object") return Object.values(value).map(searchText).join(" ");
     return typeof value === "string" ? fold(value) : "";
   }
+  function editionKey(entry) { return entry.edition_id || entry.report_date || entry.date; }
   function primaryVersion(tool, edition) {
-    return (edition && tool.versions.find(function (v) { return v.date === edition; })) ||
+    return (edition && tool.versions.find(function (v) { return editionKey(v) === edition; })) ||
       tool.versions.find(function (v) { return v.kind === "profile"; }) || tool.versions[0];
   }
   function platformMentions(profile) {
@@ -24,7 +25,7 @@
   }
   function matches(tool, filters, text) {
     const version = primaryVersion(tool, filters.edition), profile = version.profile;
-    if (filters.edition && !tool.versions.some(function (v) { return v.date === filters.edition; })) return false;
+    if (filters.edition && !tool.versions.some(function (v) { return editionKey(v) === filters.edition; })) return false;
     if (filters.field && !(filters.edition ? profile.categories : tool.categories).includes(filters.field)) return false;
     if (filters.platform && !(filters.edition ? platformMentions(profile) : tool.platform_mentions).includes(filters.platform)) return false;
     if (filters.review && (filters.edition ? version.kind : tool.review) !== filters.review) return false;
@@ -52,7 +53,7 @@
   }
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
-                      coverageText: coverageText};
+                      coverageText: coverageText, editionKey: editionKey};
   }
   if (typeof document === "undefined") return;
   const data = JSON.parse(document.getElementById("library-data").textContent);
@@ -61,8 +62,8 @@
   const cache = new Map(data.tools.map(function (tool) { return [tool.id, searchText(tool) + " " + tool.categories.map(function (c) { return fold(names.get(c) || c); }).join(" ")]; }));
   const prefix = document.body.dataset.reportPrefix;
   function reportPath(day, extension) {
-    const edition = data.editions.find(function (e) { return e.report_date === day; });
-    return (edition && edition.report_path || prefix + day + "/") + "report." + extension;
+    const edition = data.editions.find(function (e) { return editionKey(e) === day; });
+    return (edition && edition.report_path || prefix + (edition && edition.report_directory || day + "/")) + "report." + extension;
   }
   const controls = {q: "search", field: "field-filter", platform: "platform-filter", license: "license-filter",
                     review: "review-filter", edition: "edition-filter", sort: "sort"};
@@ -120,7 +121,7 @@
     const node = element("article", "tool-card"); node.dataset.toolId = tool.id;
     node.append(element("div", "card-category", p.categories.map(function (c) { return names.get(c) || c; }).join(" · ")));
     const title = element("h3");
-    title.append(button("title-button", p.name, function () { openProfile(tool.id, version.date); }));
+    title.append(button("title-button", p.name, function () { openProfile(tool.id, editionKey(version)); }));
     node.append(title);
     node.append(element("p", "card-description", full ? p.introduction.text : p.ai_relevance.text));
     const badges = element("div", "badge-row");
@@ -131,7 +132,7 @@
     node.append(use);
     const bottom = element("div", "card-bottom");
     bottom.append(element("span", "card-date", "Reviewed " + date(p.checked_on)));
-    bottom.append(button("profile-button", "Explore tool ↗", function () { openProfile(tool.id, version.date); }));
+    bottom.append(button("profile-button", "Explore tool ↗", function () { openProfile(tool.id, editionKey(version)); }));
     node.append(bottom); return node;
   }
   function render() {
@@ -175,7 +176,7 @@
   function openProfile(id, versionDate) {
     const tool = byId.get(id); if (!tool) return;
     const version = primaryVersion(tool, versionDate), p = version.profile, full = version.kind === "profile";
-    activeTool = id; activeVersion = version.date;
+    activeTool = id; activeVersion = editionKey(version);
     const header = element("header", "profile-header");
     header.append(element("p", "card-category", p.categories.map(function (c) { return names.get(c) || c; }).join(" · ")));
     const title = element("h2", "", p.name); title.id = "profile-title"; header.append(title);
@@ -189,7 +190,7 @@
     Object.entries(p.links || {}).forEach(function (entry) {
       links.append(link(entry[0].replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); }) + " ↗", entry[1], "", true));
     });
-    links.append(link("Daily report ↗", reportPath(version.date, "html"), "", true));
+    links.append(link("Daily report ↗", reportPath(editionKey(version), "html"), "", true));
     const shareStatus = element("span", "share-status");
     links.append(button("profile-button", "Copy profile link", async function () {
       try { await navigator.clipboard.writeText(location.href); shareStatus.textContent = "Link copied"; }
@@ -200,10 +201,10 @@
     versionLabel.htmlFor = "version-select";
     const select = element("select"); select.id = "version-select";
     tool.versions.forEach(function (v) {
-      const option = element("option", "", date(v.date) + (v.kind === "profile" ? " · Detailed profile" : " · Screened discovery"));
-      option.value = v.date; select.append(option);
+      const option = element("option", "", editionLabel(v) + (v.kind === "profile" ? " · Detailed profile" : " · Screened discovery"));
+      option.value = editionKey(v); select.append(option);
     });
-    select.value = version.date;
+    select.value = editionKey(version);
     select.addEventListener("change", function () { openProfile(id, select.value); $("version-select").focus(); });
     versionControl.append(versionLabel, select); header.append(versionControl);
     const body = element("div", "profile-body");
@@ -226,16 +227,19 @@
     if (!$("profile-dialog").open) $("profile-dialog").showModal();
     updateURL();
   }
+  function editionLabel(edition) {
+    return date(edition.report_date || edition.date) + (edition.revision > 1 ? " · Update " + (edition.revision - 1) : "");
+  }
   function renderEditions() {
     data.editions.forEach(function (edition) {
       const node = element("article", "edition-card");
-      node.append(element("span", "eyebrow", "DAILY FIELD REPORT"), element("h3", "", date(edition.report_date)));
+      node.append(element("span", "eyebrow", "DAILY FIELD REPORT"), element("h3", "", editionLabel(edition)));
       node.append(element("p", "", edition.summary));
       node.append(element("p", "filter-note", coverageText(edition)));
       node.append(element("span", "badge", edition.profile_count + " profiles · " + edition.lead_count + " screened discoveries"));
       const links = element("div", "edition-links");
       [["Read report ↗", "html"], ["Markdown", "md"], ["JSON", "json"]].forEach(function (item) {
-        links.append(link(item[0], reportPath(edition.report_date, item[1]), "", true));
+        links.append(link(item[0], reportPath(editionKey(edition), item[1]), "", true));
       }); node.append(links); $("edition-list").append(node);
     });
     if (!data.editions.length) $("edition-list").append(element("p", "reports-intro", "The first finished edition will appear here."));
@@ -244,14 +248,14 @@
   options("platform-filter", Array.from(new Set(data.tools.flatMap(function (t) { return t.platform_mentions; }))).sort().map(function (p) { return [p, p]; }));
   const licenses = data.tools.flatMap(function (tool) { return tool.versions.map(function (v) { return v.kind === "profile" ? v.profile.license.code : v.profile.code_license; }); });
   options("license-filter", Array.from(new Set(licenses)).sort().map(function (license) { return [license, license]; }));
-  options("edition-filter", data.editions.map(function (e) { return [e.report_date, date(e.report_date)]; }));
+  options("edition-filter", data.editions.map(function (e) { return [editionKey(e), editionLabel(e)]; }));
   $("profile-total").textContent = data.counts.profiles; $("screened-total").textContent = data.counts.screened;
   $("edition-total").textContent = data.counts.editions;
   if (data.editions.length) {
-    const latest = data.editions[0]; $("latest-date").textContent = date(latest.report_date);
+    const latest = data.editions[0]; $("latest-date").textContent = editionLabel(latest);
     $("latest-summary").textContent = latest.summary.length > 105 ? latest.summary.slice(0, 102) + "…" : latest.summary;
     $("latest-coverage").textContent = coverageText(latest);
-    $("latest-report").href = reportPath(latest.report_date, "html"); $("latest-report").hidden = false;
+    $("latest-report").href = reportPath(editionKey(latest), "html"); $("latest-report").hidden = false;
   }
   const params = new URLSearchParams(location.search);
   Object.keys(controls).forEach(function (name) { if (params.has(name)) $(controls[name]).value = params.get(name); });

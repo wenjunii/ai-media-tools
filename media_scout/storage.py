@@ -52,6 +52,17 @@ def report_date(value=None, tz="America/New_York"):
     return value
 
 
+def edition_revision(value=1):
+    if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+        raise ValueError("Edition revisions must be positive integers")
+    return value
+
+
+def edition_key(day, revision=1):
+    day, revision = report_date(day), edition_revision(revision)
+    return day if revision == 1 else f"{day}-r{revision}"
+
+
 @contextmanager
 def locked(root=ROOT):
     path = Path(root) / "state/scout.lock"

@@ -25,6 +25,9 @@ and private research remain in the local discovery catalog and review queue.
 
 One library entry is kept per stable tool ID. Every published dated review remains
 in `versions`; profile completion promotes a screened lead without duplicating it.
+Requested same-day updates have separate edition IDs and are labeled “Update 1”,
+“Update 2”, and so on. The original report and reviews remain accessible; filters,
+profile links and report downloads select the requested revision.
 New category labels are included in future reports. Older editions keep their
 original bytes. Results load 24 at a time, with no fixed collection size limit.
 The initial October 1 edition's 12 guides predate expanded-search tracking.
@@ -38,11 +41,15 @@ edition. Later full reviews replace pending status while preserving earlier vers
 ## Local use and regeneration
 
 ```sh
+cd /path/to/ai-media-tools
 python3 -m media_scout build-library
 python3 -m media_scout verify-public-archive
 python3 -m http.server 8766 --bind 127.0.0.1
 # Open http://127.0.0.1:8766/site/
 ```
+
+Leave the terminal running and open the URL in a browser. Ctrl+C stops the
+server. If port 8766 already serves this checkout, use its existing `/site/` URL.
 
 `build-library` refreshes `public/index.html`, `public/library.json`,
 `public/assets/`, `public/.nojekyll`, `public/README.md`, and the local `site/`

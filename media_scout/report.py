@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 from .discovery import OSI_LICENSES
 from .configuration import load_config
 from .coverage import verify_search
-from .storage import ROOT, locked, now, read_json, report_date, sha256, write_json, write_text
+from .storage import ROOT, edition_revision, locked, now, read_json, report_date, sha256, write_json, write_text
 
 SECTIONS = ("introduction", "good_for", "demo", "installation", "usage", "requirements", "license", "quality", "limitations")
 LABELS = {"introduction": "Introduction", "good_for": "What it is good for", "demo": "Demo & examples",
@@ -76,6 +76,16 @@ def validate(editorial, discovery, config, catalog, queue=None):
         if check["status"] == "searched" and not check.get("source_urls"):
             raise ValueError("Searched ecosystems need primary-source links")
         for url in check.get("source_urls", []):
+            safe_url(url)
+    watchlist = editorial.get("watchlist", [])
+    if not isinstance(watchlist, list):
+        raise ValueError("Excluded/watchlist findings must be a list")
+    for finding in watchlist:
+        if (not isinstance(finding, dict) or not finding.get("name") or not finding.get("reason")
+                or finding.get("status") not in {"excluded", "needs-license-review"}
+                or finding.get("checked_on") != editorial["report_date"] or not finding.get("source_urls")):
+            raise ValueError("Watchlist findings need a name, reason, status, date and primary sources")
+        for url in finding["source_urls"]:
             safe_url(url)
     tools = editorial.get("tools", [])
     maximum = config.get("max_profiles")
@@ -242,9 +252,11 @@ def render_html(editorial, discovery, config):
     names = category_names(config, discovery)
     candidates = {item["id"]: item for item in discovery["candidates"]}
     day = editorial["report_date"]
+    revision = edition_revision(editorial.get("revision", 1))
+    edition = day + (f" · Update {revision - 1}" if revision > 1 else "")
     out = ['<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
-           f'<title>AI Media Scout · {day}</title><style>{STYLE}</style></head><body><main>',
-           f'<header><div class="eyebrow">The daily field guide for digital media</div><h1>AI Media Scout</h1><p>{day} · All platforms · Open-source software</p>',
+           f'<title>AI Media Scout · {edition}</title><style>{STYLE}</style></head><body><main>',
+           f'<header><div class="eyebrow">The daily field guide for digital media</div><h1>AI Media Scout</h1><p>{edition} · All platforms · Open-source software</p>',
            f'<p>{escape(editorial["summary"])}</p><div class="stats"><div><strong>{len(editorial["tools"])}</strong><span>Researched profiles</span></div>',
            f'<div><strong>{len(names)}</strong><span>Creative fields searched</span></div><div><strong>{len(discovery["candidates"])}</strong><span>Source candidates</span></div></div></header>']
     if discovery["warnings"]:
@@ -274,13 +286,23 @@ def render_html(editorial, discovery, config):
             out.append(f'<tr><td><a href="{escape(candidate["url"], quote=True)}">{escape(lead["name"])}</a><br>{escape(lead["code_license"])}</td><td>{escape(lead["good_for"])}<br>{escape(lead["ai_relevance"]["text"])}<br><em>{escape(lead["review_status"])}</em> ' +
                        ' '.join(f'<a href="{escape(source["url"], quote=True)}">{escape(source["title"])}</a>' for source in lead["sources"]) + '</td></tr>')
         out.append('</tbody></table>')
+    if editorial.get("watchlist"):
+        out.append('<h2>Excluded and unresolved findings</h2><p>These findings are retained as research notes and are not part of the eligible tool library.</p><ul>')
+        for finding in editorial["watchlist"]:
+            out.append('<li><strong>' + escape(finding["name"]) + '</strong> · ' +
+                       escape(finding["status"] + ': ' + finding["reason"]) + ' ' +
+                       ' '.join('<a href="' + escape(url, quote=True) + '">Source</a>'
+                                for url in finding["source_urls"]) + '</li>')
+        out.append('</ul>')
     out.append(f'<footer>Observed {escape(discovery["completed_at"])} · {discovery["window_days"]}-day discovery window · Bounded samples, with a separate established-tool watchlist. No downloaded tool was installed or run by this workflow.</footer></main></body></html>')
     return '\n'.join(out)
 
 
 def render_markdown(editorial, discovery, config):
     names = category_names(config, discovery)
-    out = [f'# AI Media Scout — {editorial["report_date"]}', '', editorial["summary"], '',
+    revision = edition_revision(editorial.get("revision", 1))
+    edition = editorial["report_date"] + (f" · Update {revision - 1}" if revision > 1 else "")
+    out = [f'# AI Media Scout — {edition}', '', editorial["summary"], '',
            'Documentation reviewed today. Tools are not hands-on tested unless explicitly stated. Requirements and performance remain source-specific.', '',
            '## Coverage', '', '| Field | Finding |', '| --- | --- |']
     for note in editorial["category_notes"]:
@@ -291,8 +313,8 @@ def render_markdown(editorial, discovery, config):
     if editorial.get("ecosystem_checks"):
         out += ['', '## Research beyond GitHub', '']
         for check in editorial["ecosystem_checks"]:
-            out.append('- **' + check["ecosystem"] + '** · ' + check["status"] + ': ' + check["finding"] + ' ' +
-                       ' '.join(f'[Source]({url})' for url in check.get("source_urls", [])))
+            out.append(('- **' + check["ecosystem"] + '** · ' + check["status"] + ': ' + check["finding"] + ' ' +
+                        ' '.join(f'[Source]({url})' for url in check.get("source_urls", []))).rstrip())
     if discovery["warnings"]:
         out += ['', '## Collection limitations', ''] + ['- ' + warning for warning in discovery["warnings"]]
     for tool in editorial["tools"]:
@@ -319,6 +341,12 @@ def render_markdown(editorial, discovery, config):
             out += [f'### {lead["name"]} · {lead["code_license"]}', '', lead["good_for"],
                     lead["ai_relevance"]["text"], lead["review_status"], '']
             out += [f'- [{source["title"]}]({source["url"]})' for source in lead["sources"]]
+    if editorial.get("watchlist"):
+        out += ['', '## Excluded and unresolved findings', '',
+                'Research notes only; these do not enter the eligible tool library.', '']
+        for finding in editorial["watchlist"]:
+            out.append('- **' + finding["name"] + '** · ' + finding["status"] + ': ' + finding["reason"] + ' ' +
+                       ' '.join(f'[Source]({url})' for url in finding["source_urls"]))
     out += ['', f'Source collection completed: {discovery["completed_at"]}', discovery["note"], '']
     return '\n'.join(out)
 
@@ -343,6 +371,9 @@ def build(editorial_path, root=ROOT):
     editorial = read_json(editorial_path)
     config = load_config(root)
     day = report_date(editorial["report_date"], config["timezone"])
+    revision = edition_revision(config.get("edition_revision", 1))
+    if edition_revision(editorial.get("revision", revision)) != revision:
+        raise ValueError("Editorial revision does not match its prepared workspace")
     folder = root / "reports" / day
     with locked(root):
         if (folder / "manifest.json").exists():
@@ -368,6 +399,8 @@ def build(editorial_path, root=ROOT):
         validate(editorial, discovery, config, catalog, queue)
         report = dict(editorial, source_observation=discovery["completed_at"], source_warnings=discovery["warnings"],
                       category_labels=category_names(config, discovery))
+        if revision > 1:
+            report["revision"] = revision
         if search_coverage:
             report["search_coverage"] = dict(search_coverage, full_profiles=len(editorial["tools"]),
                 screened_leads=len(editorial.get("leads", [])),
@@ -401,6 +434,8 @@ def build(editorial_path, root=ROOT):
                     "lead_count": len(editorial.get("leads", [])),
                     "subject": f'[AI Media Scout] {day} — {len(editorial["tools"])} researched tools',
                     "sha256": {str(path.relative_to(root)): sha256(path) for path in artifacts}}
+        if revision > 1:
+            manifest["revision"] = revision
         write_json(folder / "manifest.json", manifest)
         update_queue(root, editorial, discovery, day)
         write_json(root / "state/catalog.json", catalog)
