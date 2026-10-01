@@ -275,6 +275,7 @@ def verify_report(day, root=ROOT):
 
 
 def build(editorial_path, root=ROOT):
+    from .library import write_local_library
     root = Path(root).resolve()
     editorial = read_json(editorial_path)
     config = load_config(root)
@@ -291,7 +292,7 @@ def build(editorial_path, root=ROOT):
             update_catalog(catalog, editorial, discovery, day)
             update_queue(root, editorial, discovery, day)
             write_json(root / "state/catalog.json", catalog)
-            write_text(root / "site/index.html", render_archive(root, config, catalog))
+            write_local_library(root, config)
             return manifest
         discovery = read_json(root / "research" / day / "discovery.json")
         if not discovery:
@@ -299,7 +300,8 @@ def build(editorial_path, root=ROOT):
         catalog = read_json(root / "state/catalog.json", {})
         queue = read_json(root / "state/review_queue.json", {})
         validate(editorial, discovery, config, catalog, queue)
-        report = dict(editorial, source_observation=discovery["completed_at"], source_warnings=discovery["warnings"])
+        report = dict(editorial, source_observation=discovery["completed_at"], source_warnings=discovery["warnings"],
+                      category_labels=category_names(config, discovery))
         write_json(folder / "report.json", report)
         write_text(folder / "report.html", render_html(editorial, discovery, config))
         write_text(folder / "report.md", render_markdown(editorial, discovery, config))
@@ -323,7 +325,7 @@ def build(editorial_path, root=ROOT):
         write_json(folder / "manifest.json", manifest)
         update_queue(root, editorial, discovery, day)
         write_json(root / "state/catalog.json", catalog)
-        write_text(root / "site/index.html", render_archive(root, config, catalog))
+        write_local_library(root, config)
         verify_report(day, root)
         return manifest
 
@@ -359,42 +361,3 @@ def update_queue(root, editorial, discovery, day):
                              "last_listed": day, "source_fingerprint": candidates[lead["id"]]["source_fingerprint"],
                              "category_labels": {c["id"]: c["name"] for c in discovery.get("categories", [])}}
     write_json(root / "state/review_queue.json", queue)
-
-
-def render_archive(root, config, catalog):
-    names = category_names(config)
-    queue = read_json(root / "state/review_queue.json", {})
-    for entry in list(catalog.values()) + list(queue.values()):
-        names.update(entry.get("category_labels", {}))
-        for category in entry.get("profile", entry).get("categories", []):
-            names.setdefault(category, category.replace("_", " ").replace("-", " ").title())
-    reports = sorted((root / "reports").glob("*/manifest.json"), reverse=True)
-    out = [f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Media Scout · Library</title><style>{STYLE}</style></head><body><main>',
-           '<header><div class="eyebrow">Open-source AI for every creative workflow</div><h1>AI Media Scout</h1><p>Daily discovery and practical field guides for all digital media. Search across the starter fields and newly emerging creative uses.</p>',
-           f'<p class="meta">Daily at 8:00 AM Eastern · All platforms · {len(catalog)} full profiles · {len(queue)} pending discoveries</p><p class="meta">{len(config["categories"])} starter fields · Open-ended search · No fixed daily tool limit</p></header>',
-           '<h2>Daily reports</h2><ul>']
-    for path in reports:
-        manifest = read_json(path)
-        day = manifest["report_date"]
-        out.append(f'<li><a href="../reports/{day}/report.html">{day} — {manifest["profile_count"]} researched tools</a> · <a href="../reports/{day}/report.md">Markdown</a></li>')
-    out += ['</ul><h2>Tool library</h2><label for="search">Find a tool or creative workflow</label><input id="search" placeholder="Search name, hardware, use case…" type="search"><label for="field-filter">Creative field</label><select id="field-filter"><option value="all">All fields</option>']
-    out += [f'<option value="{escape(category, quote=True)}">{escape(name)}</option>' for category, name in names.items()]
-    out += ['</select><p id="result-count" role="status"></p>']
-    for entry in sorted(catalog.values(), key=lambda entry: entry["name"].casefold()):
-        tool = entry["profile"]
-        out += [f'<article class="tool" data-categories="{escape(" ".join(tool["categories"]))}"><div class="eyebrow">{escape(" · ".join(names[c] for c in tool["categories"]))}</div><h2>{escape(tool["name"])}</h2>',
-                f'<p>{escape(tool["introduction"]["text"])}</p><p><strong>Good for:</strong> {escape(tool["good_for"]["text"])}</p>',
-                f'<p class="meta">{escape(tool["requirements"]["platforms"])} · {escape(tool["license"]["code"])} · Last profiled {entry["last_featured"]}</p>',
-                f'<p><a href="../reports/{entry["last_featured"]}/report.html">Read the full profile and install guide</a> · <a href="{escape(tool["links"]["repository"], quote=True)}">Get the tool</a></p></article>']
-    if queue:
-        out.append('<h2>Discoveries awaiting full profiles</h2><p>Creative AI relevance and software license screened; detailed setup, requirements and quality review are pending.</p>')
-        for entry in sorted(queue.values(), key=lambda entry: entry["name"].casefold()):
-            out += [f'<article class="tool" data-categories="{escape(" ".join(entry["categories"]))}"><h2>{escape(entry["name"])}</h2><p>{escape(entry["good_for"])}</p><p class="meta">{escape(entry["code_license"])} · {escape(entry["review_status"])}</p><p>' +
-                    ' · '.join(f'<a href="{escape(source["url"], quote=True)}">{escape(source["title"])}</a>' for source in entry["sources"]) + '</p></article>']
-    out.append('''<p id="empty" hidden>No tools match this search. Try another field or phrase.</p><footer>Primary documentation reviewed; performance and output quality are not independently benchmarked. The archive preserves each day's evidence.</footer></main>
-<script>
-const cards=[...document.querySelectorAll('article.tool')];
-function filter(){const query=document.querySelector('#search').value.toLowerCase().trim(), selected=document.querySelector('#field-filter').value;let count=0;for(const card of cards){card.hidden=!((selected==='all'||card.dataset.categories.split(' ').includes(selected))&&card.textContent.toLowerCase().includes(query));if(!card.hidden)count++;}document.querySelector('#result-count').textContent=count+' tools shown';document.querySelector('#empty').hidden=count!==0;}
-document.querySelector('#search').addEventListener('input',filter);document.querySelector('#field-filter').addEventListener('change',filter);filter();
-</script></body></html>''')
-    return '\n'.join(out)

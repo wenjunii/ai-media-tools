@@ -1,8 +1,10 @@
 """Publication integrity and GitHub-before-email checks using real local Git."""
 
 import json
+import copy
 from pathlib import Path
 import subprocess
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -82,6 +84,99 @@ class PublicationExportTests(unittest.TestCase):
         self.assertEqual(list(target.iterdir()), [])
 
 
+class PublicArchiveTests(unittest.TestCase):
+    def setUp(self):
+        self.fixture = report_fixture(self)
+        self.root, self.day = self.fixture.root, self.fixture.day
+        self.fixture.build()
+        publication.export_report(self.day, self.root)
+        self.folder = self.root / "public/reports" / self.day
+
+    def test_public_archive_verification_needs_no_private_artifacts_and_does_not_write(self):
+        before = {str(path): sha256(path) for path in (self.root / "public").rglob("*") if path.is_file()}
+        for name in ("reports", "research", "state", "site"):
+            shutil.rmtree(self.root / name)
+        (self.root / "config/scout.local.json").unlink()
+        self.assertEqual(publication.verify_public_archive(self.root),
+                         {"status": "passed", "editions": 1, "report_files_checked": 3, "library_tools": 1})
+        self.assertEqual(before, {str(path): sha256(path) for path in (self.root / "public").rglob("*") if path.is_file()})
+
+    def test_changed_published_content_fails_its_hash_check(self):
+        write_text(self.folder / "report.html", "Incomplete report")
+        with self.assertRaisesRegex(ValueError, "publication hash"):
+            publication.verify_public_archive(self.root)
+
+    def test_missing_public_file_fails_verification(self):
+        (self.folder / "report.md").unlink()
+        with self.assertRaisesRegex(ValueError, "missing required files"):
+            publication.verify_public_archive(self.root)
+
+    def test_invalid_metadata_does_not_authorize_an_archive(self):
+        path = self.folder / "publication.json"
+        original = read_json(path)
+        changes = ({"report_date": "2026-09-30"}, {"recipient": "private@example.com"},
+                   {"profile_count": True}, {"profile_count": -1}, {"profile_count": 50},
+                   {"sealed_at": None}, {"sealed_at": "2026-10-01T08:00:00"},
+                   {"sha256": {"report.md": "../outside"}})
+        for change in changes:
+            with self.subTest(field=next(iter(change))):
+                write_json(path, dict(copy.deepcopy(original), **change))
+                with self.assertRaises(ValueError):
+                    publication.verify_public_archive(self.root)
+
+    def test_report_json_cannot_change_its_date_by_updating_a_public_hash(self):
+        path = self.folder / "report.json"
+        report = read_json(path)
+        report["report_date"] = "2026-09-30"
+        write_json(path, report)
+        metadata = read_json(self.folder / "publication.json")
+        metadata["sha256"]["report.json"] = sha256(path)
+        write_json(self.folder / "publication.json", metadata)
+        with self.assertRaisesRegex(ValueError, "disagree"):
+            publication.verify_public_archive(self.root)
+
+    def test_index_cannot_link_to_an_unpublished_edition(self):
+        path = self.root / "public/index.html"
+        write_text(path, path.read_text() + '<a href="reports/1999-01-01/report.html">Missing edition</a>')
+        with self.assertRaisesRegex(ValueError, "unpublished or invalid"):
+            publication.verify_public_archive(self.root)
+
+    def test_index_cannot_link_back_into_the_private_report_directory(self):
+        path = self.root / "public/index.html"
+        write_text(path, path.read_text().replace("reports/", "../reports/"))
+        with self.assertRaisesRegex(ValueError, "unpublished or invalid"):
+            publication.verify_public_archive(self.root)
+
+    def test_readme_cannot_silently_drop_an_edition(self):
+        write_text(self.root / "public/README.md", "Empty archive")
+        with self.assertRaisesRegex(ValueError, "README"):
+            publication.verify_public_archive(self.root)
+
+    def test_library_data_cannot_drop_a_previously_published_tool(self):
+        path = self.root / "public/library.json"
+        data = read_json(path)
+        data["tools"] = []
+        write_json(path, data)
+        with self.assertRaisesRegex(ValueError, "Published library differs"):
+            publication.verify_public_archive(self.root)
+
+    def test_a_missing_browser_asset_blocks_publication(self):
+        (self.root / "public/assets/library.js").unlink()
+        with self.assertRaisesRegex(ValueError, "Published library differs"):
+            publication.verify_public_archive(self.root)
+
+    def test_library_can_be_rebuilt_in_a_clone_without_private_research(self):
+        before = {name: sha256(self.folder / name) for name in publication.REPORT_FILES}
+        for name in ("reports", "research", "state", "site"):
+            shutil.rmtree(self.root / name)
+        (self.root / "config/scout.local.json").unlink()
+        result = publication.rebuild_library(self.root)
+        self.assertEqual(result["tools"], 1)
+        self.assertTrue((self.root / "site/assets/library.js").is_file())
+        self.assertEqual(before, {name: sha256(self.folder / name) for name in publication.REPORT_FILES})
+        publication.verify_public_archive(self.root)
+
+
 class PublicationCheckpointTests(unittest.TestCase):
     def setUp(self):
         self.fixture = report_fixture(self)
@@ -118,8 +213,9 @@ class PublicationCheckpointTests(unittest.TestCase):
                 return json.dumps(result).encode()
             return actual_run(args, root)
 
-        self.addCleanup(patch.stopall)
-        patch("media_scout.publication._run", side_effect=local_git_and_ci).start()
+        runner_patch = patch("media_scout.publication._run", side_effect=local_git_and_ci)
+        self.addCleanup(runner_patch.stop)
+        runner_patch.start()
 
     def git(self, *args):
         return subprocess.run(["git", *args], cwd=self.root, capture_output=True, check=True).stdout
@@ -165,6 +261,7 @@ class PublicationCheckpointTests(unittest.TestCase):
 
     def test_changed_commit_needs_a_fresh_checkpoint(self):
         original = publication.record_sync(self.day, self.root)
+        original_bytes = (self.root / "state/publications" / (self.day + ".json")).read_bytes()
         write_text(self.root / "README.md", "A reviewed project improvement\n")
         self.git("add", "README.md")
         self.git("commit", "-m", "Improve project")
@@ -174,6 +271,9 @@ class PublicationCheckpointTests(unittest.TestCase):
         self.assert_unreserved()
         refreshed = publication.record_sync(self.day, self.root)
         self.assertNotEqual(original["commit"], refreshed["commit"])
+        history = list((self.root / "state/publication_history" / self.day).glob("*.json"))
+        self.assertEqual(len(history), 1)
+        self.assertEqual(history[0].read_bytes(), original_bytes)
         self.assertEqual(delivery.prepare(self.day, self.root)["status"], "reserved")
 
     def test_uncommitted_project_change_blocks_email(self):
@@ -189,12 +289,23 @@ class PublicationCheckpointTests(unittest.TestCase):
         self.git("add", "public")
         self.git("commit", "-m", "Unexpected publication change")
         self.git("push", "origin", "main")
-        with self.assertRaisesRegex(ValueError, "complete current report"):
+        with self.assertRaisesRegex(ValueError, "publication hash"):
             publication.record_sync(self.day, self.root)
 
     def test_a_staged_private_settings_file_is_blocked_before_push(self):
         self.git("add", "-f", "config/scout.local.json")
         with self.assertRaisesRegex(ValueError, "Private operational"):
+            publication.audit_publication(self.root)
+
+    def test_staging_a_resealed_old_edition_is_blocked_before_push(self):
+        path = self.root / "public/reports" / self.day / "report.md"
+        write_text(path, "Changed historical content")
+        metadata_path = path.parent / "publication.json"
+        metadata = read_json(metadata_path)
+        metadata["sha256"]["report.md"] = sha256(path)
+        write_json(metadata_path, metadata)
+        self.git("add", "public")
+        with self.assertRaisesRegex(ValueError, "immutable"):
             publication.audit_publication(self.root)
 
     def test_a_staged_source_leak_is_blocked_without_echoing_the_value(self):

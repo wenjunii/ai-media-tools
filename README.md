@@ -15,6 +15,10 @@ Daily order: **generate and verify → sync GitHub → send email**. Finished re
 are published in the [public report archive](public/README.md). Private settings,
 raw research, and delivery records remain local.
 
+**[Search the live tool library](https://wenjunii.github.io/ai-media-tools/)**.
+The same web UI runs locally, with full-text search, filters, detailed profiles,
+and dated review history. Every published daily edition expands the collection.
+
 ## What an edition contains
 
 Every featured tool includes an introduction, useful creative workflows, demos,
@@ -72,6 +76,7 @@ seals artifacts with SHA-256 hashes, and updates a searchable static archive.
 The research agent exports the finished edition to `public/`, synchronizes code,
 documentation and reports through a protected GitHub pull request, and checks
 CI on the merged main commit. A verified sync checkpoint is required for email.
+That main CI run also deploys the verified `public/` library to GitHub Pages.
 The **Gmail plugin** then sends the complete edition. A persistent reservation and
 receipt block duplicate automatic sends, including after an interrupted run.
 There is no 12-tool cap. Detailed profiles remain fully cited; additional projects
@@ -112,6 +117,11 @@ and passwords out of this file; credentials come from the environment or the
 connected app. This file is ignored by Git, and the public defaults have no
 email recipient.
 
+Settings are validated when a command starts. Use a valid IANA time-zone name
+such as `America/New_York`, a 24-hour `HH:MM` research time, and a valid recipient
+address. Invalid settings produce a clear JSON error and exit without continuing.
+The `github_sync.required_before_email` option must be a JSON boolean.
+
 Ask Codex to schedule the workflow in this checkout with your approved recipient
 and preferred time. The schedule and Gmail connection belong to your local
 Codex app; cloning the repository does not create them. Configure the recipient
@@ -129,6 +139,7 @@ python3 -m media_scout discover
 python3 -m media_scout build --editorial research/YYYY-MM-DD/editorial.json
 python3 -m media_scout verify --date YYYY-MM-DD
 python3 -m media_scout export-report --date YYYY-MM-DD
+python3 -m media_scout verify-public-archive
 # Follow docs/GITHUB_SYNC.md: audit, commit, push, merge the PR, and wait for main CI.
 python3 -m media_scout record-sync --date YYYY-MM-DD
 python3 -m media_scout verify-sync --date YYYY-MM-DD
@@ -142,8 +153,10 @@ daily observation. `build` resumes the same sealed edition. Neither command
 silently refreshes a completed report. `prepare-email` only creates a send
 reservation and MIME payload; it does not send mail. Never call it as a casual
 preview. It blocks before reservation when GitHub sync or CI is missing, failed,
-or stale. `status`, `verify`, and `verify-sync` are read-only checks; the last one
-contacts GitHub to check the actual commit and CI.
+or stale. `status`, `verify`, `verify-public-archive`, and `verify-sync` are read-only
+checks; the last one contacts GitHub to check the actual commit and CI.
+`verify-public-archive` checks the published files without private research,
+delivery settings, or GitHub access, so it also works in a fresh clone.
 
 Supplementary repositories found on the web can be archived before sealing:
 
@@ -157,7 +170,30 @@ Non-commercial source licenses cannot be relabeled as open source.
 
 ## Library and files
 
-Open `site/index.html` for the searchable tool library, or serve the folder locally:
+The [GitHub Pages library](https://wenjunii.github.io/ai-media-tools/) lets anyone
+search the collection. Search covers introductions, creative uses, requirements,
+installation commands, licenses, and earlier reviews. Combine creative-field,
+platform-mention, software-license, review-depth, and daily-edition filters.
+Open a tool to read its full guide, choose a dated review, or copy a profile link.
+The Daily reports view provides HTML, Markdown, and JSON editions.
+
+The library deduplicates tools by ID while keeping every published profile and
+screened discovery. A completed guide remains available when a later edition
+mentions the tool briefly. Pending profiles stay clearly labeled. New creative
+fields are retained. There is no fixed library size limit; results load in batches.
+See [library and Pages instructions](docs/LIBRARY.md).
+
+Refresh the derived library from the finished public reports without collecting,
+rebuilding, or sending a daily report:
+
+```sh
+python3 -m media_scout build-library
+python3 -m media_scout verify-public-archive
+```
+
+Daily `export-report` refreshes it automatically. A fresh clone can rebuild the
+complete public library without private research or email settings.
+Open `site/index.html` for the local web UI, or serve the checkout locally:
 
 ```sh
 python3 -m http.server 8766 --bind 127.0.0.1
@@ -179,12 +215,15 @@ python3 -m http.server 8766 --bind 127.0.0.1
 | `public/reports/YYYY-MM-DD/` | published finished editions and recipient-free hashes |
 | `public/README.md` | browsable daily report list on GitHub |
 | `public/index.html` | public searchable library, with corrected report links |
+| `public/library.json` | cumulative tool data with every published review |
+| `public/assets/` | dependency-free library styles and browser search |
 | `site/index.html` | filterable local library and report archive |
 | `state/catalog.json` | previous profiles and update tracking |
 | `state/discovery_catalog.json` | collected source candidates across days |
 | `state/review_queue.json` | screened discoveries awaiting complete profiles |
 | `state/deliveries/YYYY-MM-DD.json` | Gmail message ID and delivery state |
 | `state/publications/YYYY-MM-DD.json` | ignored verified GitHub sync checkpoint |
+| `state/publication_history/YYYY-MM-DD/` | ignored copies of prior sync checkpoints when main changes |
 
 Private settings, raw research, original reports, and operational state are ignored by Git. Keep or
 back up these folders to retain history and delivery safeguards. Changing a
@@ -195,7 +234,9 @@ automation through the app and keep the config consistent.
 
 ```sh
 python3 -m unittest discover -s tests -v
-python3 -m compileall -q media_scout
+python3 -m compileall -q media_scout tests
+python3 -m media_scout verify-public-archive
+node --test tests/library.test.cjs
 ```
 
 Regression checks cover integrity, missing citations/coverage, license conflicts,
@@ -208,6 +249,26 @@ above 12 profiles, and complete large-report attachments.
 Publication checks cover report byte integrity, private-data screening, actual
 Git commit agreement, current main CI, stale checkpoints, and blocking email
 before reservation when publication is incomplete.
+The public archive check validates each edition's files, hashes, dates, counts,
+publication metadata, report list, and library links. It also reconstructs the
+cumulative library and checks its complete data, HTML and browser assets.
+CI runs this check alongside the regression suite on Python 3.10 and 3.13 and
+the browser search checks using the runner's Node.js. Node is only needed for
+those development tests; the library requires no backend or JavaScript build step.
+The publication audit also rejects
+changes or removal of previously committed editions, even if their metadata is
+changed to match. Publish new findings in a new dated edition.
+
+For code or documentation maintenance, run these checks, stage the reviewed
+changes explicitly, and run `python3 -m media_scout audit-publication`. Follow the
+protected PR and exact-commit CI steps in [the sync guide](docs/GITHUB_SYNC.md),
+then refresh `record-sync` and check `verify-sync` for the existing edition. Keep
+completed reports, research, delivery receipts, private settings, and the existing
+schedule intact. Maintenance does not require discovery, rebuilding or exporting
+a report, or preparing or sending email. Updating the sync checkpoint preserves
+its previous bytes in the local publication history. When deliberately changing
+the library UI or its data format, run `build-library` to update the derived
+files before staging; the dated report files remain immutable.
 
 ## License
 

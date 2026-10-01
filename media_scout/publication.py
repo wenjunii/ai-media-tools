@@ -7,11 +7,14 @@ an edited local receipt alone cannot authorize delivery.
 
 import hashlib
 import json
+from datetime import datetime
+from html.parser import HTMLParser
 from pathlib import Path
 import re
 import subprocess
 
 from .configuration import load_config
+from .library import library_files, make_library, write_library_files
 from .report import verify_report
 from .storage import ROOT, locked, now, read_json, report_date, write_json, write_text
 
@@ -72,19 +75,141 @@ def _finished_files(day, root, manifest):
     return contents
 
 
-def _archive_readme(root):
+def _public_editions(root):
+    directory = _safe_path(root, "public/reports")
+    if not directory.exists():
+        return {}
+    if not directory.is_dir():
+        raise ValueError("The public report archive must be a directory")
+    editions = {}
+    for folder in sorted(directory.iterdir(), reverse=True):
+        if folder.name == ".DS_Store":
+            continue
+        _safe_path(root, str(folder.relative_to(root)))
+        try:
+            day = report_date(folder.name)
+        except ValueError as error:
+            raise ValueError("Public edition directories must use YYYY-MM-DD dates") from error
+        expected_names = set(REPORT_FILES) | {"publication.json"}
+        if not folder.is_dir() or {p.name for p in folder.iterdir() if p.name != ".DS_Store"} != expected_names:
+            raise ValueError("Public edition is missing required files or contains extra material")
+        for name in expected_names:
+            path = _safe_path(root, str((folder / name).relative_to(root)))
+            if not path.is_file():
+                raise ValueError("Public edition files must be regular files")
+        metadata = read_json(folder / "publication.json")
+        fields = {"report_date", "sealed_at", "profile_count", "lead_count", "sha256"}
+        if not isinstance(metadata, dict) or set(metadata) != fields or metadata["report_date"] != day:
+            raise ValueError("Public publication metadata has an invalid date or schema")
+        for name in ("profile_count", "lead_count"):
+            value = metadata[name]
+            if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+                raise ValueError("Public edition counts must be nonnegative integers")
+        try:
+            sealed = metadata["sealed_at"]
+            if not isinstance(sealed, str) or datetime.fromisoformat(sealed.replace("Z", "+00:00")).tzinfo is None:
+                raise ValueError("Invalid timestamp")
+        except ValueError as error:
+            raise ValueError("Public edition seal time must include a valid time-zone offset") from error
+        hashes = metadata["sha256"]
+        if not isinstance(hashes, dict) or set(hashes) != set(REPORT_FILES):
+            raise ValueError("Public publication hashes must cover exactly the finished report files")
+        for name, expected in hashes.items():
+            if not isinstance(expected, str) or not re.fullmatch(r"[a-f0-9]{64}", expected):
+                raise ValueError("Public publication hashes must be SHA-256 digests")
+            if _digest((folder / name).read_bytes()) != expected:
+                raise ValueError("Public report content does not match its publication hash")
+        report = read_json(folder / "report.json")
+        if (not isinstance(report, dict) or report.get("report_date") != day
+                or not isinstance(report.get("tools"), list) or not isinstance(report.get("leads", []), list)
+                or len(report["tools"]) != metadata["profile_count"]
+                or len(report.get("leads", [])) != metadata["lead_count"]):
+            raise ValueError("Public report date or profile counts disagree with publication metadata")
+        editions[day] = metadata
+    return editions
+
+
+def _readme_for_editions(editions):
     lines = ["# Daily reports", "", "Finished AI Media Scout editions, with full profiles and primary-source citations.",
-             "", "[Searchable HTML library](index.html) (download or open locally).", "",
+             "", "[Searchable HTML library](index.html). Browse with GitHub Pages or open locally.", "",
              "| Date | Full profiles | Additional discoveries | Editions |",
              "| --- | ---: | ---: | --- |"]
-    for path in sorted((root / "public/reports").glob("*/publication.json"), reverse=True):
-        day = report_date(path.parent.name)
-        metadata = read_json(path)
-        profiles, leads = int(metadata["profile_count"]), int(metadata.get("lead_count", 0))
-        editions = " · ".join(f"[{label}](reports/{day}/{name})" for label, name in
-                              (("Markdown", "report.md"), ("HTML", "report.html"), ("JSON", "report.json")))
-        lines.append(f"| {day} | {profiles} | {leads} | {editions} |")
+    for day, metadata in sorted(editions.items(), reverse=True):
+        profiles, leads = metadata["profile_count"], metadata["lead_count"]
+        links = " · ".join(f"[{label}](reports/{day}/{name})" for label, name in
+                           (("Markdown", "report.md"), ("HTML", "report.html"), ("JSON", "report.json")))
+        lines.append(f"| {day} | {profiles} | {leads} | {links} |")
     return ("\n".join(lines) + "\n").encode("utf-8")
+
+
+def _archive_readme(root):
+    return _readme_for_editions(_public_editions(root))
+
+
+def _public_library_contents(root, config=None):
+    editions = _public_editions(root)
+    documents = [read_json(root / "public/reports" / day / "report.json") for day in editions]
+    data = make_library(documents, config or load_config(root))
+    contents = {"public/" + name: value for name, value in library_files(data).items()}
+    contents["public/README.md"] = _readme_for_editions(editions)
+    return data, contents
+
+
+def rebuild_library(root=ROOT):
+    """Refresh derived local/public views; never rebuild or export a sealed report."""
+    root = Path(root).resolve()
+    with locked(root):
+        config = load_config(root)
+        data, contents = _public_library_contents(root, config)
+        for name, content in contents.items():
+            _safe_path(root, name)
+            _check_public_content(content, root, config)
+        for name, content in contents.items():
+            write_text(_safe_path(root, name), content.decode("utf-8"))
+        write_library_files(root / "site", library_files(data, "../public/reports/"))
+        return {"status": "built", "tools": data["counts"]["tools"],
+                "editions": data["counts"]["editions"], "files": list(contents),
+                "note": "Derived library refreshed; sealed reports and delivery records preserved"}
+
+
+class _ReportLinks(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.targets = []
+
+    def handle_starttag(self, tag, attrs):
+        for name, value in attrs:
+            if name == "href" and value and value.lower().startswith(("reports/", "../reports/")):
+                self.targets.append(value)
+
+
+def verify_public_archive(root=ROOT):
+    """Validate every public edition without local research, GitHub access or writes."""
+    root = Path(root).resolve()
+    editions = _public_editions(root)
+    readme = _safe_path(root, "public/README.md")
+    index = _safe_path(root, "public/index.html")
+    if editions or readme.exists():
+        if not readme.is_file() or readme.read_bytes() != _readme_for_editions(editions):
+            raise ValueError("Public archive README does not match the verified editions")
+    if editions and not index.is_file():
+        raise ValueError("The public archive is missing its searchable index")
+    if index.exists():
+        if not index.is_file():
+            raise ValueError("The public searchable index must be a regular file")
+        parser = _ReportLinks()
+        parser.feed(index.read_text())
+        for target in parser.targets:
+            match = re.fullmatch(r"reports/(\d{4}-\d{2}-\d{2})/(report\.(?:html|md|json))", target)
+            if not match or match[1] not in editions:
+                raise ValueError("The public searchable index links to an unpublished or invalid edition")
+    data, contents = _public_library_contents(root)
+    for name, expected in contents.items():
+        path = _safe_path(root, name)
+        if not path.is_file() or path.read_bytes() != expected:
+            raise ValueError("Published library differs from finished editions; run build-library")
+    return {"status": "passed", "editions": len(editions), "report_files_checked": len(editions) * len(REPORT_FILES),
+            "library_tools": data["counts"]["tools"]}
 
 
 def export_report(day, root=ROOT):
@@ -94,23 +219,21 @@ def export_report(day, root=ROOT):
         manifest = verify_report(day, root)
         config = load_config(root)
         contents = _finished_files(day, root, manifest)
-        archive = root / "site/index.html"
-        if not archive.is_file():
-            raise ValueError("Build the searchable archive before exporting the report")
-        public_archive = archive.read_text().replace("../reports/", "reports/").encode("utf-8")
         for name, content in contents.items():
             _check_public_content(content, root, config)
             path = _safe_path(root, name)
             if path.exists() and path.read_bytes() != content:
                 raise ValueError("An existing public edition differs from the sealed report; preserve it")
-        _check_public_content(public_archive, root, config)
         for name, content in contents.items():
             write_text(_safe_path(root, name), content.decode("utf-8"))
-        contents["public/index.html"] = public_archive
-        contents["public/README.md"] = _archive_readme(root)
-        for name in ("public/index.html", "public/README.md"):
-            _check_public_content(contents[name], root, config)
-            write_text(_safe_path(root, name), contents[name].decode("utf-8"))
+        data, library = _public_library_contents(root, config)
+        for name, content in library.items():
+            _safe_path(root, name)
+            _check_public_content(content, root, config)
+        for name, content in library.items():
+            write_text(_safe_path(root, name), content.decode("utf-8"))
+        contents.update(library)
+        write_library_files(root / "site", library_files(data, "../public/reports/"))
         verify_report(day, root)
         return {"report_date": day, "status": "exported", "files": list(contents),
                 "note": "Commit and merge these exports through a pull request, then record-sync before email"}
@@ -131,7 +254,13 @@ def audit_publication(root=ROOT):
         _safe_path(root, name)
         _check_public_content(_run(["git", "show", ":" + name], root), root, config)
         count += 1
-    return {"status": "passed", "tracked_files_checked": count}
+    archive = verify_public_archive(root)
+    prior = set(_run(["git", "ls-tree", "-r", "--name-only", "HEAD", "--", "public/reports"], root).decode().splitlines())
+    indexed = set(filter(None, names))
+    for name in prior:
+        if name not in indexed or _run(["git", "show", "HEAD:" + name], root) != _run(["git", "show", ":" + name], root):
+            raise ValueError("Published editions are immutable; preserve existing files when syncing")
+    return {"status": "passed", "tracked_files_checked": count, "public_editions_checked": archive["editions"]}
 
 
 def _github_settings(config):
@@ -139,11 +268,11 @@ def _github_settings(config):
     repository = settings.get("repository", "")
     branch = settings.get("branch", "main")
     workflow = settings.get("ci_workflow", "ci.yml")
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*/[A-Za-z0-9][A-Za-z0-9._-]*", repository):
+    if not isinstance(repository, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*/[A-Za-z0-9][A-Za-z0-9._-]*", repository):
         raise ValueError("Configure github_sync.repository as OWNER/REPO")
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", branch) or ".." in branch:
+    if not isinstance(branch, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", branch) or ".." in branch:
         raise ValueError("Configure a valid GitHub publication branch")
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.ya?ml", workflow):
+    if not isinstance(workflow, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.ya?ml", workflow):
         raise ValueError("Configure a CI workflow filename")
     return repository, branch, workflow
 
@@ -166,8 +295,8 @@ def _verified_remote(day, root, manifest, config):
         raise ValueError("Local, tracking and GitHub commits do not match; email is blocked")
     audit_publication(root)
     contents = _finished_files(day, root, manifest)
-    contents["public/index.html"] = (root / "site/index.html").read_text().replace("../reports/", "reports/").encode("utf-8")
-    contents["public/README.md"] = _archive_readme(root)
+    _, library = _public_library_contents(root, config)
+    contents.update(library)
     for name, expected in contents.items():
         _check_public_content(expected, root, config)
         actual = _run(["git", "show", head + ":" + name], root)
@@ -199,7 +328,15 @@ def record_sync(day, root=ROOT):
         receipt = dict(verified, report_date=day, status="synced", verified_at=now(),
             report_sha256=manifest["sha256"][f"reports/{day}/report.html"],
             report_url=f'https://github.com/{verified["repository"]}/blob/{verified["branch"]}/public/reports/{day}/report.md')
-        write_json(root / "state/publications" / (day + ".json"), receipt)
+        path = root / "state/publications" / (day + ".json")
+        prior = read_json(path)
+        if prior and prior.get("commit") != receipt["commit"]:
+            previous = path.read_bytes()
+            history = root / "state/publication_history" / day / (_digest(previous) + ".json")
+            if history.exists() and history.read_bytes() != previous:
+                raise ValueError("Publication history conflicts with the existing checkpoint; preserve it")
+            write_text(history, previous.decode("utf-8"))
+        write_json(path, receipt)
         return receipt
 
 

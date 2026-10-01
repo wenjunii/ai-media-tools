@@ -15,3 +15,6 @@ media-scout = "media_scout.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["media_scout*"]
+
+[tool.setuptools.package-data]
+media_scout = ["ui/*.html", "ui/*.css", "ui/*.js"]
