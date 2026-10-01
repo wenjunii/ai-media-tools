@@ -2,7 +2,7 @@
 
 Finished AI Media Scout editions, with full profiles and primary-source citations.
 
-[Searchable HTML library](index.html) (download or open locally).
+[Searchable HTML library](index.html). Browse with GitHub Pages or open locally.
 
 | Date | Full profiles | Additional discoveries | Editions |
 | --- | ---: | ---: | --- |

@@ -19,6 +19,13 @@ catalogs, outbox payloads, and delivery/sync receipts remain ignored. The public
 index uses report links relative to `public/`. When importing older local history,
 export its verified editions before publishing an index that links to them.
 
+`python3 -m media_scout verify-public-archive` checks every published edition's
+files, hashes, dates, profile/lead counts, and publication metadata, then checks
+the report list and the public library's report links. It is read-only and needs
+no private evidence or GitHub access. CI runs it on both supported Python versions.
+It also checks that the full cumulative library data, HTML, and browser assets
+match all finished public editions and the current UI source.
+
 ## Publish through the protected branch
 
 1. Inspect the report's status and preserve any sealed edition. Reconcile a
@@ -44,6 +51,9 @@ export its verified editions before publishing an index that links to them.
 
    The audit checks the entire Git index for private operational paths, the local
    recipient/project path, known access-token patterns, and private-key material.
+   It also verifies the public archive and rejects staged changes or removal of
+   existing dated report exports, even when revised metadata matches their bytes.
+   The library and report list can grow as new editions are added.
    Review the staged diff as well. Use the checkout's GitHub noreply commit email.
 4. Commit and push the publication branch. Open a PR to the configured main branch,
    using a file for the multiline PR body. Describe the final edition and relevant
@@ -61,6 +71,8 @@ export its verified editions before publishing an index that links to them.
    with `--commit`, `--workflow`, `--branch`, and `--event push`, then watch that run.
    A passing PR run alone does not establish successful main CI. Clean up the
    completed publication branch after it is merged.
+   The main CI run deploys only `public/` to GitHub Pages after all checks pass.
+   PRs validate the site but do not deploy it. See `LIBRARY.md` for Pages setup.
 
 ## Verify the checkpoint, then deliver
 
@@ -77,6 +89,12 @@ and the latest matching main CI run. It writes an ignored checkpoint in
 `state/publications/YYYY-MM-DD.json`. `verify-sync` repeats those checks and rejects
 a checkpoint for different content, repository, or commit. If a later reviewed
 project update changes main, verify and record the current publication again.
+When the commit changes, `record-sync` preserves the previous checkpoint's exact
+bytes in `state/publication_history/YYYY-MM-DD/` before replacing the current
+checkpoint. This history remains local and does not change any delivery receipt.
+The checkpoint covers the cumulative library JSON, HTML, styles and browser
+code as well as the current edition. Main CI must finish its Pages deployment
+before the sync can authorize email.
 
 `prepare-email` repeats publication verification before creating its outbox and
 send reservation. It records the verified GitHub commit and public report URL in
@@ -87,3 +105,19 @@ A failed export, push, merge, CI run, or verification blocks email. Recover the
 unfinished publication without rebuilding or recollecting a sealed report.
 An uncertain Gmail result still requires mailbox reconciliation; a successful
 GitHub sync never authorizes an email retry or alternate transport.
+
+## Code and documentation maintenance
+
+Preserve completed reports, research, local catalogs, delivery records, private
+settings, and scheduler configuration. Run the regression suite, compile checks,
+and `verify-public-archive`; stage only the reviewed source and documentation
+changes, then run `audit-publication`. Use the protected PR flow above and wait
+for CI on the exact PR head and merged main commit.
+
+After returning to a clean, current main, run `record-sync` and `verify-sync` for
+the existing published edition. This updates the publication checkpoint and
+retains its prior version locally. Do not run discovery, build, export, email
+preparation, or email delivery as part of source maintenance.
+If the requested change affects the library UI or data schema, use
+`build-library` to refresh only the derived views before staging. It preserves
+all dated report files, source evidence and delivery records.

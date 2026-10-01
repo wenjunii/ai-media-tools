@@ -1,83 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="A searchable library of open-source AI tools for artists, designers and digital media creators. Practical guides, requirements, licenses and daily review history.">
-  <title>AI Media Scout — The creative tool library</title>
-  <link rel="stylesheet" href="assets/library.css">
-  <script src="assets/library.js" defer></script>
-</head>
-<body data-report-prefix="reports/">
-  <a class="skip-link" href="#library">Skip to the library</a>
-  <header class="site-header">
-    <a class="brand" href="./" aria-label="AI Media Scout home"><span class="brand-mark" aria-hidden="true">✳</span><span>AI Media <strong>Scout</strong></span></a>
-    <nav aria-label="Main navigation">
-      <button id="library-tab" class="nav-button active" aria-pressed="true">Tool library</button>
-      <button id="reports-tab" class="nav-button" aria-pressed="false">Daily reports</button>
-      <a class="repo-link" href="https://github.com/wenjunii/ai-media-tools" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
-    </nav>
-  </header>
-  <main class="page">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> OPEN-SOURCE AI · ALL DIGITAL MEDIA</p>
-        <h1 id="hero-title">A new tool.<br>A new possibility.</h1>
-        <p class="hero-description">Your growing field guide to creative AI. Find what a tool does, how to use it, and what you need to run it.</p>
-      </div>
-      <aside class="edition-preview" aria-label="Latest report">
-        <span class="eyebrow">THE LATEST FIELD REPORT</span>
-        <h2 id="latest-date">The library is starting</h2>
-        <p id="latest-summary">Daily discoveries become a lasting, searchable collection.</p>
-        <a id="latest-report" class="text-link" hidden>Explore the edition <span aria-hidden="true">↗</span></a>
-        <span class="edition-stamp" aria-hidden="true">SCOUT<br>FIELD NOTES</span>
-      </aside>
-    </section>
-    <div class="collection-stats" aria-label="Library totals">
-      <span><strong id="profile-total">0</strong> detailed profiles</span>
-      <span><strong id="screened-total">0</strong> screened discoveries</span>
-      <span><strong id="edition-total">0</strong> daily editions</span>
-      <span class="stats-note">Collected daily. Kept for later.</span>
-    </div>
-    <section id="library" aria-labelledby="library-heading">
-      <div class="section-heading"><div><p class="eyebrow">FIND YOUR NEXT EXPERIMENT</p><h2 id="library-heading">The tool library</h2></div><a href="library.json" download class="quiet-link">Download library JSON <span aria-hidden="true">↓</span></a></div>
-      <div class="search-row">
-        <div class="search-wrap"><span aria-hidden="true" class="search-icon">⌕</span><label class="sr-only" for="search">Search all profiles and review history</label><input id="search" type="search" placeholder="Try “Blender”, “music”, “8 GB”, or an idea…" autocomplete="off"><span class="search-hint">Search every review</span></div>
-        <label class="sort-wrap" for="sort">Sort by<select id="sort"><option value="updated">Latest review</option><option value="added">Recently added</option><option value="name">Name A–Z</option></select></label>
-      </div>
-      <div class="library-layout">
-        <aside class="filters" aria-label="Library filters">
-          <div class="filter-title"><h3>Refine your search</h3><button id="reset" class="reset-button">Clear</button></div>
-          <label for="field-filter">Creative field</label><select id="field-filter"><option value="">All creative fields</option></select>
-          <label for="platform-filter">Platform mentions</label><select id="platform-filter"><option value="">All platforms</option></select>
-          <p class="filter-note">Mentions in the documentation; see the profile for support and limitations.</p>
-          <label for="license-filter">Software license</label><select id="license-filter"><option value="">All licenses</option></select>
-          <label for="review-filter">Review depth</label><select id="review-filter"><option value="">All discoveries</option><option value="profile">Detailed profiles</option><option value="screened">Screened · profile pending</option></select>
-          <label for="edition-filter">Daily edition</label><select id="edition-filter"><option value="">All editions</option></select>
-          <div class="filter-footer"><span class="small-mark" aria-hidden="true">✳</span><p>Only open-source AI.<br>Across every creative practice.</p></div>
-        </aside>
-        <div class="results-area">
-          <div class="results-heading"><p id="result-count" role="status" aria-live="polite"></p><span class="review-key"><span class="live-dot" aria-hidden="true"></span> Source-backed guidance</span></div>
-          <div id="cards" class="tool-grid"></div>
-          <div id="empty" class="empty-state" hidden><span aria-hidden="true">⌕</span><h3>No tools match yet</h3><p>Try fewer words, another creative field, or clear your filters.</p><button id="empty-reset" class="button primary">Clear search</button></div>
-          <button id="load-more" class="button load-more" hidden>Show more tools</button>
-          <p class="library-note">Search includes older reviews. Each profile shows when its documentation was checked; requirements and licenses can change.</p>
-        </div>
-      </div>
-    </section>
-    <section id="reports" aria-labelledby="reports-heading" hidden>
-      <div class="section-heading"><div><p class="eyebrow">THE DAILY FIELD NOTES</p><h2 id="reports-heading">Every edition, preserved</h2></div><span class="quiet-link">HTML · Markdown · JSON</span></div>
-      <p class="reports-intro">Return to a day's discoveries, creative uses and coverage. Reports preserve the information reviewed on that date.</p>
-      <div id="edition-list" class="edition-grid"></div>
-    </section>
-    <noscript><section><h2>Read the daily reports</h2><p>Enable JavaScript for full-text library search, filters and tool profiles.</p><ul><li><a href="reports/2026-10-01/report.html">2026-10-01 — 12 full profiles</a></li></ul></section></noscript>
-    <footer class="site-footer"><div class="brand footer-brand"><span class="brand-mark" aria-hidden="true">✳</span>AI Media Scout</div><p>Primary documentation reviewed. Hands-on testing is disclosed in each profile.<br>Code, model weights and hosted services can have different terms.</p><a href="https://github.com/wenjunii/ai-media-tools">A public, MIT-licensed project ↗</a></footer>
-  </main>
-  <dialog id="profile-dialog" aria-labelledby="profile-title">
-    <div class="dialog-top"><span class="eyebrow">THE TOOL FIELD GUIDE</span><button id="close-profile" class="close-button" aria-label="Close tool profile">×</button></div>
-    <div id="profile-content"></div>
-  </dialog>
-  <script id="library-data" type="application/json">{
+{
   "format_version": 1,
   "latest_edition": "2026-10-01",
   "counts": {
@@ -89,53 +10,53 @@
   "categories": [
     {
       "id": "fabrication",
-      "name": "3D printing \u0026 generative CAD"
+      "name": "3D printing & generative CAD"
     },
     {
       "id": "3d",
-      "name": "3D, reconstruction \u0026 assets"
+      "name": "3D, reconstruction & assets"
     },
     {
       "id": "audio",
-      "name": "Audio, music \u0026 voice"
+      "name": "Audio, music & voice"
     },
     {
       "id": "web",
-      "name": "Browser tools \u0026 web media"
+      "name": "Browser tools & web media"
     },
     {
       "id": "computational",
-      "name": "Computational art \u0026 creative coding"
+      "name": "Computational art & creative coding"
     },
     {
       "id": "gaming",
-      "name": "Games \u0026 production pipelines"
+      "name": "Games & production pipelines"
     },
     {
       "id": "images",
-      "name": "Images \u0026 design"
+      "name": "Images & design"
     },
     {
       "id": "interactive",
-      "name": "Interactive, immersive \u0026 live media"
+      "name": "Interactive, immersive & live media"
     },
     {
       "id": "video",
-      "name": "Video, animation \u0026 film"
+      "name": "Video, animation & film"
     },
     {
       "id": "xr",
-      "name": "WebXR, VR \u0026 AR"
+      "name": "WebXR, VR & AR"
     }
   ],
   "section_labels": {
     "introduction": "Introduction",
     "good_for": "What it is good for",
-    "demo": "Demo \u0026 examples",
+    "demo": "Demo & examples",
     "installation": "Install",
     "usage": "First project",
-    "requirements": "Hardware \u0026 software",
-    "license": "License, model weights \u0026 costs",
+    "requirements": "Hardware & software",
+    "license": "License, model weights & costs",
     "quality": "Why it merits attention",
     "limitations": "Limitations"
   },
@@ -1576,7 +1497,7 @@
               "steps": [
                 "Download the Windows installer/portable, Mac Intel/Apple Silicon, or Linux AppImage/deb asset.",
                 "Install and select a projects folder.",
-                "For generation, configure Settings \u003e ComfyUI Connection to the same-machine server."
+                "For generation, configure Settings > ComfyUI Connection to the same-machine server."
               ],
               "source_urls": [
                 "https://github.com/VelornLabs/velorn",
@@ -1730,7 +1651,7 @@
               "steps": [
                 "Start your coding agent in the project folder and request a short explainer.",
                 "Review the still frames and layout/speech checks.",
-                "Find the resulting MP4 under videos/\u003cname\u003e/out/video.mp4."
+                "Find the resulting MP4 under videos/<name>/out/video.mp4."
               ],
               "source_urls": [
                 "https://github.com/vincentsch/explainroo"
@@ -1797,6 +1718,3 @@
     }
   ]
 }
-</script>
-</body>
-</html>

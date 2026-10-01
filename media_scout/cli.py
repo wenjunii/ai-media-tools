@@ -10,7 +10,7 @@ from . import delivery
 from .discovery import add_repository, collect, review_license
 from .external import add_project
 from .configuration import load_config
-from .publication import audit_publication, export_report, record_sync, verify_sync
+from .publication import audit_publication, export_report, rebuild_library, record_sync, verify_public_archive, verify_sync
 from .report import build, verify_report
 from .storage import ROOT, read_json, report_date
 
@@ -31,6 +31,8 @@ def main():
     command.add_argument("--reconciled", action="store_true")
     sub.add_parser("doctor")
     sub.add_parser("audit-publication")
+    sub.add_parser("verify-public-archive")
+    sub.add_parser("build-library")
     command = sub.add_parser("add-repository")
     command.add_argument("repository")
     command.add_argument("--categories", nargs="+", required=True)
@@ -44,9 +46,9 @@ def main():
     command.add_argument("--metadata", type=Path, required=True)
     command.add_argument("--date")
     args = parser.parse_args()
-    config = load_config()
-    day = report_date(getattr(args, "date", None), config["timezone"])
     try:
+        config = load_config()
+        day = report_date(getattr(args, "date", None), config["timezone"])
         if args.command == "discover":
             result = collect(day, plan_path=args.plan)
             output = {"report_date": day, "repositories": len(result["candidates"]),
@@ -60,6 +62,10 @@ def main():
             output = export_report(day)
         elif args.command == "audit-publication":
             output = audit_publication()
+        elif args.command == "verify-public-archive":
+            output = verify_public_archive()
+        elif args.command == "build-library":
+            output = rebuild_library()
         elif args.command == "record-sync":
             output = record_sync(day)
         elif args.command == "verify-sync":

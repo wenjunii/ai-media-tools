@@ -111,6 +111,9 @@ archive and seals hashes. Do not edit sealed files or evidence.
 Follow `docs/GITHUB_SYNC.md`. Run `export-report --date YYYY-MM-DD` to create
 public copies of the finished HTML/Markdown/JSON edition, a publication manifest
 without recipient details, and the searchable archive under `public/`.
+The export aggregates every published edition into the cumulative tool library,
+keeping tool IDs, earlier reviews, screened leads, and emerging creative fields.
+It refreshes the local web UI and all public browser assets automatically.
 Audit the complete Git index with `audit-publication` before committing or pushing.
 Synchronize reviewed code/documentation and those exports to the configured
 GitHub repository through a pull request. Reuse an existing daily branch/PR
@@ -118,6 +121,8 @@ after an interruption. Attach every created PR to this chat.
 
 Wait for CI on the exact PR head, merge through the protected branch, update
 local main with a fast-forward, and wait for CI on the exact merged main commit.
+Main CI verifies the complete library and deploys `public/` to GitHub Pages.
+Wait for that deployment to finish successfully as part of the same CI run.
 Do not bypass protection or change scheduler ownership. Then run:
 
 ```sh
