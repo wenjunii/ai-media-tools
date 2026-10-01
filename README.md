@@ -81,6 +81,14 @@ counted as coverage gaps; an attempted query is not proof of complete results.
 Reports and the library distinguish raw candidates, screened discoveries and
 complete profiles.
 
+Daily plan files must contain a JSON object, with lists for added categories,
+queries and model tasks. Missing files or malformed entries fail with a clear
+JSON error before source collection. Re-running `discover` preserves the original
+observation. If you supply `--plan` again, its effective plan must match the
+archived plan, using that day's archived defaults. A changed plan is rejected;
+save the new scope for the next edition. Omit `--plan` to resume older observations
+that have no archived expanded plan. See the [plan format](docs/SEARCH_SCOPE.md).
+
 The **Codex research agent** supplements discovery with broad live web searches,
 checks official documentation, model cards and complete software licenses, and writes structured
 profiles. This is an agent-assisted workflow: the collector itself does not
@@ -279,6 +287,9 @@ above 12 profiles, and complete large-report attachments.
 Expanded-search checks cover all three lanes, omitted queries/model tasks,
 altered plan identities, deeper-page overrides, source-gap disclosure,
 historical pilot candidates, archived license evidence and web ecosystem coverage.
+Plan validation and resume checks cover malformed input, missing plan files,
+changed daily plans, archived-default consistency, and preservation of observations
+and catalogs when a resume is rejected.
 Publication checks cover report byte integrity, private-data screening, actual
 Git commit agreement, current main CI, stale checkpoints, and blocking email
 before reservation when publication is incomplete.

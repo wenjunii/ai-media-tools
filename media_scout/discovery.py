@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 from .client import Client, SourceError
 from .configuration import load_config
-from .planning import plan_digest, repository_query, search_id, search_plan
+from .planning import plan_digest, read_search_plan, repository_query, search_id, search_plan
 from .storage import ROOT, locked, now, read_json, report_date, write_json, write_text
 
 # Conservative allowlist: unrecognized/custom licenses require an editorial check.
@@ -128,11 +128,24 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
     with locked(root):
         existing = read_json(folder / "discovery.json")
         if existing:
+            if plan_path:
+                additions = read_search_plan(plan_path)
+                archived_plan = read_json(folder / "queries/search-plan.json")
+                archived_config = read_json(folder / "queries/config-snapshot.json")
+                if (not isinstance(archived_plan, dict) or not isinstance(archived_config, dict)
+                        or archived_plan.get("version") != 2 or existing.get("plan_version") != 2):
+                    raise ValueError("This observation has no archived expanded plan; omit --plan to resume it")
+                archived_digest = plan_digest(archived_plan)
+                if archived_digest != existing.get("search_plan_sha256"):
+                    raise ValueError("Archived search plan failed its integrity check; preserve the existing observation")
+                requested = search_plan(archived_config, day, additions)
+                if plan_digest(requested) != archived_digest:
+                    raise ValueError("Search plan differs from the archived observation; use the changed plan in the next edition")
             update_discovery_catalog(root, day, existing["candidates"])
             return existing  # Resume the same observation; do not silently refresh it.
         if (root / "reports" / day / "manifest.json").exists():
             raise ValueError("This day's report is sealed; restore its original observation instead of recollecting")
-        plan = search_plan(config, day, read_json(plan_path) if plan_path else None)
+        plan = search_plan(config, day, read_search_plan(plan_path) if plan_path else None)
         categories = plan["categories"]
         write_json(folder / "queries" / "search-plan.json", plan)
         write_json(folder / "queries" / "config-snapshot.json", config)

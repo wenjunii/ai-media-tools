@@ -39,6 +39,12 @@ Preview the effective plan with `python3 -m media_scout plan --date YYYY-MM-DD`
 queries across 30 starter fields in three lanes, plus 13 model tasks.
 Run `python3 -m media_scout discover --date YYYY-MM-DD --plan research/YYYY-MM-DD/search-plan.json`
 when a plan exists; otherwise omit `--plan`.
+An explicit plan file must exist and contain a valid JSON object. On a resumed
+observation, the same effective plan is required and is checked against the
+archived defaults; current configuration changes do not alter that observation.
+A changed plan is rejected before collection or catalog updates. Carry its
+additions to the next edition. Omit `--plan` when resuming an older observation
+without an archived expanded plan.
 Run `python3 -m media_scout verify-search --date YYYY-MM-DD`. A pilot subset is
 not a full expanded run. Missing planned queries block building. If a source
 failed, was incomplete or was bounded, disclose the gap and pursue additional

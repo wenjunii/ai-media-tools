@@ -82,6 +82,39 @@ class DiscoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unique safe"):
             search_plan(config, "2026-10-01", {"additional_categories": [{"id": "../private", "name": "Bad"}]})
 
+    def test_malformed_plan_structures_raise_safe_validation_errors(self):
+        config = {"categories": [{"id": "frontier", "name": "Frontier", "queries": []}]}
+        query = {"category": "frontier", "terms": "creative AI"}
+        category = {"id": "haptics", "name": "Tactile AI"}
+        malformed = [42, False, [], "Private_Value",
+            {"additional_categories": None}, {"additional_categories": [42]},
+            {"additional_categories": [dict(category, id=[])]},
+            {"additional_categories": [dict(category, name={})]},
+            {"additional_categories": [dict(category, queries="Private_Value")]},
+            {"additional_categories": [dict(category, queries=[{}])]},
+            {"additional_categories": [dict(category, seeds="Private_Value")]},
+            {"additional_categories": [dict(category, seeds=[{}])]},
+            {"additional_categories": [dict(category, seeds=["Private_Value"])]},
+            {"queries": None}, {"queries": query}, {"queries": [42]},
+            {"queries": [dict(query, category=[])]},
+            {"queries": [dict(query, window=[])]},
+            {"queries": [dict(query, sort={})]},
+            {"queries": [dict(query, terms="creative AI\rPrivate_Value")]},
+            {"queries": [dict(query, pages=True)]},
+            {"additional_pipelines": [None]}]
+        for index, extra in enumerate(malformed):
+            with self.subTest(case=index), self.assertRaises(ValueError) as raised:
+                search_plan(config, "2026-10-01", extra)
+            self.assertNotIn("Private_Value", str(raised.exception))
+
+    def test_malformed_config_categories_raise_validation_errors(self):
+        malformed = [None, {}, [42], [{"id": [], "name": "Frontier"}],
+                     [{"id": "frontier", "name": "Frontier", "queries": "AI art"}],
+                     [{"id": "frontier", "name": "Frontier", "seeds": [False]}]]
+        for categories in malformed:
+            with self.subTest(categories=categories), self.assertRaises(ValueError):
+                search_plan({"categories": categories}, "2026-10-01")
+
     def test_effective_plan_is_collected_deduplicated_archived_and_resumable(self):
         repo = {"full_name": "test/creative-ai", "html_url": "https://github.com/test/creative-ai",
                 "name": "Creative AI", "license": {"spdx_id": "MIT"}, "stargazers_count": 0,

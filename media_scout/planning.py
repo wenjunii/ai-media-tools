@@ -4,7 +4,7 @@ import hashlib
 import json
 import re
 
-from .storage import report_date
+from .storage import read_json, report_date
 
 CATEGORY_ID = re.compile(r"^[a-z][a-z0-9_-]{0,63}$")
 SEARCH_WINDOWS = ("pushed", "created", "any")
@@ -23,19 +23,46 @@ def repository_query(spec, cutoff):
     return f"{spec['terms']}{window} is:public fork:false archived:false"
 
 
+def read_search_plan(path):
+    plan = read_json(path)
+    if not isinstance(plan, dict):
+        raise ValueError("Search plan file must contain a JSON object")
+    return plan
+
+
 def search_plan(config, day, extra=None):
-    extra = extra or {}
+    extra = {} if extra is None else extra
+    if not isinstance(extra, dict):
+        raise ValueError("Search plan must be a JSON object")
     if extra.get("report_date", day) != day:
         raise ValueError("Search plan date must match the observation date")
-    categories = [dict(category) for category in config["categories"]]
-    known = {category["id"] for category in categories}
-    for category in extra.get("additional_categories", []):
-        if (not CATEGORY_ID.fullmatch(category.get("id", ""))
-                or category["id"] in known or not category.get("name")):
+    defaults, additions = config.get("categories"), extra.get("additional_categories", [])
+    if not isinstance(defaults, list) or not isinstance(additions, list):
+        raise ValueError("Categories and additional_categories must be JSON lists")
+    categories, known = [], set()
+    for index, category in enumerate(defaults + additions):
+        if not isinstance(category, dict):
+            raise ValueError("Categories need unique safe IDs and names")
+        category_id, name = category.get("id"), category.get("name")
+        valid_id = (isinstance(category_id, str)
+                    and re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,63}", category_id))
+        if index >= len(defaults):
+            valid_id = isinstance(category_id, str) and CATEGORY_ID.fullmatch(category_id)
+        if (not valid_id or category_id in known
+                or not isinstance(name, str) or not name.strip()):
             raise ValueError("Additional categories need unique safe IDs and names")
-        categories.append(dict(category, queries=category.get("queries", []),
-                               seeds=category.get("seeds", [])))
-        known.add(category["id"])
+        terms, seeds = category.get("queries", []), category.get("seeds", [])
+        if not isinstance(terms, list):
+            raise ValueError("Category queries must be a JSON list of search terms")
+        if (not isinstance(seeds, list)
+                or any(not isinstance(seed, str)
+                       or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", seed) for seed in seeds)):
+            raise ValueError("Category seeds must be a JSON list of owner/repository names")
+        normalized_category = dict(category)
+        if index >= len(defaults):
+            normalized_category.update(queries=terms, seeds=seeds)
+        categories.append(normalized_category)
+        known.add(category_id)
     windows = config.get("search_windows", list(SEARCH_WINDOWS))
     if (not isinstance(windows, list) or not windows
             or any(not isinstance(window, str) or window not in SEARCH_WINDOWS for window in windows)
@@ -48,15 +75,22 @@ def search_plan(config, day, extra=None):
                 queries.append({"category": category["id"], "terms": terms,
                                 "window": window,
                                 "sort": "stars" if window == "any" else "updated"})
-    queries.extend(extra.get("queries", []))
+    additional_queries = extra.get("queries", [])
+    if not isinstance(additional_queries, list):
+        raise ValueError("Search queries must be a JSON list of objects")
+    queries.extend(additional_queries)
     seen, normalized = {}, []
     for query in queries:
+        if not isinstance(query, dict):
+            raise ValueError("Search queries must be a JSON list of objects")
         terms = query.get("terms")
-        if (query.get("category") not in known or not isinstance(terms, str)
-                or not terms.strip() or len(terms) > 250 or "\n" in terms):
+        if (not isinstance(query.get("category"), str) or query["category"] not in known
+                or not isinstance(terms, str) or not terms.strip()
+                or len(terms) > 250 or "\n" in terms or "\r" in terms):
             raise ValueError("Search queries need a known field and nonempty terms")
         window, sort = query.get("window", "pushed"), query.get("sort", "updated")
-        if window not in SEARCH_WINDOWS or sort not in {"stars", "updated"}:
+        if (not isinstance(window, str) or window not in SEARCH_WINDOWS
+                or not isinstance(sort, str) or sort not in {"stars", "updated"}):
             raise ValueError("Use pushed/created/any windows and stars/updated sorting")
         pages = query.get("pages", config.get("pages_per_query", 1))
         if not isinstance(pages, int) or isinstance(pages, bool) or not 1 <= pages <= 10:

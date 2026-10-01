@@ -93,6 +93,31 @@ class ConfigurationTests(unittest.TestCase):
         self.assertIn('"error"', errors.getvalue())
         self.assertNotIn("Traceback", errors.getvalue())
 
+    def test_cli_malformed_plan_is_json_without_traceback_or_input_values(self):
+        path = self.root / "plan.json"
+        config = load_config(self.root)
+        for value in (None, [], 42, {"queries": ["Private_Value"]}):
+            write_json(path, value)
+            output, errors = StringIO(), StringIO()
+            with self.subTest(value=value), \
+                    patch("sys.argv", ["media-scout", "plan", "--date", "2026-10-01", "--plan", str(path)]), \
+                    patch.object(cli, "load_config", return_value=config), \
+                    redirect_stdout(output), redirect_stderr(errors):
+                self.assertEqual(cli.main(), 1)
+            self.assertEqual(output.getvalue(), "")
+            self.assertIn('"error"', errors.getvalue())
+            self.assertNotIn("Traceback", errors.getvalue())
+            self.assertNotIn("Private_Value", errors.getvalue())
+
+    def test_cli_missing_plan_does_not_silently_use_defaults(self):
+        output, errors = StringIO(), StringIO()
+        with patch("sys.argv", ["media-scout", "plan", "--plan", str(self.root / "missing.json")]), \
+                patch.object(cli, "load_config", return_value=load_config(self.root)), \
+                redirect_stdout(output), redirect_stderr(errors):
+            self.assertEqual(cli.main(), 1)
+        self.assertEqual(output.getvalue(), "")
+        self.assertIn("Search plan file must contain a JSON object", errors.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()

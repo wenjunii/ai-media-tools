@@ -54,6 +54,10 @@ class CoverageTests(unittest.TestCase):
     def collect(self, fail_created=False):
         return collect(self.day, self.root, PublicSources(fail_created))
 
+    def snapshot(self):
+        return {str(path.relative_to(self.root)): path.read_bytes()
+                for path in self.root.rglob("*") if path.is_file()}
+
     def editorial(self):
         return {"report_date": self.day, "summary": "Full search; detailed review continues.", "tools": [],
                 "category_notes": [{"category": "images", "text": "A creative AI source awaits full review.",
@@ -76,6 +80,82 @@ class CoverageTests(unittest.TestCase):
         self.assertEqual(len(plan["queries"]), 3)
         self.assertEqual(plan["queries"][0]["pages"], 5)
         self.assertEqual(plan["huggingface_pipelines"], ["text-to-image", "audio-to-audio"])
+
+    def test_resume_rejects_a_changed_explicit_plan_before_source_or_state_updates(self):
+        self.collect()
+        plan_path = self.root / "plan.json"
+        write_json(plan_path, {"queries": [{"category": "images", "terms": "AI image", "pages": 5}]})
+        before, source = self.snapshot(), PublicSources()
+        with self.assertRaisesRegex(ValueError, "next edition"):
+            collect(self.day, self.root, source, plan_path)
+        self.assertEqual(source.calls, [])
+        self.assertEqual(self.snapshot(), before)
+
+    def test_matching_plan_resumes_against_archived_defaults_without_recollection(self):
+        plan_path = self.root / "plan.json"
+        write_json(plan_path, {"queries": [{"category": "images", "terms": "AI image", "pages": 5}]})
+        original = collect(self.day, self.root, PublicSources(), plan_path)
+        changed = dict(self.config, pages_per_query=7, huggingface_pipelines=["audio-to-audio"],
+                       categories=[{"id": "haptics", "name": "Tactile AI", "queries": ["AI haptics"]}],
+                       scope={"require_expanded_search": True, "new_preference": True})
+        write_json(self.root / "config/scout.json", changed)
+        before, source = self.snapshot(), PublicSources()
+        self.assertEqual(collect(self.day, self.root, source, plan_path), original)
+        self.assertEqual(collect(self.day, self.root, source), original)
+        self.assertEqual(source.calls, [])
+        self.assertEqual(self.snapshot(), before)
+
+    def test_resume_rejects_a_tampered_archive_before_state_updates(self):
+        self.collect()
+        plan_path = self.root / "plan.json"
+        write_json(plan_path, {})
+        archive_path = self.root / "research" / self.day / "queries/search-plan.json"
+        archived = read_json(archive_path)
+        archived["queries"].pop()
+        write_json(archive_path, archived)
+        before, source = self.snapshot(), PublicSources()
+        with self.assertRaisesRegex(ValueError, "integrity check"):
+            collect(self.day, self.root, source, plan_path)
+        self.assertEqual(source.calls, [])
+        self.assertEqual(self.snapshot(), before)
+
+    def test_resume_requires_both_archived_plan_and_config_for_explicit_plan(self):
+        self.collect()
+        plan_path = self.root / "plan.json"
+        write_json(plan_path, {})
+        for name in ("search-plan.json", "config-snapshot.json"):
+            path = self.root / "research" / self.day / "queries" / name
+            contents = path.read_bytes()
+            path.unlink()
+            before, source = self.snapshot(), PublicSources()
+            with self.subTest(missing=name), self.assertRaisesRegex(ValueError, "omit --plan"):
+                collect(self.day, self.root, source, plan_path)
+            self.assertEqual(source.calls, [])
+            self.assertEqual(self.snapshot(), before)
+            path.write_bytes(contents)
+
+    def test_legacy_observation_resumes_without_claiming_a_new_plan_was_applied(self):
+        original = {"report_date": self.day, "candidates": [], "model_watchlist": []}
+        write_json(self.root / "research" / self.day / "discovery.json", original)
+        source = PublicSources()
+        self.assertEqual(collect(self.day, self.root, source), original)
+        plan_path = self.root / "plan.json"
+        write_json(plan_path, {})
+        before = self.snapshot()
+        with self.assertRaisesRegex(ValueError, "no archived expanded plan"):
+            collect(self.day, self.root, source, plan_path)
+        self.assertEqual(source.calls, [])
+        self.assertEqual(self.snapshot(), before)
+
+    def test_missing_or_nonobject_plan_is_rejected_before_new_source_collection(self):
+        plan_path, source = self.root / "plan.json", PublicSources()
+        with self.assertRaisesRegex(ValueError, "JSON object"):
+            collect(self.day, self.root, source, plan_path)
+        write_json(plan_path, None)
+        with self.assertRaisesRegex(ValueError, "JSON object"):
+            collect(self.day, self.root, source, plan_path)
+        self.assertEqual(source.calls, [])
+        self.assertFalse((self.root / "research" / self.day).exists())
 
     def test_full_collection_is_verified_and_baseline_has_no_age_or_star_floor(self):
         observation = self.collect()
