@@ -33,6 +33,10 @@ match all finished public editions and the current UI source.
    reserved or uncertain email with confirmed Sent mail before further email work.
    An already-sent report must never be sent again. Check the current Git branch,
    working tree, configured destination, and any pending publication PR.
+   Date-wide `status` includes separately sealed updates and cumulative library
+   counts. It verifies saved artifacts, but the stored checkpoint is not a fresh
+   GitHub check; use `verify-sync` after publication to verify the remote commit
+   and exact-commit CI.
 2. Export the finished report:
 
    ```sh

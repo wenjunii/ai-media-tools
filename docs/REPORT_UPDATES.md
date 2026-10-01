@@ -5,6 +5,21 @@ edition. Keep the original local and public report files, source evidence and
 delivery receipt. Each update receives its own seal and immutable public folder;
 it joins the existing library, repository and scheduler.
 
+Inspect existing work before preparing another revision:
+
+```sh
+python3 -m media_scout status --date YYYY-MM-DD
+# If revision 2 is already prepared or published:
+python3 -m media_scout status --date YYYY-MM-DD --revision 2
+```
+
+The date-wide status lists all revisions and the latest completed edition, plus
+verified cumulative library totals. Revision-specific counts refer to that
+update; the original receipt remains visible in the default status. Published
+revisions can also be inspected in a fresh clone without private evidence.
+Inspection does not prepare a workspace or authorize email. Check the current
+GitHub commit separately with `verify-sync` in the owning checkout.
+
 Prepare revision 2 (the first update) from the current research configuration and
 history. The workspace lives under ignored `state/report_updates/YYYY-MM-DD/r2/`.
 Preparation is resumable and copies no delivery or outbox state.

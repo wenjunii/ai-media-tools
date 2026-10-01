@@ -14,6 +14,13 @@ Read `docs/SEARCH_SCOPE.md`; starter fields and examples are not boundaries.
 
 Run `python3 -m media_scout status --date YYYY-MM-DD`.
 
+The default delivery receipt and top-level counts belong to the original daily
+edition. Inspect `editions` and `latest_completed_edition` for separately sealed
+updates, and `library` for verified cumulative full-guide and screened-lead
+totals. Prepared updates are shown even before they are built. Status verifies
+saved report and library files; its stored publication checkpoint does not
+replace the live `verify-sync` check.
+
 - If delivery is `sent`, verify and stop quietly. Do not re-collect or resend.
 - If delivery is `reserved` or `uncertain`, search connected Gmail Sent mail for
   the exact report date, subject, and recipient. Read the matching message to
