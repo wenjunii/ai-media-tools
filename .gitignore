@@ -7,10 +7,10 @@ __pycache__/
 .DS_Store
 config/*.local.json
 AGENTS.local.md
-state/
-research/
-reports/
-site/
+/state/
+/research/
+/reports/
+/site/
 *.egg-info/
 dist/
 build/

@@ -4,6 +4,12 @@
   "timezone": "America/New_York",
   "daily_time": "08:00",
   "hardware_preference": "All platforms equally",
+  "github_sync": {
+    "repository": "wenjunii/ai-media-tools",
+    "branch": "main",
+    "ci_workflow": "ci.yml",
+    "required_before_email": true
+  },
   "lookback_days": 30,
   "items_per_query": 100,
   "max_profiles": null,

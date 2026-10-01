@@ -11,6 +11,10 @@ the authorized recipient in your local settings through the connected Gmail
 plugin. Hardware advice covers Mac, Windows, Linux, browser, headset, and cloud
 options equally.
 
+Daily order: **generate and verify → sync GitHub → send email**. Finished reports
+are published in the [public report archive](public/README.md). Private settings,
+raw research, and delivery records remain local.
+
 ## What an edition contains
 
 Every featured tool includes an introduction, useful creative workflows, demos,
@@ -65,7 +69,10 @@ their sources, and unsupported facts remain unknown.
 
 The **report builder** validates the profiles, produces HTML/Markdown/JSON,
 seals artifacts with SHA-256 hashes, and updates a searchable static archive.
-The **Gmail plugin** sends the complete edition. A persistent reservation and
+The research agent exports the finished edition to `public/`, synchronizes code,
+documentation and reports through a protected GitHub pull request, and checks
+CI on the merged main commit. A verified sync checkpoint is required for email.
+The **Gmail plugin** then sends the complete edition. A persistent reservation and
 receipt block duplicate automatic sends, including after an interrupted run.
 There is no 12-tool cap. Detailed profiles remain fully cited; additional projects
 screened for open-source licensing and creative AI use can appear in a labeled
@@ -86,6 +93,10 @@ in memory, or supply `GITHUB_TOKEN`/`GH_TOKEN` through your environment. No toke
 is written into reports. Unauthenticated GitHub access has lower rate limits;
 source failures remain visible in the edition. Delivery needs the connected
 Gmail plugin in the Codex chat.
+
+Publication also requires Git, the GitHub CLI (`gh`), and write access to the
+configured repository. For your own fork, update `github_sync.repository` in
+`config/scout.json`. See [GitHub publication instructions](docs/GITHUB_SYNC.md).
 
 Clone the project and create your private settings file:
 
@@ -117,6 +128,10 @@ python3 -m media_scout discover
 # The research agent now writes research/YYYY-MM-DD/editorial.json.
 python3 -m media_scout build --editorial research/YYYY-MM-DD/editorial.json
 python3 -m media_scout verify --date YYYY-MM-DD
+python3 -m media_scout export-report --date YYYY-MM-DD
+# Follow docs/GITHUB_SYNC.md: audit, commit, push, merge the PR, and wait for main CI.
+python3 -m media_scout record-sync --date YYYY-MM-DD
+python3 -m media_scout verify-sync --date YYYY-MM-DD
 python3 -m media_scout prepare-email --date YYYY-MM-DD
 # Send the returned outbox JSON once with the connected Gmail send_email tool.
 python3 -m media_scout record-delivery --date YYYY-MM-DD --message-id GMAIL_ID
@@ -126,7 +141,9 @@ The date defaults to today in the configured time zone. `discover` resumes an ex
 daily observation. `build` resumes the same sealed edition. Neither command
 silently refreshes a completed report. `prepare-email` only creates a send
 reservation and MIME payload; it does not send mail. Never call it as a casual
-preview. `status` and `verify` are safe read-only checks.
+preview. It blocks before reservation when GitHub sync or CI is missing, failed,
+or stale. `status`, `verify`, and `verify-sync` are read-only checks; the last one
+contacts GitHub to check the actual commit and CI.
 
 Supplementary repositories found on the web can be archived before sealing:
 
@@ -159,13 +176,17 @@ python3 -m http.server 8766 --bind 127.0.0.1
 | `reports/YYYY-MM-DD/report.md` | portable text edition |
 | `reports/YYYY-MM-DD/report.json` | structured profiles |
 | `reports/YYYY-MM-DD/manifest.json` | immutable artifact hashes |
+| `public/reports/YYYY-MM-DD/` | published finished editions and recipient-free hashes |
+| `public/README.md` | browsable daily report list on GitHub |
+| `public/index.html` | public searchable library, with corrected report links |
 | `site/index.html` | filterable local library and report archive |
 | `state/catalog.json` | previous profiles and update tracking |
 | `state/discovery_catalog.json` | collected source candidates across days |
 | `state/review_queue.json` | screened discoveries awaiting complete profiles |
 | `state/deliveries/YYYY-MM-DD.json` | Gmail message ID and delivery state |
+| `state/publications/YYYY-MM-DD.json` | ignored verified GitHub sync checkpoint |
 
-Private settings, generated research, reports, and operational state are ignored by Git. Keep or
+Private settings, raw research, original reports, and operational state are ignored by Git. Keep or
 back up these folders to retain history and delivery safeguards. Changing a
 time in the JSON does not change an existing Codex schedule; update the existing
 automation through the app and keep the config consistent.
@@ -184,6 +205,9 @@ acceptance by Gmail; it does not independently prove inbox placement.
 Checks also cover pagination, partial source failures, zero-star candidates,
 new daily fields, external-project evidence, creative AI eligibility, editions
 above 12 profiles, and complete large-report attachments.
+Publication checks cover report byte integrity, private-data screening, actual
+Git commit agreement, current main CI, stale checkpoints, and blocking email
+before reservation when publication is incomplete.
 
 ## License
 

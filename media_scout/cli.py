@@ -10,6 +10,7 @@ from . import delivery
 from .discovery import add_repository, collect, review_license
 from .external import add_project
 from .configuration import load_config
+from .publication import audit_publication, export_report, record_sync, verify_sync
 from .report import build, verify_report
 from .storage import ROOT, read_json, report_date
 
@@ -17,7 +18,7 @@ from .storage import ROOT, read_json, report_date
 def main():
     parser = argparse.ArgumentParser(description="Open-ended open-source AI discovery for all digital media")
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ("discover", "status", "verify", "prepare-email", "mark-uncertain"):
+    for name in ("discover", "status", "verify", "export-report", "record-sync", "verify-sync", "prepare-email", "mark-uncertain"):
         command = sub.add_parser(name)
         command.add_argument("--date")
         if name == "discover":
@@ -29,6 +30,7 @@ def main():
     command.add_argument("--message-id", required=True)
     command.add_argument("--reconciled", action="store_true")
     sub.add_parser("doctor")
+    sub.add_parser("audit-publication")
     command = sub.add_parser("add-repository")
     command.add_argument("repository")
     command.add_argument("--categories", nargs="+", required=True)
@@ -54,6 +56,14 @@ def main():
             output = build(args.editorial)
         elif args.command == "verify":
             output = verify_report(day)
+        elif args.command == "export-report":
+            output = export_report(day)
+        elif args.command == "audit-publication":
+            output = audit_publication()
+        elif args.command == "record-sync":
+            output = record_sync(day)
+        elif args.command == "verify-sync":
+            output = verify_sync(day)
         elif args.command == "prepare-email":
             output = delivery.prepare(day)
         elif args.command == "record-delivery":
@@ -72,16 +82,19 @@ def main():
             observation = read_json(ROOT / "research" / day / "discovery.json")
             manifest = read_json(ROOT / "reports" / day / "manifest.json")
             receipt = read_json(ROOT / "state/deliveries" / (day + ".json"))
+            publication = read_json(ROOT / "state/publications" / (day + ".json"))
             if manifest:
                 verify_report(day)
             output = {"report_date": day, "discovered": bool(observation), "built": bool(manifest),
-                      "delivery": receipt, "profile_count": manifest.get("profile_count") if manifest else None,
+                      "delivery": receipt, "publication": publication,
+                      "profile_count": manifest.get("profile_count") if manifest else None,
                       "warnings": observation.get("warnings", []) if observation else []}
         else:
             output = {"python": sys.version.split()[0], "github_cli_available": bool(shutil.which("gh")),
                       "recipient": config["recipient"], "timezone": config["timezone"],
                       "daily_time": config["daily_time"], "categories": len(config["categories"]),
                       "scope": config.get("scope"), "max_profiles": config.get("max_profiles"),
+                      "github_sync": config.get("github_sync"),
                       "synthesis": "Codex research agent; no additional model API key required",
                       "delivery": "Connected Gmail plugin; no password stored in this project"}
         print(json.dumps(output, ensure_ascii=False, indent=2))
