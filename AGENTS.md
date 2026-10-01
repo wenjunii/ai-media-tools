@@ -19,6 +19,14 @@ API subscription or SMTP password is required.
 
 Always inspect today's status first. Preserve sealed reports. A reserved or
 uncertain email needs Sent-mail reconciliation; do not resend it automatically.
+The daily order is **build and verify → publish and verify GitHub sync → email**.
+Read `docs/GITHUB_SYNC.md`. Export finished reports to `public/`, synchronize
+reviewed code/docs and public exports through a protected pull request, wait for
+CI on both the PR head and merged main commit, then `record-sync` and `verify-sync`.
+`prepare-email` requires that checkpoint and rechecks the actual remote commit.
+If sync, CI or verification fails, stop before reserving or sending email.
+Reuse a pending publication branch/PR after interruption; never force-push or
+bypass branch protection. Attach every created PR to the owning Codex chat.
 Use the recipient authorized in the owning user's chat or scheduled prompt.
 The public repository does not itself authorize email delivery.
 
@@ -47,3 +55,6 @@ export. Disclose documentation review versus actual testing.
 Run `python3 -m unittest discover -s tests -v` after behavior changes and
 `python3 -m media_scout verify --date YYYY-MM-DD` before email. Preserve unrelated
 changes and keep generated evidence, reports, catalog, and receipts on disk.
+Only finished HTML/Markdown/JSON editions, a recipient-free publication manifest,
+and the public library belong in `public/`. Private settings, source evidence,
+operational catalogs, outbox payloads, and delivery/sync receipts stay local.

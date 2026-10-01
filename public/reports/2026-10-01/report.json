@@ -1,0 +1,1446 @@
+{
+  "report_date": "2026-10-01",
+  "summary": "The launch edition establishes 12 practical profiles across ten creative fields, separating a new release—explainroo—from current versions and established reference tools. Recent ComfyUI, InvokeAI and Velorn releases anchor image/video workflows; audio, 3D, browser AI, live visuals, XR, CAD and Blender integrations extend the toolkit. All platforms receive equal attention. Source reviews, model restrictions and unreported requirements are explicit; these tools have not been installed or benchmarked here.",
+  "category_notes": [
+    {
+      "category": "images",
+      "text": "ComfyUI and InvokeAI provide two established control/iteration workflows; both have recent September releases. Model licensing still varies.",
+      "source_urls": [
+        "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.38.0",
+        "https://github.com/invoke-ai/InvokeAI"
+      ]
+    },
+    {
+      "category": "video",
+      "text": "explainroo is newly released; Velorn supplies an editable production timeline around generation. Early releases still need local trials.",
+      "source_urls": [
+        "https://github.com/vincentsch/explainroo/releases/tag/v0.1.0",
+        "https://github.com/VelornLabs/velorn"
+      ]
+    },
+    {
+      "category": "audio",
+      "text": "ACE-Step offers local music workflows with explicit GPU tiers. The six-pipeline model scan is a lead list; model terms are checked separately.",
+      "source_urls": [
+        "https://github.com/ace-step/ACE-Step-1.5",
+        "https://huggingface.co/docs/hub/api"
+      ]
+    },
+    {
+      "category": "3d",
+      "text": "TRELLIS.2 is a useful baseline for textured image-to-3D assets, with a significant Linux/NVIDIA hardware requirement. It is not a fresh launch.",
+      "source_urls": [
+        "https://github.com/microsoft/TRELLIS.2"
+      ]
+    },
+    {
+      "category": "web",
+      "text": "Transformers.js supports custom browser media applications; ImWeb and Tau are creator-oriented browser environments with different dependencies.",
+      "source_urls": [
+        "https://github.com/huggingface/transformers.js",
+        "https://github.com/imweb-project/ImWeb",
+        "https://github.com/taucad/tau"
+      ]
+    },
+    {
+      "category": "xr",
+      "text": "XR Blocks has desktop and Android XR paths; Decart-XR targets Quest and uses a proprietary backend. The failed watchlist alias was resolved to official google/xrblocks.",
+      "source_urls": [
+        "https://github.com/google/xrblocks",
+        "https://github.com/DecartAI/Decart-XR"
+      ]
+    },
+    {
+      "category": "computational",
+      "text": "ImWeb's AI-assisted GLSL/patch workflow and browser ML building blocks are relevant to generative systems. They require artist/developer iteration.",
+      "source_urls": [
+        "https://github.com/imweb-project/ImWeb",
+        "https://github.com/huggingface/transformers.js"
+      ]
+    },
+    {
+      "category": "interactive",
+      "text": "ImWeb supplies live visuals and controller mappings. Daydream Scope was evaluated but excluded from open-source profiles: its current code license is non-commercial CC BY-NC-SA 4.0.",
+      "source_urls": [
+        "https://github.com/imweb-project/ImWeb",
+        "https://github.com/daydreamlive/scope"
+      ]
+    },
+    {
+      "category": "fabrication",
+      "text": "Tau supports parametric CAD and export. TRELLIS.2 meshes need downstream printability checks; no new verified turnkey AI printing pipeline is claimed.",
+      "source_urls": [
+        "https://github.com/taucad/tau",
+        "https://github.com/microsoft/TRELLIS.2"
+      ]
+    },
+    {
+      "category": "gaming",
+      "text": "MCP for Blender supports agent-assisted DCC operations; generated or retrieved assets still need topology, scale and rights checks before game use.",
+      "source_urls": [
+        "https://github.com/ahujasid/mcp-for-blender"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "github:vincentsch/explainroo",
+      "name": "explainroo",
+      "categories": [
+        "video",
+        "audio",
+        "computational"
+      ],
+      "maturity": "Emerging tool · first release",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "recently-created",
+        "text": "A new discovery: repository created September 25; v0.1.0 published September 30. Its first release is promising, with limited platform testing."
+      },
+      "sources": [
+        {
+          "title": "Official README and install instructions",
+          "url": "https://github.com/vincentsch/explainroo"
+        },
+        {
+          "title": "First release",
+          "url": "https://github.com/vincentsch/explainroo/releases/tag/v0.1.0"
+        },
+        {
+          "title": "MIT software license",
+          "url": "https://github.com/vincentsch/explainroo/blob/main/LICENSE"
+        },
+        {
+          "title": "Kokoro voice-model card",
+          "url": "https://huggingface.co/hexgrad/Kokoro-82M"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/vincentsch/explainroo",
+        "download": "https://github.com/vincentsch/explainroo/releases/tag/v0.1.0",
+        "examples": "https://github.com/vincentsch/explainroo/tree/main/examples"
+      },
+      "introduction": {
+        "text": "A local renderer for coding-agent-authored explainer videos, combining narration, word timing, drawings, sound and MP4 output.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ]
+      },
+      "good_for": {
+        "text": "Educational explainers, illustrated tutorials and product walkthroughs. My suggested first experiment is a short explanation of your creative process.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ]
+      },
+      "demo": {
+        "text": "Published sample videos and scene images are linked in the README. They demonstrate the intended output; I have not rendered an example.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo",
+          "https://github.com/vincentsch/explainroo/releases/tag/v0.1.0"
+        ]
+      },
+      "installation": {
+        "text": "Use the documented source setup after installing the prerequisites.",
+        "steps": [
+          "Clone the repository and enter its folder.",
+          "Install its Node dependencies; run the doctor command to download and check the models."
+        ],
+        "commands": [
+          "git clone https://github.com/vincentsch/explainroo.git\ncd explainroo\nnpm install\nnode bin/explainroo.js doctor --fetch"
+        ],
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ]
+      },
+      "usage": {
+        "text": "A coding agent prepares the script and scene code; the local tool produces the movie.",
+        "steps": [
+          "Start your coding agent in the project folder and request a short explainer.",
+          "Review the still frames and layout/speech checks.",
+          "Find the resulting MP4 under videos/<name>/out/video.mp4."
+        ],
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ]
+      },
+      "requirements": {
+        "text": "The maintainer tests Linux most; macOS and Windows receive less testing.",
+        "hardware": "No dedicated GPU required. Initial model downloads are about 400 MB; RAM minimum and render-storage budget are unreported.",
+        "software": "Node.js 20.11+, FFmpeg, Chrome/Chromium and a coding agent.",
+        "platforms": "Linux; macOS/Windows are expected by the maintainer but less tested.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ]
+      },
+      "license": {
+        "text": "MIT applies to the tool. Dependencies retain separate licenses.",
+        "code": "MIT",
+        "weights": "Kokoro-82M's model card declares Apache-2.0; check any additional models separately.",
+        "commercial": "MIT permits commercial software use under its conditions; asset and dependency rights remain separate.",
+        "cost": "Local rendering has no required paid generation API. Your coding agent and optional image services have their own costs.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo/blob/main/LICENSE",
+          "https://huggingface.co/hexgrad/Kokoro-82M"
+        ]
+      },
+      "quality": {
+        "text": "Its sample outputs and built-in layout/speech checks offer useful evidence of a reproducible workflow. Inclusion is a documentation-based assessment of an early release.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Early-stage software, uneven OS testing and agent-dependent results. Verify a short test render before committing to a long production.",
+        "source_urls": [
+          "https://github.com/vincentsch/explainroo"
+        ]
+      }
+    },
+    {
+      "id": "github:comfy-org/comfyui",
+      "name": "ComfyUI",
+      "categories": [
+        "images",
+        "video",
+        "audio",
+        "3d"
+      ],
+      "maturity": "Established workflow application",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Current observed core release: v0.38.0, published September 29; this is an existing project with a recent release."
+      },
+      "sources": [
+        {
+          "title": "Official README and platform guidance",
+          "url": "https://github.com/Comfy-Org/ComfyUI"
+        },
+        {
+          "title": "Official CLI install and launch guide",
+          "url": "https://docs.comfy.org/comfy-cli/getting-started"
+        },
+        {
+          "title": "Software license",
+          "url": "https://github.com/Comfy-Org/ComfyUI/blob/master/LICENSE"
+        },
+        {
+          "title": "Observed release",
+          "url": "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.38.0"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/Comfy-Org/ComfyUI",
+        "download": "https://www.comfy.org/download",
+        "documentation": "https://docs.comfy.org/comfy-cli/getting-started",
+        "examples": "https://comfy.org/workflows/"
+      },
+      "introduction": {
+        "text": "A visual node-based engine for constructing and reusing AI media workflows.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI"
+        ]
+      },
+      "good_for": {
+        "text": "Controlled image generation, editing, masks, upscaling and model-dependent video/audio/3D pipelines. Particularly useful when repeatability and workflow sharing matter.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI"
+        ]
+      },
+      "demo": {
+        "text": "The README links official templates and example workflows. Begin with a small image template whose required models fit your machine.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI"
+        ]
+      },
+      "installation": {
+        "text": "Desktop downloads simplify Windows/macOS setup. Linux and advanced GPU setups can use the documented CLI route in a virtual environment.",
+        "steps": [
+          "Choose the official desktop build or create a Python virtual environment.",
+          "For CLI installation, install comfy-cli and ComfyUI, then launch.",
+          "Install only the checkpoint and dependencies required by your chosen template."
+        ],
+        "commands": [
+          "pip install comfy-cli\ncomfy install\ncomfy launch"
+        ],
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI",
+          "https://docs.comfy.org/comfy-cli/getting-started"
+        ]
+      },
+      "usage": {
+        "text": "Start with a maintained template rather than assembling a large graph immediately.",
+        "steps": [
+          "Load a starter workflow and select its model.",
+          "Edit the prompt, fix the seed, and queue an image.",
+          "Save the workflow JSON with the output so the experiment can be repeated."
+        ],
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI",
+          "https://docs.comfy.org/comfy-cli/getting-started"
+        ]
+      },
+      "requirements": {
+        "text": "Compute requirements depend on model, resolution and extensions. Low-memory/offload claims are not universal performance guarantees.",
+        "hardware": "NVIDIA, AMD, Intel and Apple Silicon paths are documented. RAM/VRAM and disk needs are model-specific; no reliable single minimum covers all workflows.",
+        "software": "Compatible Python/PyTorch, the backend appropriate to your GPU, and model files. The README recommends Python 3.13, with 3.12 as a dependency-compatibility alternative.",
+        "platforms": "Windows, Linux and macOS; desktop builds for Windows/macOS; optional paid cloud service.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI"
+        ]
+      },
+      "license": {
+        "text": "Core software is GPL-3.0; extensions and hosted partner nodes are separate components.",
+        "code": "GPL-3.0",
+        "weights": "Every checkpoint has its own terms; inclusion in a template does not establish open or unrestricted weights.",
+        "commercial": "Commercial use of GPL software is permitted subject to its conditions; redistribution, models and services need separate checks.",
+        "cost": "Local core use is free; hardware/electricity, paid cloud and partner-node credits can add costs.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI/blob/master/LICENSE",
+          "https://github.com/Comfy-Org/ComfyUI"
+        ]
+      },
+      "quality": {
+        "text": "Reusable graphs, maintained templates, model-management controls and current releases make it a strong production-workflow baseline. Output quality still depends on the chosen models.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI",
+          "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.38.0"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Custom nodes can introduce conflicts; heavy video models need substantial compute. Choose model licenses and platform instructions before downloading.",
+        "source_urls": [
+          "https://github.com/Comfy-Org/ComfyUI"
+        ]
+      }
+    },
+    {
+      "id": "github:invoke-ai/invokeai",
+      "name": "InvokeAI",
+      "categories": [
+        "images",
+        "web"
+      ],
+      "maturity": "Established artist-facing application",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Observed release v6.14.2 was published September 27; its canvas-based approach complements node-first workflows."
+      },
+      "sources": [
+        {
+          "title": "Official project and feature overview",
+          "url": "https://github.com/invoke-ai/InvokeAI"
+        },
+        {
+          "title": "Official installation guide",
+          "url": "https://invoke.ai/start-here/installation/"
+        },
+        {
+          "title": "Official hardware requirements",
+          "url": "https://invoke.ai/start-here/system-requirements/"
+        },
+        {
+          "title": "Software license",
+          "url": "https://github.com/invoke-ai/InvokeAI/blob/main/LICENSE"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/invoke-ai/InvokeAI",
+        "documentation": "https://invoke.ai/start-here/installation/",
+        "requirements": "https://invoke.ai/start-here/system-requirements/"
+      },
+      "introduction": {
+        "text": "A local AI image-creation application with a browser interface, unified canvas, model manager and reusable workflows.",
+        "source_urls": [
+          "https://github.com/invoke-ai/InvokeAI"
+        ]
+      },
+      "good_for": {
+        "text": "Iterative concept art, inpainting/outpainting and controlled refinement of photos, sketches and renders.",
+        "source_urls": [
+          "https://github.com/invoke-ai/InvokeAI"
+        ]
+      },
+      "demo": {
+        "text": "The official documentation links tutorials and videos. Inspect the canvas and workflow examples before choosing a model.",
+        "source_urls": [
+          "https://github.com/invoke-ai/InvokeAI"
+        ]
+      },
+      "installation": {
+        "text": "Use the official Invoke Launcher, which manages installation and updates.",
+        "steps": [
+          "Download the platform-specific launcher.",
+          "Windows: run the EXE. macOS: install the DMG. Linux: make the AppImage executable.",
+          "Open the launcher, choose Install and follow its setup flow."
+        ],
+        "source_urls": [
+          "https://invoke.ai/start-here/installation/"
+        ]
+      },
+      "usage": {
+        "text": "A small canvas edit is a practical first project.",
+        "steps": [
+          "Add a compatible model through the model manager.",
+          "Generate or import an image, then use a masked canvas region for a refinement.",
+          "Save the result and its settings to a board or gallery."
+        ],
+        "source_urls": [
+          "https://github.com/invoke-ai/InvokeAI"
+        ]
+      },
+      "requirements": {
+        "text": "Choose requirements for the model family rather than assuming every supported model fits the smallest GPU.",
+        "hardware": "Documented examples: SD1.5 4 GB VRAM/8 GB RAM; SDXL 8 GB VRAM/16 GB RAM. Apple Silicon: 16 GB+ unified memory recommended. Models and outputs need additional disk space; a universal disk minimum is not stated.",
+        "software": "Launcher-managed Python; manual installation requires Python 3.11–3.12 and compatible GPU drivers.",
+        "platforms": "Windows 10+, macOS 14+ and Linux. AMD GPU support is Linux-only; Intel Arc is documented for Windows/Linux x86_64.",
+        "source_urls": [
+          "https://invoke.ai/start-here/system-requirements/"
+        ]
+      },
+      "license": {
+        "text": "Apache-2.0 covers the main application; model and incorporated-component licenses are separate.",
+        "code": "Apache-2.0",
+        "weights": "Read each model card; some supported models and API routes have restrictive or proprietary terms.",
+        "commercial": "The application license permits commercial use under its conditions; this does not grant rights for every model or input asset.",
+        "cost": "Local application use is free. Optional external-model services and hardware costs are separate.",
+        "source_urls": [
+          "https://github.com/invoke-ai/InvokeAI/blob/main/LICENSE",
+          "https://github.com/invoke-ai/InvokeAI"
+        ]
+      },
+      "quality": {
+        "text": "The canvas, galleries and workflow controls address the iteration and organization needs of artists. This is a workflow assessment, not a model-quality benchmark.",
+        "source_urls": [
+          "https://github.com/invoke-ai/InvokeAI"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Large model families need substantially more memory than SDXL. GPU backends and external API models have different support and cost constraints.",
+        "source_urls": [
+          "https://invoke.ai/start-here/system-requirements/",
+          "https://github.com/invoke-ai/InvokeAI"
+        ]
+      }
+    },
+    {
+      "id": "github:velornlabs/velorn",
+      "name": "Velorn",
+      "categories": [
+        "video",
+        "images",
+        "audio"
+      ],
+      "maturity": "Emerging desktop production application",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Observed packaged release v0.3.36 was published September 26. It offers a production layer around ComfyUI."
+      },
+      "sources": [
+        {
+          "title": "Official README, requirements and first run",
+          "url": "https://github.com/VelornLabs/velorn"
+        },
+        {
+          "title": "Observed desktop release",
+          "url": "https://github.com/VelornLabs/velorn/releases/tag/v0.3.36"
+        },
+        {
+          "title": "GPL software license",
+          "url": "https://github.com/VelornLabs/velorn/blob/main/LICENSE"
+        },
+        {
+          "title": "Agent/MCP integration guide",
+          "url": "https://github.com/VelornLabs/velorn/blob/main/docs/MCP.md"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/VelornLabs/velorn",
+        "download": "https://github.com/VelornLabs/velorn/releases/tag/v0.3.36",
+        "agent_guide": "https://github.com/VelornLabs/velorn/blob/main/docs/MCP.md"
+      },
+      "introduction": {
+        "text": "A desktop video editor combining AI generation workflows with a timeline, assets, captions and export.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn"
+        ]
+      },
+      "good_for": {
+        "text": "Finishing generated clips into music videos, short films and creator videos. Its main appeal is keeping generation and editing within a project.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn"
+        ]
+      },
+      "demo": {
+        "text": "The README contains screen captures and an agent-editing animation; these illustrate the workflow, not independently measured performance.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn"
+        ]
+      },
+      "installation": {
+        "text": "Use a packaged release for your OS; generation additionally needs local ComfyUI.",
+        "steps": [
+          "Download the Windows installer/portable, Mac Intel/Apple Silicon, or Linux AppImage/deb asset.",
+          "Install and select a projects folder.",
+          "For generation, configure Settings > ComfyUI Connection to the same-machine server."
+        ],
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn",
+          "https://github.com/VelornLabs/velorn/releases/tag/v0.3.36"
+        ]
+      },
+      "usage": {
+        "text": "Begin by editing existing media before adding a large generation pipeline.",
+        "steps": [
+          "Create a project and import a few clips.",
+          "Arrange and trim the timeline; add captions and an export preset.",
+          "Then test a small local generation workflow after resolving its model/node dependencies."
+        ],
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn",
+          "https://github.com/VelornLabs/velorn/blob/main/docs/MCP.md"
+        ]
+      },
+      "requirements": {
+        "text": "Editing and generation have different requirements.",
+        "hardware": "Editing needs space for assets, cache and exports; numerical CPU/RAM minima are unreported. Heavy local video workflows may need 24 GB+ VRAM; requirements vary by model.",
+        "software": "Packaged desktop app. All current generation features require local ComfyUI, required nodes/models, and credentials for paid partner routes.",
+        "platforms": "Windows, macOS Intel/Apple Silicon, Linux. The desktop ComfyUI connection is limited to localhost.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn"
+        ]
+      },
+      "license": {
+        "text": "The editor is GPL-3.0. Workflow models, nodes and services remain independently licensed.",
+        "code": "GPL-3.0",
+        "weights": "Not bundled as one unrestricted model license; inspect each workflow's model terms.",
+        "commercial": "GPL permits commercial use under its conditions; generated assets and partner services need separate review.",
+        "cost": "Local editor is free. Local model compute and optional cloud/partner credits add costs.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn/blob/main/LICENSE",
+          "https://github.com/VelornLabs/velorn"
+        ]
+      },
+      "quality": {
+        "text": "Packaged builds, editable timelines and documented generation dependencies make it a useful creator-facing candidate. Agent tools extend workflow automation.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn",
+          "https://github.com/VelornLabs/velorn/releases/tag/v0.3.36",
+          "https://github.com/VelornLabs/velorn/blob/main/docs/MCP.md"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "The short-film creator is explicitly beta. Downloading the editor alone does not provision a complete generation environment.",
+        "source_urls": [
+          "https://github.com/VelornLabs/velorn"
+        ]
+      }
+    },
+    {
+      "id": "github:ace-step/ace-step-1.5",
+      "name": "ACE-Step 1.5",
+      "categories": [
+        "audio"
+      ],
+      "maturity": "Music-generation application and model ecosystem",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Active source development was observed today; the published v0.1.8 tag is from May. Current docs also describe larger XL models, which have higher memory needs."
+      },
+      "sources": [
+        {
+          "title": "Official project overview",
+          "url": "https://github.com/ace-step/ACE-Step-1.5"
+        },
+        {
+          "title": "Official installation guide",
+          "url": "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/INSTALL.md"
+        },
+        {
+          "title": "Official GPU compatibility guide",
+          "url": "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/GPU_COMPATIBILITY.md"
+        },
+        {
+          "title": "MIT software license",
+          "url": "https://github.com/ace-step/ACE-Step-1.5/blob/main/LICENSE"
+        },
+        {
+          "title": "Official turbo checkpoint card",
+          "url": "https://huggingface.co/ACE-Step/Ace-Step1.5"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/ace-step/ACE-Step-1.5",
+        "installation": "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/INSTALL.md",
+        "gpu_guide": "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/GPU_COMPATIBILITY.md",
+        "model": "https://huggingface.co/ACE-Step/Ace-Step1.5"
+      },
+      "introduction": {
+        "text": "A locally runnable music-generation toolkit with a Gradio interface and API.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5"
+        ]
+      },
+      "good_for": {
+        "text": "Drafting instrumentals or vocal ideas, creating variations and editing or repainting musical segments. Treat these as sketching capabilities rather than guarantees of finished commercial audio.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5"
+        ]
+      },
+      "demo": {
+        "text": "The project links audio examples and a browser UI. Listening to the examples is the best first check for your genre and intended use.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5"
+        ]
+      },
+      "installation": {
+        "text": "Install the documented Python environment with uv, or use the project's platform package where applicable.",
+        "steps": [
+          "Install Python 3.11–3.12 and uv, then clone the repository.",
+          "Run uv sync and start the UI; allow its initial model downloads.",
+          "Use the platform-specific launch instructions for MLX, ROCm or other backends."
+        ],
+        "commands": [
+          "git clone https://github.com/ace-step/ACE-Step-1.5.git\ncd ACE-Step-1.5\nuv sync\nuv run acestep"
+        ],
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/INSTALL.md",
+          "https://github.com/ace-step/ACE-Step-1.5"
+        ]
+      },
+      "usage": {
+        "text": "Start with a short instrumental variation so you can judge style and coherence quickly.",
+        "steps": [
+          "Open the local Gradio UI at localhost:7860.",
+          "Choose a compatible model and enter musical style, duration and optional lyrics.",
+          "Generate a few variations, audition them and save the useful results."
+        ],
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5"
+        ]
+      },
+      "requirements": {
+        "text": "The smallest DiT configuration and XL configuration have very different memory requirements.",
+        "hardware": "Install guide: ≥4 GB VRAM for DiT-only mode, ≥6 GB for LM+DiT, about 10 GB disk for core models; low-memory modes use quantization/offload. XL needs about 12 GB with aggressive offload or 20 GB without. Host RAM minimum is unreported.",
+        "software": "Python 3.11–3.12, uv and platform-specific PyTorch/MLX components. Windows ROCm uses Python 3.12.",
+        "platforms": "Windows, Linux and macOS Apple Silicon are documented; CUDA, MPS/MLX, ROCm, Intel XPU and CPU paths vary.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/INSTALL.md",
+          "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/GPU_COMPATIBILITY.md"
+        ]
+      },
+      "license": {
+        "text": "The application declares MIT. Verify the selected checkpoints independently before production.",
+        "code": "MIT",
+        "weights": "The official Ace-Step1.5 turbo checkpoint card declares MIT; verify other base, SFT, XL and language-model checkpoints individually.",
+        "commercial": "MIT covers the software; music originality, source-audio rights and the chosen model terms remain separate.",
+        "cost": "Local inference does not require a paid generation API. Hardware and optional hosted services have separate costs.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5/blob/main/LICENSE",
+          "https://github.com/ace-step/ACE-Step-1.5",
+          "https://huggingface.co/ACE-Step/Ace-Step1.5"
+        ]
+      },
+      "quality": {
+        "text": "Practical generation/editing controls and detailed hardware-tier documentation justify a trial. Developer speed and quality claims are not independent benchmarks.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5",
+          "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/GPU_COMPATIBILITY.md"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Genre fidelity, long-form structure and lyrics need listening checks. Low-memory settings trade capabilities and speed for fit.",
+        "source_urls": [
+          "https://github.com/ace-step/ACE-Step-1.5",
+          "https://github.com/ace-step/ACE-Step-1.5/blob/main/docs/en/GPU_COMPATIBILITY.md"
+        ]
+      }
+    },
+    {
+      "id": "github:microsoft/trellis.2",
+      "name": "TRELLIS.2",
+      "categories": [
+        "3d",
+        "gaming",
+        "fabrication"
+      ],
+      "maturity": "Research-oriented 3D generation",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline rather than a new launch. The repository's last observed push was July 10; official inference and model documentation remain available."
+      },
+      "sources": [
+        {
+          "title": "Official code, setup and examples",
+          "url": "https://github.com/microsoft/TRELLIS.2"
+        },
+        {
+          "title": "Official 4B model card",
+          "url": "https://huggingface.co/microsoft/TRELLIS.2-4B"
+        },
+        {
+          "title": "MIT code/model license",
+          "url": "https://github.com/microsoft/TRELLIS.2/blob/main/LICENSE"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/microsoft/TRELLIS.2",
+        "model": "https://huggingface.co/microsoft/TRELLIS.2-4B",
+        "license": "https://github.com/microsoft/TRELLIS.2/blob/main/LICENSE"
+      },
+      "introduction": {
+        "text": "An image-to-3D research pipeline producing textured assets, with additional shape-conditioned texture generation.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2"
+        ]
+      },
+      "good_for": {
+        "text": "Prototyping game props and digital sculptural assets from reference images. Fabrication is a downstream experiment; output is not certified print-ready.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2"
+        ]
+      },
+      "demo": {
+        "text": "The official repository links a Hugging Face demo and includes a local web app and example asset exports.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2",
+          "https://huggingface.co/microsoft/TRELLIS.2-4B"
+        ]
+      },
+      "installation": {
+        "text": "Use the official Linux/CUDA environment and recursive clone; installation compiles several dependencies.",
+        "steps": [
+          "Prepare compatible NVIDIA drivers, CUDA Toolkit and Conda.",
+          "Clone recursively, run the documented setup, then activate trellis2.",
+          "Launch the local app after downloading the official checkpoint."
+        ],
+        "commands": [
+          "git clone -b main https://github.com/microsoft/TRELLIS.2.git --recursive\ncd TRELLIS.2\n. ./setup.sh --new-env --basic --flash-attn --nvdiffrast --nvdiffrec --cumesh --o-voxel --flexgemm\nconda activate trellis2\npython app.py"
+        ],
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2"
+        ]
+      },
+      "usage": {
+        "text": "Use one clear object reference before trying complex scenes.",
+        "steps": [
+          "Upload an object image to the local demo.",
+          "Inspect the generated shape and material from multiple views.",
+          "Export a GLB for a DCC/game workflow; for printing, inspect and repair the mesh in a separate tool."
+        ],
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2",
+          "https://huggingface.co/microsoft/TRELLIS.2-4B"
+        ]
+      },
+      "requirements": {
+        "text": "The official implementation is currently tested only on Linux.",
+        "hardware": "NVIDIA GPU with at least 24 GB VRAM; tested by the authors on A100/H100. Host RAM and total disk minimum are not stated.",
+        "software": "Python 3.8+, Conda recommended, CUDA Toolkit 12.4 recommended; default setup uses PyTorch 2.6/CUDA 12.4 and compiled geometry/rendering packages.",
+        "platforms": "Officially tested Linux path. Native macOS and Windows support are not established by this documentation; use a suitable Linux GPU host.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2"
+        ]
+      },
+      "license": {
+        "text": "The project states that code and its model are MIT; renderer dependencies have separate terms.",
+        "code": "MIT",
+        "weights": "The official TRELLIS.2-4B model card declares MIT.",
+        "commercial": "MIT permits commercial use under its conditions; inspect renderer dependencies and rights in the reference images.",
+        "cost": "No required paid generation API for local inference; a high-memory GPU or rented host can be costly.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2/blob/main/LICENSE",
+          "https://huggingface.co/microsoft/TRELLIS.2-4B",
+          "https://github.com/microsoft/TRELLIS.2"
+        ]
+      },
+      "quality": {
+        "text": "Textured exports and a published example pipeline support useful asset exploration. Production topology, consistency and quality still need individual inspection.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Research installation complexity and high VRAM demand. Generated geometry may need cleanup, retopology, scaling and printability checks.",
+        "source_urls": [
+          "https://github.com/microsoft/TRELLIS.2"
+        ]
+      }
+    },
+    {
+      "id": "github:huggingface/transformers.js",
+      "name": "Transformers.js",
+      "categories": [
+        "web",
+        "computational",
+        "interactive",
+        "audio",
+        "images"
+      ],
+      "maturity": "Established developer library",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Observed version 4.3.0 was released September 16. This is a building block for custom creative applications."
+      },
+      "sources": [
+        {
+          "title": "Official library and browser setup",
+          "url": "https://github.com/huggingface/transformers.js"
+        },
+        {
+          "title": "Official demo applications",
+          "url": "https://github.com/huggingface/transformers.js-examples"
+        },
+        {
+          "title": "Apache software license",
+          "url": "https://github.com/huggingface/transformers.js/blob/main/LICENSE"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/huggingface/transformers.js",
+        "examples": "https://github.com/huggingface/transformers.js-examples",
+        "documentation": "https://huggingface.co/docs/transformers.js"
+      },
+      "introduction": {
+        "text": "A JavaScript library for running pretrained vision, audio and language models in browsers using ONNX Runtime.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js"
+        ]
+      },
+      "good_for": {
+        "text": "Custom captioning, transcription, segmentation and responsive media interfaces. Creative-coding uses are integrations you build, rather than a finished authoring application.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js"
+        ]
+      },
+      "demo": {
+        "text": "The official examples repository provides runnable demonstration applications and templates.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js-examples"
+        ]
+      },
+      "installation": {
+        "text": "Install the NPM package in a JavaScript project, or use the documented ES-module/CDN path.",
+        "steps": [
+          "Choose an example for the task you need.",
+          "Add the package or documented import to the project.",
+          "Load a supported ONNX model and check its card and download size."
+        ],
+        "commands": [
+          "npm i @huggingface/transformers"
+        ],
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js"
+        ]
+      },
+      "usage": {
+        "text": "A useful first experiment is a small browser audio or image-analysis interface.",
+        "steps": [
+          "Adapt a matching official example.",
+          "Start with the default WASM/CPU path; enable WebGPU only on a compatible browser.",
+          "Test the result with your own media and measure latency on each target device."
+        ],
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js",
+          "https://github.com/huggingface/transformers.js-examples"
+        ]
+      },
+      "requirements": {
+        "text": "Memory and download size depend on the actual ONNX model.",
+        "hardware": "WASM inference can use the CPU; WebGPU uses compatible graphics hardware/browser support. No universal RAM/VRAM or disk minimum applies.",
+        "software": "JavaScript ES modules or an NPM setup, ONNX-compatible model files and WASM runtime assets; WebGPU is optional.",
+        "platforms": "Modern browsers on supported desktop/mobile systems, subject to model and backend compatibility. WebGPU support varies.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js"
+        ]
+      },
+      "license": {
+        "text": "Apache-2.0 applies to the library, not automatically to all downloaded models.",
+        "code": "Apache-2.0",
+        "weights": "Each ONNX model retains its model-card license; conversions do not remove original restrictions.",
+        "commercial": "Library commercial use is allowed under Apache terms; selected models and inputs need separate checks.",
+        "cost": "Local/browser inference has no compulsory paid API; hosting, bandwidth and optional external services may cost money.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js/blob/main/LICENSE",
+          "https://github.com/huggingface/transformers.js"
+        ]
+      },
+      "quality": {
+        "text": "Official examples and explicit backend/quantization controls make it a strong foundation for browser experiments. You supply the creative interface and quality evaluation.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js",
+          "https://github.com/huggingface/transformers.js-examples"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Some tasks/models are unsupported. Large models strain browser memory, and WebGPU is uneven across devices.",
+        "source_urls": [
+          "https://github.com/huggingface/transformers.js"
+        ]
+      }
+    },
+    {
+      "id": "github:google/xrblocks",
+      "name": "XR Blocks",
+      "categories": [
+        "xr",
+        "interactive",
+        "web"
+      ],
+      "maturity": "Developer SDK for AI and XR prototyping",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Current source activity was observed today; published v0.21.1 is from August 25. The official repository is google/xrblocks."
+      },
+      "sources": [
+        {
+          "title": "Official XR Blocks SDK",
+          "url": "https://github.com/google/xrblocks"
+        },
+        {
+          "title": "Official interactive starter template",
+          "url": "https://xrblocks.github.io/docs/templates/Basic/"
+        },
+        {
+          "title": "Apache software license",
+          "url": "https://github.com/google/xrblocks/blob/main/LICENSE"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/google/xrblocks",
+        "demo": "https://xrblocks.github.io/docs/templates/Basic/",
+        "documentation": "https://xrblocks.github.io/docs/"
+      },
+      "introduction": {
+        "text": "A three.js-based library for interactive spatial applications, with desktop simulation, gesture handling and optional multimodal AI integration.",
+        "source_urls": [
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "good_for": {
+        "text": "Prototyping AI-assisted spatial interfaces and interactive installation concepts before deploying to a supported XR headset.",
+        "source_urls": [
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "demo": {
+        "text": "The Basic template responds to clicks on desktop and pinch/controller input in XR. The official sample catalog includes AI-oriented examples.",
+        "source_urls": [
+          "https://xrblocks.github.io/docs/templates/Basic/",
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "installation": {
+        "text": "Try the hosted starter first, then clone and serve the SDK's samples for development.",
+        "steps": [
+          "Open the Basic template in a supported browser.",
+          "For development, clone the repository, install its dependencies and serve the samples.",
+          "Use the local simulator before testing device-specific features."
+        ],
+        "commands": [
+          "git clone https://github.com/google/xrblocks.git\ncd xrblocks\nnpm ci\nnpm run serve"
+        ],
+        "source_urls": [
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "usage": {
+        "text": "A simple spatial object interaction is the recommended first experiment.",
+        "steps": [
+          "Click the cylinder in the desktop template.",
+          "Modify its scene and interaction script.",
+          "Add the separate AI example only after configuring the required provider access."
+        ],
+        "source_urls": [
+          "https://xrblocks.github.io/docs/templates/Basic/",
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "requirements": {
+        "text": "The SDK's desktop and headset paths have different capabilities.",
+        "hardware": "Desktop simulator or supported Android XR headset; RAM/VRAM/storage minima are unreported.",
+        "software": "Chrome v136+ and WebXR support for targeted XR use; Node/NPM for development; provider access for Gemini AI features.",
+        "platforms": "Desktop Chrome simulator and documented Android XR devices. Do not assume support for every Quest, Vision Pro or browser.",
+        "source_urls": [
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "license": {
+        "text": "Apache-2.0 covers the SDK. Gemini and headset/platform services have their own terms.",
+        "code": "Apache-2.0",
+        "weights": "Optional Gemini integration uses a proprietary service, not bundled open model weights.",
+        "commercial": "SDK commercial use is allowed under Apache terms; provider and device terms remain separate.",
+        "cost": "SDK is free. AI-service usage and XR hardware may add costs; a desktop simulator reduces initial hardware needs.",
+        "source_urls": [
+          "https://github.com/google/xrblocks/blob/main/LICENSE",
+          "https://github.com/google/xrblocks"
+        ]
+      },
+      "quality": {
+        "text": "Official templates, documented interactions and a desktop simulator make spatial prototyping approachable. This is a developer toolkit, with no independent headset testing here.",
+        "source_urls": [
+          "https://github.com/google/xrblocks",
+          "https://xrblocks.github.io/docs/templates/Basic/"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Device APIs and browser versions constrain portability. AI functionality is optional and can depend on a proprietary provider.",
+        "source_urls": [
+          "https://github.com/google/xrblocks"
+        ]
+      }
+    },
+    {
+      "id": "github:imweb-project/imweb",
+      "name": "ImWeb",
+      "categories": [
+        "computational",
+        "interactive",
+        "web",
+        "video"
+      ],
+      "maturity": "Emerging creative instrument",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Observed release v0.25.0 was published September 17; source activity September 27. Its explicit AGPL declaration was checked directly."
+      },
+      "sources": [
+        {
+          "title": "Official features, setup and AI modes",
+          "url": "https://github.com/imweb-project/ImWeb"
+        },
+        {
+          "title": "Reviewed AGPL license declaration",
+          "url": "https://github.com/imweb-project/ImWeb/blob/main/LICENSE"
+        },
+        {
+          "title": "Observed release",
+          "url": "https://github.com/imweb-project/ImWeb/releases/tag/v0.25.0"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/imweb-project/ImWeb",
+        "download": "https://github.com/imweb-project/ImWeb/releases/tag/v0.25.0",
+        "license": "https://github.com/imweb-project/ImWeb/blob/main/LICENSE"
+      },
+      "introduction": {
+        "text": "A browser video-synthesis instrument combining compositing, GLSL, 3D, controllers and AI-assisted patch/shader creation.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      },
+      "good_for": {
+        "text": "Live visuals, audio-reactive installations and iterative shader experiments. It can use hosted AI providers or a local Ollama model.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      },
+      "demo": {
+        "text": "The README shows the signal flow and interfaces; the application includes a guided tour. Published documentation illustrates functionality rather than tested show reliability.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      },
+      "installation": {
+        "text": "Clone the application and run its Node development server.",
+        "steps": [
+          "Install Node 18+ and clone the official repository.",
+          "Install dependencies and start the development server.",
+          "Open localhost:5173 in a supported browser."
+        ],
+        "commands": [
+          "git clone https://github.com/imweb-project/ImWeb.git\ncd ImWeb\nnpm install\nnpm run dev"
+        ],
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      },
+      "usage": {
+        "text": "Start with a simple visual patch before adding AI or external control.",
+        "steps": [
+          "Choose a source, adjust a mix/effect and preview the canvas.",
+          "Connect audio or MIDI/OSC controls as needed.",
+          "Configure a local/hosted AI provider for patch or GLSL assistance; export a project or record WebM."
+        ],
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      },
+      "requirements": {
+        "text": "Graphics load depends on resolution, effects and sources; AI inference can be local or remote.",
+        "hardware": "WebGL-capable graphics and optional camera/audio/MIDI hardware. RAM/VRAM/storage minima are unreported; a local Ollama model adds its own compute requirements.",
+        "software": "Node 18+; Chrome 113+ recommended. OSC needs the bundled Node relay; AI needs Ollama or provider credentials.",
+        "platforms": "Browser-based; Chrome recommended, Firefox/Safari WebGL modes have limitations. Native OS support is not separately certified.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      },
+      "license": {
+        "text": "The LICENSE explicitly declares AGPL-3.0-or-later; an artistic dedication explains GitHub's unclassified result.",
+        "code": "AGPL-3.0-or-later",
+        "weights": "Local Ollama models have their own licenses; hosted AI providers are separate proprietary services.",
+        "commercial": "AGPL permits commercial use, with source-sharing conditions including relevant network use; check dependent components separately.",
+        "cost": "Local instrument is free. Local AI hardware and hosted-provider usage can add costs.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb/blob/main/LICENSE"
+        ]
+      },
+      "quality": {
+        "text": "Detailed signal routing, controller mappings and AI-provider options make this a relevant computational-art candidate. Included as an emerging instrument, not a proven touring setup.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb",
+          "https://github.com/imweb-project/ImWeb/releases/tag/v0.25.0"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Small project and complex live-media surface. Browser/device differences and local-model speed need rehearsal before a performance.",
+        "source_urls": [
+          "https://github.com/imweb-project/ImWeb"
+        ]
+      }
+    },
+    {
+      "id": "github:taucad/tau",
+      "name": "Tau",
+      "categories": [
+        "fabrication",
+        "3d",
+        "web",
+        "gaming"
+      ],
+      "maturity": "Emerging browser CAD platform",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Current source activity was observed today; this is a project under heavy development, with no stable release inferred."
+      },
+      "sources": [
+        {
+          "title": "Official features, formats and license notes",
+          "url": "https://github.com/taucad/tau"
+        },
+        {
+          "title": "Official development setup",
+          "url": "https://github.com/taucad/tau/blob/main/contributing.md"
+        },
+        {
+          "title": "MIT application license",
+          "url": "https://github.com/taucad/tau/blob/main/license"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/taucad/tau",
+        "demo": "https://tau.new",
+        "setup": "https://github.com/taucad/tau/blob/main/contributing.md"
+      },
+      "introduction": {
+        "text": "An AI-assisted browser parametric CAD environment supporting multiple geometry kernels and export formats.",
+        "source_urls": [
+          "https://github.com/taucad/tau"
+        ]
+      },
+      "good_for": {
+        "text": "Exploring dimension-driven forms, printable prototypes and editable CAD ideas. Suggested experiment: a small enclosure with a few adjustable parameters.",
+        "source_urls": [
+          "https://github.com/taucad/tau"
+        ]
+      },
+      "demo": {
+        "text": "The project links its hosted tau.new application and screenshots. The hosted service is a separate deployment with its own availability and AI access.",
+        "source_urls": [
+          "https://github.com/taucad/tau"
+        ]
+      },
+      "installation": {
+        "text": "The hosted version avoids installation. Self-hosted development requires infrastructure and provider configuration.",
+        "steps": [
+          "For the quickest evaluation, open tau.new.",
+          "For local development, install Node 24+, pnpm and Docker; clone the repository.",
+          "Start dependencies/infrastructure, copy the UI/API example environment files, configure your provider keys and start the dev servers."
+        ],
+        "commands": [
+          "git clone https://github.com/taucad/tau.git\ncd tau\npnpm install\npnpm infra:up\ncp apps/ui/.env.example apps/ui/.env.local\ncp apps/api/.env.example apps/api/.env.local\npnpm dev"
+        ],
+        "source_urls": [
+          "https://github.com/taucad/tau/blob/main/contributing.md",
+          "https://github.com/taucad/tau"
+        ]
+      },
+      "usage": {
+        "text": "Use its code/parametric workflow, then check the exported geometry in the downstream application.",
+        "steps": [
+          "Create a simple model using an implemented CAD kernel.",
+          "Adjust dimensions and inspect the preview.",
+          "Export an appropriate mesh/solid format, then verify scale, tolerances and slicing before printing."
+        ],
+        "source_urls": [
+          "https://github.com/taucad/tau"
+        ]
+      },
+      "requirements": {
+        "text": "Hosted use and local development need different resources.",
+        "hardware": "Browser-capable device; no numerical RAM/VRAM/disk minimum is published in the reviewed setup. Local infrastructure requires additional memory/storage.",
+        "software": "Local development: Node.js 24+, pnpm, Docker, PostgreSQL/Redis services and configured provider keys.",
+        "platforms": "Browser use is described for desktop/mobile. Local development depends on availability of the listed tools; OS-specific certification is unreported.",
+        "source_urls": [
+          "https://github.com/taucad/tau/blob/main/contributing.md",
+          "https://github.com/taucad/tau"
+        ]
+      },
+      "license": {
+        "text": "MIT covers the core. The optional OpenSCAD component is GPL-2.0-or-later and changes obligations for a combined distribution.",
+        "code": "MIT",
+        "weights": "AI models/providers are configured separately; no blanket open model-weight license is established.",
+        "commercial": "Core MIT use is permitted; a distribution including the OpenSCAD kernel must meet the stated GPL conditions.",
+        "cost": "Source is free. Hosting, provider calls and optional commercial kernels can have separate costs; current hosted pricing is unverified.",
+        "source_urls": [
+          "https://github.com/taucad/tau",
+          "https://github.com/taucad/tau/blob/main/license"
+        ]
+      },
+      "quality": {
+        "text": "Editable parametric geometry is more suitable for dimension-driven work than a purely decorative generated mesh. Multiple documented kernels and exports support experimentation.",
+        "source_urls": [
+          "https://github.com/taucad/tau"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Heavy-development warning; planned capabilities are not implemented features. Printing and manufacturing still require geometry and tolerance checks.",
+        "source_urls": [
+          "https://github.com/taucad/tau"
+        ]
+      }
+    },
+    {
+      "id": "github:ahujasid/mcp-for-blender",
+      "name": "MCP for Blender",
+      "categories": [
+        "gaming",
+        "3d",
+        "computational"
+      ],
+      "maturity": "Agent integration for an established DCC",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline. Current documentation uses the renamed repository/package mcp-for-blender; older blender-mcp setups retain compatibility. Source activity was observed September 30."
+      },
+      "sources": [
+        {
+          "title": "Official setup, features and current package name",
+          "url": "https://github.com/ahujasid/mcp-for-blender"
+        },
+        {
+          "title": "MIT integration license",
+          "url": "https://github.com/ahujasid/mcp-for-blender/blob/main/LICENSE"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/ahujasid/mcp-for-blender",
+        "license": "https://github.com/ahujasid/mcp-for-blender/blob/main/LICENSE"
+      },
+      "introduction": {
+        "text": "An MCP server and Blender addon enabling compatible AI clients to inspect and operate Blender scenes.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "good_for": {
+        "text": "Agent-assisted scene blocking, materials, repetitive DCC tasks and game-asset prototyping. The language model is supplied by your client.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "demo": {
+        "text": "The README links setup videos and shows example interactions. Test a small scene before trusting complex asset edits.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "installation": {
+        "text": "With uv already installed, use the documented setup command and choose your client integration.",
+        "steps": [
+          "Install Blender 3.0+, Python 3.10+ and uv.",
+          "Run the setup helper; choose the AI client and allow it to install/configure the addon.",
+          "Fully restart the AI client and open Blender."
+        ],
+        "commands": [
+          "uvx mcp-for-blender setup"
+        ],
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "usage": {
+        "text": "Begin with a disposable scene so the agent's geometry choices are easy to inspect.",
+        "steps": [
+          "Connect the configured client to the Blender addon.",
+          "Ask for a simple scene or repetitive modeling task.",
+          "Inspect topology, scale and materials in Blender before exporting to a game pipeline."
+        ],
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "requirements": {
+        "text": "Blender's scene complexity and the selected AI backend govern compute.",
+        "hardware": "A machine capable of the intended Blender workload. The integration publishes no separate RAM/VRAM/storage minimum; local language models add their own requirements.",
+        "software": "Blender 3.0+, Python 3.10+, uv and a compatible MCP client. External asset/generation services may need separate keys.",
+        "platforms": "Documented Windows, macOS and Linux setup paths.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "license": {
+        "text": "MIT covers the integration; Blender, client/model and external asset services keep their own terms.",
+        "code": "MIT",
+        "weights": "No inference model is supplied as part of one universal license; use your client's chosen model.",
+        "commercial": "MIT integration use is permitted; scene assets, external generation and application distribution need separate checks.",
+        "cost": "Integration source is free. AI subscriptions, optional generation services and Blender rendering hardware can add costs.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender/blob/main/LICENSE",
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      },
+      "quality": {
+        "text": "It targets real scene inspection and DCC operations, with current setup guidance and client integrations. Inclusion reflects workflow usefulness, not tested modeling skill.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "An agent can execute Python inside Blender. Keep the socket local and review work on a disposable scene; optional safe mode is documented. Final asset quality requires human inspection.",
+        "source_urls": [
+          "https://github.com/ahujasid/mcp-for-blender"
+        ]
+      }
+    },
+    {
+      "id": "github:decartai/decart-xr",
+      "name": "Decart-XR",
+      "categories": [
+        "xr",
+        "interactive",
+        "video"
+      ],
+      "maturity": "Experimental VR application · proprietary AI backend",
+      "checked_on": "2026-10-01",
+      "novelty": {
+        "kind": "first-profile",
+        "text": "Initial baseline rather than a new release. Last observed source push: August 16. Included to show an immersive workflow and its important service dependency."
+      },
+      "sources": [
+        {
+          "title": "Official Quest setup and service architecture",
+          "url": "https://github.com/DecartAI/Decart-XR"
+        },
+        {
+          "title": "MIT application license",
+          "url": "https://github.com/DecartAI/Decart-XR/blob/main/LICENSE"
+        }
+      ],
+      "links": {
+        "repository": "https://github.com/DecartAI/Decart-XR",
+        "license": "https://github.com/DecartAI/Decart-XR/blob/main/LICENSE"
+      },
+      "introduction": {
+        "text": "An open-source Unity/Quest application that streams passthrough camera video to Decart for AI restyling.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "good_for": {
+        "text": "Researching immersive transformations of a live physical environment. This is a headset experiment rather than a self-contained open AI model.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "demo": {
+        "text": "The README contains transformation animations and screenshots. The published latency figures are developer claims and were not measured here.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "installation": {
+        "text": "Build the documented Unity project for the headset; provider access is a separate requirement.",
+        "steps": [
+          "Clone the repository and open DecartAI-Quest-Unity in Unity Hub.",
+          "Use the documented Unity version, install the required XR packages and apply project settings.",
+          "Build an Android ARM64 APK, install it on the Quest and grant the camera permission."
+        ],
+        "commands": [
+          "git clone https://github.com/DecartAI/Decart-XR.git\ncd Decart-XR/DecartAI-Quest-Unity"
+        ],
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "usage": {
+        "text": "Treat this as an experimental, service-dependent prototype.",
+        "steps": [
+          "Configure the required Decart access and optional voice-control provider.",
+          "Run the app and select a restyling mode.",
+          "Test network stability and the actual visual/latency experience on the headset."
+        ],
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "requirements": {
+        "text": "The documented setup is specific to Quest, Unity and a live network.",
+        "hardware": "Meta Quest 3 with Horizon OS v74+; 8+ Mbps bidirectional internet. Desktop build-machine RAM/VRAM/storage minima are unreported.",
+        "software": "Unity 6 (6000.0.34f1), Android build support, Meta XR packages and service configuration; optional Wit.ai for voice input.",
+        "platforms": "Android ARM64 build targeting Quest 3. Other headsets are not established by the reviewed prerequisites.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "license": {
+        "text": "MIT covers this application. Unity/Meta components and Decart AI remain separately licensed.",
+        "code": "MIT",
+        "weights": "Decart inference is a proprietary hosted service; open model weights are not provided here.",
+        "commercial": "Application MIT terms do not establish commercial rights to the backend, Unity/Meta SDKs or captured media.",
+        "cost": "Headset and development hardware required; AI service access/pricing must be checked separately. Offline AI inference is not documented.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR/blob/main/LICENSE",
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      },
+      "quality": {
+        "text": "The documented camera-to-WebRTC-to-headset architecture offers a concrete reference for immersive AI experiments. Inclusion is for research value, with dependencies disclosed.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ],
+        "hands_on_tested": false
+      },
+      "limitations": {
+        "text": "Proprietary-service dependence, network latency and camera permissions. Developer performance figures do not prove comfort or suitability for a public installation.",
+        "source_urls": [
+          "https://github.com/DecartAI/Decart-XR"
+        ]
+      }
+    }
+  ],
+  "source_observation": "2026-10-01T18:37:47.642762+00:00",
+  "source_warnings": [
+    "Watchlist xrblocks/xrblocks: HTTP 404 from api.github.com/repos/xrblocks/xrblocks; source not collected"
+  ]
+}

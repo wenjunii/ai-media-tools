@@ -20,8 +20,9 @@ Run `python3 -m media_scout status --date YYYY-MM-DD`.
   confirm it is this edition, then record its message ID with `record-delivery
   --reconciled`. If no confirmed match exists, report the uncertainty and stop
   email work. Absence of an immediate search result does not authorize retry.
-- If a sealed report exists without a receipt, verify it and continue to delivery.
-  Search Sent mail for a matching edition before creating a reservation.
+- If a sealed report exists without a receipt, verify it and search Sent mail for
+  a matching edition. If none is confirmed, continue at GitHub publication.
+  A sealed report never skips the sync checkpoint.
 - Otherwise continue discovery. Never overwrite a sealed report.
 
 ## 2. Search broadly
@@ -105,11 +106,40 @@ before a report is sealed. Inspect the resulting HTML and Markdown, including
 links, requirements, category coverage and warnings. The builder creates the
 archive and seals hashes. Do not edit sealed files or evidence.
 
-## 6. Email once through Gmail
+## 6. Synchronize GitHub before email
+
+Follow `docs/GITHUB_SYNC.md`. Run `export-report --date YYYY-MM-DD` to create
+public copies of the finished HTML/Markdown/JSON edition, a publication manifest
+without recipient details, and the searchable archive under `public/`.
+Audit the complete Git index with `audit-publication` before committing or pushing.
+Synchronize reviewed code/documentation and those exports to the configured
+GitHub repository through a pull request. Reuse an existing daily branch/PR
+after an interruption. Attach every created PR to this chat.
+
+Wait for CI on the exact PR head, merge through the protected branch, update
+local main with a fast-forward, and wait for CI on the exact merged main commit.
+Do not bypass protection or change scheduler ownership. Then run:
+
+```sh
+python3 -m media_scout record-sync --date YYYY-MM-DD
+python3 -m media_scout verify-sync --date YYYY-MM-DD
+python3 -m media_scout verify --date YYYY-MM-DD
+```
+
+These checks confirm the configured repository, local/tracking/remote commit
+agreement, a clean checkout, complete report/archive bytes, and successful main CI.
+If any publication step fails, stop before email reservation or sending. Resume
+only the unfinished publication later; do not regenerate a sealed report or
+publish credentials, personal settings, raw research, or operational receipts.
+
+## 7. Email once through Gmail
 
 Search Gmail Sent mail for this exact dated edition if no local receipt exists.
 If a matching edition is confirmed, record its message ID with `--reconciled`.
 Otherwise run `prepare-email --date YYYY-MM-DD` **immediately before sending**.
+This command rechecks the sync checkpoint against the actual GitHub branch and CI
+before writing any outbox payload or reservation. A missing or stale checkpoint
+blocks email; verify and record the current publication first.
 Load the JSON file at the returned `payload_path` and pass its exact `to`,
 `subject`, and MIME `payload` to the connected Gmail `send_email` tool once.
 The MIME tree includes the complete edition; large reports use full HTML and

@@ -1,0 +1,106 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Media Scout · Library</title><style>
+:root {color-scheme:light;--ink:#18312d;--muted:#526560;--paper:#f5f4ef;--line:#d7dfd8;--accent:#176a58}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+main{max-width:980px;margin:auto;padding:40px 24px 72px}a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:24px}.eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.12;letter-spacing:-.035em;margin:12px 0}h2{font-size:28px;line-height:1.25;margin:8px 0}h3{font-size:16px;margin:18px 0 6px}
+p{margin:8px 0 16px}.meta,.sources{font-size:13px;color:var(--muted)}.badge{font-size:12px;font-weight:700;color:var(--accent)}.change{padding:12px 16px;background:#edf3ec;border-left:3px solid var(--accent)}
+.tool{background:white;border:1px solid var(--line);border-radius:14px;padding:28px;margin:24px 0;overflow-wrap:anywhere}.tool section{border-top:1px solid #edf0eb}
+.stats{display:flex;gap:24px;flex-wrap:wrap;margin:16px 0}.stats strong{font-size:24px;display:block}.stats span{font-size:12px;color:var(--muted)}
+.requirements{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:14px}.requirements dt{font-weight:700}.requirements dd{margin:0}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid var(--line);padding:14px;background:#f7f8f4;border-radius:8px;font:13px/1.6 ui-monospace,monospace}
+.notice{background:#fff3d9;border:1px solid #e0cf9e;padding:14px 18px;border-radius:8px}.coverage{font-size:14px}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid var(--line);padding:10px 6px;text-align:left;vertical-align:top}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;font:inherit}
+button{border:1px solid var(--line);background:white;padding:8px 12px;border-radius:20px;color:var(--ink);cursor:pointer}button[aria-pressed=true]{background:var(--accent);color:white}select{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:white;color:var(--ink);margin:8px 0 12px}
+footer{margin-top:32px;font-size:13px;color:var(--muted)}[hidden]{display:none!important}@media(max-width:550px){main{padding:24px 14px}.tool{padding:20px}.requirements{grid-template-columns:1fr;gap:2px}.requirements dd{margin-bottom:10px}}
+</style></head><body><main>
+<header><div class="eyebrow">Open-source AI for every creative workflow</div><h1>AI Media Scout</h1><p>Daily discovery and practical field guides for all digital media. Search across the starter fields and newly emerging creative uses.</p>
+<p class="meta">Daily at 8:00 AM Eastern · All platforms · 12 full profiles · 0 pending discoveries</p><p class="meta">30 starter fields · Open-ended search · No fixed daily tool limit</p></header>
+<h2>Daily reports</h2><ul>
+<li><a href="reports/2026-10-01/report.html">2026-10-01 — 12 researched tools</a> · <a href="reports/2026-10-01/report.md">Markdown</a></li>
+</ul><h2>Tool library</h2><label for="search">Find a tool or creative workflow</label><input id="search" placeholder="Search name, hardware, use case…" type="search"><label for="field-filter">Creative field</label><select id="field-filter"><option value="all">All fields</option>
+<option value="images">Images &amp; design</option>
+<option value="video">Video, animation &amp; film</option>
+<option value="audio">Audio, music &amp; voice</option>
+<option value="3d">3D, reconstruction &amp; assets</option>
+<option value="web">Browser tools &amp; web media</option>
+<option value="xr">WebXR, VR &amp; AR</option>
+<option value="computational">Computational art &amp; creative coding</option>
+<option value="interactive">Interactive, immersive &amp; live media</option>
+<option value="fabrication">3D printing &amp; generative CAD</option>
+<option value="gaming">Games &amp; production pipelines</option>
+<option value="motion">Motion capture &amp; character animation</option>
+<option value="avatars">Avatars, digital humans &amp; lip sync</option>
+<option value="vfx">VFX, compositing &amp; relighting</option>
+<option value="spatial">Spatial audio &amp; volumetric media</option>
+<option value="capture">Photogrammetry, scanning &amp; neural rendering</option>
+<option value="editing">Editing, captions &amp; post-production</option>
+<option value="vector">Vector graphics, illustration &amp; textures</option>
+<option value="typography">Typography, fonts &amp; layout</option>
+<option value="storytelling">Storyboarding, narrative &amp; comics</option>
+<option value="publishing">Creative publishing &amp; presentation</option>
+<option value="photography">Photography, restoration &amp; color</option>
+<option value="visualization">Data art &amp; scientific visualization</option>
+<option value="installation">Physical, robotic &amp; kinetic installations</option>
+<option value="performance">Performance, projection &amp; stage media</option>
+<option value="fashion">Fashion, textiles &amp; wearable media</option>
+<option value="accessibility">Accessible media &amp; assistive creation</option>
+<option value="mobile">Mobile, edge &amp; on-device creation</option>
+<option value="education">Creative learning &amp; authoring</option>
+<option value="preservation">Archives, media restoration &amp; collections</option>
+<option value="frontier">Emerging &amp; cross-disciplinary creative AI</option>
+</select><p id="result-count" role="status"></p>
+<article class="tool" data-categories="audio"><div class="eyebrow">Audio, music &amp; voice</div><h2>ACE-Step 1.5</h2>
+<p>A locally runnable music-generation toolkit with a Gradio interface and API.</p><p><strong>Good for:</strong> Drafting instrumentals or vocal ideas, creating variations and editing or repainting musical segments. Treat these as sketching capabilities rather than guarantees of finished commercial audio.</p>
+<p class="meta">Windows, Linux and macOS Apple Silicon are documented; CUDA, MPS/MLX, ROCm, Intel XPU and CPU paths vary. · MIT · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/ace-step/ACE-Step-1.5">Get the tool</a></p></article>
+<article class="tool" data-categories="images video audio 3d"><div class="eyebrow">Images &amp; design · Video, animation &amp; film · Audio, music &amp; voice · 3D, reconstruction &amp; assets</div><h2>ComfyUI</h2>
+<p>A visual node-based engine for constructing and reusing AI media workflows.</p><p><strong>Good for:</strong> Controlled image generation, editing, masks, upscaling and model-dependent video/audio/3D pipelines. Particularly useful when repeatability and workflow sharing matter.</p>
+<p class="meta">Windows, Linux and macOS; desktop builds for Windows/macOS; optional paid cloud service. · GPL-3.0 · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/Comfy-Org/ComfyUI">Get the tool</a></p></article>
+<article class="tool" data-categories="xr interactive video"><div class="eyebrow">WebXR, VR &amp; AR · Interactive, immersive &amp; live media · Video, animation &amp; film</div><h2>Decart-XR</h2>
+<p>An open-source Unity/Quest application that streams passthrough camera video to Decart for AI restyling.</p><p><strong>Good for:</strong> Researching immersive transformations of a live physical environment. This is a headset experiment rather than a self-contained open AI model.</p>
+<p class="meta">Android ARM64 build targeting Quest 3. Other headsets are not established by the reviewed prerequisites. · MIT · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/DecartAI/Decart-XR">Get the tool</a></p></article>
+<article class="tool" data-categories="video audio computational"><div class="eyebrow">Video, animation &amp; film · Audio, music &amp; voice · Computational art &amp; creative coding</div><h2>explainroo</h2>
+<p>A local renderer for coding-agent-authored explainer videos, combining narration, word timing, drawings, sound and MP4 output.</p><p><strong>Good for:</strong> Educational explainers, illustrated tutorials and product walkthroughs. My suggested first experiment is a short explanation of your creative process.</p>
+<p class="meta">Linux; macOS/Windows are expected by the maintainer but less tested. · MIT · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/vincentsch/explainroo">Get the tool</a></p></article>
+<article class="tool" data-categories="computational interactive web video"><div class="eyebrow">Computational art &amp; creative coding · Interactive, immersive &amp; live media · Browser tools &amp; web media · Video, animation &amp; film</div><h2>ImWeb</h2>
+<p>A browser video-synthesis instrument combining compositing, GLSL, 3D, controllers and AI-assisted patch/shader creation.</p><p><strong>Good for:</strong> Live visuals, audio-reactive installations and iterative shader experiments. It can use hosted AI providers or a local Ollama model.</p>
+<p class="meta">Browser-based; Chrome recommended, Firefox/Safari WebGL modes have limitations. Native OS support is not separately certified. · AGPL-3.0-or-later · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/imweb-project/ImWeb">Get the tool</a></p></article>
+<article class="tool" data-categories="images web"><div class="eyebrow">Images &amp; design · Browser tools &amp; web media</div><h2>InvokeAI</h2>
+<p>A local AI image-creation application with a browser interface, unified canvas, model manager and reusable workflows.</p><p><strong>Good for:</strong> Iterative concept art, inpainting/outpainting and controlled refinement of photos, sketches and renders.</p>
+<p class="meta">Windows 10+, macOS 14+ and Linux. AMD GPU support is Linux-only; Intel Arc is documented for Windows/Linux x86_64. · Apache-2.0 · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/invoke-ai/InvokeAI">Get the tool</a></p></article>
+<article class="tool" data-categories="gaming 3d computational"><div class="eyebrow">Games &amp; production pipelines · 3D, reconstruction &amp; assets · Computational art &amp; creative coding</div><h2>MCP for Blender</h2>
+<p>An MCP server and Blender addon enabling compatible AI clients to inspect and operate Blender scenes.</p><p><strong>Good for:</strong> Agent-assisted scene blocking, materials, repetitive DCC tasks and game-asset prototyping. The language model is supplied by your client.</p>
+<p class="meta">Documented Windows, macOS and Linux setup paths. · MIT · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/ahujasid/mcp-for-blender">Get the tool</a></p></article>
+<article class="tool" data-categories="fabrication 3d web gaming"><div class="eyebrow">3D printing &amp; generative CAD · 3D, reconstruction &amp; assets · Browser tools &amp; web media · Games &amp; production pipelines</div><h2>Tau</h2>
+<p>An AI-assisted browser parametric CAD environment supporting multiple geometry kernels and export formats.</p><p><strong>Good for:</strong> Exploring dimension-driven forms, printable prototypes and editable CAD ideas. Suggested experiment: a small enclosure with a few adjustable parameters.</p>
+<p class="meta">Browser use is described for desktop/mobile. Local development depends on availability of the listed tools; OS-specific certification is unreported. · MIT · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/taucad/tau">Get the tool</a></p></article>
+<article class="tool" data-categories="web computational interactive audio images"><div class="eyebrow">Browser tools &amp; web media · Computational art &amp; creative coding · Interactive, immersive &amp; live media · Audio, music &amp; voice · Images &amp; design</div><h2>Transformers.js</h2>
+<p>A JavaScript library for running pretrained vision, audio and language models in browsers using ONNX Runtime.</p><p><strong>Good for:</strong> Custom captioning, transcription, segmentation and responsive media interfaces. Creative-coding uses are integrations you build, rather than a finished authoring application.</p>
+<p class="meta">Modern browsers on supported desktop/mobile systems, subject to model and backend compatibility. WebGPU support varies. · Apache-2.0 · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/huggingface/transformers.js">Get the tool</a></p></article>
+<article class="tool" data-categories="3d gaming fabrication"><div class="eyebrow">3D, reconstruction &amp; assets · Games &amp; production pipelines · 3D printing &amp; generative CAD</div><h2>TRELLIS.2</h2>
+<p>An image-to-3D research pipeline producing textured assets, with additional shape-conditioned texture generation.</p><p><strong>Good for:</strong> Prototyping game props and digital sculptural assets from reference images. Fabrication is a downstream experiment; output is not certified print-ready.</p>
+<p class="meta">Officially tested Linux path. Native macOS and Windows support are not established by this documentation; use a suitable Linux GPU host. · MIT · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/microsoft/TRELLIS.2">Get the tool</a></p></article>
+<article class="tool" data-categories="video images audio"><div class="eyebrow">Video, animation &amp; film · Images &amp; design · Audio, music &amp; voice</div><h2>Velorn</h2>
+<p>A desktop video editor combining AI generation workflows with a timeline, assets, captions and export.</p><p><strong>Good for:</strong> Finishing generated clips into music videos, short films and creator videos. Its main appeal is keeping generation and editing within a project.</p>
+<p class="meta">Windows, macOS Intel/Apple Silicon, Linux. The desktop ComfyUI connection is limited to localhost. · GPL-3.0 · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/VelornLabs/velorn">Get the tool</a></p></article>
+<article class="tool" data-categories="xr interactive web"><div class="eyebrow">WebXR, VR &amp; AR · Interactive, immersive &amp; live media · Browser tools &amp; web media</div><h2>XR Blocks</h2>
+<p>A three.js-based library for interactive spatial applications, with desktop simulation, gesture handling and optional multimodal AI integration.</p><p><strong>Good for:</strong> Prototyping AI-assisted spatial interfaces and interactive installation concepts before deploying to a supported XR headset.</p>
+<p class="meta">Desktop Chrome simulator and documented Android XR devices. Do not assume support for every Quest, Vision Pro or browser. · Apache-2.0 · Last profiled 2026-10-01</p>
+<p><a href="reports/2026-10-01/report.html">Read the full profile and install guide</a> · <a href="https://github.com/google/xrblocks">Get the tool</a></p></article>
+<p id="empty" hidden>No tools match this search. Try another field or phrase.</p><footer>Primary documentation reviewed; performance and output quality are not independently benchmarked. The archive preserves each day's evidence.</footer></main>
+<script>
+const cards=[...document.querySelectorAll('article.tool')];
+function filter(){const query=document.querySelector('#search').value.toLowerCase().trim(), selected=document.querySelector('#field-filter').value;let count=0;for(const card of cards){card.hidden=!((selected==='all'||card.dataset.categories.split(' ').includes(selected))&&card.textContent.toLowerCase().includes(query));if(!card.hidden)count++;}document.querySelector('#result-count').textContent=count+' tools shown';document.querySelector('#empty').hidden=count!==0;}
+document.querySelector('#search').addEventListener('input',filter);document.querySelector('#field-filter').addEventListener('change',filter);filter();
+</script></body></html>

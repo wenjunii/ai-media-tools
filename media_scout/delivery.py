@@ -7,6 +7,7 @@ A process crash after reservation requires mailbox reconciliation, never a resen
 from pathlib import Path
 from html import escape
 from .configuration import load_config, require_recipient
+from .publication import verify_sync
 
 from .report import verify_report
 from .storage import ROOT, locked, now, read_json, report_date, write_json
@@ -24,6 +25,10 @@ def prepare(day, root=ROOT):
                 return {"status": "already-sent", "message_id": receipt["message_id"]}
             raise RuntimeError("Send already reserved or outcome uncertain. Reconcile Sent mail before any further action; do not resend.")
         require_recipient(manifest["recipient"])
+        config = load_config(root)
+        publication = None
+        if config.get("github_sync", {}).get("required_before_email"):
+            publication = verify_sync(day, root)
         folder = root / "reports" / day
         plain = (folder / "report.md").read_text()
         html = (folder / "report.html").read_text()
@@ -32,7 +37,6 @@ def prepare(day, root=ROOT):
                        {"mime_type": "text/plain", "charset": "UTF-8", "body": {"content": plain}},
                        {"mime_type": "text/html", "charset": "UTF-8", "body": {"content": html}},
                    ]}}
-        config = load_config(root)
         if len(html.encode("utf-8")) > config.get("email_inline_max_bytes", 90_000):
             report = read_json(folder / "report.json")
             counts = f'{manifest["profile_count"]} full profiles; {manifest.get("lead_count", 0)} additional discoveries.'
@@ -48,10 +52,13 @@ def prepare(day, root=ROOT):
                  "filename": f"ai-media-scout-{day}.md", "body": {"content": plain}}]}
         output = root / "state/outbox" / (day + ".json")
         write_json(output, payload)
-        write_json(receipt_path, {"report_date": day, "status": "reserved", "reserved_at": now(),
+        receipt = {"report_date": day, "status": "reserved", "reserved_at": now(),
                                   "recipient": manifest["recipient"], "subject": manifest["subject"],
                                   "report_sha256": manifest["sha256"][f"reports/{day}/report.html"],
-                                  "transport": "connected-gmail"})
+                                  "transport": "connected-gmail"}
+        if publication:
+            receipt.update(github_commit=publication["commit"], github_report_url=publication["report_url"])
+        write_json(receipt_path, receipt)
         return {"status": "reserved", "payload_path": str(output), "subject": manifest["subject"]}
 
 
