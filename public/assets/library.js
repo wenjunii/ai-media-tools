@@ -20,6 +20,83 @@
       return Array.isArray(ids) ? Array.from(new Set(ids.filter(function (id) { return typeof id === "string" && known.has(id); }))) : [];
     } catch (error) { return []; }
   }
+  function shortlistJSON(ids, tools) {
+    return JSON.stringify({format: "ai-media-scout-shortlist", version: 1,
+      tool_ids: savedIds(JSON.stringify(Array.from(ids)), tools).sort()}, null, 2) + "\n";
+  }
+  function importShortlist(serialized, currentIds, tools) {
+    let payload;
+    try { payload = JSON.parse(serialized); }
+    catch (error) { throw new Error("This is not valid JSON. Use a shortlist exported by AI Media Scout."); }
+    if (!payload || payload.format !== "ai-media-scout-shortlist" || payload.version !== 1 ||
+        !Array.isArray(payload.tool_ids) || payload.tool_ids.some(function (id) { return typeof id !== "string" || !id.trim(); })) {
+      throw new Error("This is not a supported shortlist. Use Download shortlist or Copy shortlist in AI Media Scout.");
+    }
+    const known = new Set(tools.map(function (tool) { return tool.id; })), merged = new Set(currentIds);
+    const missing = []; let added = 0, existing = 0;
+    Array.from(new Set(payload.tool_ids)).forEach(function (id) {
+      if (!known.has(id)) missing.push(id);
+      else if (merged.has(id)) existing++;
+      else { merged.add(id); added++; }
+    });
+    return {ids: Array.from(merged), added: added, existing: existing, missing: missing};
+  }
+  function researchNotes(ids, tools, sectionLabels) {
+    function md(value) {
+      return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/([\\`*_{}\[\]#!|])/g, "\\$1");
+    }
+    function url(value) { return "<" + String(value).replace(/[<>\s]/g, function (char) { return encodeURIComponent(char); }) + ">"; }
+    function commands(value) {
+      const runs = String(value).match(/`+/g) || [], fence = "`".repeat(Math.max(3, ...runs.map(function (run) { return run.length + 1; })));
+      return fence + "text\n" + value + "\n" + fence;
+    }
+    const selected = new Set(ids), chosen = sortTools(tools.filter(function (tool) { return selected.has(tool.id); }), "name");
+    const lines = ["# AI Media Scout — saved research notes", "",
+      chosen.length + (chosen.length === 1 ? " saved tool." : " saved tools.") + " Each entry uses its latest available detailed review, or its latest screened discovery when a full guide is pending.", "",
+      "These are dated research notes. Documentation review does not establish that a tool was installed or tested. Requirements, model terms and source links should be checked before use.", ""];
+    function section(title, value, fields) {
+      value = value || {};
+      lines.push("### " + md(title), "", md(value.text || "Not documented"), "");
+      (fields || []).forEach(function (field) {
+        lines.push("- **" + md(field[1]) + ":** " + md(value[field[0]] || "Not documented"));
+      });
+      if (fields && fields.length) lines.push("");
+      (value.steps || []).forEach(function (step, index) { lines.push((index + 1) + ". " + md(step)); });
+      if (value.steps && value.steps.length) lines.push("");
+      (value.commands || []).forEach(function (command) { lines.push(commands(command), ""); });
+      if (value.source_urls && value.source_urls.length) {
+        lines.push("Sources: " + value.source_urls.map(url).join(" · "), "");
+      }
+    }
+    chosen.forEach(function (tool) {
+      const version = primaryVersion(tool), p = version.profile, full = version.kind === "profile";
+      lines.push("## " + md(p.name), "", "Tool ID: " + md(tool.id), "",
+        "Edition: " + md(editionKey(version)) + " · Documentation checked: " + md(p.checked_on || "Not documented"), "",
+        full ? (p.quality && p.quality.hands_on_tested ? "Hands-on testing recorded; see the quality review for its scope." :
+          "Documentation review; installation and output were not independently tested.") : "Screened discovery — full profile pending.", "");
+      Object.entries(p.links || {}).forEach(function (entry) { lines.push("- " + md(entry[0].replace(/_/g, " ")) + ": " + url(entry[1])); });
+      lines.push("");
+      if (p.ai_relevance) section("How it uses AI", p.ai_relevance);
+      if (full) {
+        section("Why it appeared in this edition", p.novelty);
+        if (p.maturity) lines.push("Maturity: " + md(p.maturity), "");
+        Object.entries(sectionLabels).forEach(function (entry) {
+          const fields = entry[0] === "requirements" ? [["hardware", "Hardware"], ["software", "Software"], ["platforms", "Platforms and limitations"]] :
+            entry[0] === "license" ? [["code", "Software license"], ["weights", "Model weights"], ["commercial", "Commercial use"], ["cost", "Costs and services"]] : [];
+          section(entry[1], p[entry[0]], fields);
+        });
+      } else {
+        lines.push("### What it is good for", "", md(p.good_for), "", "Software license: " + md(p.code_license), "",
+          "Installation, hardware, software, platforms, model-weight terms, commercial use and costs: not reviewed yet; full profile pending.", "",
+          md(p.review_status), "");
+      }
+      lines.push("### Primary sources", "");
+      (p.sources || []).forEach(function (source, index) { lines.push((index + 1) + ". " + md(source.title) + ": " + url(source.url)); });
+      lines.push("", "---", "");
+    });
+    return lines.join("\n");
+  }
   function comparisonSelection(serialized, tools) {
     try {
       const entries = JSON.parse(serialized), byId = new Map(tools.map(function (tool) { return [tool.id, tool]; })), seen = new Set();
@@ -96,7 +173,8 @@
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
                       coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
-                      comparisonSelection: comparisonSelection, comparisonRows: comparisonRows};
+                      comparisonSelection: comparisonSelection, comparisonRows: comparisonRows,
+                      shortlistJSON: shortlistJSON, importShortlist: importShortlist, researchNotes: researchNotes};
   }
   if (typeof document === "undefined") return;
   const data = JSON.parse(document.getElementById("library-data").textContent);
@@ -166,12 +244,34 @@
     });
     updateURL();
   }
+  function persistSaved() {
+    try { localStorage.setItem(savedKey, JSON.stringify(Array.from(saved))); storageAvailable = true; }
+    catch (error) { storageAvailable = false; }
+  }
+  function download(text, type, name) {
+    const objectURL = URL.createObjectURL(new Blob([text], {type: type})), anchor = link("", objectURL);
+    anchor.download = name; document.body.append(anchor); anchor.click(); anchor.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(objectURL); }, 10000);
+  }
+  function receiveShortlist(text) {
+    try {
+      const result = importShortlist(text, saved, data.tools);
+      saved = new Set(result.ids); persistSaved(); render();
+      $("shortlist-status").textContent = "Added " + result.added + "; already saved " + result.existing +
+        "; not in this library " + result.missing.length + "." +
+        (result.missing.length ? " Missing tools were skipped. Try importing again after your library updates." : "") +
+        (!storageAvailable ? " Browser storage is unavailable; these saves last for this tab only. Download a backup before closing it." : "");
+      $("shortlist-status").dataset.error = "false";
+    } catch (error) {
+      $("shortlist-status").textContent = error.message + " Your saved tools have not changed.";
+      $("shortlist-status").dataset.error = "true";
+    }
+  }
   function personalButton(action, tool, version) {
     const node = button("personal-button", "", function () {
       if (action === "save") {
         if (saved.has(tool.id)) saved.delete(tool.id); else saved.add(tool.id);
-        try { localStorage.setItem(savedKey, JSON.stringify(Array.from(saved))); storageAvailable = true; }
-        catch (error) { storageAvailable = false; }
+        persistSaved();
       } else {
         const index = comparison.findIndex(function (entry) { return entry.id === tool.id; });
         if (index >= 0) comparison.splice(index, 1);
@@ -191,6 +291,8 @@
   function updatePersonalControls() {
     $("saved-count").textContent = saved.size;
     $("saved-storage-note").hidden = storageAvailable;
+    $("shortlist-count").textContent = saved.size + (saved.size === 1 ? " saved tool" : " saved tools") + " in this browser.";
+    ["download-shortlist", "copy-shortlist", "download-notes"].forEach(function (id) { $(id).disabled = saved.size === 0; });
     document.querySelectorAll("[data-personal-action]").forEach(function (node) {
       const id = node.dataset.toolId, action = node.dataset.personalAction, tool = byId.get(id);
       const selected = action === "save" ? saved.has(id) : comparison.some(function (entry) { return entry.id === id; });
@@ -427,6 +529,32 @@
   });
   $("reset").addEventListener("click", reset); $("empty-reset").addEventListener("click", reset);
   $("saved-only").addEventListener("change", function () { visible = 24; render(); });
+  $("manage-shortlist").addEventListener("click", function () {
+    $("shortlist-status").textContent = ""; $("shortlist-dialog").showModal();
+  });
+  $("close-shortlist").addEventListener("click", function () { $("shortlist-dialog").close(); });
+  $("download-shortlist").addEventListener("click", function () {
+    download(shortlistJSON(saved, data.tools), "application/json", "ai-media-scout-shortlist.json");
+  });
+  $("download-notes").addEventListener("click", function () {
+    download(researchNotes(saved, data.tools, data.section_labels), "text/markdown;charset=utf-8", "ai-media-scout-research-notes.md");
+  });
+  $("copy-shortlist").addEventListener("click", async function () {
+    const text = shortlistJSON(saved, data.tools);
+    try { await navigator.clipboard.writeText(text); $("shortlist-status").textContent = "Shortlist copied. Paste it into Move saved tools on the other device."; }
+    catch (error) {
+      $("shortlist-json").value = text; $("shortlist-paste").open = true; $("shortlist-json").focus(); $("shortlist-json").select();
+      $("shortlist-status").textContent = "Copy the selected shortlist text, or use Download shortlist.";
+    }
+    $("shortlist-status").dataset.error = "false";
+  });
+  $("import-shortlist").addEventListener("change", async function () {
+    const file = this.files[0]; if (!file) return;
+    try { receiveShortlist(await file.text()); }
+    catch (error) { $("shortlist-status").textContent = "The file could not be read. Your saved tools have not changed."; $("shortlist-status").dataset.error = "true"; }
+    this.value = "";
+  });
+  $("import-pasted-shortlist").addEventListener("click", function () { receiveShortlist($("shortlist-json").value); });
   $("compare-selected").addEventListener("click", openComparison);
   $("clear-comparison").addEventListener("click", function () { comparison = []; render(); $("search").focus(); });
   $("close-comparison").addEventListener("click", function () { $("compare-dialog").close(); });
