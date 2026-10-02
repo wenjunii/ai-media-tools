@@ -1,6 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const {matches, searchText, primaryVersion, sortTools, coverageText} = require("../media_scout/ui/library.js");
+const {matches, searchText, primaryVersion, sortTools, coverageText, savedIds,
+       comparisonSelection, comparisonRows} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -23,6 +24,54 @@ test("combined filters use the selected edition's actual review", () => {
 });
 test("cached full text produces the same results as live text", () => {
   assert.equal(matches(tool, {q: "original"}, searchText(tool)), matches(tool, {q: "original"}));
+});
+test("edition-scoped search cannot match another review even with an all-review cache", () => {
+  assert.equal(matches(tool, {edition: "2026-10-02", q: "original texture"}, searchText(tool)), false);
+  assert.equal(matches(tool, {edition: "2026-10-01", q: '"8 GB"'}, searchText(tool)), false);
+  assert.equal(matches(tool, {edition: "2026-10-02", q: '"8 GB"'}), true);
+  assert.equal(matches(tool, {edition: "2026-10-01", q: "original texture"}), true);
+  assert.equal(matches(tool, {q: "original texture"}), true);
+});
+test("saved tools restore only known unique IDs and recover from invalid browser data", () => {
+  assert.deepEqual(savedIds(JSON.stringify([tool.id, tool.id, "github:missing/tool", null, {}]), [tool]), [tool.id]);
+  for (const invalid of [null, "broken JSON", "{}", '"a string"']) assert.deepEqual(savedIds(invalid, [tool]), []);
+  const many = Array.from({length: 50}, (_, i) => ({...tool, id: "github:example/tool" + i}));
+  assert.equal(savedIds(JSON.stringify(many.map(t => t.id)), many).length, 50);
+});
+test("shared comparisons preserve exact review identities and reject missing or duplicated entries", () => {
+  const second = {...tool, id: "github:example/second", versions: [
+    {...tool.versions[0], date: "2026-10-01", revision: 2, edition_id: "2026-10-01-r2"}
+  ]};
+  const entries = [
+    {id: tool.id, edition: "2026-10-01"}, {id: tool.id, edition: "2026-10-02"},
+    {id: second.id, edition: "2026-10-01"}, {id: second.id, edition: "2026-10-01-r2"},
+    {id: "github:missing/tool", edition: "2026-10-01"}, null
+  ];
+  assert.deepEqual(comparisonSelection(JSON.stringify(entries), [tool, second]), [
+    {id: tool.id, edition: "2026-10-01"}, {id: second.id, edition: "2026-10-01-r2"}
+  ]);
+  for (const invalid of [null, "broken JSON", "{}"]) assert.deepEqual(comparisonSelection(invalid, [tool]), []);
+  const many = Array.from({length: 6}, (_, i) => ({...tool, id: "github:example/tool" + i}));
+  assert.equal(comparisonSelection(JSON.stringify(many.map(t => ({id: t.id, edition: "2026-10-02"}))), many).length, 4);
+});
+test("comparison distinguishes unknown requirements, pending reviews and software/model terms", () => {
+  const p = {...tool.versions[0].profile, good_for: {text: "Animated paintings"},
+    license: {code: "Apache-2.0", weights: "A separate research-only model", commercial: "Check model terms", cost: "Optional paid host", source_urls: ["https://example.com/license"]},
+    quality: {hands_on_tested: false}};
+  const rows = comparisonRows({kind: "profile", profile: p});
+  const value = label => rows.find(row => row.label === label);
+  assert.equal(value("Hardware").text, "8 GB");
+  assert.equal(value("Software").text, "Not documented");
+  assert.equal(value("Software license").text, "Apache-2.0");
+  assert.equal(value("Model weights").text, "A separate research-only model");
+  assert.deepEqual(value("Model weights").source_urls, ["https://example.com/license"]);
+  assert.match(value("Review evidence").text, /not independently tested/);
+  const leadRows = comparisonRows({kind: "screened", profile: {good_for: "Audio editing", code_license: "MIT",
+    sources: [{title: "Complete software license", url: "https://example.com/license"}]}});
+  assert.equal(leadRows.find(row => row.label === "Software license").text, "MIT");
+  assert.deepEqual(leadRows.find(row => row.label === "Software license").source_urls, ["https://example.com/license"]);
+  assert.match(leadRows.find(row => row.label === "Hardware").text, /full profile pending/);
+  assert.match(leadRows.find(row => row.label === "Model weights").text, /full profile pending/);
 });
 test("later screened mention retains the complete guide as primary", () => {
   const later = {...tool, versions: [{date: "2026-10-03", kind: "screened", profile: {categories: ["audio"], code_license: "MIT"}}, ...tool.versions]};

@@ -43,24 +43,26 @@
     <section id="library" aria-labelledby="library-heading">
       <div class="section-heading"><div><p class="eyebrow">FIND YOUR NEXT EXPERIMENT</p><h2 id="library-heading">The tool library</h2></div><a href="library.json" download class="quiet-link">Download library JSON <span aria-hidden="true">↓</span></a></div>
       <div class="search-row">
-        <div class="search-wrap"><span aria-hidden="true" class="search-icon">⌕</span><label class="sr-only" for="search">Search all profiles and review history</label><input id="search" type="search" placeholder="Try “Blender”, “music”, “8 GB”, or an idea…" autocomplete="off"><span class="search-hint">Search every review</span></div>
+        <div class="search-wrap"><span aria-hidden="true" class="search-icon">⌕</span><label id="search-label" class="sr-only" for="search">Search all profiles and review history</label><input id="search" type="search" placeholder="Try “Blender”, “music”, “8 GB”, or an idea…" autocomplete="off"><span id="search-scope" class="search-hint">Search every review</span></div>
         <label class="sort-wrap" for="sort">Sort by<select id="sort"><option value="updated">Latest review</option><option value="added">Recently added</option><option value="name">Name A–Z</option></select></label>
       </div>
       <div class="library-layout">
         <aside class="filters" aria-label="Library filters">
           <div class="filter-title"><h3>Refine your search</h3><button id="reset" class="reset-button">Clear</button></div>
-          <label for="field-filter">Creative field</label><select id="field-filter"><option value="">All creative fields</option></select>
-          <label for="platform-filter">Platform mentions</label><select id="platform-filter"><option value="">All platforms</option></select>
-          <p class="filter-note">Mentions in the documentation; see the profile for support and limitations.</p>
-          <label for="license-filter">Software license</label><select id="license-filter"><option value="">All licenses</option></select>
-          <label for="review-filter">Review depth</label><select id="review-filter"><option value="">All discoveries</option><option value="profile">Detailed profiles</option><option value="screened">Screened · profile pending</option></select>
-          <label for="edition-filter">Daily edition</label><select id="edition-filter"><option value="">All editions</option></select>
+          <label class="saved-filter" for="saved-only"><input id="saved-only" type="checkbox"><span>Saved tools <strong id="saved-count">0</strong></span></label>
+          <p id="saved-storage-note" class="filter-note storage-note" role="status" hidden>Browser storage is unavailable. Your saves will last for this tab only.</p>
+          <div class="filter-group"><label for="field-filter">Creative field</label><select id="field-filter"><option value="">All creative fields</option></select></div>
+          <div class="filter-group"><label for="platform-filter">Platform mentions</label><select id="platform-filter"><option value="">All platforms</option></select><p class="filter-note">Mentions in the documentation; see the profile for support and limitations.</p></div>
+          <div class="filter-group"><label for="license-filter">Software license</label><select id="license-filter"><option value="">All licenses</option></select></div>
+          <div class="filter-group"><label for="review-filter">Review depth</label><select id="review-filter"><option value="">All discoveries</option><option value="profile">Detailed profiles</option><option value="screened">Screened · profile pending</option></select></div>
+          <div class="filter-group edition-filter-group"><label for="edition-filter">Daily edition</label><select id="edition-filter"><option value="">All editions</option></select></div>
           <div class="filter-footer"><span class="small-mark" aria-hidden="true">✳</span><p>Only open-source AI.<br>Across every creative practice.</p></div>
         </aside>
         <div class="results-area">
           <div class="results-heading"><p id="result-count" role="status" aria-live="polite"></p><span class="review-key"><span class="live-dot" aria-hidden="true"></span> Source-backed guidance</span></div>
+          <div id="comparison-bar" class="comparison-bar" aria-label="Selected comparison tools" hidden><div><p>Choose 2–4 tools to compare</p><div id="comparison-items" class="comparison-items"></div></div><div class="comparison-actions"><button id="compare-selected" class="button primary" disabled>Compare tools</button><button id="clear-comparison" class="reset-button">Clear comparison</button></div></div>
           <div id="cards" class="tool-grid"></div>
-          <div id="empty" class="empty-state" hidden><span aria-hidden="true">⌕</span><h3>No tools match yet</h3><p>Try fewer words, another creative field, or clear your filters.</p><button id="empty-reset" class="button primary">Clear search</button></div>
+          <div id="empty" class="empty-state" hidden><span aria-hidden="true">⌕</span><h3>No tools match yet</h3><p id="empty-message">Try fewer words, another creative field, or clear your filters.</p><button id="empty-reset" class="button primary">Clear search</button></div>
           <button id="load-more" class="button load-more" hidden>Show more tools</button>
           <p class="library-note">Library totals count published profiles and screened discoveries. Raw search candidates appear after their creative AI use and software license are checked. Search includes older reviews; requirements and licenses can change.</p>
         </div>
@@ -77,6 +79,11 @@
   <dialog id="profile-dialog" aria-labelledby="profile-title">
     <div class="dialog-top"><span class="eyebrow">THE TOOL FIELD GUIDE</span><button id="close-profile" class="close-button" aria-label="Close tool profile">×</button></div>
     <div id="profile-content"></div>
+  </dialog>
+  <dialog id="compare-dialog" class="compare-dialog" aria-labelledby="comparison-title">
+    <div class="dialog-top"><span class="eyebrow">CHOOSE WHAT TO TRY NEXT</span><button id="close-comparison" class="close-button" aria-label="Close tool comparison">×</button></div>
+    <div class="comparison-intro"><h2 id="comparison-title">Compare your tools</h2><p>Requirements and terms reflect each dated review. Pending profiles show the information that still needs research.</p><p id="comparison-scroll-hint" class="comparison-scroll-hint" hidden>Scroll sideways to see each tool.</p><div class="profile-links"><button id="copy-comparison" class="profile-button">Copy comparison link</button><span id="comparison-share-status" class="share-status" role="status"></span></div></div>
+    <div id="comparison-content" class="comparison-scroll" tabindex="0" role="region" aria-label="Tool comparison table"></div>
   </dialog>
   <script id="library-data" type="application/json">{
   "format_version": 1,

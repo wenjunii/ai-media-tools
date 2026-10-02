@@ -17,7 +17,11 @@ raw research, and delivery records remain local.
 
 **[Search the live tool library](https://wenjunii.github.io/ai-media-tools/)**.
 The same web UI runs locally, with full-text search, filters, detailed profiles,
-and dated review history. Published profiles and screened discoveries accumulate
+dated review history, saved tools, and side-by-side comparisons. Save promising
+tools to a browser shortlist, or choose 2–4 tools to compare requirements,
+platforms, software/model terms, costs and review evidence. Copy the comparison
+link to revisit or share those exact dated reviews. Published profiles and
+screened discoveries accumulate
 without a fixed count limit. An edition with no qualifying discoveries preserves
 the existing collection.
 
