@@ -419,7 +419,8 @@ def build(editorial_path, root=ROOT):
         write_text(folder / "report.md", render_markdown(report, discovery, config))
         artifacts = [folder / name for name in ("report.json", "report.html", "report.md")]
         artifacts.append(root / "research" / day / "discovery.json")
-        artifacts.extend(sorted((root / "research" / day / "evidence").glob("*")))
+        evidence_files = (root / "research" / day / "evidence").rglob("*")
+        artifacts.extend(sorted(path for path in evidence_files if path.is_file()))
         artifacts.extend(sorted((root / "research" / day / "queries").glob("*.json")))
         artifacts.append(Path(editorial_path).resolve())
         candidates = {item["id"]: item for item in discovery["candidates"]}

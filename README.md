@@ -28,8 +28,9 @@ pilot subset. Existing reports and delivery receipts remain preserved.
 
 The [October 1 expanded update](public/reports/2026-10-01/updates/r2/report.md)
 adds **27 detailed guides and 38 screened discoveries**. The cumulative library
-now contains **77 tools**, including the original 12 guides; pending discoveries
-remain clearly labeled until their complete profiles are finished.
+contained **77 tools as of that October 1 update**, including the original 12
+guides. Current totals are shown in the live library; pending discoveries remain
+clearly labeled until their complete profiles are finished.
 
 ## What an edition contains
 
