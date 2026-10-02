@@ -28,6 +28,21 @@ and private research remain in the local discovery catalog and review queue.
   different browsers and different devices keep separate shortlists. Saves
   have no collection-size limit. If browser storage is unavailable, the UI
   keeps the shortlist for the current tab and explains that it will not persist.
+- Use **Move saved tools** to transfer all saves between browsers or devices.
+  Download the shortlist JSON file, or copy it, then import it in the other
+  library. Import merges matching tool IDs with existing saves, skips duplicates,
+  and reports tools missing from that library. Update an older library and import
+  again to recover missing tools. Invalid files leave existing saves unchanged.
+  Transfer files contain only the format/version and tool IDs; importing cannot
+  inject profiles, source links or installation instructions into the library.
+- **Download research notes** exports all saved tools to Markdown, regardless of
+  the current search filters. Each entry uses its latest available detailed guide,
+  or latest screened discovery if no complete profile exists. The notes preserve
+  edition IDs, documentation-check dates, installation/first-use steps, documented
+  hardware/software/platform requirements, software and model terms, costs,
+  testing disclosures, limitations and primary-source citations. Unknown values
+  and pending research remain labeled. This is useful context for planning a PC
+  experiment; it does not install a tool or claim it was tested.
 - Select **Compare** on 2–4 cards or profiles, then use **Compare tools**.
   The table shows creative uses, hardware, software, platforms, software
   licenses, model terms, commercial-use notes, costs, maturity and review
@@ -41,6 +56,12 @@ and private research remain in the local discovery catalog and review queue.
   lists stay in browser storage and are not included in comparison links.
 - Browse preserved editions through Daily reports, or download the cumulative
   library JSON for your own analysis.
+
+Shortlist transfer is manual, not automatic device synchronization. Downloads
+and imports run entirely in the browser. The transfer JSON selects tools, while
+research notes capture the dated guidance available when exported; neither file
+changes published reports. A later import uses the destination library's existing
+reviews. Use a comparison link when you need to share specific review editions.
 
 One library entry is kept per stable tool ID. Every published dated review remains
 in `versions`; profile completion promotes a screened lead without duplicating it.

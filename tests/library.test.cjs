@@ -1,7 +1,8 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const {matches, searchText, primaryVersion, sortTools, coverageText, savedIds,
-       comparisonSelection, comparisonRows} = require("../media_scout/ui/library.js");
+       comparisonSelection, comparisonRows, shortlistJSON, importShortlist,
+       researchNotes} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -37,6 +38,78 @@ test("saved tools restore only known unique IDs and recover from invalid browser
   for (const invalid of [null, "broken JSON", "{}", '"a string"']) assert.deepEqual(savedIds(invalid, [tool]), []);
   const many = Array.from({length: 50}, (_, i) => ({...tool, id: "github:example/tool" + i}));
   assert.equal(savedIds(JSON.stringify(many.map(t => t.id)), many).length, 50);
+});
+test("shortlists transfer every save between libraries and merge without replacing existing saves", () => {
+  const many = Array.from({length: 60}, (_, i) => ({...tool, id: "github:example/tool" + i}));
+  const transfer = shortlistJSON(new Set(many.map(t => t.id)), many);
+  const current = new Set([tool.id, many[0].id]);
+  const result = importShortlist(transfer, current, [tool, ...many]);
+  assert.equal(result.added, 59);
+  assert.equal(result.existing, 1);
+  assert.equal(result.ids.length, 61);
+  assert.deepEqual(result.missing, []);
+  assert.deepEqual(Array.from(current), [tool.id, many[0].id]);
+  assert.deepEqual(Object.keys(JSON.parse(transfer)), ["format", "version", "tool_ids"]);
+  assert.equal(importShortlist(transfer, result.ids, [tool, ...many]).added, 0);
+});
+test("shortlist imports report missing tools, count duplicates once, and never accept imported profiles", () => {
+  const payload = {format: "ai-media-scout-shortlist", version: 1,
+    tool_ids: [tool.id, tool.id, "github:missing/tool", "github:missing/tool"],
+    profiles: [{...tool, name: "An imported replacement"}]};
+  const before = JSON.stringify(tool);
+  const result = importShortlist(JSON.stringify(payload), [], [tool]);
+  assert.deepEqual(result, {ids: [tool.id], added: 1, existing: 0, missing: ["github:missing/tool"]});
+  assert.equal(JSON.stringify(tool), before);
+});
+test("malformed and unsupported shortlist imports fail without mutating saves", () => {
+  const current = new Set([tool.id]);
+  for (const value of ["broken", "null", "[]", JSON.stringify({format_version: 1, tools: [tool]}),
+      ...[2, "1"].map(version => JSON.stringify({format: "ai-media-scout-shortlist", version, tool_ids: [tool.id]})),
+      ...[[tool.id, null], [tool.id, {}], [tool.id, " "]].map(tool_ids => JSON.stringify({format: "ai-media-scout-shortlist", version: 1, tool_ids}))]) {
+    assert.throws(() => importShortlist(value, current, [tool]), /shortlist/i);
+    assert.deepEqual(Array.from(current), [tool.id]);
+  }
+  assert.deepEqual(importShortlist(shortlistJSON([], [tool]), current, [tool]).ids, [tool.id]);
+});
+test("research notes preserve dated full guidance, commands and citations instead of a later brief mention", () => {
+  const full = {...tool.versions[0], edition_id: "2026-10-02-r2", revision: 2, profile: {...tool.versions[0].profile,
+    checked_on: "2026-10-02", quality: {text: "Review scope", hands_on_tested: false},
+    installation: {text: "Developer instructions", steps: ["Install Python"], commands: ["paint --animate"], source_urls: ["https://example.com/install"]},
+    license: {code: "Apache-2.0", weights: "Research-only weights", commercial: "Review separate model terms", cost: "Optional paid host"},
+    sources: [{title: "Install docs", url: "https://example.com/install"}], links: {demo: "https://example.com/demo"}}};
+  const revised = {...tool, versions: [{date: "2026-10-03", kind: "screened", profile: {name: "Later mention"}}, full]};
+  const labels = {installation: "Install", requirements: "Hardware & software", license: "License", quality: "Quality"};
+  const notes = researchNotes([tool.id], [revised], labels);
+  for (const value of ["2026-10-02-r2", "Documentation checked: 2026-10-02", "8 GB", "Browser", "Apache-2.0",
+      "Research-only weights", "Review separate model terms", "Optional paid host", "Install Python", "paint --animate", "https://example.com/install", "https://example.com/demo"]) {
+    assert.ok(notes.includes(value), value);
+  }
+  assert.ok(notes.includes("**Software:** Not documented"));
+  assert.match(notes, /not independently tested/);
+  assert.doesNotMatch(notes, /Later mention/);
+});
+test("research notes export only saved tools and keep pending requirements and testing claims explicit", () => {
+  const lead = {id: "github:example/lead", name: "Audio lead", versions: [{date: "2026-10-02", kind: "screened", profile: {
+    name: "Audio lead", checked_on: "2026-10-02", good_for: "Voice editing", code_license: "MIT", review_status: "Needs installation review",
+    ai_relevance: {text: "Neural voice editing", source_urls: ["https://example.com/ai"]},
+    sources: [{title: "License", url: "https://example.com/license"}]}}]};
+  const notes = researchNotes([lead.id], [tool, lead], {});
+  assert.match(notes, /1 saved tool\./);
+  assert.match(notes, /full profile pending/);
+  assert.match(notes, /model-weight terms, commercial use and costs: not reviewed yet/);
+  assert.match(notes, /Neural voice editing/);
+  assert.match(notes, /https:\/\/example.com\/license/);
+  assert.doesNotMatch(notes, /Café Paint|paint --animate/);
+  const tested = {...tool, versions: [{...tool.versions[0], profile: {...tool.versions[0].profile, quality: {hands_on_tested: true}}}]};
+  assert.match(researchNotes([tested.id], [tested], {}), /Hands-on testing recorded; see the quality review for its scope/);
+});
+test("exported research text cannot break out of Markdown command fences or insert raw HTML", () => {
+  const hostile = {...tool, versions: [{...tool.versions[0], profile: {...tool.versions[0].profile,
+    name: "<img src=x> [untrusted]", installation: {text: "<script>untrusted</script>", commands: ["echo hello\n```\n# still a command"]}}}]};
+  const notes = researchNotes([tool.id], [hostile], {installation: "Install"});
+  assert.doesNotMatch(notes, /<img|<script>/);
+  assert.ok(notes.includes("\\[untrusted\\]"));
+  assert.ok(notes.includes("````text\necho hello\n```\n# still a command\n````"));
 });
 test("shared comparisons preserve exact review identities and reject missing or duplicated entries", () => {
   const second = {...tool, id: "github:example/second", versions: [

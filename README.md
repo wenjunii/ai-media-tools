@@ -25,6 +25,13 @@ screened discoveries accumulate
 without a fixed count limit. An edition with no qualifying discoveries preserves
 the existing collection.
 
+Use **Move saved tools** to transfer a shortlist between your Mac, PC, local
+library and GitHub Pages. Download or copy its JSON and import it in the other
+browser; matching tools are merged into that browser's existing saves. You can
+also download **research notes** in Markdown with the saved tools' dated guides,
+installation steps, requirements, software/model terms and sources for planning
+your next experiment. Transfers are manual and require no account.
+
 The October 1 initial edition contains **12 detailed profiles**. The later scope
 pilot retained additional raw candidates, which are not verified recommendations.
 Every newly collected edition now runs the **full expanded plan**, rather than a
@@ -327,6 +334,8 @@ Regression checks cover integrity, missing citations/coverage, license conflicts
 HTML escaping, safe links, cross-host credential handling, unchanged profiles,
 and duplicate or uncertain email delivery. A successful Gmail message ID records
 acceptance by Gmail; it does not independently prove inbox placement.
+Library checks cover shortlist transfer, merge/deduplication, malformed imports,
+missing tools, and research-note exports with dated evidence and pending details.
 Checks also cover pagination, partial source failures, zero-star candidates,
 new daily fields, external-project evidence, creative AI eligibility, editions
 above 12 profiles, and complete large-report attachments.

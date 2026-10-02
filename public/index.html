@@ -50,6 +50,7 @@
         <aside class="filters" aria-label="Library filters">
           <div class="filter-title"><h3>Refine your search</h3><button id="reset" class="reset-button">Clear</button></div>
           <label class="saved-filter" for="saved-only"><input id="saved-only" type="checkbox"><span>Saved tools <strong id="saved-count">0</strong></span></label>
+          <button id="manage-shortlist" class="shortlist-manage">Move saved tools <span aria-hidden="true">↗</span></button>
           <p id="saved-storage-note" class="filter-note storage-note" role="status" hidden>Browser storage is unavailable. Your saves will last for this tab only.</p>
           <div class="filter-group"><label for="field-filter">Creative field</label><select id="field-filter"><option value="">All creative fields</option></select></div>
           <div class="filter-group"><label for="platform-filter">Platform mentions</label><select id="platform-filter"><option value="">All platforms</option></select><p class="filter-note">Mentions in the documentation; see the profile for support and limitations.</p></div>
@@ -79,6 +80,29 @@
   <dialog id="profile-dialog" aria-labelledby="profile-title">
     <div class="dialog-top"><span class="eyebrow">THE TOOL FIELD GUIDE</span><button id="close-profile" class="close-button" aria-label="Close tool profile">×</button></div>
     <div id="profile-content"></div>
+  </dialog>
+  <dialog id="shortlist-dialog" class="shortlist-dialog" aria-labelledby="shortlist-title">
+    <div class="dialog-top"><span class="eyebrow">FROM DISCOVERY TO YOUR NEXT PROJECT</span><button id="close-shortlist" class="close-button" aria-label="Close saved tools">×</button></div>
+    <div class="shortlist-body">
+      <h2 id="shortlist-title">Take your shortlist with you</h2>
+      <p id="shortlist-count" class="shortlist-count"></p>
+      <p>Move saved tools between your Mac, PC, local library, and GitHub Pages.</p>
+      <section class="shortlist-section" aria-labelledby="shortlist-export-title">
+        <h3 id="shortlist-export-title">Export all saved tools</h3>
+        <p>Download or copy your shortlist, then import it in the other browser. This includes all your saves, even when search filters hide them.</p>
+        <div class="shortlist-actions"><button id="download-shortlist" class="button primary">Download shortlist</button><button id="copy-shortlist" class="button">Copy shortlist</button></div>
+        <div class="notes-export"><button id="download-notes" class="button">Download research notes</button><p>A Markdown guide with each saved tool’s latest detailed review, installation steps, requirements, terms, and sources. Screened discoveries retain their pending status.</p></div>
+      </section>
+      <section class="shortlist-section" aria-labelledby="shortlist-import-title">
+        <h3 id="shortlist-import-title">Import a shortlist</h3>
+        <p>Matching tools are added to your existing saves. Duplicates are skipped. Files are read in this browser.</p>
+        <label for="import-shortlist">Choose an exported shortlist JSON file</label>
+        <input id="import-shortlist" type="file" accept=".json,application/json">
+        <details id="shortlist-paste"><summary>Or paste a copied shortlist</summary><label for="shortlist-json">Shortlist JSON</label><textarea id="shortlist-json" rows="5" spellcheck="false" placeholder="Paste the shortlist copied from your other browser"></textarea><button id="import-pasted-shortlist" class="button">Import pasted shortlist</button></details>
+      </section>
+      <p id="shortlist-status" class="shortlist-status" role="status" aria-live="polite"></p>
+      <p class="shortlist-footnote">Transfers are manual. Saves remain local to each browser; importing tool IDs does not add or change published reviews. Research notes reflect their review dates.</p>
+    </div>
   </dialog>
   <dialog id="compare-dialog" class="compare-dialog" aria-labelledby="comparison-title">
     <div class="dialog-top"><span class="eyebrow">CHOOSE WHAT TO TRY NEXT</span><button id="close-comparison" class="close-button" aria-label="Close tool comparison">×</button></div>
