@@ -114,6 +114,10 @@ an excluded/watchlist finding. Check code, weights, dependencies, hosted APIs,
 required proprietary software and commercial terms independently. Source code
 openness does not imply open model weights or zero operating cost.
 
+Supplementary primary-source snapshots may be organized in nested folders under
+`research/YYYY-MM-DD/evidence/`. Building seals every evidence file recursively,
+including complete license texts; later changes block verification and email.
+
 ## 4. Write complete profiles
 
 Write `research/YYYY-MM-DD/editorial.json`. Use a previous edition's `report.json`

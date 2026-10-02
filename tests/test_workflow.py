@@ -90,6 +90,27 @@ class WorkflowTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "changed"):
             verify_report(self.day, self.root)
 
+    def test_nested_source_evidence_is_sealed_and_tampering_blocks_email(self):
+        evidence = self.root / "research" / self.day / "evidence"
+        nested = evidence / "primary" / "project"
+        source = nested / "README.md"
+        license_file = nested / "LICENSE.txt"
+        write_text(source, "Official project documentation")
+        write_text(license_file, "Complete software terms")
+        (evidence / "empty").mkdir()
+
+        manifest = self.build()
+        self.assertIn(str(source.relative_to(self.root)), manifest["sha256"])
+        self.assertIn(str(license_file.relative_to(self.root)), manifest["sha256"])
+        self.assertNotIn(str(nested.relative_to(self.root)), manifest["sha256"])
+        self.assertNotIn(str((evidence / "empty").relative_to(self.root)), manifest["sha256"])
+        self.assertEqual(manifest, verify_report(self.day, self.root))
+
+        write_text(license_file, "Terms changed after sealing")
+        with self.assertRaisesRegex(ValueError, "Sealed evidence/artifact changed"):
+            delivery.prepare(self.day, self.root)
+        self.assertFalse((self.root / "state/deliveries" / (self.day + ".json")).exists())
+
     def test_reserved_delivery_blocks_second_send(self):
         self.build()
         first = delivery.prepare(self.day, self.root)
