@@ -11,6 +11,8 @@ and private research remain in the local discovery catalog and review queue.
 
 - Search names, creative uses, hardware/software requirements, install commands,
   model/license terms, and older reviews. Words combine; quotes match a phrase.
+  Selecting a daily edition limits both the filters and search text to that
+  edition's review. Clear the edition to search all preserved reviews again.
 - Combine creative-field, platform-mention, software-license, review-depth,
   and daily-edition filters. Platform mentions do not certify platform support.
 - Sort by latest detailed review, first appearance, or name.
@@ -20,6 +22,23 @@ and private research remain in the local discovery catalog and review queue.
   date. A brief subsequent mention does not replace a complete guide.
 - Copy a profile link to return to the tool and chosen review. Search/filter
   settings are also represented in the URL.
+- Select **Save** on a card or profile to build a shortlist. **Saved tools**
+  filters the library to that shortlist and works with the other filters.
+  Saves persist in the browser on the same site; the local and Pages sites,
+  different browsers and different devices keep separate shortlists. Saves
+  have no collection-size limit. If browser storage is unavailable, the UI
+  keeps the shortlist for the current tab and explains that it will not persist.
+- Select **Compare** on 2–4 cards or profiles, then use **Compare tools**.
+  The table shows creative uses, hardware, software, platforms, software
+  licenses, model terms, commercial-use notes, costs, maturity and review
+  evidence, with source links. Missing published requirements stay **Not
+  documented**; screened leads show **full profile pending** for unreviewed
+  details. Comparison does not treat a platform mention as verified support.
+  Each selection retains its dated review when you change filters.
+- **Copy comparison link** includes the selected tool IDs and review editions
+  so it opens the same comparison on another browser. Comparisons are encoded
+  in the URL and do not require an account or a remote service. Saved-tool
+  lists stay in browser storage and are not included in comparison links.
 - Browse preserved editions through Daily reports, or download the cumulative
   library JSON for your own analysis.
 

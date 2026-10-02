@@ -14,6 +14,46 @@
     return (edition && tool.versions.find(function (v) { return editionKey(v) === edition; })) ||
       tool.versions.find(function (v) { return v.kind === "profile"; }) || tool.versions[0];
   }
+  function savedIds(serialized, tools) {
+    try {
+      const ids = JSON.parse(serialized), known = new Set(tools.map(function (tool) { return tool.id; }));
+      return Array.isArray(ids) ? Array.from(new Set(ids.filter(function (id) { return typeof id === "string" && known.has(id); }))) : [];
+    } catch (error) { return []; }
+  }
+  function comparisonSelection(serialized, tools) {
+    try {
+      const entries = JSON.parse(serialized), byId = new Map(tools.map(function (tool) { return [tool.id, tool]; })), seen = new Set();
+      if (!Array.isArray(entries)) return [];
+      return entries.filter(function (entry) {
+        if (!entry || typeof entry.id !== "string" || typeof entry.edition !== "string" || seen.has(entry.id)) return false;
+        const tool = byId.get(entry.id);
+        if (!tool || !tool.versions.some(function (v) { return editionKey(v) === entry.edition; })) return false;
+        seen.add(entry.id); return true;
+      }).slice(0, 4).map(function (entry) { return {id: entry.id, edition: entry.edition}; });
+    } catch (error) { return []; }
+  }
+  function comparisonRows(version) {
+    const p = version.profile, full = version.kind === "profile", pending = "Not reviewed yet · full profile pending";
+    function row(label, value, source) {
+      return {label: label, text: typeof value === "string" && value.trim() ? value : (full ? "Not documented" : pending),
+              source_urls: source && source.source_urls || []};
+    }
+    const requirements = p.requirements || {}, license = p.license || {};
+    return [
+      row("Good for", full ? p.good_for && p.good_for.text : p.good_for, full ? p.good_for : p.ai_relevance),
+      row("Hardware", full ? requirements.hardware : null, requirements),
+      row("Software", full ? requirements.software : null, requirements),
+      row("Platforms and limitations", full ? requirements.platforms : null, requirements),
+      row("Software license", full ? license.code : p.code_license, full ? license :
+        {source_urls: (p.sources || []).map(function (source) { return source.url; })}),
+      row("Model weights", full ? license.weights : null, license),
+      row("Commercial use", full ? license.commercial : null, license),
+      row("Costs and services", full ? license.cost : null, license),
+      row("Maturity", full ? p.maturity : null),
+      row("Review evidence", full ? (p.quality && p.quality.hands_on_tested ? "Hands-on testing recorded; see its scope in the profile" :
+        "Documentation review; installation and output not independently tested") : "Creative AI use and software license screened; full review pending", p.quality)
+    ];
+  }
   function platformMentions(profile) {
     const text = profile.requirements ? profile.requirements.platforms : "";
     const patterns = {
@@ -32,7 +72,9 @@
     const license = version.kind === "profile" ? profile.license.code : profile.code_license;
     if (filters.license && license !== filters.license) return false;
     const tokens = Array.from(fold(filters.q || "").matchAll(/"([^"]+)"|(\S+)/g), function (m) { return m[1] || m[2]; });
-    const haystack = text === undefined ? searchText(tool) : text;
+    // An edition filter must not match requirements or uses from another review.
+    const haystack = filters.edition ? searchText({id: tool.id, date: version.date, profile: profile}) :
+      (text === undefined ? searchText(tool) : text);
     return tokens.every(function (token) { return haystack.includes(token); });
   }
   function sortTools(tools, sort) {
@@ -53,7 +95,8 @@
   }
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
-                      coverageText: coverageText, editionKey: editionKey};
+                      coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
+                      comparisonSelection: comparisonSelection, comparisonRows: comparisonRows};
   }
   if (typeof document === "undefined") return;
   const data = JSON.parse(document.getElementById("library-data").textContent);
@@ -68,7 +111,11 @@
   const controls = {q: "search", field: "field-filter", platform: "platform-filter", license: "license-filter",
                     review: "review-filter", edition: "edition-filter", sort: "sort"};
   const $ = function (id) { return document.getElementById(id); };
-  let visible = 24, currentView = "library", activeTool = null, activeVersion = null;
+  const savedKey = "ai-media-scout.saved.v1";
+  let saved = new Set(), storageAvailable = true;
+  try { saved = new Set(savedIds(localStorage.getItem(savedKey), data.tools)); }
+  catch (error) { storageAvailable = false; }
+  let visible = 24, currentView = "library", activeTool = null, activeVersion = null, comparison = [];
   function element(tag, className, text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -103,6 +150,9 @@
     Object.keys(values).forEach(function (name) {
       if (values[name] && !(name === "sort" && values[name] === "updated")) params.set(name, values[name]);
     });
+    if ($("saved-only").checked) params.set("saved", "1");
+    if (comparison.length) params.set("compare", JSON.stringify(comparison));
+    if ($("compare-dialog").open) params.set("comparing", "1");
     if (currentView === "reports") params.set("view", "reports");
     if (activeTool) { params.set("tool", activeTool); params.set("version", activeVersion); }
     const query = params.toString();
@@ -115,6 +165,55 @@
       $(name + "-tab").setAttribute("aria-pressed", String(name === view));
     });
     updateURL();
+  }
+  function personalButton(action, tool, version) {
+    const node = button("personal-button", "", function () {
+      if (action === "save") {
+        if (saved.has(tool.id)) saved.delete(tool.id); else saved.add(tool.id);
+        try { localStorage.setItem(savedKey, JSON.stringify(Array.from(saved))); storageAvailable = true; }
+        catch (error) { storageAvailable = false; }
+      } else {
+        const index = comparison.findIndex(function (entry) { return entry.id === tool.id; });
+        if (index >= 0) comparison.splice(index, 1);
+        else if (comparison.length < 4) comparison.push({id: tool.id, edition: editionKey(version)});
+      }
+      render();
+      if (!node.isConnected) {
+        const replacement = Array.from(document.querySelectorAll("[data-personal-action]")).find(function (candidate) {
+          return candidate.dataset.personalAction === action && candidate.dataset.toolId === tool.id && candidate.getClientRects().length;
+        });
+        (replacement || $("saved-only")).focus();
+      }
+    });
+    node.dataset.personalAction = action; node.dataset.toolId = tool.id;
+    return node;
+  }
+  function updatePersonalControls() {
+    $("saved-count").textContent = saved.size;
+    $("saved-storage-note").hidden = storageAvailable;
+    document.querySelectorAll("[data-personal-action]").forEach(function (node) {
+      const id = node.dataset.toolId, action = node.dataset.personalAction, tool = byId.get(id);
+      const selected = action === "save" ? saved.has(id) : comparison.some(function (entry) { return entry.id === id; });
+      node.textContent = action === "save" ? (selected ? "Saved" : "Save") : (selected ? "Comparing" : "Compare");
+      node.setAttribute("aria-pressed", String(selected));
+      node.setAttribute("aria-label", action === "save" ? (selected ? "Unsave " : "Save ") + tool.name :
+        (selected ? "Remove " + tool.name + " from comparison" : "Add " + tool.name + " to comparison"));
+      node.disabled = action === "compare" && !selected && comparison.length >= 4;
+      node.title = node.disabled ? "Remove a tool from the comparison to add another." : "";
+    });
+    $("comparison-bar").hidden = comparison.length === 0;
+    $("compare-selected").textContent = "Compare " + comparison.length + (comparison.length === 1 ? " tool" : " tools");
+    $("compare-selected").disabled = comparison.length < 2;
+    $("comparison-items").replaceChildren.apply($("comparison-items"), comparison.map(function (entry) {
+      const tool = byId.get(entry.id), version = primaryVersion(tool, entry.edition);
+      const chip = button("comparison-chip", version.profile.name + " ×", function () {
+        comparison = comparison.filter(function (candidate) { return candidate.id !== entry.id; }); render();
+        if (comparison.length >= 2) $("compare-selected").focus();
+        else if (comparison.length) $("comparison-items").firstElementChild.focus();
+        else $("search").focus();
+      });
+      chip.setAttribute("aria-label", "Remove " + version.profile.name + " from comparison"); return chip;
+    }));
   }
   function card(tool, values) {
     const version = primaryVersion(tool, values.edition), p = version.profile, full = version.kind === "profile";
@@ -130,6 +229,8 @@
     node.append(badges);
     const use = element("p", "card-use"); use.append(element("strong", "", "Good for: "), document.createTextNode(full ? p.good_for.text : p.good_for));
     node.append(use);
+    const actions = element("div", "card-actions");
+    actions.append(personalButton("save", tool, version), personalButton("compare", tool, version)); node.append(actions);
     const bottom = element("div", "card-bottom");
     bottom.append(element("span", "card-date", "Reviewed " + date(p.checked_on)));
     bottom.append(button("profile-button", "Explore tool ↗", function () { openProfile(tool.id, editionKey(version)); }));
@@ -137,15 +238,25 @@
   }
   function render() {
     const values = filters();
-    const results = sortTools(data.tools.filter(function (tool) { return matches(tool, values, cache.get(tool.id)); }), values.sort);
+    const results = sortTools(data.tools.filter(function (tool) {
+      return (!$("saved-only").checked || saved.has(tool.id)) && matches(tool, values, cache.get(tool.id));
+    }), values.sort);
     $("result-count").textContent = results.length + (results.length === 1 ? " tool" : " tools") + " found" +
       (results.length > visible ? " · showing " + visible : "");
     $("cards").replaceChildren.apply($("cards"), results.slice(0, visible).map(function (tool) { return card(tool, values); }));
     $("empty").hidden = results.length !== 0; $("load-more").hidden = results.length <= visible;
+    $("search-scope").textContent = values.edition ? "Search this edition" : "Search every review";
+    $("search-label").textContent = values.edition ? "Search profiles in the selected edition" : "Search all profiles and review history";
+    $("empty-message").textContent = $("saved-only").checked ?
+      (saved.size ? "Your saved tools do not match these filters. Try fewer words or clear the filters." :
+        "Save a tool from the library to start your shortlist, then return here.") :
+      "Try fewer words, another creative field, or clear your filters.";
+    updatePersonalControls();
     updateURL();
   }
   function reset() {
     Object.keys(controls).forEach(function (name) { $(controls[name]).value = name === "sort" ? "updated" : ""; });
+    $("saved-only").checked = false;
     visible = 24; render();
   }
   function refs(section, profile) {
@@ -196,6 +307,7 @@
       try { await navigator.clipboard.writeText(location.href); shareStatus.textContent = "Link copied"; }
       catch (error) { shareStatus.textContent = "Copy the address from your browser."; }
     }), shareStatus);
+    links.append(personalButton("save", tool, version), personalButton("compare", tool, version));
     header.append(links);
     const versionControl = element("div", "version-control"), versionLabel = element("label", "", "Review history");
     versionLabel.htmlFor = "version-select";
@@ -225,7 +337,55 @@
     sources.append(list); body.append(sources);
     $("profile-content").replaceChildren(header, body);
     if (!$("profile-dialog").open) $("profile-dialog").showModal();
+    updatePersonalControls();
     updateURL();
+  }
+  function openComparison() {
+    if (comparison.length < 2) return;
+    const selected = comparison.map(function (entry) {
+      const tool = byId.get(entry.id), version = primaryVersion(tool, entry.edition);
+      return {tool: tool, version: version, rows: comparisonRows(version)};
+    });
+    const table = element("table", "comparison-table"), caption = element("caption", "sr-only", "Dated tool reviews, requirements, licenses and costs");
+    table.style.minWidth = (155 + selected.length * 250) + "px";
+    const head = element("thead"), header = element("tr"), label = element("th", "", "What matters"); label.scope = "col"; header.append(label);
+    selected.forEach(function (item) {
+      const cell = element("th"); cell.scope = "col";
+      const p = item.version.profile;
+      cell.append(button("title-button", p.name, function () {
+        $("compare-dialog").close(); openProfile(item.tool.id, editionKey(item.version));
+      }), element("p", "profile-meta", "Reviewed " + date(p.checked_on)),
+        element("span", "badge" + (item.version.kind === "profile" ? "" : " pending"), item.version.kind === "profile" ? "Detailed profile" : "Profile pending"));
+      const links = element("div", "comparison-links");
+      Object.entries(p.links || {}).forEach(function (entry) {
+        if (["repository", "homepage", "demo", "documentation"].includes(entry[0])) links.append(link(entry[0].replace(/^./, function (c) { return c.toUpperCase(); }) + " ↗", entry[1], "", true));
+      });
+      if (item.version.kind === "screened") (p.sources || []).forEach(function (source) {
+        links.append(link(source.title + " ↗", source.url, "", true));
+      });
+      links.append(link("Dated report ↗", reportPath(editionKey(item.version), "html"), "", true)); cell.append(links); header.append(cell);
+    });
+    head.append(header); const body = element("tbody");
+    selected[0].rows.forEach(function (row, index) {
+      const tr = element("tr"), heading = element("th", "", row.label); heading.scope = "row"; tr.append(heading);
+      selected.forEach(function (item) {
+        const value = item.rows[index], cell = element("td");
+        cell.append(element("p", "", value.text), refs(value, item.version.profile)); tr.append(cell);
+      }); body.append(tr);
+    });
+    table.append(caption, head, body); $("comparison-content").replaceChildren(table);
+    $("comparison-share-status").textContent = "";
+    if (!$("compare-dialog").open) $("compare-dialog").showModal();
+    layoutComparison(); updateURL();
+  }
+  function layoutComparison() {
+    if (!$("compare-dialog").open) return;
+    const region = $("comparison-content"), table = region.querySelector("table");
+    const labelWidth = window.matchMedia("(max-width:760px)").matches ? 130 : 155;
+    // Keep one complete tool column readable beside the sticky labels on phones.
+    const columnWidth = Math.max(120, Math.min(250, region.clientWidth - labelWidth));
+    table.style.minWidth = (labelWidth + comparison.length * columnWidth) + "px";
+    $("comparison-scroll-hint").hidden = table.scrollWidth <= region.clientWidth;
   }
   function editionLabel(edition) {
     return date(edition.report_date || edition.date) + (edition.revision > 1 ? " · Update " + (edition.revision - 1) : "");
@@ -258,12 +418,29 @@
     $("latest-report").href = reportPath(editionKey(latest), "html"); $("latest-report").hidden = false;
   }
   const params = new URLSearchParams(location.search);
+  comparison = comparisonSelection(params.get("compare"), data.tools);
+  $("saved-only").checked = params.get("saved") === "1";
   Object.keys(controls).forEach(function (name) { if (params.has(name)) $(controls[name]).value = params.get(name); });
   if (!$("sort").value) $("sort").value = "updated";
   Object.keys(controls).forEach(function (name) {
     $(controls[name]).addEventListener(name === "q" ? "input" : "change", function () { visible = 24; render(); });
   });
   $("reset").addEventListener("click", reset); $("empty-reset").addEventListener("click", reset);
+  $("saved-only").addEventListener("change", function () { visible = 24; render(); });
+  $("compare-selected").addEventListener("click", openComparison);
+  $("clear-comparison").addEventListener("click", function () { comparison = []; render(); $("search").focus(); });
+  $("close-comparison").addEventListener("click", function () { $("compare-dialog").close(); });
+  $("compare-dialog").addEventListener("close", updateURL);
+  window.addEventListener("resize", layoutComparison);
+  $("copy-comparison").addEventListener("click", async function () {
+    try { await navigator.clipboard.writeText(location.href); $("comparison-share-status").textContent = "Comparison link copied"; }
+    catch (error) { $("comparison-share-status").textContent = "Copy the address from your browser."; }
+  });
+  window.addEventListener("storage", function (event) {
+    if (event.key === savedKey || event.key === null) {
+      saved = new Set(savedIds(event.key === null ? null : event.newValue, data.tools)); render();
+    }
+  });
   $("load-more").addEventListener("click", function () { visible += 24; render(); });
   $("library-tab").addEventListener("click", function () { showView("library"); });
   $("reports-tab").addEventListener("click", function () { showView("reports"); });
@@ -271,4 +448,5 @@
   $("profile-dialog").addEventListener("close", function () { activeTool = null; activeVersion = null; updateURL(); });
   renderEditions(); render(); showView(params.get("view") === "reports" ? "reports" : "library");
   if (params.get("tool")) openProfile(params.get("tool"), params.get("version"));
+  else if (params.get("comparing") === "1") openComparison();
 }());
