@@ -61,7 +61,7 @@ not explicit in the reviewed bundle; see [the recorded terms gap](LICENSE_REVIEW
 
 ## Handoff boundary
 
-The PC implementation lives on local branch `codex/pc-demo-mvp` in the shared
+The PC implementation was prepared on branch `codex/pc-demo-mvp` in the shared
 repository. The first build was kept local. The user's subsequent request to
 update scripts, README and GitHub sync authorizes reviewed source/docs/tests to
 go through the protected PR flow. Follow-up checks add installation status,
