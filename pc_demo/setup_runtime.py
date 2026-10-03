@@ -75,8 +75,11 @@ def setup():
 
 def verified_runtime():
     receipt = read_json(LOCAL / 'setup.json')
+    lock = read_json(ROOT / 'runtime.lock.json')
     if sha256(ROOT / 'runtime.lock.json') != receipt['runtime_lock_sha256']:
         raise RuntimeError('Runtime lock changed; run setup again')
+    if not isinstance(receipt.get('files'), dict) or set(receipt['files']) != set(lock['app']['extract']):
+        raise RuntimeError('Setup receipt is missing required app/model files; run setup again')
     app = LOCAL / 'apps/realesrgan-20220424'
     for name, digest in receipt['files'].items():
         if sha256(app / name) != digest:

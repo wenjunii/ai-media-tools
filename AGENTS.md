@@ -15,6 +15,10 @@ and research workflows. Preserve historical profiles and published editions.
 No PC demo schedule or social publishing is enabled by this authorization.
 Prepare reviewed PC code/docs for the Mac-owned GitHub publication flow; do not
 run research publication or email maintenance steps on the PC.
+When the user explicitly requests PC source/docs GitHub sync, the PC may push a
+`codex/` branch, open a protected PR, and merge after exact-head CI passes. Verify
+CI on the merged main commit as well. Follow `docs/GITHUB_SYNC.md`'s PC section;
+leave Mac publication checkpoints and all research/email operations to the Mac.
 
 ## Mac research workflow
 

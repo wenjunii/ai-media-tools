@@ -1,7 +1,7 @@
 # PC demo production MVP
 
 Manual, local video production in the shared AI Media Scout repository. The Mac
-continues to own research, library publication, GitHub publication, and email.
+continues to own research, library/report publication, scheduling, and email.
 Read [the brief](../PROJECT_BRIEF.md) and [PC instructions](AGENTS.md).
 
 This MVP runs the official portable Real-ESRGAN application on a reproducible
@@ -9,7 +9,32 @@ original illustration, then makes a 45-second vertical draft from its actual
 output. It includes six scenes: result, input, comparison, process, practical use,
 and limitation. There is no scheduler, social API client, or uploader.
 
-## Prerequisites and setup on this PC
+## Installed app and daily manual use
+
+Real-ESRGAN is installed on the tested PC as the official **20220424 portable
+Windows CLI** (upstream release `v0.2.5.0`), with the `realesrgan-x4plus-anime`
+model. The executable lives at
+`.local/apps/realesrgan-20220424/realesrgan-ncnn-vulkan.exe`. No desktop GUI or
+system-wide installation is required. [The first draft results](MVP_RESULT.md)
+record the actual run and its limitations.
+
+From the repository root in PowerShell:
+
+```powershell
+.\pc_demo\demo.ps1 status
+.\pc_demo\demo.ps1 run -GpuId 1
+.\pc_demo\demo.ps1 verify
+```
+
+`status` checks the installed app/model hashes and the latest draft's saved
+evidence without downloading or running the app. It distinguishes an absent or
+damaged installation from verified files. It also reports whether saved playback
+and visual review belong to the current video bytes. `verify` defaults to the
+latest completed draft and reruns full media checks. An existing matching manual
+review is preserved; a changed video requires a new review. The PowerShell
+launcher saves its own output logs under `.local/launcher-logs/`.
+
+## Prerequisites and setup on a new Windows checkout
 
 Tested host: Windows 11 Home x64, i9-12900H, RTX 3080 Ti Laptop 16 GB VRAM,
 63.71 GiB system RAM, about 374 GiB free at initial inspection. Installed Python
@@ -27,6 +52,7 @@ From the repository root in PowerShell:
 ```powershell
 .\pc_demo\demo.ps1 doctor
 .\pc_demo\demo.ps1 setup
+.\pc_demo\demo.ps1 status
 .\pc_demo\demo.ps1 run -GpuId 1
 ```
 
@@ -53,6 +79,7 @@ No run overwrites another. The finished video is `draft.mp4` in that directory.
 
 ```powershell
 $run = (Get-Content .\pc_demo\.local\latest-run.json -Raw | ConvertFrom-Json).run
+# Omit -RunDirectory to check the latest draft, or specify an older run:
 .\pc_demo\demo.ps1 verify -RunDirectory $run
 Start-Process -FilePath (Join-Path $run 'draft.mp4')
 ```
@@ -128,12 +155,16 @@ executed. A daily demo schedule is a later user decision after MVP review.
 
 `.local/` is ignored: no models, environments, videos, machine paths, credentials,
 private Mac settings, or delivery receipts belong in Git. Source, tests, the
-brief, and the terms review can be shared through this same repository. Keep
-changes on a `codex/` branch for the Mac-owned publication flow. A Git pull alone
-cannot transfer the ignored local video; use an explicitly chosen asset transfer
-when needed. Never add it to `public/` or force-add ignored files.
+brief, and the terms review can be shared through this same repository. Use a
+`codex/` branch. When the user requests PC source/docs GitHub sync, follow the
+[protected PR procedure](../docs/GITHUB_SYNC.md#pc-source-and-documentation-sync),
+including CI on the exact PR head and merged main commit. The Mac keeps ownership
+of research publication and its private sync checkpoints. A Git pull transfers
+source only: run setup for the app/model on a new Windows checkout and choose an
+explicit asset transfer for videos. Never add runtime/media to `public/` or
+force-add ignored files.
 
-Publishing stays disabled. Instagram and X require authorized integrations.
+Social publishing stays disabled. Instagram and X require authorized integrations.
 TikTok requires an approved publishing route or a creator review/upload step.
 This MVP has no endpoint that can publish, email, or create a schedule.
 
@@ -147,6 +178,10 @@ node --test tests/library.test.cjs
 python -m pc_demo audit-git
 git diff --cached --check
 ```
+
+CI runs the full research/PC suite on Linux with Python 3.10 and 3.13, plus the
+PC guardrail tests and launcher smoke check on Windows with Python 3.10. CI does
+not install Real-ESRGAN or download its model; inference remains a local check.
 
 The existing research package imports Unix `fcntl`; its complete suite and
 archive/publication audits must run under macOS/Linux, including the already
@@ -167,5 +202,6 @@ For a pre-existing clean checkout affected by conversion, restore those public
 files from their committed blobs after applying the attributes, then verify.
 
 The audit is read-only. Do not run Mac discovery, build/export, publication
-checkpoints, or email commands as part of PC development. No remote push or
-merge is performed by this local MVP.
+checkpoints, or email commands as part of PC development. Demo commands never
+push or merge Git changes; source sync is a separately authorized maintenance
+operation.

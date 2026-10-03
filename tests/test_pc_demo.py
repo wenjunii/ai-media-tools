@@ -7,7 +7,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pc_demo.audit import validate_index_entry
-from pc_demo.common import download, execute, read_json, select_profile
+from pc_demo.common import download, execute, read_json, resolve_run, select_profile, sha256, write_json
+from pc_demo.setup_runtime import verified_runtime
+from pc_demo.status import local_status, review_state
 
 
 class ProfileSelectionTests(unittest.TestCase):
@@ -72,6 +74,92 @@ class DownloadAndEvidenceTests(unittest.TestCase):
             record=read_json(pathlib.Path(tmp)/'missing.command.json')
             self.assertIn('error',record)
             self.assertNotIn('returncode',record)
+
+
+class LocalStatusTests(unittest.TestCase):
+    def test_latest_run_requires_a_valid_local_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            local = pathlib.Path(tmp) / '.local'
+            with patch('pc_demo.common.LOCAL', local):
+                with self.assertRaisesRegex(ValueError, 'No completed local draft'):
+                    resolve_run()
+                for record in ([], {}, {'run': ''}, {'run': tmp}):
+                    write_json(local / 'latest-run.json', record)
+                    with self.subTest(record=record), self.assertRaises(ValueError):
+                        resolve_run()
+                run = local / 'runs/first'
+                run.mkdir(parents=True)
+                write_json(local / 'latest-run.json', {'run': str(run)})
+                self.assertEqual(resolve_run(), run.resolve())
+
+    def test_fresh_checkout_status_needs_no_downloads_or_writes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            local = pathlib.Path(tmp) / '.local'
+            with patch('pc_demo.status.LOCAL', local), patch(
+                    'urllib.request.urlopen', side_effect=AssertionError('Unexpected network')):
+                result = local_status()
+            self.assertFalse(result['installed'])
+            self.assertFalse(result['draft_environment_exists'])
+            self.assertIsNone(result['latest_run'])
+            self.assertFalse(local.exists())
+
+    def test_saved_review_only_applies_to_exact_video_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = pathlib.Path(tmp)
+            record = {'video_sha256': 'reviewed', 'browser': {'ended': True},
+                      'visual_review': 'passed: captions and output inspected'}
+            write_json(run / 'qa/manual-review.json', record)
+            original = (run / 'qa/manual-review.json').read_bytes()
+            current = review_state(run, 'reviewed')
+            self.assertIn('passed', current['browser_playback'])
+            self.assertEqual(current['manual_review'], record)
+            stale = review_state(run, 'changed')
+            self.assertEqual(stale['browser_playback'], 'pending')
+            self.assertEqual(stale['visual_review'], 'pending')
+            self.assertIn('stale', stale['saved_review_status'])
+            self.assertEqual((run / 'qa/manual-review.json').read_bytes(), original)
+
+    def test_missing_or_malformed_review_is_not_a_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = pathlib.Path(tmp)
+            self.assertEqual(review_state(run, 'video')['saved_review_status'], 'absent')
+            for record in ([], {'video_sha256': 'video', 'browser': {'ended': False}}):
+                write_json(run / 'qa/manual-review.json', record)
+                self.assertEqual(review_state(run, 'video')['browser_playback'], 'pending')
+
+    def test_modified_video_invalidates_previous_automated_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            local = pathlib.Path(tmp)
+            run = local / 'runs/first'
+            write_json(local / 'latest-run.json', {'run': str(run)})
+            write_json(run / 'manifest.json', {'status': 'draft_verified', 'video_sha256': 'old'})
+            write_json(run / 'qa/verification.json', {'automated_pass': True, 'video_sha256': 'old'})
+            (run / 'draft.mp4').write_bytes(b'new video')
+            with patch('pc_demo.status.LOCAL', local), patch('pc_demo.common.LOCAL', local):
+                result = local_status()['latest_run']
+            self.assertFalse(result['video_matches_manifest'])
+            self.assertFalse(result['automated_checks_passed'])
+
+    def test_incomplete_or_modified_runtime_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            local = root / '.local'
+            app = local / 'apps/realesrgan-20220424'
+            app.mkdir(parents=True)
+            (app / 'tool.exe').write_bytes(b'pinned executable')
+            (app / 'model.bin').write_bytes(b'pinned model')
+            write_json(root / 'runtime.lock.json', {'app': {'extract': ['tool.exe', 'model.bin']}})
+            receipt = {'runtime_lock_sha256': sha256(root / 'runtime.lock.json'), 'files': {}}
+            write_json(local / 'setup.json', receipt)
+            with patch('pc_demo.setup_runtime.ROOT', root), patch('pc_demo.setup_runtime.LOCAL', local):
+                with self.assertRaisesRegex(RuntimeError, 'missing required'):
+                    verified_runtime()
+                receipt['files'] = {name: sha256(app / name) for name in ('tool.exe', 'model.bin')}
+                write_json(local / 'setup.json', receipt)
+                self.assertEqual(verified_runtime()[0], app)
+                (app / 'model.bin').write_bytes(b'modified model')
+                with self.assertRaisesRegex(RuntimeError, 'integrity failure'):
+                    verified_runtime()
 
 
 class PcGitBoundaryTests(unittest.TestCase):

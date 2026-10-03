@@ -83,6 +83,18 @@ def checked_run_path(value):
     return path
 
 
+def resolve_run(value=None):
+    if value is None:
+        pointer = LOCAL / 'latest-run.json'
+        if not pointer.is_file():
+            raise ValueError('No completed local draft; run the demo first or provide --run')
+        record = read_json(pointer)
+        value = record.get('run') if isinstance(record, dict) else None
+        if not isinstance(value, str) or not value:
+            raise ValueError('Latest-run record has no valid run path')
+    return checked_run_path(value)
+
+
 def select_profile(library, tool_id):
     matches = [t for t in library['tools'] if t['id'] == tool_id]
     if len(matches) != 1:

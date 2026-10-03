@@ -53,3 +53,11 @@ live under `pc_demo/`. All downloads and run artifacts live in its ignored
 `.local/` directory. Isolation means a portable application directory and a Python
 virtual environment, not an operating-system security sandbox.
 Code is prepared on a `codex/` branch for the Mac-owned GitHub publication flow.
+
+## Explicit source-sync follow-up
+
+On 2026-10-03 the user requested updates to the scripts and README, followed by
+GitHub sync. This authorizes the PC to publish reviewed source/docs/tests through
+the shared repository's protected PR flow and verify both PR and merged-main CI.
+It does not transfer research/report publication, email, schedules, or publication
+checkpoint maintenance from the Mac. Runtime downloads and draft media stay local.

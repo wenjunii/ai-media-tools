@@ -62,10 +62,18 @@ not explicit in the reviewed bundle; see [the recorded terms gap](LICENSE_REVIEW
 ## Handoff boundary
 
 The PC implementation lives on local branch `codex/pc-demo-mvp` in the shared
-repository. Source/docs/tests are prepared for the Mac-owned GitHub publication
-flow. No remote push, PR, merge, research automation, email or social upload was
-performed. No daily demo schedule was created. The Mac keeps its existing
-workflow, credentials and private records.
+repository. The first build was kept local. The user's subsequent request to
+update scripts, README and GitHub sync authorizes reviewed source/docs/tests to
+go through the protected PR flow. Follow-up checks add installation status,
+preserve review evidence by video hash, and exercise the launcher in Windows CI.
+Local follow-up validation passed all 139 Python tests under WSL, all 16 PC tests
+natively on Windows, all 18 browser tests, compile checks and the public archive
+audit. Reverification of the existing draft preserved its video hash and saved
+manual review.
+No research automation, email, social upload, or daily demo schedule was created.
+The Mac keeps its existing research workflow, credentials and private records.
 
 Reproduce with `./pc_demo/demo.ps1 setup`, then `./pc_demo/demo.ps1 run -GpuId 1`
 from PowerShell at the repository root. See [the complete run guide](README.md).
+On the installed PC, use `./pc_demo/demo.ps1 status` to check the saved runtime
+and latest draft, and `./pc_demo/demo.ps1 verify` to rerun media verification.

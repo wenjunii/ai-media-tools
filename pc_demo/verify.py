@@ -1,9 +1,8 @@
-import math
 import os
 import re
-import subprocess
 from PIL import Image,ImageChops,ImageStat
 from .common import execute,read_json,sha256,stamp,write_json
+from .status import review_state
 
 
 def verify_run(run):
@@ -71,7 +70,7 @@ def verify_run(run):
             'scene_mean_absolute_pixel_error':pixel_errors,
             'caption_font_pixels':42,'caption_safe_bounds':[78,1410,958,1532],
             'subjective_listening':'not established by automated checks; creator review before upload',
-            'browser_playback':'pending','visual_review':'pending',
             'video_sha256':sha256(run/'draft.mp4')}
+    result.update(review_state(run, result['video_sha256']))
     write_json(run/'qa/verification.json',result)
     return result

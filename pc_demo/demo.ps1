@@ -1,5 +1,5 @@
 param(
-    [Parameter(Mandatory=$true)][ValidateSet('setup','doctor','run','verify')][string]$Action,
+    [Parameter(Mandatory=$true)][ValidateSet('setup','doctor','status','run','verify','audit-git')][string]$Action,
     [string]$RunDirectory,
     [ValidateRange(-1,16)][int]$GpuId = -1
 )
@@ -14,10 +14,11 @@ $pythonCommand = if ($Action -in @('run','verify')) {
 if (-not (Test-Path -LiteralPath $pythonCommand)) { throw 'Run setup first.' }
 $processArgs = @('-u', '-m', 'pc_demo', $Action)
 if ($Action -eq 'run') { $processArgs += @('--gpu-id', $GpuId.ToString()) }
-if ($Action -eq 'verify') {
-    if (-not $RunDirectory) { throw 'Verify requires -RunDirectory.' }
+if ($RunDirectory -and $Action -ne 'verify') { throw '-RunDirectory is only valid with verify.' }
+if ($Action -eq 'verify' -and $RunDirectory) {
     if ($RunDirectory.Contains('"')) { throw 'Invalid path.' }
-    $processArgs += @('--run', ('"' + $RunDirectory + '"'))
+    $resolvedRun = (Resolve-Path -LiteralPath $RunDirectory -ErrorAction Stop).Path.TrimEnd('\')
+    $processArgs += @('--run', ('"' + $resolvedRun + '"'))
 }
 $logPrefix = Join-Path $logsRoot ($Action + '-' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfff'))
 $process = Start-Process -FilePath $pythonCommand -ArgumentList $processArgs -WorkingDirectory $projectRoot -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput ($logPrefix + '.stdout.log') -RedirectStandardError ($logPrefix + '.stderr.log')
