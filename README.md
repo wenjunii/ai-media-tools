@@ -1,5 +1,11 @@
 # AI Media Scout
 
+For the Windows PC's separate local demo-production project, see
+[`pc_demo/README.md`](pc_demo/README.md) and the shared
+[`PROJECT_BRIEF.md`](PROJECT_BRIEF.md). The Mac retains research, scheduling,
+library/GitHub publication and email ownership. PC demo media and runtimes stay
+local; social publishing is disabled.
+
 A daily field guide to high-quality open-source AI tools for artists, designers,
 filmmakers, musicians, creative coders, immersive-media makers, and game creators.
 The scope includes **any digital media or creative workflow**. The user's examples

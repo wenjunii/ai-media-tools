@@ -1,0 +1,4 @@
+# Published artifacts have sealed byte hashes. Preserve committed bytes on Windows.
+/public/** -text
+# Browser assets are copied byte-for-byte into that published archive.
+/media_scout/ui/** -text
