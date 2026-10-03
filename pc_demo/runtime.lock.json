@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "Real-ESRGAN ncnn Vulkan",
+    "library_id": "github:xinntao/real-esrgan",
+    "release": "v0.2.5.0 / Windows portable 20220424",
+    "url": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesrgan-ncnn-vulkan-20220424-windows.zip",
+    "sha256": "abc02804e17982a3be33675e4d471e91ea374e65b70167abc09e31acb412802d",
+    "executable": "realesrgan-ncnn-vulkan.exe",
+    "model": "realesrgan-x4plus-anime",
+    "extract": ["realesrgan-ncnn-vulkan.exe", "vcomp140.dll", "models/realesrgan-x4plus-anime.bin", "models/realesrgan-x4plus-anime.param", "README_windows.md"]
+  },
+  "pillow": {
+    "version": "11.3.0",
+    "filename": "pillow-11.3.0-cp310-cp310-win_amd64.whl",
+    "url": "https://files.pythonhosted.org/packages/a9/d3/60c781c83a785d6afbd6a326ed4d759d141de43aa7365725cbcd65ce5e54/pillow-11.3.0-cp310-cp310-win_amd64.whl",
+    "sha256": "19d2ff547c75b8e3ff46f4d9ef969a06c30ab2d4263a9e287733aa8b2429ce8f"
+  },
+  "python": "CPython 3.10 x64 on Windows",
+  "library_url": "https://wenjunii.github.io/ai-media-tools/library.json",
+  "sources": [
+    {"name": "upstream-LICENSE.txt", "url": "https://raw.githubusercontent.com/xinntao/Real-ESRGAN/a4abfb2979a7bbff3f69f58f58ae324608821e27/LICENSE"},
+    {"name": "upstream-README.md", "url": "https://raw.githubusercontent.com/xinntao/Real-ESRGAN/a4abfb2979a7bbff3f69f58f58ae324608821e27/README.md"},
+    {"name": "model-anime.md", "url": "https://raw.githubusercontent.com/xinntao/Real-ESRGAN/a4abfb2979a7bbff3f69f58f58ae324608821e27/docs/anime_model.md"},
+    {"name": "portable-LICENSE.txt", "url": "https://raw.githubusercontent.com/xinntao/Real-ESRGAN-ncnn-vulkan/v0.2.0/LICENSE"},
+    {"name": "portable-README.md", "url": "https://raw.githubusercontent.com/xinntao/Real-ESRGAN-ncnn-vulkan/v0.2.0/README.md"}
+  ],
+  "social_publishing_enabled": false,
+  "daily_schedule_enabled": false
+}

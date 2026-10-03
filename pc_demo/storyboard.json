@@ -1,0 +1,45 @@
+{
+  "title": "Small file. Bigger possibilities.",
+  "duration_seconds": 45,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "segments": [
+    {
+      "start": 0, "end": 7.5, "kind": "result",
+      "eyebrow": "THE FINISHED RESULT", "title": ["Small file.", "Bigger possibilities."],
+      "caption": ["A real 4x upscale with Real-ESRGAN.", "Original test art. Local app output."],
+      "narration": "A real four-times upscale. This is the app's actual output, made locally."
+    },
+    {
+      "start": 7.5, "end": 15, "kind": "input",
+      "eyebrow": "01 / THE INPUT", "title": ["Only 256 pixels.", "Room to improve."],
+      "caption": ["A deliberately reduced 256 x 256 JPEG.", "The model never sees the original master."],
+      "narration": "An original illustration was reduced to a tiny JPEG. The model never sees the master."
+    },
+    {
+      "start": 15, "end": 22.5, "kind": "compare",
+      "eyebrow": "02 / THE COMPARISON", "title": ["Same crop.", "Different edges."],
+      "caption": ["Bicubic enlargement versus AI output.", "Watch the fine lines and curved edges."],
+      "narration": "Compare ordinary enlargement with the actual AI output. Watch the edges."
+    },
+    {
+      "start": 22.5, "end": 30, "kind": "process",
+      "eyebrow": "03 / THE REAL RUN", "title": ["One command.", "A saved result."],
+      "caption": ["Windows + Vulkan. Illustration model.", "Input, settings and execution log saved."],
+      "narration": "The model runs locally. Input, settings, logs and output are saved."
+    },
+    {
+      "start": 30, "end": 37.5, "kind": "use",
+      "eyebrow": "04 / PUT IT TO WORK", "title": ["From tiny asset", "to poster mockup."],
+      "caption": ["Useful for thumbnails and mood boards.", "Poster typography is added in the edit."],
+      "narration": "Try thumbnails, mood boards, or posters. This typography was added during editing."
+    },
+    {
+      "start": 37.5, "end": 45, "kind": "limitation",
+      "eyebrow": "THE LIMITATION", "title": ["Sharper is not", "more truthful."],
+      "caption": ["It can invent edges or smooth texture.", "Keep the original. Compare before use."],
+      "narration": "AI can invent edges and smooth texture. Keep the original. Always compare."
+    }
+  ]
+}

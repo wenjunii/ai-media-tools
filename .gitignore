@@ -14,3 +14,8 @@ AGENTS.local.md
 *.egg-info/
 dist/
 build/
+
+# PC execution project: dependencies, models, evidence and media remain local.
+/pc_demo/.local/
+/pc_demo/*.local.json
+/pc_demo/.venv/

@@ -124,10 +124,41 @@ and `verify-public-archive`; stage only the reviewed source and documentation
 changes, then run `audit-publication`. Use the protected PR flow above and wait
 for CI on the exact PR head and merged main commit.
 
-After returning to a clean, current main, run `record-sync` and `verify-sync` for
+On the owning Mac, after returning to a clean, current main, run `record-sync` and `verify-sync` for
 the existing published edition. This updates the publication checkpoint and
 retains its prior version locally. Do not run discovery, build, export, email
 preparation, or email delivery as part of source maintenance.
 If the requested change affects the library UI or data schema, use
 `build-library` to refresh only the derived views before staging. It preserves
 all dated report files, source evidence and delivery records.
+
+## PC source and documentation sync
+
+An explicit user request to sync PC source/docs authorizes a protected PR from
+the Windows checkout. This is separate from the Mac's daily publication flow.
+Preserve public reports, the library, private Mac settings, delivery receipts,
+research schedules and publication checkpoints. Do not run research discovery,
+build/export, `record-sync`, `verify-sync`, or email commands on the PC.
+
+1. Fetch current main and inspect the working tree and any existing matching PR.
+   Use or resume a `codex/` branch, preserving unrelated changes.
+2. Run the PC tests and launcher on Windows. Run the full regression suite,
+   compile checks, browser tests and `verify-public-archive`. The research Python
+   package requires Unix `fcntl`; use the already installed WSL distribution for
+   its tests and audits. See [PC validation commands](../pc_demo/README.md).
+3. Stage only reviewed source/docs/tests explicitly. Run `python -m pc_demo audit-git`
+   and `git diff --cached --check`, plus `python3 -m media_scout audit-publication`
+   under WSL. Models, executables, environments, media, machine
+   paths and run evidence must remain in ignored `pc_demo/.local/`.
+4. Commit with the GitHub noreply identity, push the branch, and create or update
+   a PR to main. Use a body file with validation evidence and attach the PR to
+   the owning chat. Verify the exact head SHA and its Linux and Windows CI jobs.
+5. Merge normally with the matching head commit, respecting required reviews and
+   checks. Fetch and fast-forward local main; verify the CI run on that exact
+   merged commit, including the existing Pages deployment. Never bypass branch
+   protection or force-push. Remove the completed branch after the merge.
+
+Main CI continues to deploy only `public/`; PC sources do not become website
+assets. Source sync does not transfer ignored app installations or video drafts.
+The Mac refreshes its own existing edition checkpoint when it next handles
+publication maintenance. No PC research or demo scheduler is created by sync.

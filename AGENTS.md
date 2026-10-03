@@ -1,5 +1,27 @@
 # AI Media Scout
 
+## Host ownership and PC demo exception
+
+Read `PROJECT_BRIEF.md` for the shared Mac/PC project context. The Mac owns research,
+reports, the library, GitHub publication and email. A Windows checkout must not
+create a research scheduler, prepare/send email, copy private Mac settings or
+receipts, or refresh Mac publication checkpoints.
+
+The user explicitly authorized a separate PC app-execution project in `pc_demo/`
+within this same repository. Read `pc_demo/AGENTS.md` before working there. Only
+that scoped project may install and run a reviewed discovered app, in its ignored
+local runtime. The research no-execution rule below still applies to `media_scout/`
+and research workflows. Preserve historical profiles and published editions.
+No PC demo schedule or social publishing is enabled by this authorization.
+Prepare reviewed PC code/docs for the Mac-owned GitHub publication flow; do not
+run research publication or email maintenance steps on the PC.
+When the user explicitly requests PC source/docs GitHub sync, the PC may push a
+`codex/` branch, open a protected PR, and merge after exact-head CI passes. Verify
+CI on the merged main commit as well. Follow `docs/GITHUB_SYNC.md`'s PC section;
+leave Mac publication checkpoints and all research/email operations to the Mac.
+
+## Mac research workflow
+
 This project researches open-source AI tools for digital media creators. Read
 delivery preferences from the ignored `config/scout.local.json` file. The default
 schedule preference is **8:00 AM America/New_York**, with **all platforms equally**
