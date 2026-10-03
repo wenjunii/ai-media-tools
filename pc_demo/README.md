@@ -198,6 +198,8 @@ The root `.gitattributes` preserves exact committed bytes in `public/` and the
 browser assets in `media_scout/ui/` that are copied into the library. This
 matters because automatic Windows CRLF conversion breaks the existing sealed
 report hashes even in a fresh clone. Do not rebuild reports to fix line endings.
+It also preserves `pc_demo/runtime.lock.json` byte for byte, so switching branches
+does not invalidate the saved installation checksum through line-ending changes.
 For a pre-existing clean checkout affected by conversion, restore those public
 files from their committed blobs after applying the attributes, then verify.
 
