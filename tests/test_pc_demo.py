@@ -2,6 +2,7 @@
 import hashlib
 import io
 import pathlib
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -163,6 +164,21 @@ class LocalStatusTests(unittest.TestCase):
 
 
 class PcGitBoundaryTests(unittest.TestCase):
+    def test_windows_checkout_preserves_runtime_lock_checksum(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = pathlib.Path(tmp) / 'source'
+            (repo / 'pc_demo').mkdir(parents=True)
+            (repo / '.gitattributes').write_bytes((root / '.gitattributes').read_bytes())
+            original = b'{"reviewed_release": "pinned"}\n'
+            (repo / 'pc_demo/runtime.lock.json').write_bytes(original)
+            destination = pathlib.Path(tmp) / 'checkout'
+            for args in (['init', '-q'], ['add', '.gitattributes', 'pc_demo/runtime.lock.json'],
+                         ['checkout-index', '--all', '--prefix=' + destination.as_posix() + '/']):
+                subprocess.run(['git', '-c', 'core.autocrlf=true', *args], cwd=repo,
+                               capture_output=True, check=True)
+            self.assertEqual((destination / 'pc_demo/runtime.lock.json').read_bytes(), original)
+
     def test_models_and_media_cannot_be_staged_as_pc_source(self):
         for name in ('pc_demo/.local/model.bin','pc_demo/model.safetensors','pc_demo/draft.mp4',
                      'pc_demo/token.local.json','pc_demo/.venv/pyvenv.cfg','pc_demo/tool.exe'):

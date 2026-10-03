@@ -2,3 +2,5 @@
 /public/** -text
 # Browser assets are copied byte-for-byte into that published archive.
 /media_scout/ui/** -text
+# The PC setup receipt pins this file's exact reviewed bytes.
+/pc_demo/runtime.lock.json -text

@@ -70,6 +70,11 @@ Local follow-up validation passed all 139 Python tests under WSL, all 16 PC test
 natively on Windows, all 18 browser tests, compile checks and the public archive
 audit. Reverification of the existing draft preserved its video hash and saved
 manual review.
+The first switch to merged main exposed Git's CRLF conversion of the runtime
+lock, which invalidated its saved checksum despite unchanged app/model files.
+The original lock bytes were restored, and an explicit Git attribute plus a
+Windows-conversion regression test now preserve them across checkouts.
+The checkout repair passed 140 regression tests and 17 native Windows PC tests.
 No research automation, email, social upload, or daily demo schedule was created.
 The Mac keeps its existing research workflow, credentials and private records.
 
