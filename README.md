@@ -25,6 +25,9 @@ Daily order: **generate and verify → sync GitHub → send email**. Finished re
 are published in the [public report archive](public/README.md). Private settings,
 raw research, and delivery records remain local.
 
+Corrections discovered after an edition is sealed are listed in
+[report corrections](docs/REPORT_CORRECTIONS.md), preserving the original archive.
+
 **[Search the live tool library](https://wenjunii.github.io/ai-media-tools/)**.
 The same web UI runs locally, with full-text search, filters, detailed profiles,
 dated review history, saved tools, and side-by-side comparisons. Save promising
