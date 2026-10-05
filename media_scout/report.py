@@ -139,6 +139,9 @@ def validate(editorial, discovery, config, catalog, queue=None):
             raise ValueError("Explain what is new, or label the initial baseline")
         previous = catalog.get(key, {})
         if (previous.get("last_featured") and previous["last_featured"] != editorial["report_date"]
+                and candidate.get("novelty") == "source-comparison-pending"):
+            raise ValueError(f"Source comparison is pending; complete it before featuring this tool again: {key}")
+        if (previous.get("last_featured") and previous["last_featured"] != editorial["report_date"]
                 and previous.get("source_fingerprint") == candidate["source_fingerprint"]):
             raise ValueError(f"Already featured without a source change: {key}")
         for link in tool.get("links", {}).values():

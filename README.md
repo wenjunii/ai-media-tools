@@ -97,6 +97,16 @@ Hugging Face model updates. It archives responses, READMEs, release information,
 source fingerprints, and collection failures. Search results are bounded samples,
 not an exhaustive inventory. Star counts help shortlist candidates; they do not
 establish creative quality.
+
+Update detection distinguishes observed changes from **comparison pending**.
+A fresh collection has not repeated the full license review yet, so a different
+fingerprint alone does not establish an update. Published releases and changed
+commits remain review signals; draft releases are ignored in both collection
+paths. Failed source reads and incomplete comparisons stay pending. Before a
+previously featured tool appears in a later daily report, complete the comparison
+and confirm a useful creative change. Rechecking the same license, or adding
+license evidence missing from an old pilot profile, is not itself a tool update.
+
 GitHub searches now use up to 100 results per page and two pages per query,
 without a minimum-star filter. The default plan has **63 terms × 3 lanes = 189
 repository queries**. Recent activity and creation searches sort by updates;
@@ -347,6 +357,10 @@ Regression checks cover integrity, missing citations/coverage, license conflicts
 HTML escaping, safe links, cross-host credential handling, unchanged profiles,
 and duplicate or uncertain email delivery. A successful Gmail message ID records
 acceptance by Gmail; it does not independently prove inbox placement.
+Update-detection checks cover fresh license reviews, legacy fingerprints,
+changed README/license text, commit and release signals, ignored drafts,
+failed source reads and recovery, and blocked repeat profiles while a comparison
+is pending. Existing fingerprint formats and sealed editions are preserved.
 Library checks cover shortlist transfer, merge/deduplication, malformed imports,
 missing tools, and research-note exports with dated evidence and pending details.
 Checks also cover pagination, partial source failures, zero-star candidates,

@@ -102,6 +102,24 @@ compare against the prior evidence and find a concrete creator-relevant change;
 a push timestamp or formatting edit is insufficient. Cite the release/commit.
 An unchanged source fingerprint must not be featured again.
 
+`source-comparison-pending` means an update has **not** been established. A new
+collection lacks the fresh full-license review included in a published
+fingerprint. Do not interpret that difference as changed source. A verified new
+release or different default-branch commit can still trigger review, but a
+collection failure leaves the comparison pending. Draft releases are ignored
+by both `discover` and `add-repository`; published prereleases remain labeled.
+
+For a promising pending comparison, finish its source reads and review the
+complete current license. If collection failed, use `add-repository` to collect
+fresh evidence in the unsealed edition, then repeat the license review. Successful
+recollection clears the candidate's failure; the day's coverage warnings remain
+as the collection record. Matching reviewed fingerprints become `unchanged`.
+Adding a license review absent from a legacy pilot fingerprint is not evidence
+of an update, so that comparison stays pending unless another source change can
+be established. The builder blocks repeating a previously featured tool in a
+later daily edition while its comparison is pending. Preserve old fingerprints,
+sealed observations and reports; no historical migration or rebuild is needed.
+
 GitHub's license classification is a screen, not a legal determination. For every
 profile and screened lead, read the complete license and additional restrictions.
 Only after confirming a

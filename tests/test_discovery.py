@@ -1,12 +1,13 @@
 """Broad discovery tests use fake public APIs, without credentials or mail sends."""
 
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
 from urllib.parse import parse_qs, urlparse
 
 from media_scout.client import SourceError
-from media_scout.discovery import collect, repository_search
+from media_scout.discovery import add_repository, collect, fingerprint, repository_search, review_license
 from media_scout.external import add_project
 from media_scout.planning import search_plan
 from media_scout.report import build
@@ -155,6 +156,107 @@ class DiscoveryTests(unittest.TestCase):
                     "tools": [], "category_notes": [{"category": c["id"], "text": "Research lead pending.",
                          "source_urls": ["https://github.com/test/creative-ai"]} for c in observation["categories"]]})
         self.assertEqual(build(editorial_path, self.root)["profile_count"], 0)
+
+
+class DailyComparisonTests(unittest.TestCase):
+    """Exercise collection and fresh license review against an existing profile."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.day = "2026-10-02"
+        self.repository = "test/creative-ai"
+        self.key = "github:" + self.repository
+        self.readme = "Official documentation of local creative AI inference."
+        self.license = "Complete license fixture already reviewed for the previous edition."
+        self.failed_commit = False
+        self.draft_release = False
+        write_json(self.root / "config/scout.json", {
+            "timezone": "America/New_York", "lookback_days": 30, "items_per_query": 100,
+            "categories": [{"id": "images", "name": "Images", "queries": ["AI image"], "seeds": []}],
+            "huggingface_pipelines": []})
+        previous = {"readme_sha256": hashlib.sha256(self.readme.encode()).hexdigest(),
+                    "head_sha": "head001", "code_license": "MIT",
+                    "license_review": {"sha256": hashlib.sha256(self.license.encode()).hexdigest()}}
+        write_json(self.root / "state/catalog.json", {self.key: {
+            "last_featured": "2026-10-01", "source_fingerprint": fingerprint(previous),
+            "head_sha": "head001", "release_tag": None, "profile": {"categories": ["images"]}}})
+        self.catalog_before = (self.root / "state/catalog.json").read_bytes()
+
+    def get(self, url, **kwargs):
+        repo = {"full_name": self.repository, "name": "Creative AI",
+                "html_url": "https://github.com/" + self.repository, "license": {"spdx_id": "MIT"}}
+        if "/search/repositories?" in url:
+            return {"total_count": 1, "items": [repo]}
+        if url.endswith("/" + self.repository):
+            return repo
+        if url.endswith(("/readme", "/license")):
+            filename = "README.md" if url.endswith("/readme") else "LICENSE"
+            return {"download_url": "https://raw.githubusercontent.com/test/creative-ai/main/" + filename,
+                    "html_url": "https://github.com/test/creative-ai/blob/main/" + filename, "sha": "blob"}
+        if "raw.githubusercontent.com" in url:
+            return self.readme if url.endswith("README.md") else self.license
+        if "/commits?" in url:
+            if self.failed_commit:
+                raise SourceError("HTTP 503 from commit endpoint")
+            return [{"sha": "head001", "html_url": "https://github.com/test/creative-ai/commit/head001"}]
+        if "/releases?" in url:
+            return ([{"tag_name": "v2-draft", "draft": True,
+                      "html_url": "https://github.com/test/creative-ai/releases/tag/v2-draft"}]
+                    if self.draft_release else [])
+        raise AssertionError("Unexpected fixture URL: " + url)
+
+    def candidate(self):
+        return read_json(self.root / "research" / self.day / "discovery.json")["candidates"][0]
+
+    def review(self):
+        review_license(self.repository, "MIT", "Reviewed all complete license terms in the fixture.",
+                       self.day, self.root, self)
+        return self.candidate()
+
+    def test_daily_collection_resolves_pending_to_unchanged_after_fresh_license_review(self):
+        discovery = collect(self.day, self.root, self)
+        self.assertEqual(discovery["candidates"][0]["novelty"], "source-comparison-pending")
+        self.assertNotIn("license_review", discovery["candidates"][0])
+        reviewed = self.review()
+        self.assertEqual(reviewed["novelty"], "unchanged")
+        self.assertTrue((self.root / reviewed["license_review"]["path"]).is_file())
+        self.assertEqual((self.root / "state/catalog.json").read_bytes(), self.catalog_before)
+        pooled = read_json(self.root / "state/discovery_catalog.json")[self.key]["candidate"]
+        self.assertEqual(pooled["novelty"], "unchanged")
+
+    def test_failed_collection_stays_pending_until_evidence_is_collected_successfully(self):
+        self.failed_commit = True
+        discovery = collect(self.day, self.root, self)
+        self.assertEqual(discovery["candidates"][0]["novelty"], "source-comparison-pending")
+        self.assertEqual(self.review()["novelty"], "source-comparison-pending")
+        self.failed_commit = False
+        add_repository(self.repository, ["images"], self.day, self.root, self)
+        reviewed = self.review()
+        self.assertNotIn("collection_warning", reviewed)
+        self.assertEqual(reviewed["novelty"], "unchanged")
+        self.assertEqual((self.root / "state/catalog.json").read_bytes(), self.catalog_before)
+
+    def test_readme_or_license_change_survives_full_review(self):
+        for changed_source in ("readme", "license"):
+            with self.subTest(changed_source=changed_source):
+                self.day = "2026-10-03" if changed_source == "readme" else "2026-10-04"
+                original = getattr(self, changed_source)
+                setattr(self, changed_source, original + " A documented change.")
+                discovery = collect(self.day, self.root, self)
+                self.assertEqual(discovery["candidates"][0]["novelty"], "source-comparison-pending")
+                self.assertEqual(self.review()["novelty"], "source-changed-review-required")
+                setattr(self, changed_source, original)
+
+    def test_draft_release_is_not_an_update_in_either_collection_path(self):
+        self.draft_release = True
+        collect(self.day, self.root, self)
+        self.assertNotIn("latest_release", self.candidate())
+        self.assertEqual(self.review()["novelty"], "unchanged")
+        added = add_repository(self.repository, ["images"], self.day, self.root, self)
+        self.assertNotIn("latest_release", added)
+        self.assertEqual(self.review()["novelty"], "unchanged")
 
 
 class ExternalProjectTests(unittest.TestCase):
