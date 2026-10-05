@@ -6,8 +6,9 @@ For the Windows PC's separate local demo-production project, see
 library/report publication and email ownership. The tested PC adapter uses
 Real-ESRGAN to create a 45-second vertical draft from actual image upscaling.
 Check this PC with `./pc_demo/demo.ps1 status`; see the PC guide for setup on a
-new machine. PC demo media and runtimes stay local; social publishing and daily
-demo scheduling are disabled. Explicitly requested PC source-code sync follows
+new machine. Use `history` to inspect past runs and `revise` to edit narration
+and captions using preserved app output. PC demo media and runtimes stay local;
+social publishing and daily demo scheduling are disabled. Explicitly requested PC source-code sync follows
 the [protected GitHub workflow](docs/GITHUB_SYNC.md#pc-source-and-documentation-sync).
 
 A daily field guide to high-quality open-source AI tools for artists, designers,

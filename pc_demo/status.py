@@ -2,6 +2,40 @@
 from .common import ROOT, LOCAL, read_json, resolve_run, sha256
 from .setup_runtime import verified_runtime
 
+VERIFIED_ARTIFACTS = ('inputs/input.jpg', 'outputs/actual-output.png', 'draft.mp4',
+                      'storyboard.json', 'logs/inference.command.json', 'logs/render.command.json')
+
+
+def draft_status(run):
+    manifest = read_json(run / 'manifest.json')
+    if not isinstance(manifest, dict):
+        raise ValueError('Run manifest must be a JSON object')
+    video = run / 'draft.mp4'
+    digest = sha256(video)
+    path = run / 'qa/verification.json'
+    verification = read_json(path) if path.is_file() else {}
+    if not isinstance(verification, dict):
+        raise ValueError('Verification record must be a JSON object')
+    recorded = verification.get('checked_artifact_sha256', {})
+    artifacts_match = isinstance(recorded, dict) and all(
+        (run / name).is_file() and recorded.get(name) == sha256(run / name) for name in VERIFIED_ARTIFACTS)
+    matches = {}
+    for relative, field in (('inputs/input.jpg', 'input'), ('outputs/actual-output.png', 'output')):
+        matches[field + '_matches_manifest'] = (run / relative).is_file() and sha256(run / relative) == manifest.get(field + '_sha256')
+    passed = (verification.get('automated_pass') is True and artifacts_match and all(matches.values())
+              and manifest.get('status') != 'failed'
+              and digest == verification.get('video_sha256') == manifest.get('video_sha256'))
+    state = 'passed for current artifacts' if passed else 'needs verification or repair'
+    if not passed and verification.get('automated_pass') is True and not recorded:
+        state = 'older verification format; rerun verify'
+    elif not passed and verification.get('status') == 'failed':
+        state = 'failed: ' + str(verification.get('error', 'see verification record'))
+    return {'directory': str(run), 'video': str(video), 'status': manifest.get('status', 'unknown'),
+            'video_sha256': digest, 'video_matches_manifest': digest == manifest.get('video_sha256'),
+            **matches, 'verified_artifacts_match': artifacts_match, 'automated_checks_passed': passed,
+            'verification_state': state,
+            **review_state(run, digest)}
+
 
 def review_state(run, video_sha256):
     result = {'browser_playback': 'pending', 'visual_review': 'pending',
@@ -48,22 +82,7 @@ def local_status():
     if (LOCAL / 'latest-run.json').exists():
         try:
             run = resolve_run()
-            manifest = read_json(run / 'manifest.json')
-            if not isinstance(manifest, dict):
-                raise ValueError('Run manifest must be a JSON object')
-            video = run / 'draft.mp4'
-            digest = sha256(video)
-            verification_path = run / 'qa/verification.json'
-            verification = read_json(verification_path) if verification_path.is_file() else {}
-            if not isinstance(verification, dict):
-                raise ValueError('Verification record must be a JSON object')
-            result['latest_run'] = {
-                'directory': str(run), 'video': str(video), 'status': manifest['status'],
-                'video_sha256': digest, 'video_matches_manifest': digest == manifest.get('video_sha256'),
-                'automated_checks_passed': verification.get('automated_pass') is True
-                    and digest == verification.get('video_sha256') == manifest.get('video_sha256'),
-                **review_state(run, digest),
-            }
+            result['latest_run'] = draft_status(run)
         except (OSError, ValueError, RuntimeError, KeyError, TypeError) as error:
             result['latest_run'] = {'status': 'unavailable or invalid', 'error': str(error)}
     return result

@@ -1,11 +1,31 @@
 import os
 import re
-from PIL import Image,ImageChops,ImageStat
+import shutil
+import uuid
 from .common import execute,read_json,sha256,stamp,write_json
-from .status import review_state
+from .status import VERIFIED_ARTIFACTS, review_state
 
 
 def verify_run(run):
+    record = run/'qa/verification.json'
+    if record.is_file():
+        history = run/'qa/verification-history'
+        history.mkdir(exist_ok=True)
+        shutil.copyfile(record,history/(uuid.uuid4().hex+'.json'))
+    pending = {'verified_utc':stamp(),'automated_pass':False,'status':'running'}
+    write_json(record,pending)
+    try:
+        result = _verify_run(run)
+    except Exception as error:
+        pending.update(status='failed',error=str(error),verified_utc=stamp())
+        write_json(record,pending)
+        raise
+    write_json(record,result)
+    return result
+
+
+def _verify_run(run):
+    from PIL import Image,ImageChops,ImageStat
     manifest=read_json(run/'manifest.json')
     setup=read_json(run/'evidence/setup.json')
     ffmpeg=setup['hardware']['media_tools']['ffmpeg']['path']
@@ -21,10 +41,11 @@ def verify_run(run):
     for path,digest in expected.items():
         if sha256(run/path)!=digest:
             raise ValueError(f'Provenance mismatch: {path}')
-    if render['source_output_sha256']!=manifest['output_sha256'] or render['returncode']!=0:
+    if (render['source_output_sha256']!=manifest['output_sha256'] or render['returncode']!=0
+            or render['source_input_sha256']!=manifest['input_sha256']):
         raise ValueError('Rendered video does not match the successful app output')
     inference=read_json(run/'logs/inference.command.json')
-    if inference['returncode']!=0:
+    if inference['returncode']!=0 or inference.get('argv')!=manifest.get('inference',{}).get('argv'):
         raise ValueError('Inference did not succeed')
     execute([ffprobe,'-v','error','-show_streams','-show_format','-of','json',run/'draft.mp4'],run/'qa','probe')
     probe=read_json(run/'qa/probe.stdout.log')
@@ -62,6 +83,7 @@ def verify_run(run):
             raise ValueError('Encoded visual content does not match the recorded compositor')
         pixel_errors.append(round(error,3))
     result={'verified_utc':stamp(),'automated_pass':True,'duration_seconds':duration,
+            'status':'passed','checked_artifact_sha256':{name:sha256(run/name) for name in VERIFIED_ARTIFACTS},
             'dimensions':[video['width'],video['height']],'video_codec':video['codec_name'],
             'pixel_format':video['pix_fmt'],'frame_rate':video['r_frame_rate'],
             'audio_codec':audio['codec_name'],'audio_sample_rate':audio['sample_rate'],
@@ -72,5 +94,4 @@ def verify_run(run):
             'subjective_listening':'not established by automated checks; creator review before upload',
             'video_sha256':sha256(run/'draft.mp4')}
     result.update(review_state(run, result['video_sha256']))
-    write_json(run/'qa/verification.json',result)
     return result
