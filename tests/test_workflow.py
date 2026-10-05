@@ -203,6 +203,66 @@ class WorkflowTests(unittest.TestCase):
         item["source_fingerprint"] = fingerprint(item)
         self.assertEqual(novelty(item, previous, "2026-09-01"), "new-release")
 
+    def test_missing_license_review_is_pending_instead_of_a_source_change(self):
+        reviewed = {"readme_sha256": "readme", "code_license": "MIT", "head_sha": "head",
+                    "latest_release": {"tag": "v1"}, "license_review": {"sha256": "license"}}
+        previous = {"last_featured": "2026-09-30", "source_fingerprint": fingerprint(reviewed),
+                    "head_sha": "head", "release_tag": "v1"}
+        observed = {key: value for key, value in reviewed.items() if key != "license_review"}
+        observed["source_fingerprint"] = fingerprint(observed)
+        self.assertEqual(novelty(observed, previous, "2026-09-01"), "source-comparison-pending")
+        observed["license_review"] = {"sha256": "license", "note": "A fresh review", "checked_at": "later"}
+        observed["source_fingerprint"] = fingerprint(observed)
+        self.assertEqual(novelty(observed, previous, "2026-09-01"), "unchanged")
+
+    def test_confirmed_commit_and_release_changes_remain_review_signals(self):
+        item = {"readme_sha256": "readme", "code_license": "MIT", "head_sha": "head",
+                "latest_release": {"tag": "v1"}}
+        previous = {"last_featured": "2026-09-30", "source_fingerprint": "reviewed-fingerprint",
+                    "head_sha": "head", "release_tag": "v1"}
+        for field, value, expected in [
+                ("head_sha", "new-head", "source-changed-review-required"),
+                ("latest_release", {"tag": "v2"}, "new-release")]:
+            changed = dict(item, **{field: value})
+            changed["source_fingerprint"] = fingerprint(changed)
+            with self.subTest(field=field):
+                self.assertEqual(novelty(changed, previous, "2026-09-01"), expected)
+
+    def test_incomplete_or_missing_evidence_cannot_claim_an_update(self):
+        previous = {"last_featured": "2026-09-30", "source_fingerprint": "old",
+                    "head_sha": "head", "release_tag": "v1"}
+        partial = {"readme_sha256": "readme", "code_license": "MIT", "head_sha": "new-head",
+                   "latest_release": {"tag": "v2"}, "license_review": {"sha256": "license"},
+                   "collection_warning": "Commit API unavailable"}
+        partial["source_fingerprint"] = fingerprint(partial)
+        self.assertEqual(novelty(partial, previous, "2026-09-01"), "source-comparison-pending")
+        self.assertEqual(novelty({}, {"last_featured": "2026-09-30"}, "2026-09-01"),
+                         "source-comparison-pending")
+
+    def test_reviewed_license_text_change_is_detected_even_with_same_spdx(self):
+        item = {"readme_sha256": "readme", "code_license": "MIT", "head_sha": "head",
+                "license_review": {"sha256": "old-license"}}
+        previous = {"last_featured": "2026-09-30", "source_fingerprint": fingerprint(item),
+                    "head_sha": "head"}
+        item["license_review"] = {"sha256": "changed-license"}
+        item["source_fingerprint"] = fingerprint(item)
+        self.assertEqual(novelty(item, previous, "2026-09-01"), "source-changed-review-required")
+
+    def test_adding_license_evidence_to_legacy_history_is_not_an_update(self):
+        item = {"readme_sha256": "readme", "code_license": "MIT", "head_sha": "head"}
+        previous = {"last_featured": "2026-09-30", "source_fingerprint": fingerprint(item),
+                    "head_sha": "head"}
+        item["license_review"] = {"sha256": "first-license-review"}
+        item["source_fingerprint"] = fingerprint(item)
+        self.assertEqual(novelty(item, previous, "2026-09-01"), "source-comparison-pending")
+
+    def test_pending_comparison_cannot_repeat_a_previously_featured_tool(self):
+        self.candidate["novelty"] = "source-comparison-pending"
+        self.editorial["tools"][0]["novelty"]["kind"] = "source-comparison-pending"
+        previous = {self.candidate["id"]: {"last_featured": "2026-09-30", "source_fingerprint": "old"}}
+        with self.assertRaisesRegex(ValueError, "comparison is pending"):
+            validate(self.editorial, self.discovery, self.config, previous)
+
     def test_invalid_dates_cannot_escape_report_directory(self):
         for value in ("../report", "2026-1-1", "2026-10-01/../../"):
             with self.assertRaises(ValueError):

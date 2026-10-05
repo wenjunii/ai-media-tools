@@ -60,16 +60,33 @@ def fingerprint(item):
 
 
 def novelty(item, previous, cutoff):
+    """Distinguish observed changes from an incomplete comparison.
+
+    Published fingerprints include the reviewed license text. Fresh collection
+    has not reviewed that text yet, so a different hash alone is not an update.
+    Keep the fingerprint format unchanged for sealed editions and old catalogs.
+    """
+    if item.get("collection_warning"):
+        return "source-comparison-pending" if previous and previous.get("last_featured") else "not-yet-reviewed"
     if not previous or not previous.get("last_featured"):
         created = (item.get("created_at") or "")[:10]
         if created and created >= cutoff:
             return "recently-created"
         return "first-profile"
-    if item.get("source_fingerprint") == previous.get("source_fingerprint"):
+    current_hash, previous_hash = item.get("source_fingerprint"), previous.get("source_fingerprint")
+    if current_hash and current_hash == previous_hash:
         return "unchanged"
     latest_tag = (item.get("latest_release") or {}).get("tag")
     if latest_tag and latest_tag != previous.get("release_tag"):
         return "new-release"
+    if item.get("head_sha") and previous.get("head_sha") and item["head_sha"] != previous["head_sha"]:
+        return "source-changed-review-required"
+    if not current_hash or not previous_hash or not item.get("license_review", {}).get("sha256"):
+        return "source-comparison-pending"
+    # Older pilot profiles may predate mandatory full-license evidence. Adding
+    # the missing review is not proof that the project's sources changed.
+    if fingerprint(dict(item, license_review={})) == previous_hash:
+        return "source-comparison-pending"
     return "source-changed-review-required"
 
 
@@ -267,6 +284,7 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
                 item["novelty"] = novelty(item, catalog.get(key), cutoff)
             except SourceError as error:
                 item["collection_warning"] = str(error)
+                item["novelty"] = novelty(item, catalog.get(key), cutoff)
                 warnings.append(f"Evidence {repository}: {error}")
 
         for item in candidates.values():
@@ -316,6 +334,7 @@ def add_repository(repository, categories, day=None, root=ROOT, client=None):
         item.update(readme_path=str(path.relative_to(root)), readme_sha256=hashlib.sha256(text.encode()).hexdigest())
         item["evidence"].append({"title": "Official README", "url": readme["html_url"], "blob_sha": readme["sha"], "checked_at": now()})
         releases = client.get(base + "/releases?per_page=1")
+        releases = [release for release in releases if not release.get("draft")]
         if releases:
             release = releases[0]
             item["latest_release"] = {"tag": release["tag_name"], "name": release.get("name"),
