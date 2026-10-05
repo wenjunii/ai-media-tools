@@ -39,7 +39,9 @@ jobs:
       - name: PC guardrails without models or app downloads
         run: python -m unittest discover -s tests -p test_pc_demo.py -v
       - name: PC command launcher on a fresh checkout
-        run: ./pc_demo/demo.ps1 status
+        run: |
+          ./pc_demo/demo.ps1 status
+          ./pc_demo/demo.ps1 history -Json
       - name: Compile PC source
         run: python -m compileall -q pc_demo
 

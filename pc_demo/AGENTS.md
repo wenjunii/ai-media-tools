@@ -18,6 +18,11 @@ flow in `../docs/GITHUB_SYNC.md`; never refresh Mac publication checkpoints here
 - Preserve every run in a new directory. Save settings, source input, exact command,
   stdout/stderr, return code, timing, checksums, outputs, and failure history.
   A failed app invocation must never become a success label or a substitute image.
+- Use `revise` for editorial changes to a successful saved inference. Verify its
+  input/output hashes, preserve the parent and original execution evidence, and
+  create a new run. Never carry a previous video's manual review to a revision.
+  Keep earlier verification attempts when rechecking; a failed recheck must not
+  leave an older pass active. Validate storyboards before narration/rendering.
 - Show actual generated output first. Label comparisons and editorial motion.
   Distinguish native screen recordings from reconstructions or log-derived cards.
 - Export a 30–60 second 9:16 H.264/AAC MP4 with readable captions, practical use,

@@ -1,14 +1,64 @@
 import pathlib
+import html
 import shutil
 import subprocess
 import traceback
 from datetime import datetime, timezone
-from PIL import Image
 from .common import ROOT, LOCAL, download, execute, read_json, select_profile, sha256, stamp, write_json
 from .setup_runtime import verified_runtime
+from .storyboard import load_storyboard
 
 
-def run_demo(gpu_id=-1):
+def snapshot_source(run):
+    snapshot=run/'evidence/source/pc_demo'
+    snapshot.mkdir(parents=True)
+    source_hashes={}
+    for path in ROOT.iterdir():
+        if path.is_file() and path.suffix in ('.py','.ps1','.json','.md') and not path.name.endswith('.local.json'):
+            shutil.copyfile(path,snapshot/path.name)
+            source_hashes[path.name]=sha256(path)
+    write_json(run/'evidence/source/hashes.json',source_hashes)
+    return subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT.parent,text=True).strip()
+
+
+def record_failure(run, manifest, error, stage):
+    manifest['status']='failed'
+    manifest['failures'].append({'stage':stage,'error':str(error)})
+    write_json(run/'manifest.json',manifest)
+    (run/'logs/failure.txt').write_text(traceback.format_exc(),encoding='utf-8')
+    print(f'FAILED RUN PRESERVED: {run}',flush=True)
+
+
+def finish_draft(run, manifest, receipt):
+    """Assemble a new draft; inference evidence must already exist in this run."""
+    ffmpeg=receipt['hardware']['media_tools']['ffmpeg']['path']
+    if sha256(ffmpeg)!=receipt['hardware']['media_tools']['ffmpeg']['sha256']:
+        raise RuntimeError('FFmpeg changed since setup; rerun setup to record current dependency')
+    from .render import Composer,make_audio,render_video
+    # Check fonts and caption/title fit before spending time synthesizing speech.
+    Composer(run)
+    ps=shutil.which('powershell.exe')
+    if not ps:
+        raise RuntimeError('Narration requires Windows PowerShell')
+    execute([ps,'-NoProfile','-File',ROOT/'narrate.ps1','-RunDirectory',run],run/'logs','narration')
+    make_audio(run,ffmpeg)
+    render_video(run,ffmpeg)
+    manifest['status']='rendered'
+    manifest['video_sha256']=sha256(run/'draft.mp4')
+    write_json(run/'manifest.json',manifest)
+    from .verify import verify_run
+    verify_run(run)
+    manifest['status']='automated_checks_passed'
+    manifest['finished_utc']=stamp()
+    manifest['human_review']='Visual and browser playback review pending; listening review is not inferred from audio metrics'
+    write_json(run/'manifest.json',manifest)
+    write_review_page(run)
+    write_json(LOCAL/'latest-run.json',{'run':str(run),'video':str(run/'draft.mp4')})
+
+
+def run_demo(gpu_id=-1, storyboard=None):
+    from PIL import Image
+    story=load_storyboard(storyboard or ROOT/'storyboard.json')
     app,receipt=verified_runtime()
     lock=read_json(ROOT/'runtime.lock.json')
     run=LOCAL/'runs'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ-realesrgan')
@@ -39,16 +89,8 @@ def run_demo(gpu_id=-1):
         shutil.copyfile(LOCAL/'setup.json',run/'evidence/setup.json')
         shutil.copyfile(LOCAL/'hardware.json',run/'evidence/hardware.json')
         shutil.copyfile(ROOT/'runtime.lock.json',run/'evidence/runtime.lock.json')
-        shutil.copyfile(ROOT/'storyboard.json',run/'storyboard.json')
-        snapshot=run/'evidence/source/pc_demo'
-        snapshot.mkdir(parents=True)
-        source_hashes={}
-        for path in ROOT.iterdir():
-            if path.is_file() and path.suffix in ('.py','.ps1','.json','.md') and not path.name.endswith('.local.json'):
-                shutil.copyfile(path,snapshot/path.name)
-                source_hashes[path.name]=sha256(path)
-        write_json(run/'evidence/source/hashes.json',source_hashes)
-        manifest['source_git_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT.parent,text=True).strip()
+        write_json(run/'storyboard.json',story)
+        manifest['source_git_commit']=snapshot_source(run)
         manifest['source_snapshot']='evidence/source/pc_demo (includes current uncommitted source if any)'
         if (ROOT/'LICENSE_REVIEW.md').exists():
             shutil.copyfile(ROOT/'LICENSE_REVIEW.md',run/'evidence/LICENSE_REVIEW.md')
@@ -70,36 +112,16 @@ def run_demo(gpu_id=-1):
         manifest['output_sha256']=sha256(run/'outputs/actual-output.png')
         print(f'Real app inference completed in {manifest["inference"]["elapsed_seconds"]:.3f}s',flush=True)
         write_json(run/'manifest.json',manifest)
-        ps=shutil.which('powershell.exe')
-        execute([ps,'-NoProfile','-File',ROOT/'narrate.ps1','-RunDirectory',run],run/'logs','narration')
-        ffmpeg=receipt['hardware']['media_tools']['ffmpeg']['path']
-        if sha256(ffmpeg)!=receipt['hardware']['media_tools']['ffmpeg']['sha256']:
-            raise RuntimeError('FFmpeg changed since setup; rerun setup to record current dependency')
-        from .render import make_audio,render_video
-        make_audio(run,ffmpeg)
-        render_video(run,ffmpeg)
-        manifest['status']='rendered'
-        manifest['video_sha256']=sha256(run/'draft.mp4')
-        write_json(run/'manifest.json',manifest)
-        from .verify import verify_run
-        verify_run(run)
-        manifest['status']='automated_checks_passed'
-        manifest['finished_utc']=stamp()
-        manifest['human_review']='Visual and browser playback review pending; listening review is not inferred from audio metrics'
-        write_json(run/'manifest.json',manifest)
-        write_json(LOCAL/'latest-run.json',{'run':str(run),'video':str(run/'draft.mp4')})
-        write_review_page(run)
+        finish_draft(run,manifest,receipt)
         return run
     except Exception as error:
-        manifest['status']='failed'
-        manifest['failures'].append({'stage':'pipeline','error':str(error)})
-        write_json(run/'manifest.json',manifest)
-        (run/'logs/failure.txt').write_text(traceback.format_exc(),encoding='utf-8')
-        print(f'FAILED RUN PRESERVED: {run}',flush=True)
+        record_failure(run,manifest,error,'pipeline')
         raise
 
 
 def write_review_page(run):
+    story=load_storyboard(run/'storyboard.json')
+    manifest=read_json(run/'manifest.json')
     page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Media Scout — local draft review</title><style>
 body{margin:0;background:#111c20;color:#f4eddc;font:17px system-ui}main{max-width:1160px;margin:36px auto;padding:0 28px;display:grid;grid-template-columns:360px 1fr;gap:40px}video{width:100%;max-height:82vh;background:black;border-radius:12px}h1{font-size:38px}a{color:#d6f780}p{line-height:1.6}img{max-width:100%}.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}button{padding:12px 20px;font:inherit;background:#d6f780;border:0;border-radius:8px;cursor:pointer}@media(max-width:720px){main{display:block}video{max-height:70vh}}
@@ -111,4 +133,9 @@ body{margin:0;background:#111c20;color:#f4eddc;font:17px system-ui}main{max-widt
 <p><a href="draft.mp4" download>Download MP4</a> · <a href="captions.srt">Captions</a> · <a href="manifest.json">Run record</a> · <a href="qa/verification.json">Verification</a></p>
 <p>Publishing disabled. Limitation: inferred details can change edges or smooth texture. Keep the original. The footage is an edited still-image demo, not AI-generated video.</p></section></main>
 <script>const v=document.querySelector('video'),s=document.querySelector('#status');v.ontimeupdate=()=>s.textContent=`Playback: ${v.currentTime.toFixed(1)} / ${v.duration.toFixed(1)} seconds`;v.onerror=()=>s.textContent='Playback error: '+v.error?.message;</script></html>'''
+    page=page.replace('Small file.<br>Bigger possibilities.',html.escape(story['title']))
+    if manifest.get('reused_inference'):
+        page=page.replace('AI MEDIA SCOUT / PC DEMO 001','AI MEDIA SCOUT / REVISED LOCAL DRAFT')
+        page=page.replace('Publishing disabled.',
+            'Reuses the preserved app output from an earlier run; narration and editing are new. Publishing disabled.')
     (run/'review.html').write_text(page,encoding='utf-8')

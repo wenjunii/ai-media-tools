@@ -9,6 +9,7 @@ import wave
 from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont
 from .common import ROOT, execute, read_json, sha256, stamp, write_json
+from .storyboard import load_storyboard
 
 W, H = 1080, 1920
 INK, PAPER, MUTED, ACCENT = '#111c20', '#f4eddc', '#9db4b6', '#d6f780'
@@ -53,7 +54,7 @@ def poster(after):
 class Composer:
     def __init__(self, run):
         self.run=run
-        self.story=read_json(run/'storyboard.json')
+        self.story=load_storyboard(run/'storyboard.json')
         self.manifest=read_json(run/'manifest.json')
         self.before=Image.open(run/'inputs/input.jpg').convert('RGB').resize((1024,1024),Image.Resampling.BICUBIC)
         self.after=Image.open(run/'outputs/actual-output.png').convert('RGB')
@@ -117,7 +118,8 @@ class Composer:
                 label(d,(120,1255),'Notice the softened fine texture.',34,PAPER)
         elif kind=='process':
             d.rounded_rectangle((78,490,948,1328),radius=24,fill='#1c2c31',outline='#415053',width=2)
-            label(d,(110,526),'RECORDED EXECUTION',27,ACCENT,True)
+            heading='ORIGINAL RUN / REUSED OUTPUT' if self.manifest.get('reused_inference') else 'RECORDED EXECUTION'
+            label(d,(110,526),heading,27,ACCENT,True)
             label(d,(110,596),'realesrgan-ncnn-vulkan.exe',35,PAPER,False,True)
             for j,line in enumerate(('-i input.jpg  -o actual-output.png','-n realesrgan-x4plus-anime','-s 4  -t 256',f'-g {self.manifest["settings"]["gpu_id"]}' if self.manifest['settings']['gpu_id']>=0 else 'GPU: automatic selection')):
                 label(d,(110,668+j*53),line,29,PAPER,False,True)

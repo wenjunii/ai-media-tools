@@ -22,6 +22,7 @@ From the repository root in PowerShell:
 
 ```powershell
 .\pc_demo\demo.ps1 status
+.\pc_demo\demo.ps1 history
 .\pc_demo\demo.ps1 run -GpuId 1
 .\pc_demo\demo.ps1 verify
 ```
@@ -33,6 +34,50 @@ and visual review belong to the current video bytes. `verify` defaults to the
 latest completed draft and reruns full media checks. An existing matching manual
 review is preserved; a changed video requires a new review. The PowerShell
 launcher saves its own output logs under `.local/launcher-logs/`.
+
+## Revise a video without repeating inference
+
+Use `history` to see completed runs, failed attempts, their error messages and
+local directories. It shows the newest 20 runs by default; use `-Limit 50` for
+more, or `-Json` for structured output. It never downloads or executes an app.
+
+`revise` builds a new video from a previous run's preserved input and actual
+Real-ESRGAN output. It checks the original hashes and successful inference log,
+then creates a new run directory with its own narration, video and verification.
+The source run stays intact. A failed video assembly is also reusable if its
+inference completed successfully. There is no app/model download or inference
+during revision.
+
+```powershell
+# Rebuild the latest completed draft using its saved storyboard:
+.\pc_demo\demo.ps1 revise
+
+# Create a fresh editable copy of that storyboard:
+$latest = (Get-Content .\pc_demo\.local\latest-run.json -Raw | ConvertFrom-Json).run
+$edit = Join-Path '.\pc_demo\.local' ('storyboard-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.local.json')
+Copy-Item -LiteralPath (Join-Path $latest 'storyboard.json') -Destination $edit
+# Edit the JSON title, scene titles, captions and narration, then:
+.\pc_demo\demo.ps1 revise -Storyboard $edit
+
+# To recover an older failed assembly, pass its directory from history:
+# .\pc_demo\demo.ps1 revise -RunDirectory <source-run-directory> -Storyboard $edit
+.\pc_demo\demo.ps1 verify
+```
+
+The supported template remains six 7.5-second scenes, 45 seconds total, at
+1080x1920 and 30 fps. Keep scene kinds and timing unchanged; titles and captions
+have one or two lines. The validator rejects unsupported layouts before creating
+a revision. Font-width checks happen before narration, and spoken lines must fit
+their scene without truncation. `run` also accepts `-Storyboard` for a new actual
+inference with edited narration.
+
+A revision records its parent manifest, the original inference run, inherited
+failures and current editing source. Original execution evidence stays under
+`evidence/inference/`, and the original command/logs are copied unchanged. Its
+process card labels the reused output and retains the original measured time.
+Previous manual review is not copied to the new video: play and inspect each new
+draft, and listen before uploading. Only a successfully completed revision moves
+the latest-draft pointer.
 
 ## Prerequisites and setup on a new Windows checkout
 
@@ -133,10 +178,18 @@ and audio levels. It rejects clipped/missing narration and blank/wrong-size app
 outputs. Visual playback and a creator listening pass complement those checks;
 signal levels alone do not establish pronunciation or subjective sound quality.
 
+Verification binds a pass to the input, app output, video, storyboard and
+inference/render records. Changed artifacts invalidate that pass. Each recheck
+archives the previous result under `qa/verification-history/` and records a new
+pending/pass/failure result, so a failed recheck cannot leave an old pass visible.
+For drafts made before this format was added, run `verify` once to refresh their
+verification evidence. The video and matching manual review stay intact.
+
 ## Failure recovery and next apps
 
 Read `logs/failure.txt` and `manifest.json` in the failed run; fix the cause and
-start a new run. Audio lines must fit their scene with a 0.35-second margin.
+start a new run, or use `revise` when the saved inference succeeded. Audio lines
+must fit their scene with a 0.35-second margin.
 Do not trim speech to force success. The concat step uses the audio directory as
 its working directory for compatibility with this PC's older FFmpeg.
 

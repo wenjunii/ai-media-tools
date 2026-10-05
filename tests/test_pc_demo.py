@@ -1,5 +1,6 @@
 """PC guardrails only: no app downloads, inference, credentials or media in CI."""
 import hashlib
+import copy
 import io
 import pathlib
 import subprocess
@@ -10,7 +11,11 @@ from unittest.mock import patch
 from pc_demo.audit import validate_index_entry
 from pc_demo.common import download, execute, read_json, resolve_run, select_profile, sha256, write_json
 from pc_demo.setup_runtime import verified_runtime
-from pc_demo.status import local_status, review_state
+from pc_demo.status import VERIFIED_ARTIFACTS, draft_status, local_status, review_state
+from pc_demo.storyboard import validate_storyboard
+from pc_demo.revisions import prepare_revision, revise_demo
+from pc_demo.history import local_history, format_history
+from pc_demo.verify import verify_run
 
 
 class ProfileSelectionTests(unittest.TestCase):
@@ -161,6 +166,183 @@ class LocalStatusTests(unittest.TestCase):
                 (app / 'model.bin').write_bytes(b'modified model')
                 with self.assertRaisesRegex(RuntimeError, 'integrity failure'):
                     verified_runtime()
+
+
+class StoryboardTests(unittest.TestCase):
+    def setUp(self):
+        self.story = read_json(pathlib.Path(__file__).resolve().parents[1] / 'pc_demo/storyboard.json')
+
+    def test_valid_narration_and_caption_edits_are_supported(self):
+        self.story['segments'][0]['narration'] = 'A revised opening line.'
+        self.story['segments'][0]['caption'] = ['Actual preserved app output.']
+        self.assertEqual(validate_storyboard(self.story), self.story)
+
+    def test_unsupported_timing_layout_and_missing_limitation_are_rejected(self):
+        changes = [lambda s: s.update(duration_seconds=60),
+                   lambda s: s.update(fps=30.0),
+                   lambda s: s['segments'][2].update(start=16),
+                   lambda s: s['segments'][5].update(kind='result'),
+                   lambda s: s['segments'][0].update(title=['one', 'two', 'three']),
+                   lambda s: s['segments'][0].update(caption=['line\nbreak']),
+                   lambda s: s['segments'][0].update(narration='')]
+        for change in changes:
+            story = copy.deepcopy(self.story)
+            change(story)
+            with self.subTest(story=story), self.assertRaises(ValueError):
+                validate_storyboard(story)
+
+
+class RevisionTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.local = pathlib.Path(self.temporary.name) / '.local'
+        self.source = self.local / 'runs/20261003-source'
+        for name in ('inputs', 'outputs', 'logs', 'evidence', 'qa'):
+            (self.source / name).mkdir(parents=True)
+        root = pathlib.Path(__file__).resolve().parents[1]
+        self.lock = read_json(root / 'pc_demo/runtime.lock.json')
+        self.story = read_json(root / 'pc_demo/storyboard.json')
+        write_json(self.source / 'storyboard.json', self.story)
+        (self.source / 'inputs/input.jpg').write_bytes(b'original input')
+        (self.source / 'outputs/actual-output.png').write_bytes(b'actual app output')
+        self.command = {'returncode': 0, 'elapsed_seconds': 2.0,
+                        'argv': ['reviewed-app.exe', '-i', 'input.jpg', '-o', 'actual-output.png']}
+        write_json(self.source / 'logs/inference.command.json', self.command)
+        for name in ('stdout', 'stderr'):
+            (self.source / f'logs/inference.{name}.log').write_bytes(b'original log')
+        write_json(self.source / 'evidence/setup.json', {'hardware': {}})
+        write_json(self.source / 'evidence/library.json', {'original': True})
+        self.manifest = {'status': 'failed', 'app': self.lock['app'], 'inference': self.command,
+                         'settings': {'model': self.lock['app']['model'], 'scale': 4, 'input_size': [256, 256]},
+                         'input_sha256': sha256(self.source / 'inputs/input.jpg'),
+                         'output_sha256': sha256(self.source / 'outputs/actual-output.png'),
+                         'failures': [{'stage': 'narration', 'error': 'too long'}]}
+        write_json(self.source / 'manifest.json', self.manifest)
+        write_json(self.source / 'qa/manual-review.json', {'visual_review': 'old review'})
+        write_json(self.local / 'latest-run.json', {'run': str(self.source)})
+        for target in ('pc_demo.common.LOCAL', 'pc_demo.revisions.LOCAL',
+                       'pc_demo.pipeline.LOCAL', 'pc_demo.history.LOCAL'):
+            patcher = patch(target, self.local)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        patcher = patch('pc_demo.pipeline.snapshot_source', return_value='test-commit')
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_revision_preserves_source_and_reuses_successful_inference_after_edit_failure(self):
+        original = {str(p.relative_to(self.source)): p.read_bytes() for p in self.source.rglob('*') if p.is_file()}
+        self.story['segments'][0]['narration'] = 'New narration for the preserved app output.'
+        custom = self.local / 'storyboard.local.json'
+        write_json(custom, self.story)
+        with patch('urllib.request.urlopen', side_effect=AssertionError('Unexpected download')), patch(
+                'pc_demo.pipeline.execute', side_effect=AssertionError('Unexpected app execution')):
+            run, manifest, _ = prepare_revision(self.source, custom)
+        self.assertNotEqual(run, self.source)
+        self.assertEqual(manifest['parent_run'], self.source.name)
+        self.assertTrue(manifest['reused_inference'])
+        self.assertEqual(manifest['inherited_failures'], self.manifest['failures'])
+        self.assertEqual(manifest['failures'], [])
+        self.assertFalse((run / 'qa/manual-review.json').exists())
+        self.assertFalse((run / 'draft.mp4').exists())
+        self.assertEqual(read_json(run / 'storyboard.json'), self.story)
+        self.assertEqual(read_json(run / 'logs/inference.command.json'), self.command)
+        self.assertEqual(read_json(run / 'evidence/inference/library.json'), {'original': True})
+        for name, content in original.items():
+            self.assertEqual((self.source / name).read_bytes(), content)
+
+    def test_changed_app_output_is_rejected_without_creating_a_revision(self):
+        (self.source / 'outputs/actual-output.png').write_bytes(b'substitute')
+        with self.assertRaisesRegex(ValueError, 'Source integrity failure'):
+            prepare_revision(self.source)
+        self.assertEqual(list((self.local / 'runs').iterdir()), [self.source])
+
+    def test_failed_inference_cannot_be_reused(self):
+        self.command['returncode'] = 7
+        write_json(self.source / 'logs/inference.command.json', self.command)
+        with self.assertRaisesRegex(ValueError, 'successful inference'):
+            prepare_revision(self.source)
+
+    def test_invalid_storyboard_is_rejected_before_new_run(self):
+        self.story['segments'][0]['start'] = 1
+        path = self.local / 'bad-story.json'
+        write_json(path, self.story)
+        with self.assertRaisesRegex(ValueError, 'timing'):
+            prepare_revision(self.source, path)
+        self.assertEqual(list((self.local / 'runs').iterdir()), [self.source])
+
+    def test_revision_of_revision_keeps_flat_original_evidence(self):
+        first, _, _ = prepare_revision(self.source)
+        second, manifest, _ = prepare_revision(first)
+        self.assertEqual(manifest['parent_run'], first.name)
+        self.assertEqual(manifest['inference_origin_run'], self.source.name)
+        self.assertTrue((second / 'evidence/inference/library.json').is_file())
+        self.assertFalse((second / 'evidence/inference/inference').exists())
+
+    def test_render_failure_is_saved_without_moving_latest_pointer(self):
+        pointer = (self.local / 'latest-run.json').read_bytes()
+        with patch('pc_demo.pipeline.finish_draft', side_effect=RuntimeError('speech is too long')):
+            with self.assertRaisesRegex(RuntimeError, 'speech is too long'):
+                revise_demo(self.source)
+        runs = [p for p in (self.local / 'runs').iterdir() if p != self.source]
+        self.assertEqual(len(runs), 1)
+        self.assertEqual(read_json(runs[0] / 'manifest.json')['status'], 'failed')
+        self.assertIn('speech is too long', (runs[0] / 'logs/failure.txt').read_text())
+        self.assertEqual((self.local / 'latest-run.json').read_bytes(), pointer)
+
+    def test_history_shows_failures_and_survives_a_malformed_run(self):
+        broken = self.local / 'runs/20261004-broken'
+        broken.mkdir()
+        write_json(broken / 'manifest.json', [])
+        history = local_history()
+        self.assertEqual(history['total_runs'], 2)
+        self.assertEqual(history['runs'][0]['status'], 'unavailable or invalid')
+        self.assertEqual(history['runs'][1]['status'], 'failed')
+        self.assertIn('too long', format_history(history))
+        self.assertEqual(local_history(limit=1)['shown'], 1)
+
+
+class VerificationStateTests(unittest.TestCase):
+    def test_a_failed_recheck_invalidates_old_pass_and_preserves_history(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = pathlib.Path(tmp)
+            old = {'automated_pass': True, 'video_sha256': 'old'}
+            write_json(run / 'qa/verification.json', old)
+            with patch('pc_demo.verify._verify_run', side_effect=ValueError('changed input')):
+                with self.assertRaisesRegex(ValueError, 'changed input'):
+                    verify_run(run)
+            record = read_json(run / 'qa/verification.json')
+            self.assertFalse(record['automated_pass'])
+            self.assertEqual(record['status'], 'failed')
+            history = list((run / 'qa/verification-history').glob('*.json'))
+            self.assertEqual(len(history), 1)
+            self.assertEqual(read_json(history[0]), old)
+
+    def test_changed_storyboard_invalidates_pass_even_when_video_is_unchanged(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = pathlib.Path(tmp)
+            for relative in VERIFIED_ARTIFACTS:
+                path = run / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(relative.encode())
+            video_hash = sha256(run / 'draft.mp4')
+            write_json(run / 'manifest.json', {'status': 'automated_checks_passed',
+                       'video_sha256': video_hash, 'input_sha256': sha256(run / 'inputs/input.jpg'),
+                       'output_sha256': sha256(run / 'outputs/actual-output.png')})
+            write_json(run / 'qa/verification.json', {'automated_pass': True, 'video_sha256': video_hash,
+                       'checked_artifact_sha256': {name: sha256(run / name) for name in VERIFIED_ARTIFACTS}})
+            self.assertTrue(draft_status(run)['automated_checks_passed'])
+            (run / 'storyboard.json').write_bytes(b'changed narration')
+            self.assertFalse(draft_status(run)['automated_checks_passed'])
+
+    def test_empty_history_creates_no_local_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            local = pathlib.Path(tmp) / 'absent'
+            with patch('pc_demo.history.LOCAL', local):
+                self.assertEqual(local_history(), {'total_runs': 0, 'shown': 0, 'runs': []})
+                with self.assertRaises(ValueError):
+                    local_history(0)
+            self.assertFalse(local.exists())
 
 
 class PcGitBoundaryTests(unittest.TestCase):

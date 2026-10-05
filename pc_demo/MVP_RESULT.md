@@ -82,3 +82,24 @@ Reproduce with `./pc_demo/demo.ps1 setup`, then `./pc_demo/demo.ps1 run -GpuId 1
 from PowerShell at the repository root. See [the complete run guide](README.md).
 On the installed PC, use `./pc_demo/demo.ps1 status` to check the saved runtime
 and latest draft, and `./pc_demo/demo.ps1 verify` to rerun media verification.
+
+## Editorial reuse check: 2026-10-05
+
+`revise` produced `.local/runs/20261005T173133809048Z-realesrgan-revision/`
+from the original completed run, with edited narration, opening titles and
+captions. It reused the exact input and untouched app output without another
+inference or app/model download. The new 45-second, 1080x1920 video passed full
+decode, provenance, frame/caption and audio checks, and reached the end in browser
+playback. All six scenes were visually inspected. Creator listening is still
+appropriate; subjective human audio review is not claimed.
+
+The original manifest, video, input, output, inference logs and manual review
+remained byte-for-byte unchanged. A fresh manual review belongs to the revision.
+Rechecking the original draft upgraded its verification format while archiving
+the previous result. Unit tests cover recovery after successful inference and
+failed editing, rejection of changed output, preservation of prior runs, and
+invalidation of an older pass after a failed recheck.
+
+Validation: 162 full Python regression tests, 29 native Windows PC tests, all 18
+browser tests and compile checks passed. Run artifacts and the edited storyboard
+remain ignored local files; see the README for `history` and `revise` commands.
