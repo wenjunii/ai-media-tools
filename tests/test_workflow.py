@@ -184,6 +184,15 @@ class WorkflowTests(unittest.TestCase):
         self.assertNotIn('<script>alert(1)</script>', output)
         self.assertIn('&lt;script&gt;alert(1)&lt;/script&gt;', output)
 
+    def test_external_profile_does_not_claim_github_stars(self):
+        self.assertIn("5 GitHub stars", render_html(self.editorial, self.discovery, self.config))
+        key = "external:https://gitlab.com/example/art"
+        self.candidate["id"] = key
+        self.editorial["tools"][0]["id"] = key
+        output = render_html(self.editorial, self.discovery, self.config)
+        self.assertNotIn("GitHub stars", output)
+        self.assertIn("Docs checked 2026-10-01", output)
+
     def test_sources_reject_unsafe_urls_and_credentials(self):
         for url in ("javascript:alert(1)", "http://example.com", "https://password@github.com"):
             with self.assertRaises(ValueError):
