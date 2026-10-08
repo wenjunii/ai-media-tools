@@ -204,7 +204,9 @@ def card_html(tool, candidate, category_names):
            f'<p class="badge">{escape(tool.get("maturity", "Documentation reviewed"))} · {escape(tool["license"]["code"])} · {escape(tool["novelty"]["kind"])}</p>',
            f'<p class="change">{escape(tool["novelty"]["text"])}</p>']
     release = candidate.get("latest_release") or {}
-    meta = f'Docs checked {tool["checked_on"]} · {candidate.get("stars", 0):,} GitHub stars'
+    meta = f'Docs checked {tool["checked_on"]}'
+    if candidate.get("id", "").startswith("github:"):
+        meta += f' · {candidate.get("stars", 0):,} GitHub stars'
     if release:
         meta += f' · Release {release["tag"]} ({(release.get("published_at") or "date unreported")[:10]})'
     out.append(f'<p class="meta">{escape(meta)} · {"Hands-on tested" if tool["quality"]["hands_on_tested"] else "Documentation review; installation not tested"}</p>')

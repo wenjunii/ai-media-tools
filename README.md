@@ -143,6 +143,8 @@ screened leads first; the automatic evidence shortlist is never a profile quota.
 
 The **report builder** validates the profiles, produces HTML/Markdown/JSON,
 seals artifacts with SHA-256 hashes, and updates a searchable static archive.
+GitHub star counts appear only on GitHub-hosted profiles; projects collected
+from other hosts retain their own primary-source links without a GitHub metric.
 The research agent exports the finished edition to `public/`, synchronizes code,
 documentation and reports through a protected GitHub pull request, and checks
 CI on the merged main commit. A verified sync checkpoint is required for email.
