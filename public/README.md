@@ -6,6 +6,7 @@ Finished AI Media Scout editions, with full profiles and primary-source citation
 
 | Date | Full profiles | Additional discoveries | Editions |
 | --- | ---: | ---: | --- |
+| 2026-10-09 | 48 | 18 | [Markdown](reports/2026-10-09/report.md) · [HTML](reports/2026-10-09/report.html) · [JSON](reports/2026-10-09/report.json) |
 | 2026-10-08 | 40 | 7 | [Markdown](reports/2026-10-08/report.md) · [HTML](reports/2026-10-08/report.html) · [JSON](reports/2026-10-08/report.json) |
 | 2026-10-07 | 38 | 28 | [Markdown](reports/2026-10-07/report.md) · [HTML](reports/2026-10-07/report.html) · [JSON](reports/2026-10-07/report.json) |
 | 2026-10-06 | 33 | 45 | [Markdown](reports/2026-10-06/report.md) · [HTML](reports/2026-10-06/report.html) · [JSON](reports/2026-10-06/report.json) |
