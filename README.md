@@ -11,7 +11,7 @@ and captions using preserved app output. PC demo media and runtimes stay local;
 social publishing and daily demo scheduling are disabled. Explicitly requested PC source-code sync follows
 the [protected GitHub workflow](docs/GITHUB_SYNC.md#pc-source-and-documentation-sync).
 
-A daily field guide to high-quality open-source AI tools for artists, designers,
+A daily field guide to open-source AI tools for artists, designers,
 filmmakers, musicians, creative coders, immersive-media makers, and game creators.
 The scope includes **any digital media or creative workflow**. The user's examples
 and configured fields are starting points, not boundaries. The focus remains
@@ -56,6 +56,28 @@ adds **27 detailed guides and 38 screened discoveries**. The cumulative library
 contained **77 tools as of that October 1 update**, including the original 12
 guides. Current totals are shown in the live library; pending discoveries remain
 clearly labeled until their complete profiles are finished.
+
+## Quality confidence
+
+Every library tool now shows **Recommended**, **Quality unverified**, or
+**Experimental**, independently of whether its profile is complete. Recommended
+requires cited evidence for creative results, reproducible setup, substantive
+maintenance, independent use, licensing and dependencies. Stars help discovery;
+neither popularity nor a detailed guide proves quality. All eligible tools remain
+searchable, including emerging projects with few stars.
+
+The October 10 retrospective audit covers all **486 existing tools** using their
+published evidence. It does not claim fresh installation tests. Existing records
+do not establish all six checks, so none was automatically recommended. Research
+and prototype tools are labeled Experimental; 3D AR Studio has an additional
+cited Experimental review. Original reports and sent receipts stay unchanged.
+
+Use **Quality confidence** to filter the web library, and open **Evidence and
+remaining gaps** in a profile for the rationale. Current quality also appears in
+comparisons and exported research notes, separately from dated guides.
+`python3 -m media_scout quality-backlog --full` lists the evidence still needed,
+including tools that already have complete profiles. New reports must include a
+structured quality assessment. See [quality policy and format](docs/QUALITY_POLICY.md).
 
 ## What an edition contains
 

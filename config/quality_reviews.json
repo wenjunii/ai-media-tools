@@ -1,0 +1,2521 @@
+{
+  "format_version": 1,
+  "audits": {
+    "external:https://gitlab.com/ar39907/embedded-amp-model": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "5e04fd9c84e422aefcbcfa4e17e04eb7192e8dfe37b1d11017d366057fa92af0",
+      "checked_on": "2026-10-10"
+    },
+    "github:3dtopia/lgm": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "f7ec0baff1597de98b3a74ac76997dfda0008d549b836dc36212a91d241fb3a6",
+      "checked_on": "2026-10-10"
+    },
+    "github:ace-step/ace-step-1.5": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "cd88eeac013757f7c8e885e5325a19aeaaeb2ed8bd14cd71a849ca8279b0fd56",
+      "checked_on": "2026-10-10"
+    },
+    "github:acly/krita-ai-diffusion": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "101bed134b540de7126a05827ba60eac1ef8c4aacb235674be87928f847805b7",
+      "checked_on": "2026-10-10"
+    },
+    "github:adam-cad/cadam": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "192d8bdd3c47e2927edf58823f9416925e9543da9370c748e14560d74bd0ce94",
+      "checked_on": "2026-10-10"
+    },
+    "github:adarshoff/kolam-studio": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "c25e3dc3f12199d311ab209f88d62a4a2e28823c597ca5f4e655a781fd93a07a",
+      "checked_on": "2026-10-10"
+    },
+    "github:afford-motion/afford-motion": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "398ae65928171535c132bd861a4c74f060467b9db242902ccff15f81bc0a3706",
+      "checked_on": "2026-10-10"
+    },
+    "github:ahujasid/mcp-for-blender": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "347ad8bf14ca86cc1a22f7d9fe8190de2481ccbc703a7651a76919a9d849a914",
+      "checked_on": "2026-10-10"
+    },
+    "github:aicelen/andromr": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "a3858bcee27a4948cca8440a173a370997070b49d531bf302e700949a2b40d44",
+      "checked_on": "2026-10-10"
+    },
+    "github:aigodlike/comfyui-blenderai-node": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "34d84109d256dfdaffdc58ae6ba88cc616e5d1294bca5d7e5aa2b9bcdace5585",
+      "checked_on": "2026-10-10"
+    },
+    "github:aiuniai/unique3d": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "68f36d3ed749659968802d4174fd307f4959a77c601fb8bac495225440752645",
+      "checked_on": "2026-10-10"
+    },
+    "github:alayalab/flooddiffusion2": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "f90a9fe658a8151baeaaea3e9ed1149c15f2f45a8e7cf5d46935c5c765fda953",
+      "checked_on": "2026-10-10"
+    },
+    "github:alexanderistomin/h3ddle": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "9de545fa67df94a05610b0358aa579f722abc1f8961c780fe330f16318a41673",
+      "checked_on": "2026-10-10"
+    },
+    "github:alexdlc5/partforge": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "d5c8bd3b2c98ec9b1b564592d1083b4dffdd9241aade7088c766c7e09f0ee8f3",
+      "checked_on": "2026-10-10"
+    },
+    "github:alexeymohr/finalpassaudiobook": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "bd1fc118f7882fccd50088c2fda943148cae4eb4456fd03ae7cab0d4462537ed",
+      "checked_on": "2026-10-10"
+    },
+    "github:alexgreensh/anidoodle": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "80965ef6d84c48f9f437267f5fd4ae85e4eee6aa0bb524cfcc3007f40e2c2d0d",
+      "checked_on": "2026-10-10"
+    },
+    "github:ali-vilab/vace": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "65a39422c8e83256921c0acefff5a04269927d81cf67178129429128533dfbf1",
+      "checked_on": "2026-10-10"
+    },
+    "github:aluo-x/learning_neural_acoustic_fields": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "7ce83c0a2f445b9a126c8433766b76d44a43bbb65047b6b39a09f1a51f26b5d2",
+      "checked_on": "2026-10-10"
+    },
+    "github:amuniare/ai-fabricator": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "a236834985dd0f73a031ffe189fe5a32ab48cfb45789aa9f44218ea3c809fa0b",
+      "checked_on": "2026-10-10"
+    },
+    "github:anelikes/onbgm": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "cd54e232d7b184ae27f5ad9417c00dbc5ef0285ee0a8b8c2430227ecb8420b7d",
+      "checked_on": "2026-10-10"
+    },
+    "github:anteloc/ldraw-nova": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "a2fc93db0f421ba523fae83296515f80bcb87a64cc1cf9b0608913c5c40fd722",
+      "checked_on": "2026-10-10"
+    },
+    "github:antgroup/echomimic_v2": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "d3adbe7960a0fb87a55d45a5167e7d6ece670e8502b567ebca18dd29ac8cf194",
+      "checked_on": "2026-10-10"
+    },
+    "github:antvis/infographic": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "ef1c3c155fa2ea435276420ffe3b3e2f87f6ee465fa906fa7c61d867a4c2b666",
+      "checked_on": "2026-10-10"
+    },
+    "github:appautomaton/mlx-spatial": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "873135dbbff367ba15d8212d0745cacb741a4b1142dba35c1e8cc40bf020bfe0",
+      "checked_on": "2026-10-10"
+    },
+    "github:appergb/opentake": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "9459d97575ef192ff3cb48e8395a7adcf1009ad6860ecc92d2007391794fcc78",
+      "checked_on": "2026-10-10"
+    },
+    "github:aranirudh2901/phosmith": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "c360b5cc6d5f4ad6c066647f45b287f0cf705b2bcd8d7c1fa78f3b6ef70dd9d2",
+      "checked_on": "2026-10-10"
+    },
+    "github:arcreel/arcreel": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "b1aa57c134552c6cfe2fa472212783354c012ab665a3028109d92f6778630b09",
+      "checked_on": "2026-10-10"
+    },
+    "github:arnegiacomo/fugleramme": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "9eb2f9cd9982079f643b4759a74bb203a96d548d10f4a67a14833704eb007b80",
+      "checked_on": "2026-10-10"
+    },
+    "github:arthurbrussee/brush": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "4fcbb7a5a7acdbea2e14f83a786ecb77e1677d6cba25aedf532a1b486f6be75e",
+      "checked_on": "2026-10-10"
+    },
+    "github:ath-maas/pixelle-video": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "7bd13e63b7d6d30eec62bb3c8b80b666a563902c5663fdaca0b71b0e1b87e07d",
+      "checked_on": "2026-10-10"
+    },
+    "github:augmentariumlab/signet": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "8fc2533d60a205031f8d361b8a183f6f97ad85348ee5388472d14014fba46b28",
+      "checked_on": "2026-10-10"
+    },
+    "github:automatic1111/stable-diffusion-webui": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "dcadddfe32faa53b4f5204691c3b1b1534b972baf0fe9b26cc4badffad59896a",
+      "checked_on": "2026-10-10"
+    },
+    "github:baileychen-dot/ai-texture-sp-tools": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "67440c5da7b55f7701d91261c5dbc8cb6da786eff64dce020e63401c901b374a",
+      "checked_on": "2026-10-10"
+    },
+    "github:balalex12/trailer-studio-local": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "fb590a9cab67e9f4f6ae7e8958fa2680dc2026223d6c482be178fdd3514b51c9",
+      "checked_on": "2026-10-10"
+    },
+    "github:bangtutorial/bang-motion": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "16538536cd13dc106a361371ea0e5e8d83eb050bfe3c7ab86f071a5d3acd98e1",
+      "checked_on": "2026-10-10"
+    },
+    "github:bazodev/open-vids": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "84fe62987ff2aae8b24e82d11efd731c29e200b808e4e023bac3d005eaaf2063",
+      "checked_on": "2026-10-10"
+    },
+    "github:bbq2077/novel-to-manga-anime-generator": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "d2ade5a6b7723f2bbbf7c4094abf05b7ee7d53893e10c70f059a304ff2fe9e81",
+      "checked_on": "2026-10-10"
+    },
+    "github:beatapi/beatdesign": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "68a1b6cdb5c25c3d464697971cee4a98619e1db80e4db540e338e4df6e188b9c",
+      "checked_on": "2026-10-10"
+    },
+    "github:bennix/opencutai": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "6b33d02c911e5e1d7cae0960fadd07aa2fcaf48dd6512ad9023d11cabc93f250",
+      "checked_on": "2026-10-10"
+    },
+    "github:benrugg/ai-render": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "260bdfc331f02c4ad94504792cd16489bfde810b8ae6905f66c7896c466da738",
+      "checked_on": "2026-10-10"
+    },
+    "github:benteoneb/lineus-mcp": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "f61297359df5dd48707a91c5b1708e05a61b5324512d796522d807c891692a08",
+      "checked_on": "2026-10-10"
+    },
+    "github:beyondtahir/beyondwords": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "7555d02502f7a1dfd7a3cc08bbffc1f49d3624c422c2ba71dc1d925957ab2663",
+      "checked_on": "2026-10-10"
+    },
+    "github:bgyss/blender-nrp": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "3d94b62672ebaedc65da4a4b52381aa705a654129355afac9e84f6e03a764e6b",
+      "checked_on": "2026-10-10"
+    },
+    "github:bhavyaak25/foldforge": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "0fa9a9060fcab8b7912e148047d0969f4e4452316c20ab65c01d8070c54acc27",
+      "checked_on": "2026-10-10"
+    },
+    "github:bherbruck/solvecraft": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "700113d796b7ad39aa2c662e3f4eb279ecb1b17bb3565d26ea3564d86ceaebbe",
+      "checked_on": "2026-10-10"
+    },
+    "github:blaizzy/mlx-audio": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "c393cbe864bcc7132099eddfe6ced31c043b1b15916c7bddb952684b27b9845e",
+      "checked_on": "2026-10-10"
+    },
+    "github:blixvip/easyedit": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "d909a89fa6958ae7cc5e40e66987e8314dad8cae2c324eaf15292afc807f4258",
+      "checked_on": "2026-10-10"
+    },
+    "github:blixvip/html-anime": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "eca213491d9b8f815a886204ff4d0f0f231465513dab0abceb96a6da65f80636",
+      "checked_on": "2026-10-10"
+    },
+    "github:boson-ai/higgs-audio": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "e2f451ce4e6222770d07d6d87d32a47e9ec005133b8703e825ee050c6fcd144c",
+      "checked_on": "2026-10-10"
+    },
+    "github:bralani/nopo4d": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "946819253b6fd18bab1a8f276dc893fa4c313508271d83109d847bd1a7dd87b9",
+      "checked_on": "2026-10-10"
+    },
+    "github:breezewhite/oemer": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "e8e4cd9ac609b5f35b5bd09bf3845e3573915ff584ef3553d48712c1fb5bdfa2",
+      "checked_on": "2026-10-10"
+    },
+    "github:bridge-mind/bridgeclip": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "7e9babec56d391a19dfdf7433354a47db9298d8c07beddfdae2340c40431db3a",
+      "checked_on": "2026-10-10"
+    },
+    "github:brycedrennan/imaginairy": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "d4f638662c9c6e46c7403d6f1a6db394d877f22c5f491701bf2ab2ccca52142b",
+      "checked_on": "2026-10-10"
+    },
+    "github:burakkagann/dissolution": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "562516da355eeb4e5a1ce1e88607ba01a0cb0a93021869e23e5f9322b992f510",
+      "checked_on": "2026-10-10"
+    },
+    "github:buxuku/smartsub": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "dec68a81ab2b246ff153ffae62920ff9cc284bce2c00c9cac6b1a6a4cd677099",
+      "checked_on": "2026-10-10"
+    },
+    "github:bytedance/bernini": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "298cf80b6a1c893b67b28a600fe7f717b84fdcf0ab909004a76709692e88af25",
+      "checked_on": "2026-10-10"
+    },
+    "github:bytedance/latentsync": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "ef56796568482acc957e82e1dd03fa885d7617145fc3cf0e5ece0269fa7f3e99",
+      "checked_on": "2026-10-10"
+    },
+    "github:c48h74/autocad-mcp": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "251264fefd7c7c91ed0c8ca310c176c26b37c50bcc4701e7c7fddd7e8606058c",
+      "checked_on": "2026-10-10"
+    },
+    "github:calesthio/openmontage": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "ac6baade7e960a221ded3a8d7d3cc0c260d187537e75a4bca0b60f9ef3e05ba9",
+      "checked_on": "2026-10-10"
+    },
+    "github:calesthio/resonant": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "1769bd566ffce2da685efb5f611b918c8434ebddc6255bc62f81566f06fc38f6",
+      "checked_on": "2026-10-10"
+    },
+    "github:capricorncd/local-ai-service": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "87266ecf7abe5e90bb0aa5b41588f255d9ca7f50d32d92dbd93bed9ee6901e55",
+      "checked_on": "2026-10-10"
+    },
+    "github:carson-katri/dream-textures": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "27719f3ec7e42912efd245f290aa6d557279e95ce801aabd730b44c2ab034256",
+      "checked_on": "2026-10-10"
+    },
+    "github:cayatur/soundvisualizer": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "ff9a2e65ca719518d0aebd15917492da9a6e7db97195f95d4cad06d19815be54",
+      "checked_on": "2026-10-10"
+    },
+    "github:chainner-org/chainner": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "39127e60342c9c459e46fdb5da271bfa4f062d93d9f29078ce4762f9c199d95a",
+      "checked_on": "2026-10-10"
+    },
+    "github:chanmeng666/archlang": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "5e4c25318a9d94a08b479257759c799e79546d9f5ca95e055cb78442b3b01587",
+      "checked_on": "2026-10-10"
+    },
+    "github:chenfengxu714/streamdiffusionv2": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "3334893a390a7b003450e37789f3bceb7e4099878040c0977e67577e20280c86",
+      "checked_on": "2026-10-10"
+    },
+    "github:chenguolin/instructscene": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "0fe8e4cd195a367605988e77c469101e9900edabb7e2f48bfdbe99359a237444",
+      "checked_on": "2026-10-10"
+    },
+    "github:chrischen667788/wind-comic": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "758ddeb1d6cd73d431c536ddc939a58c718c07e4d02ffcc42f2b02102d38f60c",
+      "checked_on": "2026-10-10"
+    },
+    "github:chshin10/epinet": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "f8defae411ecad665bf606b3f5137b451f72f7052a9a2d1283f76d0ac3e8c3c6",
+      "checked_on": "2026-10-10"
+    },
+    "github:cliptate/cliptate": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "6ae7fa28622c522fad6ab8cc3f265047bdbf30fe719ee12dbdeb79545b27f227",
+      "checked_on": "2026-10-10"
+    },
+    "github:cmubig/frida": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "69a706f38064366dd213204bdb63ce2e0f15187f8804a8e4301cec75b8a96a04",
+      "checked_on": "2026-10-10"
+    },
+    "github:codigo-free/ai-game-studio": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "74aa773e88b4e7f5930982e0c864e452f19a1f2cfa59e915e656881f1a1613b1",
+      "checked_on": "2026-10-10"
+    },
+    "github:comfy-org/comfyui": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "54598d2767b5aeb80adb70a22036a77a0a5cad5697fcf564dd69bdd3c1f04107",
+      "checked_on": "2026-10-10"
+    },
+    "github:comicsnow/comics-now": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "21d266bf8fb29bbe48b8feea63dbfc48e9a70eb777b25a59133d89f24a4fb271",
+      "checked_on": "2026-10-10"
+    },
+    "github:complight/complex-valued_2d_gaussian_representation": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "4f855022ce08c2ee2c3bcf0f264229383988f24ee8bdff0b8049e76cb6c6e1c9",
+      "checked_on": "2026-10-10"
+    },
+    "github:computational-imaging/neural-3d-holography": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "69dd12ced251c68e07d3d06f521a2f1e2542f97929893e2ae86eacfb76bbcd27",
+      "checked_on": "2026-10-10"
+    },
+    "github:computational-imaging/time-multiplexed-neural-holography": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "4bc0c15e0090f79cb97ce61a9466dc0a86217278abe8af16c3b73d09bcc2aa50",
+      "checked_on": "2026-10-10"
+    },
+    "github:cth9191/animate": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "c3fc1b71e516ea315a100be2a7ae517804ac26dfacd3e3ac2e7704f2605a1bf5",
+      "checked_on": "2026-10-10"
+    },
+    "github:cumulo-autumn/streamdiffusion": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "53e23ebb432c6104380fb94ebc630d5153cc1fbf2cbc0d50d1cf0f02fa0afcb4",
+      "checked_on": "2026-10-10"
+    },
+    "github:curmack/discoforcing": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "52bc5415b1baf0c3c0c43dea31be8acf459caae7c7c7a3a8047ff34d13fa1c3e",
+      "checked_on": "2026-10-10"
+    },
+    "github:cvat-ai/cvat": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "314c3840bf412aa12484f6fdcff3d878099896f105eae3dd16c5152cb3c0377e",
+      "checked_on": "2026-10-10"
+    },
+    "github:cvhub520/x-anylabeling": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "fe6c025482da05440b39a22ae86635f37159a66b169a7185da200694f5ec8b89",
+      "checked_on": "2026-10-10"
+    },
+    "github:cytrexsgr/cypher-dj": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "c913cdf5465a05a19bc3dd3193e733b92ef1c20b9f644d1b8766aeaec1ad903f",
+      "checked_on": "2026-10-10"
+    },
+    "github:dafei-qin/nfr_pytorch": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "07e6170d3ae631ab9b5ab8fa912990f0bd35139a841100b8a90adb85ef60b4fa",
+      "checked_on": "2026-10-10"
+    },
+    "github:damrsn/neuralnote": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "0d666ce0e05c8950833006e1849992f09afed454080d02ddd6eee7bfc2245198",
+      "checked_on": "2026-10-10"
+    },
+    "github:danielgatis/rembg": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "a8c17717d85b2f542a6338c606b9715270a88f0ef8aead9476bbc2688c41d8a4",
+      "checked_on": "2026-10-10"
+    },
+    "github:danilo-znamerovszkij/draw-your-font": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "37b7baada359fba2f65e2c0d10209e0d1d87cdfb19f1bc28a9fa6c3e3679c7d0",
+      "checked_on": "2026-10-10"
+    },
+    "github:davidpivert/emdash-plugin-ai-alt-text": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "64d583898209dd483c4768cf010006e5f595d2a5399e994f946fab19f1189d7f",
+      "checked_on": "2026-10-10"
+    },
+    "github:dayuanjiang/next-ai-draw-io": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "b58f2cfbe788ec5a5e056c49d01b708648758b3efb0a9aea52d1bbf9d4722993",
+      "checked_on": "2026-10-10"
+    },
+    "github:dcc-mcp/dcc-mcp-inkscape": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "f168f8bd3560440c5c99b7f21b56d1dbe1aedfd121a637acad41c88969bea677",
+      "checked_on": "2026-10-10"
+    },
+    "github:debpalash/voicestudio": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "6fe37371f43c759eaf6022e6682b7943a4c4f46db45123c37ff79c9cbe47e86c",
+      "checked_on": "2026-10-10"
+    },
+    "github:decartai/decart-xr": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "1d8e0b8bbcba1958a2d20d66cd1c9f26d12eb302e3358d8f071ddea675e428aa",
+      "checked_on": "2026-10-10"
+    },
+    "github:deepseek-ai/dreamcraft3d": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "0878e091077a4b7e557bec50207b0d219643a99d40c9690ae9718b4170adcda2",
+      "checked_on": "2026-10-10"
+    },
+    "github:depthanything/depth-anything-v2": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "6247ab3cf80aebf5c546ee78152e3ac23e53ef5dc43fd1293e129cf5801c08ea",
+      "checked_on": "2026-10-10"
+    },
+    "github:diffusionstudio/lottie": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "d5f345987e1b9b15c81d69ca7b817a2882bf1bb6acd9fa754a0d5181fdeafc68",
+      "checked_on": "2026-10-10"
+    },
+    "github:digitlib/stemidi-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "a5eaa9aeacfdd592b555ede2f57f5890cb42ace5c9f1600c1f2b382f86677f24",
+      "checked_on": "2026-10-10"
+    },
+    "github:dino880917/khatt-engine": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "d8282e257cb0f861543f47840a75bc0315ac37fa77d0e080718f02f14b0bd1dd",
+      "checked_on": "2026-10-10"
+    },
+    "github:divamgupta/diffusionbee-stable-diffusion-ui": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "f54bd535bdade805f9075362803863c80898021e83c2d29948b543503b6a0753",
+      "checked_on": "2026-10-10"
+    },
+    "github:djdefrag/qualityscaler": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "e609e6de75cb1308c1d91c757a985ecbc1ac665336eb033d0e001013e6f9cd6e",
+      "checked_on": "2026-10-10"
+    },
+    "github:doguilmak/cityscapes-controlnet-sd15": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "ba6c4670ac2bb1121e0594d48321099fe7f9163eae9711e94894fe153ab5e6cb",
+      "checked_on": "2026-10-10"
+    },
+    "github:domica/caprust": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "5d9c07da182880de4da4a5fda27642aaa9568ed0e3277e758f7a4ee47a775c9d",
+      "checked_on": "2026-10-10"
+    },
+    "github:donydchen/mvsplat": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "8149616a2ee79e0d7c094a52a3f2839e757d588ac677a321ed1b9983b76414e8",
+      "checked_on": "2026-10-10"
+    },
+    "github:donydchen/mvsplat360": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "0a3d7eb86360f0d3fac37b8755b3536d2cb3a9faeae79283e81a0a6d0307ef69",
+      "checked_on": "2026-10-10"
+    },
+    "github:dortanes/openspatial": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "794587dd70a41294b24e7cb3f9f6d1cea28c5ead8adcd68bb38870ca34b6526c",
+      "checked_on": "2026-10-10"
+    },
+    "github:doubiiu/dynamicrafter": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "f5aa7e20f421b303965fe0cd1fbd71e73d2d844766f63ddc062df0a7b5a523a6",
+      "checked_on": "2026-10-10"
+    },
+    "github:dreamgaussian/dreamgaussian": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "296ee6a3376f20c3f31efa16d67980e7588b47df206f9d3891f1fcac04c7dbb1",
+      "checked_on": "2026-10-10"
+    },
+    "github:dy-agent/dy-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "19c5041fcc2cf794b84b8a3e0d462871e694702c75347ce940342f58d9eba031",
+      "checked_on": "2026-10-10"
+    },
+    "github:earthtojake/text-to-cad": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "5ba49807b8e1df374c68eb2602e020175868dc241b6fb9146dac962fcadd1cb4",
+      "checked_on": "2026-10-10"
+    },
+    "github:echris6/motion-video-kit": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "29ae1d05a9c9e18c46049eea03b7664ed5d3bbc465fdbafa64556ba537c577c6",
+      "checked_on": "2026-10-10"
+    },
+    "github:edbeeching/godot_rl_agents": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "0675123bcbaea5ba34d1261898fe5d79e0c42241f32bde606f1febbd5e86d151",
+      "checked_on": "2026-10-10"
+    },
+    "github:edenfunf/reelmimic": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "8c81ccd933c4c20d08b0dc676691e39fb4547b5d9bb5168dd1f1bf6e65f88995",
+      "checked_on": "2026-10-10"
+    },
+    "github:edibianco/openwhispr": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "7c8b3bfbbaa272f2922561f2d63d3a4ad1868b28e4f448dd687f117a06321c8a",
+      "checked_on": "2026-10-10"
+    },
+    "github:egsecda/vocaloid-style-mv-pipeline": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "6a74c06ec391e2189d32190490baf7c340dcecce29ac9559c1c0fcaad58473a7",
+      "checked_on": "2026-10-10"
+    },
+    "github:emircbngl/dhm-hybrid": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "5012c8a2770b4a464a145758f65a2044b242f58f226c527c55ab3726cbec6651",
+      "checked_on": "2026-10-10"
+    },
+    "github:ericguo5513/momask-codes": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "91405a4692ab36eb1379e5fb1523f20a326c2d5d8dc79561cdb98394cf15f7db",
+      "checked_on": "2026-10-10"
+    },
+    "github:estebanstifli/localtext2voice": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "f747aacf4bb1c6247977d0421113162882c7a4ef26eea7f24a9296eb94d41d1e",
+      "checked_on": "2026-10-10"
+    },
+    "github:facebook/immersive-web-sdk": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "ba22a5cfb0ff9ec9d4c4043b0b11abfbc04d4927907e66a8ee296b1c7d832c54",
+      "checked_on": "2026-10-10"
+    },
+    "github:facebookresearch/audiocraft": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "8a9fc140b5a3598d96745c620e5e1c319ee1f78ed11e7291a9417828c9a456ec",
+      "checked_on": "2026-10-10"
+    },
+    "github:facebookresearch/map-anything": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "c53ba2ed731b94e3153faef91b9c3b7d78a85d9f597b5c50b555dee42890d8d1",
+      "checked_on": "2026-10-10"
+    },
+    "github:facebookresearch/sam2": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "fc87cd977e7411d41cc5c10ae22f02275c7a9b659d00cae03ae2b56f9af3a0ba",
+      "checked_on": "2026-10-10"
+    },
+    "github:fastgs/fastgs": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "0f13887e7075eed8571ca6f7878faf563365f750a5d233feaff7eaa64cf7c0a4",
+      "checked_on": "2026-10-10"
+    },
+    "github:faviovazquez/showtime": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "ff32ce674f3669621f4a47ec58910af7333b86a4c41b6c82aa030201aa0689e5",
+      "checked_on": "2026-10-10"
+    },
+    "github:fernandoabishai/scriptcut": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "32c01cf34b1bc9275c6c30fd898a6177b755cb8e6a7c7e015b4694686177c66f",
+      "checked_on": "2026-10-10"
+    },
+    "github:fernandotonon/qtmesheditor": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "4bb6283fc0b6402127bfa9fb8d35de3db837a7a5557723ce90c911f52a2a48a0",
+      "checked_on": "2026-10-10"
+    },
+    "github:finderchangchang/brewreel": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "9dcdbc0d984980d40e465373fdbd23208015a60b1764799e8e43200615039ba5",
+      "checked_on": "2026-10-10"
+    },
+    "github:fireredteam/firered-image-edit": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "1c80b6fab6fe701ef7a3bac7149af65eaf9d755f88b8a741214cc4b1a8a4be4c",
+      "checked_on": "2026-10-10"
+    },
+    "github:fireredteam/firered-openstoryline": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "9708c0b37cfa4b1d10272050eddcc93068d8b7cf64d3b3e657b260b1636413af",
+      "checked_on": "2026-10-10"
+    },
+    "github:forgent3d/forgent3d-desktop": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "a2f68919f0b240782c6f48958d4c83397ccb92ecdc06c2c4b5a8b2295c83b5ae",
+      "checked_on": "2026-10-10"
+    },
+    "github:forget-c/jellyfish": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "f0929b8c9e04a33bc3d850b069bb01004138385269ffe7181c669f4fcb4dcd82",
+      "checked_on": "2026-10-10"
+    },
+    "github:forjiang/image-to-splat": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "99c25e727b694986ef5682177070b166174e486371e05e33cb437cebaafd97b4",
+      "checked_on": "2026-10-10"
+    },
+    "github:freddysae0/video2mocap": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "638deafff4764af8829e52f46ca8cf194d85c988156dd8b0d61bbcfa35194d49",
+      "checked_on": "2026-10-10"
+    },
+    "github:fudan-generative-vision/champ": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "0bf805f4e13e4e3f744531c9efdc0fb4ba5ec8d490067ab5b77cd96191844fab",
+      "checked_on": "2026-10-10"
+    },
+    "github:fxtd-studios/radiance": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "5f604c79250f6a8473b535ece6345d1cdb54fc26c0dd5426773d36a0290cfe63",
+      "checked_on": "2026-10-10"
+    },
+    "github:gantasmo/thedaw": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "0e749fda4a1b48718c220c75c594ec373e06a282377547a96a9b8ae71bb12726",
+      "checked_on": "2026-10-10"
+    },
+    "github:gap-lab-cuhk-sz/gaustudio": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "81afb402a777266ac296b08177321a2611813cb7222cf954e9d41238dbf0ea9e",
+      "checked_on": "2026-10-10"
+    },
+    "github:gaparmar/img2img-turbo": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "687f39d0109760e82bed4adfe3db14c8e9320e85fb7d7d1a2b7b6f9757b94e9f",
+      "checked_on": "2026-10-10"
+    },
+    "github:gavinjudd/type-evidence": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "a4c9cc803155e820ecc7e8c13a1fc80cae9d07daf28f1ce52d1721f01239ea81",
+      "checked_on": "2026-10-10"
+    },
+    "github:georoen/qgis-promptmap": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "343237142add9d1ea24e915324a46ecb80276128d6e2fb5959f092d5e241df59",
+      "checked_on": "2026-10-10"
+    },
+    "github:gfargo/pixelkiln": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "b91c351bcf961e19ffec5e297e75ad6a096ea8b780508d01147dd1643082d12a",
+      "checked_on": "2026-10-10"
+    },
+    "github:gidntsquia/open-video-editor": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "553896788daa61e15eab70b5a73da74ed44318296f55e366bb485f3d771bc472",
+      "checked_on": "2026-10-10"
+    },
+    "github:git-rocky-stack/vision-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "160a5826c8e6438c673a01f28752a8928c23adae6fe09e9e16e4e76393bd09f0",
+      "checked_on": "2026-10-10"
+    },
+    "github:gitmylo/audio-webui": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "4753e18a71a5afb783c6fadd6b5c80d2093b77e02db31bd5abf63a15bfc998fd",
+      "checked_on": "2026-10-10"
+    },
+    "github:gittielabs/copperplane": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "16d522da3a11ef8a454680ee010a065863a4cbab8fba1397b399cc208cea4ae5",
+      "checked_on": "2026-10-10"
+    },
+    "github:glanderness/beeftv": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "bb0bf77701234f7927c2965b59d6b1eff582d3240ad07d601d663f8b74f682c3",
+      "checked_on": "2026-10-10"
+    },
+    "github:google/xrblocks": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "c393c8089671620d7fc51202986b6ac22a40ae0e2750296e3a38092cd69533e7",
+      "checked_on": "2026-10-10"
+    },
+    "github:grayrepo-byte/agenvas": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "20c918d32af65b5901607ed7986ade528c5e883781a0617d1556328f0039c2ef",
+      "checked_on": "2026-10-10"
+    },
+    "github:greensock/gsap-skills": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "6befde53b929f7d13cc8f9d0fc3e4946ceae04f4051a70960fafe952b791ebf4",
+      "checked_on": "2026-10-10"
+    },
+    "github:grunion-ai/decklet": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "0b22a97564181a134c709183b7181ee189d144a57cbc815b8cbcc4bc74e673ef",
+      "checked_on": "2026-10-10"
+    },
+    "github:gtwatts/ferrocut": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "0d02dffe84fa31bd87436895134f8c53542b6df7d589961203126b7fcb86a8a9",
+      "checked_on": "2026-10-10"
+    },
+    "github:guoyww/animatediff": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "a9eab6b736bbc3549db95593d80fc154d9b62a6faaf3e37c3a8165bdbfb3a36b",
+      "checked_on": "2026-10-10"
+    },
+    "github:gvclab/personalive": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "89eaf69f1a68fe33189545611c238bee7d0d74e7106513806c648b34623e34ad",
+      "checked_on": "2026-10-10"
+    },
+    "github:hacimertgokhan/geomotion": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "d22891953b0b1ecf4e0927c42cca0139855e4b4158bf1d74b0e990e5b20a3d1c",
+      "checked_on": "2026-10-10"
+    },
+    "github:hacksider/deep-live-cam": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "6b4bcc71e63184c53c4cbe2ae86500dfe18967e5f4b3bcfc0145387423da9643",
+      "checked_on": "2026-10-10"
+    },
+    "github:haian-jin/neural_gaffer": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "9b362981f7ffb810c9aad2fd124e05dd9c8fb90eac6941cafc1d5df8d444d143",
+      "checked_on": "2026-10-10"
+    },
+    "github:haidermoulay3mk/local-ai-video-editor": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "0fd07a4fa9a19f668e67b7d84e074ceb1920e231fe7b5b0de2a603be41b9499e",
+      "checked_on": "2026-10-10"
+    },
+    "github:hakoradev/klarity": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "a2d4a86403e3991a51d6a4138f1147a829508ce36ec0e5a18b174818f74c61af",
+      "checked_on": "2026-10-10"
+    },
+    "github:hao-ai-lab/fastvideo": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "b8ba3e101271beb915b8bbc38d8620de1d79d9586d25d1ab98e7eb7669d5448e",
+      "checked_on": "2026-10-10"
+    },
+    "github:hapticgen/hapticgen": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "89921229d1e34ebcdaa59e3eb1fb7a0ce1a7b56bdba82a5ca7bc98fb49b33eec",
+      "checked_on": "2026-10-10"
+    },
+    "github:harry0703/moneyprinterturbo": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "443fb033da044ec0f6fed9ec47449dc85ca0d19d05c299f776915d051770d86b",
+      "checked_on": "2026-10-10"
+    },
+    "github:harry7557558/spirula-studio": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "810f6f2be147335d9ee39bf699790b134e5bc670d0bfe62d6c4bdbabbbed16aa",
+      "checked_on": "2026-10-10"
+    },
+    "github:hayden1126/shodo": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "fb38162460d146836a7dca7eae80d8c9def7dc17d46ab99cc63007dba873ed6d",
+      "checked_on": "2026-10-10"
+    },
+    "github:hbai-ltd/toonflow-app": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "1c1a29b51a2acdd1b0c3930bb3c5b0679d2c2e15163721bde3267e360ccefc56",
+      "checked_on": "2026-10-10"
+    },
+    "github:heygen-com/hyperframes": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "08a7d6b0bde1bf962997af65912cade434db0fc88af3544c96812417408aed62",
+      "checked_on": "2026-10-10"
+    },
+    "github:heyixuan2/bambu-studio-ai": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "daba5cc727b550d09ad1a0353e092cf02f9c5c1b84912e56eda20c06c3dceeeb",
+      "checked_on": "2026-10-10"
+    },
+    "github:hkuds/vimax": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "1279db3cd1b118f29c9aa658c2280c6d9eda5c4b34ce015017b7eacb4a27c5bd",
+      "checked_on": "2026-10-10"
+    },
+    "github:hpcaitech/open-sora": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "d1fbf61abe19d2256f400891bbaa1c731b3fb92a7af8e9fb56d7cc2955bdf944",
+      "checked_on": "2026-10-10"
+    },
+    "github:huanshere/videolingo": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "4e92ed71c67d44c49048e3dc0d3a4a8de54efd0589d0bd46b0cb4a88a8e2463a",
+      "checked_on": "2026-10-10"
+    },
+    "github:huggingface/diffusers": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "deaf6082a45bb094af73265b4282c48f83205c9cdfc634296a6bca8c32c5f2fc",
+      "checked_on": "2026-10-10"
+    },
+    "github:huggingface/transformers.js": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "e2a0aaf69c189a486ed0aeabf462d63668f9db8748639498a25a436566754077",
+      "checked_on": "2026-10-10"
+    },
+    "github:hugohe3/ppt-master": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "35aa247743099434d4b21de7ffb0720225845552c6dd4e2e1b2b34561cb766ab",
+      "checked_on": "2026-10-10"
+    },
+    "github:humanjavaenterprises/huje.sensemusic.oc-python.src": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "44be6c025d3bb10271d84baf99fa275cd26a783782a9fe0127b4e8cba2f76407",
+      "checked_on": "2026-10-10"
+    },
+    "github:hustvl/4dgaussians": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "d74217364917840d26694b053de5b7768573d864d24ab1d2013615b71b5ca46d",
+      "checked_on": "2026-10-10"
+    },
+    "github:hzwer/eccv2022-rife": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "86583d5575f8366cb10f8f6b64cb0578ca42e8dc78e9130162ad2ff014f010cb",
+      "checked_on": "2026-10-10"
+    },
+    "github:iamncj/nrhints": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "715c5f52d134219f92e82f3b3243aaef2aadcb751b7e59bf763089522c390aab",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/ad-video-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "1179538fe02ba2f78734a6ea5daa1d19fe719d939c5da5a9e8730a206c1f7093",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/data-animation-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "eb705cc8f3b132e63f1204d9b97295e47354a5537d47f24c1a6ccde3213042a1",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/ecommerce-video-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "00c4ae701b17ec14794454286f8303746782af429e9625b0f7868ab72fb7399b",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/explainer-video-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "ee553661161211da517cdec4e525c87ef60fd15db08ec1e49f6080a7ccbc8e7f",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/freelance-motion-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "e7fe26f416c88a655671a46bb28e8eba78f3f42f6d3dde688d4e7ba7daa3f041",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/javascript-animation-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "2287977aa7805f5116432af344556b67e8abab474b31134a45c384915a930570",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/kinetic-typography-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "7bc15ffe82e1d1a6beb473be9a1cb911b695d34ceb50410c9fa23cc21e350634",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/lower-thirds-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "621ef63b9a8bcf50bafc876100ffdf9e883c15144019f04629d3fd365ba62435",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/manim-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "d35c5b5d484046f2d6147e464f6633854f4c017c0844182167fbf31b5f6bd657",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/map-animation-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "570f06802b82ca35686dade9d0384ca03ec60f86ac5377646358e97100e98c9b",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/motion-design-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "762b019e527a181c4fa7da796a58b5bf0e86142a5acee2d15c915c6bdbfcb193",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/text-message-video-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "5300e190283d9d197aa65093452650113188b2c20b6402040c0189474f2968ef",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/tiktok-video-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "fc5ed646f1ee022dde5e278e318d474f07a083b788cabb3764cc6181f879fb4d",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/web-animation-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "638ae8695eec55c15c823420543f4ccb976a5d164ec3dd07f2e40a4096eb0b80",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/webgl-animation-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "9e21271114630c96e4104bde1d788145da46e2bf3743661b1801ca5c874d3be7",
+      "checked_on": "2026-10-10"
+    },
+    "github:iart-ai/youtube-video-skills": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "2a9c547950561ad23dedf21c8745e953693ce70c2a07c43192cec2b0a7ed4c8f",
+      "checked_on": "2026-10-10"
+    },
+    "github:idea-research/dwpose": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "a84c93795309938a05d718036649456b5b8f2e14567ec6c20630ea7f85d60aae",
+      "checked_on": "2026-10-10"
+    },
+    "github:idea-research/groundingdino": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "8cdb550ebfb9c085d5219089bbc94adad43bce8060d95960d38de82b6af337f0",
+      "checked_on": "2026-10-10"
+    },
+    "github:ifbars/blender-agent-studio": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "6ce22899ca44c73b1c8bd376d63029b3974d78f4dff00c27f5eaa7f6a5cdabd2",
+      "checked_on": "2026-10-10"
+    },
+    "github:ijichi-art/atlas-of-thought": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "58bcfd606d2c5b77335243da340573a22453436dd93797209ab0ced3ea9f1bb9",
+      "checked_on": "2026-10-10"
+    },
+    "github:imweb-project/imweb": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "95ac71b2d038d9ce1051695dc3fe2b1e249fe431ba3de40898246a795b06670e",
+      "checked_on": "2026-10-10"
+    },
+    "github:ingeniaworks/openviz": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "cf0c8d7e03e540ad3c68f4d64d63353829d5e329080bcc74b684941aeef63a85",
+      "checked_on": "2026-10-10"
+    },
+    "github:inikolax/remiqora": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "b60d2fc522dac7969595a2ed86f255eec2aad0341770043ccfdfed16bdf742e6",
+      "checked_on": "2026-10-10"
+    },
+    "github:int64ago/vistep": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "d59d869835889ba2f56505e4d5cbb7a79c7f059e757152a62b93dec59d28b188",
+      "checked_on": "2026-10-10"
+    },
+    "github:interrupt21h/tubeviz": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "970e8d130504d67345c36fa41ab8ef74e499374e9a39a3e308a10aad37f4fc23",
+      "checked_on": "2026-10-10"
+    },
+    "github:invoke-ai/invokeai": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "64e29dfab0df0959a7d3072a796f91228e29016cb8f91478c7a40478b96729d7",
+      "checked_on": "2026-10-10"
+    },
+    "github:iofficeai/officecli": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "2c0b71f7fe920eb4e28d21af5f4e066adf0613a0973f700740dcab0becdf0ae2",
+      "checked_on": "2026-10-10"
+    },
+    "github:jamezuk/lyrion-audiomuseai-plugin": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "7373a4e742223d1c570a8a7c58cf26d39084ec53784ceabf9515275aaf1cdd15",
+      "checked_on": "2026-10-10"
+    },
+    "github:jangtrinh/design-os-3d-blender": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "0f6754b419f3ac8e3d83288f3020f236b0cc22f622ed8cf4114fc2b0b0081fc5",
+      "checked_on": "2026-10-10"
+    },
+    "github:janishar/qwen-image-2.1-studio": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "b2800c6715997a9be4712386ecd61c6ab1908200f315301db431d9124c52dba5",
+      "checked_on": "2026-10-10"
+    },
+    "github:jcallico/photo-airt": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "470dafc1a7ef169f6269b2b122775074ccae590256837588db04cbaeb388745f",
+      "checked_on": "2026-10-10"
+    },
+    "github:jd-opensource/joyai-image": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "9f27ec701e22175bbddc1e0698440b8078149aa9075b06c5fb69c7fce3a58156",
+      "checked_on": "2026-10-10"
+    },
+    "github:jd-opensource/joyai-video-edit": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "1a81e8d63fb0f89e84f6a5dba117454f0486fe73369feb200108958f984d7a9b",
+      "checked_on": "2026-10-10"
+    },
+    "github:jd-opensource/joyai-vl-interaction": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "c6ad7e92fc3bdaa1311f0298086cca8534a2def493ed471d75b696366310057d",
+      "checked_on": "2026-10-10"
+    },
+    "github:jhj0517/whisper-webui": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "2a57d9928d533ac7db724b15d73518d73d1fd02a610b9ce1009f95d87c8312a3",
+      "checked_on": "2026-10-10"
+    },
+    "github:jin-woo-lee/nfs-binaural": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "60a6168fecbd2e566ef5e738f22d7e2fea1758ccbcaeafcd52d6f679f79864cc",
+      "checked_on": "2026-10-10"
+    },
+    "github:joaocarvalho1000/audio-as-code": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "9136093a7163e1628e5c9d4c68e47c29b8b3ef721e008c87ebc227c473106a27",
+      "checked_on": "2026-10-10"
+    },
+    "github:johnkinyanjui/sprite-maker": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "63b8d3d5424ba62800b7bcc5d2be517681f75c69dcd35081e9e2ec29e47e5ad5",
+      "checked_on": "2026-10-10"
+    },
+    "github:juanmc2005/diart": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "2620cb3aec64feed148e828480eb177c2c81c63926011678042bd54c771e2345",
+      "checked_on": "2026-10-10"
+    },
+    "github:jy0205/pyramid-flow": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "29fedb34e404e581692e662f3172c6a2a559bce70c2c2b90745d38a69d65d99e",
+      "checked_on": "2026-10-10"
+    },
+    "github:jymen/homr-web": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "62c5edcbdec89562e6f05ec497581b50ada627584624768c7ae199a765b09b22",
+      "checked_on": "2026-10-10"
+    },
+    "github:kaankiziltug/logo-design-skill": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "68f1b68cf94617be4bff177d439392a3615cf43e9813bebae52ef415a99d955a",
+      "checked_on": "2026-10-10"
+    },
+    "github:kaixxx/noscribe": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "b2c12d8809267f173ae51e233af71c43d5293222138fa2ba87d3dd94aff60e9c",
+      "checked_on": "2026-10-10"
+    },
+    "github:kanjieteam/kjdraw": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "c84a1786768eacfd7b13a0621dd8e3cb8a298555e2e201c142464d15f22ed485",
+      "checked_on": "2026-10-10"
+    },
+    "github:karailker/restorax": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "8e8ebb17f1023d7ed9afed637afe72105ba8facd5520f199f5228d64c64c8392",
+      "checked_on": "2026-10-10"
+    },
+    "github:karylcode/mapedit": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "ca41926c982bc046941f86974b0692739849bea787dee28184897261e8f9e8e8",
+      "checked_on": "2026-10-10"
+    },
+    "github:kedreamix/linly-talker": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "c89dd18e14d16cfc0a198ea092f6946ae9180b8056f400d3d1102ef09471de2d",
+      "checked_on": "2026-10-10"
+    },
+    "github:kimeur/motion-launch-videos": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "4611b4034df999266b457cf3acc2430e1f97f0d2317fd5e077ea59a738e2a0aa",
+      "checked_on": "2026-10-10"
+    },
+    "github:kittenml/kittentts": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "707cb4c1e8419dac85fc29e354abdf44b8ea3f3a6fe15e37633b776cd420baaf",
+      "checked_on": "2026-10-10"
+    },
+    "github:klingairesearch/liveportrait": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "92636041fc6aca94127b516aa6d33343bf3983d877172f37328da86d79b38237",
+      "checked_on": "2026-10-10"
+    },
+    "github:klingairesearch/recammaster": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "89bd666792d42842f77764d568dc384c74a024f70d695e40ef0c4233e1a7c6e6",
+      "checked_on": "2026-10-10"
+    },
+    "github:klsoen/opus-js-animations": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "fe2cbbcd18232b9b7f367cdff62444380cbe09791e811cebcfaf612fbbc78940",
+      "checked_on": "2026-10-10"
+    },
+    "github:kniessner/openvj": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "5539b9fc6b4d88de2c829d2c88931c9e2a3fea43792e69d7f1cfa06dd149277b",
+      "checked_on": "2026-10-10"
+    },
+    "github:koharu-rs/koharu": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "f74cd851e0f955986967a2149335a3b533032e688d89224b6e8f4e6c49da6c42",
+      "checked_on": "2026-10-10"
+    },
+    "github:koljab/realtimestt": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "33d7a832925dc0f685adaedfff06a08e1ed12144bb1e629faa08186d4ccc7b4d",
+      "checked_on": "2026-10-10"
+    },
+    "github:koljab/realtimetts": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "6a356274d4281cb2a8e4ba72735584b32e87dc5ca1922b4dec7688e521b29489",
+      "checked_on": "2026-10-10"
+    },
+    "github:krillinai/opencreator": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "728a471089d18dca1119b9bcd74f744a43a7b8af0f189a06d1cbda1d0729f267",
+      "checked_on": "2026-10-10"
+    },
+    "github:langzaigg/comfyui-animaflow": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "cd8ec733c4d0c904673e19a05c5feb19a1291c54fec7b6eac6194aa560e23893",
+      "checked_on": "2026-10-10"
+    },
+    "github:latent-spaces/brag": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "9007a4091c22f286858ee2a28ee4126c3d705c9960f46a2e2ac088ab6a71aee7",
+      "checked_on": "2026-10-10"
+    },
+    "github:laurentvv/generator-assets": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "b09e94571af0a4237dc377c98b3a7e8f28e3d2a4d46c1e893a86feab58554df2",
+      "checked_on": "2026-10-10"
+    },
+    "github:lbarimi/metroidvania-studio": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "87bd7e07672c8a141a8a715701f101f694fef9b4fec3941b5805df2ef25e7fdc",
+      "checked_on": "2026-10-10"
+    },
+    "github:leandrodaf/3d-new-era-ai": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "e8316ccf3bbcb96c6eed02422470d6de0bbdea4c83e50b9567eb7cbf097b47fb",
+      "checked_on": "2026-10-10"
+    },
+    "github:leejet/stable-diffusion.cpp": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "e266b3693ade1c550d331ae744d579378c7dac5f7316189ec3106ac8040fab64",
+      "checked_on": "2026-10-10"
+    },
+    "github:li-rui-zhe/layoutsculpt": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "eb27277096b8f429a346d941b379d4c496883e23246d642d5c5625dcde660d30",
+      "checked_on": "2026-10-10"
+    },
+    "github:libreai/neural-painters-x": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "a63d729c1c8eb9d36a1d4b48e8fce6aed87c2df9ba9c3557a757ee4e18e6b879",
+      "checked_on": "2026-10-10"
+    },
+    "github:liebharc/homr": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "b8c645defcf36c763ac1edf232bc2942e3b52199c598445ea43aa65ae85b6a89",
+      "checked_on": "2026-10-10"
+    },
+    "github:lienghongky/cxm-kff": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "18aa64388ae55196875bd14c2aad615119b834d1133a46d790315820f81642a4",
+      "checked_on": "2026-10-10"
+    },
+    "github:lightricks/ltx-video": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "0ead39779bb32f9b6ccb2ae010a8a9278f00def9193c5eb3e246ce3add454f89",
+      "checked_on": "2026-10-10"
+    },
+    "github:linklyai/sandkit": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "2656df63c22db9182a9616ca2cf64096dabab19afd9811e0875ac8060f4f3e4c",
+      "checked_on": "2026-10-10"
+    },
+    "github:liuzhao1225/youdub-webui": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "b9dbe60b3f8af67352c5caa2bd1ce47c2acf05347234fe8a1ff6581422ae7db8",
+      "checked_on": "2026-10-10"
+    },
+    "github:lllyasviel/controlnet": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "13474e17c3186c90922e0330ffc9033207488c808333a9c746c334fd39dc5d12",
+      "checked_on": "2026-10-10"
+    },
+    "github:lllyasviel/fooocus": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "c7514bd286b717f2b2b5d10f87e87ae2c9601143579d6ce9b6aba1c27e829911",
+      "checked_on": "2026-10-10"
+    },
+    "github:lllyasviel/ic-light": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "ffa29d664cd98ce3f254c77c73b5a6b8c9a4e0d6fd80459255d7b8bdb2e88aec",
+      "checked_on": "2026-10-10"
+    },
+    "github:lnblfkj-del/dralo-studio": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "a1b8256caba4130027e0d5b6479560fa22fe12136af7a01e5e552e9013338e0b",
+      "checked_on": "2026-10-10"
+    },
+    "github:lrncrd/pypotteryink": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "9b2298a7a9d4a822cde894bb0fad8b918adfe7aa6f8d4457fdd7674ef1a60043",
+      "checked_on": "2026-10-10"
+    },
+    "github:lrncrd/pypotterylens": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "570bdf6e7d62828ddccfc5fe351a808e8f4d43411d5014b085f1ecb3e74ee485",
+      "checked_on": "2026-10-10"
+    },
+    "github:lrncrd/pypotteryscan": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "ba2c1e5ed505cda49e38bac4578c1c077ffd35869a2a6ce16f373eeaf823dca9",
+      "checked_on": "2026-10-10"
+    },
+    "github:lrncrd/pypotterytrace": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "baf7e025682a3cc80f73928aa52c4d3aa0a035f176b2f3122481fe2bf40f91b2",
+      "checked_on": "2026-10-10"
+    },
+    "github:ludovic111/kimchi": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "ff4144d8f4eeb8e40a6d400c026bf82f4dd177cb9c1704510dd0703cfe431440",
+      "checked_on": "2026-10-10"
+    },
+    "github:ludwigkienle/ai-video-production-editor": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "98b1cd4addfbe4c319030075b597ac691e66b58556adc05076c66345a40108b2",
+      "checked_on": "2026-10-10"
+    },
+    "github:lukashoel/video_to_world": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "8e648cc2082d03fce8ca16571236e61b9b8a1a477ecb3946d32e0fdc54ef189e",
+      "checked_on": "2026-10-10"
+    },
+    "github:lwdot90/feathercut": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "bbd4542f041f09172ef7957d602e3a92e5834d65abd0f69209a0c70dc6976f7f",
+      "checked_on": "2026-10-10"
+    },
+    "github:lxfater/inpaint-web": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "996c3c25e3c7affd0accc56f7f126c4fcb4ddcbfe993b79d747666d99db8fc6b",
+      "checked_on": "2026-10-10"
+    },
+    "github:lykosai/stabilitymatrix": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "cb1ac61ba878a23d38cd911c406bbba2a228964d0c27be3445e4f90693d4689a",
+      "checked_on": "2026-10-10"
+    },
+    "github:m-bain/whisperx": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "3421c5843db6bb7e8c73f51ef93490ca26fcea9a6778961e5dd5f7b16afe8309",
+      "checked_on": "2026-10-10"
+    },
+    "github:maosika-ai/reshot": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "eb310c86681fb467e0030d18b3d6533ea3a94a5b840d56434d527c850177eefc",
+      "checked_on": "2026-10-10"
+    },
+    "github:maria-korosteleva/garment-pattern-estimation": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "09af9e30678bec6fe985874753038d61428eef8be670c21ff164cefc9ab9e2d2",
+      "checked_on": "2026-10-10"
+    },
+    "github:mas-inx/lumen-ai-video-editor": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "4f56e11ab9f79435d0472f18bfe739d8d4b8065d55c630f383d437a819f6660e",
+      "checked_on": "2026-10-10"
+    },
+    "github:matt-w-horn/morningprint": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "6eaaeec2994ab6faaed37bbf92c71ce485492927b6041e2c081eb462211010f8",
+      "checked_on": "2026-10-10"
+    },
+    "github:maxgfr/troupe": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "7be6b21dbd4f7afa195cf66631803010e115ba27ab089b32a77feb08a6762c8d",
+      "checked_on": "2026-10-10"
+    },
+    "github:maydengximin-sketch/qgis-map-workflow": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "0b2f0adb7ae749f11468cb4e3ad386b6ff26ba99d1c9a6c3d2cd812cc282a044",
+      "checked_on": "2026-10-10"
+    },
+    "github:mayuelala/followyourpose": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "5ed0d6c1aed9f8fce72ad6506114be182430a1cc06a810a7e628102f35ddda28",
+      "checked_on": "2026-10-10"
+    },
+    "github:mcallahan/stable-diffusion-2d-to-3d-video-synthesis": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "520e44b3061cb3bf287d392d96305fae4f520c8151711f87814632cdb49f7561",
+      "checked_on": "2026-10-10"
+    },
+    "github:mcmonkeyprojects/swarmui": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "5c681162b87dec443924847c3800e0bb0c73bad56988ea82e5bac04f62452825",
+      "checked_on": "2026-10-10"
+    },
+    "github:mctatge/autocine": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "e4618fd0451a46a0eb666e114a4f879e11e54abbd57b45ddda6da124c0eaa84d",
+      "checked_on": "2026-10-10"
+    },
+    "github:mdaiworks/yengi": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "ae0a13e830dbda7b5a3d39cf3dd3631f7db36c4c5632d09c8d419dffb55c4d25",
+      "checked_on": "2026-10-10"
+    },
+    "github:mdbug/flipdot": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "2b378190d7fdd353d18c32e3ba50b3fcb506098bec24804cfe98ae55a9ddcf61",
+      "checked_on": "2026-10-10"
+    },
+    "github:mehranmarxian/openlayer": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "70885cab20eae3942b16fcb48fa9c6578a5fd458226195a74b91551bff3066da",
+      "checked_on": "2026-10-10"
+    },
+    "github:merlresearch/neural-iir-field": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "292d034d44e98cd2f2e04d2b70df6b119e8bc15dec1a271a98765b85051b6212",
+      "checked_on": "2026-10-10"
+    },
+    "github:merlresearch/ranf-hrtf": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "02254944eb0c7d40d383025a4ffbe69353c0e559666c06abdd311dddac144f3b",
+      "checked_on": "2026-10-10"
+    },
+    "github:merlresearch/sudafield": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "198aa6faa22ba81577d9326e8f5141171a8a6e0c77face55458c49f3abf3faa1",
+      "checked_on": "2026-10-10"
+    },
+    "github:mesutcydev/ios-local-llm": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "a3c4f9f879d280e6ce1e5c6c58fba0fba48ea10898d71a1a243fb870614429c7",
+      "checked_on": "2026-10-10"
+    },
+    "github:mflux-community/mflux": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "358b2881838231c70e45541bf2aecb05ea45be6fcb62b481a066ffaa8a222d1a",
+      "checked_on": "2026-10-10"
+    },
+    "github:microsoft/ai-audio-descriptions": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "5e9b24d6cf3fa01a0ea20322f3919f8518d83f46ee53b1b9c87680981c790526",
+      "checked_on": "2026-10-10"
+    },
+    "github:microsoft/data-formulator": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "6db80fd21fca0d8dff5803020efcb51f957a55c72af4145811af0835098222a7",
+      "checked_on": "2026-10-10"
+    },
+    "github:microsoft/flint-chart": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "fedc890ce9276178da08c121f2138e17357d740b15887a6d4b51fc79d4a4d854",
+      "checked_on": "2026-10-10"
+    },
+    "github:microsoft/trellis": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "ca5be51ec1176ce187e682407f943642764ab479a3b1226b9c20e9f7530525aa",
+      "checked_on": "2026-10-10"
+    },
+    "github:microsoft/trellis.2": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "c8480a090847defda8322a041bd537043932d8b885698834e6dc95ee46921882",
+      "checked_on": "2026-10-10"
+    },
+    "github:mircorp85/mirmedialabs": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "2c59d1c7127e14432c3618e5a7620882d5117a5e6073697abb1e8c380e7d8383",
+      "checked_on": "2026-10-10"
+    },
+    "github:mishaadevv/blockbench-mcp": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "c40fcc8ed15f370113ec6adb3d1407df38f1574965b7e53ddd917568ffe84bcd",
+      "checked_on": "2026-10-10"
+    },
+    "github:mixar-ai/mixar-app": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "01110f40fdda23b048fc659a0907c074a4901f5372bef2c3f037f08536cca203",
+      "checked_on": "2026-10-10"
+    },
+    "github:mlc-ai/web-llm": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "96d570e335569d96bf879a6530a24525e26e37a36751575817a16b10b2db8988",
+      "checked_on": "2026-10-10"
+    },
+    "github:mlc-ai/web-stable-diffusion": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "15fd163dee38eee3489bf004742157851b324bff06b5211c3d86ee8862871970",
+      "checked_on": "2026-10-10"
+    },
+    "github:mmlab-cv/hapticneuralfields": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "84173b1827d386acfb397a703f8c511fb23677d59c27086e956d57d36dd581e8",
+      "checked_on": "2026-10-10"
+    },
+    "github:mocha-yuan/mochord": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "6b02e7b62e10174c92642e34e349215a4708de8f65915245d97bce318f2f235f",
+      "checked_on": "2026-10-10"
+    },
+    "github:modelscope/clearervoice-studio": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "4f0e163f61aa94adadb49bbe604e5b9463865343671efbaa0c137e880a8bc147",
+      "checked_on": "2026-10-10"
+    },
+    "github:modelscope/diffsynth-studio": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "5eebf769ed6c510e0af6e84839bc9fe337659c4d080fefb6220e29782f14713e",
+      "checked_on": "2026-10-10"
+    },
+    "github:mohammdkopa/kami-subs": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "7d185876e5698710ce51d0f7c0472997a312e27597d58f61584276a3e7bfd077",
+      "checked_on": "2026-10-10"
+    },
+    "github:morfemartin/techpack-ai-builder": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "bd06f2263cdb1db4d85ea0908c72a62231db9ebe398d78008959809939ce7d58",
+      "checked_on": "2026-10-10"
+    },
+    "github:mrforexample/comfyui-3d-pack": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "0c867d752c3bf41dbc04805ffb48d548837df5d91f341478834d0d498d3abeda",
+      "checked_on": "2026-10-10"
+    },
+    "github:mrnerf/lichtfeld-studio": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "770720503160f79bea3d352922a129d56796d98dc97e2b64e8ce9915759eb8fd",
+      "checked_on": "2026-10-10"
+    },
+    "github:msmahdinejad/avorythm": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "564f68f109633829af165c976a8f247759910db74d54bfb6bc4302e2b7e1a238",
+      "checked_on": "2026-10-10"
+    },
+    "github:mthomas100/reel-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "213ea95044dadf4f6b3fcfa1279347bb95888d5fbef494e8e1ca16dfaeb03276",
+      "checked_on": "2026-10-10"
+    },
+    "github:mudler/localai": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "febe1e2231450c4ff911392cd3d006abba71870494eb9768fcff3c2832bf55b3",
+      "checked_on": "2026-10-10"
+    },
+    "github:multimodal-art-projection/yue": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "2f044276b5aac04191ec03e569450737fa1e952a0ae32a3a35b5906703d93f92",
+      "checked_on": "2026-10-10"
+    },
+    "github:mydum-bsu/music-restoration": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "b1e508a0cb587719e2696f8d715429f5d5e8e622df0d306e6b675946633cba17",
+      "checked_on": "2026-10-10"
+    },
+    "github:myshell-ai/openvoice": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "f23ee64d560cc6ae5910fa5b01d312e0336e589c2d4e55697df0931d690fbc70",
+      "checked_on": "2026-10-10"
+    },
+    "github:nadermx/backgroundremover": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "fdbf1af75d7fc77ee65cbfa64d3eee1222935a21fa0029159ae76e6e4970a589",
+      "checked_on": "2026-10-10"
+    },
+    "github:nandometzger/metal-gauss": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "b7d3e1f7dd8e6e20fb7293e024eb53ad0b05bad91002f33385d5f6db17051ff2",
+      "checked_on": "2026-10-10"
+    },
+    "github:narcooo/inkos": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "399ceeb99a0e6c5a587eee3e1627047070e36513260a60c7c6c488d1e56d64cc",
+      "checked_on": "2026-10-10"
+    },
+    "github:natooz/miditok": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "7615b186901bc0a3c3ecabb090f16a572a2a3ca297a841425c991e78c97d0a41",
+      "checked_on": "2026-10-10"
+    },
+    "github:neptunehub/audiomuse-ai": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "ab7c2b20aff134fff392f7b772a21dc701effc129d1e4c695c9e14c92e285095",
+      "checked_on": "2026-10-10"
+    },
+    "github:nerficg-project/efficient-gaussian-appearance": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "28f1f8637087ac4bc9a157d6585829fe4451df15185480b9cdc4bd0c9e94ef4c",
+      "checked_on": "2026-10-10"
+    },
+    "github:nerfstudio-project/gsplat": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "482adadafe3be11181c5b29cdf28e0b94da9d3d41cb86f418f8c0a10ab4a7f00",
+      "checked_on": "2026-10-10"
+    },
+    "github:nerfstudio-project/nerfstudio": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "bb803ff18e335db32e200f381548cdd51dfb4f24d7ba3c8c1eef412d6b79de49",
+      "checked_on": "2026-10-10"
+    },
+    "github:netease/polyphonic-tromr": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "8f7a143dd0513720367b3471b9c7e12de51d7f9a2ea5d41af4f3ac55d1b0a64b",
+      "checked_on": "2026-10-10"
+    },
+    "github:nexmoe/vidbee": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "2f2a48e6536b1fbf6e76efd82111b046d0aa0ebed63ef7ec3d1ef582aa2d6b60",
+      "checked_on": "2026-10-10"
+    },
+    "github:nexu-io/html-video": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "5a20534919dd0e82f6e47a6900e3e6eeef7a1e4a1f1215d7b82851239fc1c54e",
+      "checked_on": "2026-10-10"
+    },
+    "github:nicolasvonluetzow/gaussiangpt": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "a5e0265a2d67a8e83ef823ad1dd37240e2f939b4b3ab6f5b47f48159b5325c8a",
+      "checked_on": "2026-10-10"
+    },
+    "github:nihui/rife-ncnn-vulkan": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "1ba0d78c83d3bbd460c1662688574a032afceed9bb0cfc9cf91836fcf0c89191",
+      "checked_on": "2026-10-10"
+    },
+    "github:nirholas/3d-ar-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "5ea106b0666839810cd51af2e689d48bd7af8ed0d081788a9dec32f387077e52",
+      "checked_on": "2026-10-10"
+    },
+    "github:nishanthsr7-eng/framewright": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "d984b59f6cc77f712df80f8fad9044669ea7c1a05be9d2155f2682a9bba51b1d",
+      "checked_on": "2026-10-10"
+    },
+    "github:noizai/yue2-turbo": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "031e10aec10ccf9ba5431e92f407d0fb1ff67406ef35cdc2e1f9be7f5725dcea",
+      "checked_on": "2026-10-10"
+    },
+    "github:nolangz/pixel2motion": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "ac737de4ab3460429292d0bb6e1d90dc7b57894dbaca71551b73b823ec45ba7a",
+      "checked_on": "2026-10-10"
+    },
+    "github:nopthon/img2svg": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "f7649621fd019ee443f4150f2a68b1f3455a1951a17f0173861a1e97e683b05e",
+      "checked_on": "2026-10-10"
+    },
+    "github:nv-tlabs/3dgrut": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "871c71807e8d3aa3d9846d57c46669183266df8307dc1dcb1dac01b240df611f",
+      "checked_on": "2026-10-10"
+    },
+    "github:nv-tlabs/kimodo": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "7ad45fb0a4ea2bd6521ebd88d02fb8a6243dda6d022fb6298266455a75fcabfd",
+      "checked_on": "2026-10-10"
+    },
+    "github:nv-tlabs/lyra": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "d07bbde8d1ff7fdc1020e49e12e0cc0415e6be66aeb1a128061d76d9098efad8",
+      "checked_on": "2026-10-10"
+    },
+    "github:nvlabs/sana": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "5b56eb1e49a8deabee082e3f593c602522f1caa99efc5abdd176d031c953e4a9",
+      "checked_on": "2026-10-10"
+    },
+    "github:oceanflowlab/atomicdance": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "cca78fb45fb0eb7f284e48bc0c4aa51359e9060be370f96604b7fc9970a92251",
+      "checked_on": "2026-10-10"
+    },
+    "github:octanium91/amd-ai-linux-genai-platform": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "4f46b14d2151b2ce8e893d8075006d3448ed1079377ba122ee37b1df4b7b1089",
+      "checked_on": "2026-10-10"
+    },
+    "github:ogkalu2/comic-translate": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "a5b7774d1e6c18cc379675d1705eedd5bda4cdbee08fb6aa09cb3489672136fa",
+      "checked_on": "2026-10-10"
+    },
+    "github:olafs-world/sprite-animator": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "6c8c113e8398bd2bdbae075f6896403fe3a1e18f0189c6464a868f85502dc767",
+      "checked_on": "2026-10-10"
+    },
+    "github:omniomr/zeus": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "6ccee8588205a753ad0e6b3d51ea81da570194deb5366bdf6d1e8a059730d397",
+      "checked_on": "2026-10-10"
+    },
+    "github:omr-research/tf-end-to-end": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "d1ab089aa0b53eab2a25c0700a82bb4cda8dac700a386042552a01875b877e9e",
+      "checked_on": "2026-10-10"
+    },
+    "github:onion99/kmp-minestablediffusion": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "7afb8783a09a4b0cc5d2fbf8664d0e4c0b10e0e0d4aec9cec3010b3ae770072d",
+      "checked_on": "2026-10-10"
+    },
+    "github:ooolabdev/ooosplat": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "e1b7e23cdb7fb40ecf7c14bb0b995ec3ec41c5a18463f65c05b29312df0ff59f",
+      "checked_on": "2026-10-10"
+    },
+    "github:op7418/guizang-ppt-skill": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "5785a22660c426a304df89dde9134c195bb5e110009595671221969263e0fd80",
+      "checked_on": "2026-10-10"
+    },
+    "github:open-mmlab/amphion": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "f91313c4779bacbcf1c6114ef9959e53002fd863bc5d4fad0b994c25a0f7dea3",
+      "checked_on": "2026-10-10"
+    },
+    "github:open-mmlab/mmagic": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "4d539c8d20262e458c090cb4e1d2c606f8533ea8480a66d18c2ba635bcb782ea",
+      "checked_on": "2026-10-10"
+    },
+    "github:open-pencil/open-pencil": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "78b6b6e822dfc445b25aff393495f1d1bd2b34061d4a37316896b2814dfda701",
+      "checked_on": "2026-10-10"
+    },
+    "github:open-ribbi/velocut": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "2eda1f4c1811947cbca51b8383f1d83b812334840438474191718fc159f128f5",
+      "checked_on": "2026-10-10"
+    },
+    "github:open-subs/opensubs": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "89b9d027766e58bc1e447dab51b5a254ee935e372cf9774682f60a285b6efa60",
+      "checked_on": "2026-10-10"
+    },
+    "github:open-write/open-write": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "b443e5c404993aaaa98bb9be2fd4c3059c95c1b2c70f5a295a874154b94b8464",
+      "checked_on": "2026-10-10"
+    },
+    "github:openai/whisper": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "f0452545e01092f5279c3449abbf58f1ff361e8e329132bbac2fcc98ff186532",
+      "checked_on": "2026-10-10"
+    },
+    "github:openmotionlab/motiongpt": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "76ec849f0e71460a8c7abaf7f7186b3cf6d07d48c32ac4db3482b0a56dce2130",
+      "checked_on": "2026-10-10"
+    },
+    "github:openvdn/vdn-minimax-h3": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "6c3c881db51a8c208024feae7f33f2f5dbfb89890e768c06f50208719b50fff3",
+      "checked_on": "2026-10-10"
+    },
+    "github:ouruocun-dotcom/recursive-visual-state-video": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "53cab5a1b53dd3b195b6bc0ad773de551602e39c9003854ffb55cc2dfbd422e4",
+      "checked_on": "2026-10-10"
+    },
+    "github:ozdil/omarchy-omastudio": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "4385240f36a0a313eb8bb1346ec57e5bb087bc8919e6548fa1a6ded07fb1fbcb",
+      "checked_on": "2026-10-10"
+    },
+    "github:paddlepaddle/paddleocr": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "961fa642a21598d0f9f58ead4257eaca22e01f1ffb7553327bb187b4b4827194",
+      "checked_on": "2026-10-10"
+    },
+    "github:palmier-io/palmier-pro": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "d50d254880d496552638bcea6be26ebd01dd4c4b711b00e96b153b091e96d869",
+      "checked_on": "2026-10-10"
+    },
+    "github:pan-chera/multi-agent-cad": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "3f5ef19a49e985dd22f61900cb95929382893c88ebfc0d2e76bd5d206e560b50",
+      "checked_on": "2026-10-10"
+    },
+    "github:parsabe/vectra": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "9e1347ffe67937850ee768ac117967b24c50a235ce3c2e8327705539bffdb50a",
+      "checked_on": "2026-10-10"
+    },
+    "github:partcad/partcad": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "88226f8357abfe6621738fb47f6d68557fc4de46550466328a0477983d83eeae",
+      "checked_on": "2026-10-10"
+    },
+    "github:pascalorg/editor": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "103341d3bd98924b3f96e86a637f5962e4b9ce4996711f88b5556617fe30d4e1",
+      "checked_on": "2026-10-10"
+    },
+    "github:peterl1n/robustvideomatting": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "d50876caf36b83a6403f3f77402f016e59a8e380a6094816bcaac4a5bed3186d",
+      "checked_on": "2026-10-10"
+    },
+    "github:ph1lb4/imagegen-mac": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "3c8aec21be66bf4a28ae0710af3b666a7f6d50c5c8e539405c61729a261372b5",
+      "checked_on": "2026-10-10"
+    },
+    "github:phaethix/inkstone": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "038b4f459ca3c8b92e3c0b6f9a5fb1f24613cf115be1f34d5dceada1c9e9ffe0",
+      "checked_on": "2026-10-10"
+    },
+    "github:pin705/gesso-studio": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "89b1fb844159fe0babb8f5b221e2fe688d8424627369ef9aa14c0f0b9490ea61",
+      "checked_on": "2026-10-10"
+    },
+    "github:pipipi-pikachu/pptist": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "b1cabc27cf4fd3a906309aecd4f6504b5a60a24114f98fe9e3914202594ff2f2",
+      "checked_on": "2026-10-10"
+    },
+    "github:playcanvas/supersplat": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "e9ab482d664ab916d1b30c2ca248c8b71ee34ab8607510d1387e507c2b2ac233",
+      "checked_on": "2026-10-10"
+    },
+    "github:potionui/potionui": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "15e7e91e483ea1e856f61d6581ff99e07f2cef05e7e2dbb4e996cf442bda38b7",
+      "checked_on": "2026-10-10"
+    },
+    "github:presenton/presenton": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "ccef65f174d1e980893cf26621409e5f2bfba6d55ef0bee391e8d130604b8cd2",
+      "checked_on": "2026-10-10"
+    },
+    "github:prompt-haus/openvto": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "ae8b2ccf9e8414d2f11e6fb58b5aedc44b78aa1994cdaa706617b6dd620d9a6c",
+      "checked_on": "2026-10-10"
+    },
+    "github:prs-eth/marigold": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "44d454a7e84301d1067f8b48cb894a51b84facad02046f173a53ded27c222662",
+      "checked_on": "2026-10-10"
+    },
+    "github:quackone/homr_gui": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "2194d134725fa03ad3e944f9eae5b7012b7286e3604c8d4dc7dbb931f7976692",
+      "checked_on": "2026-10-10"
+    },
+    "github:qwenaudio/cosyvoice": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "06bb0d84811d4d0e46ace00b552c0eea3592a1fc95d5c185ad3495225b300c7c",
+      "checked_on": "2026-10-10"
+    },
+    "github:qwenlm/qwen3-tts": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "30ee321c1725159926bc7043ed3a1a62292768b1fdfd0e35378fa51915079fe3",
+      "checked_on": "2026-10-10"
+    },
+    "github:raechao93/opengesturexr": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "8a8170084479a00f1406369e3741b8c9be1032be5d377c8a622430a67056d97c",
+      "checked_on": "2026-10-10"
+    },
+    "github:rafael-fuente/pinn-shaper": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "d8824d99c1084e539a238372248837e5ac85b5d64b899dc161b05a7aca021ef2",
+      "checked_on": "2026-10-10"
+    },
+    "github:rakesh0x/opencardboard": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "bc5398ddf6b6833c960fe2a9344a9cc928e730c9e49fda0c7833f3e3ba6ff1f2",
+      "checked_on": "2026-10-10"
+    },
+    "github:raulkivi/sheet-music-mcp": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "32d88cd06df2f3c98bb69ef4f5d9adfde6bc3ff3b40492e3d25e4591d7799d88",
+      "checked_on": "2026-10-10"
+    },
+    "github:rdreamstudios/fashionaistudio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "578cdf7e7f3b3ab2f7616964ca5125244aa7651dcd95c5472e71a00ad9217f7b",
+      "checked_on": "2026-10-10"
+    },
+    "github:reality-opened/openreality": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "990aa19da49eeec8e6ecd02f52dae2b56dbb6f70a5ba1bf57350dc50ed0986ef",
+      "checked_on": "2026-10-10"
+    },
+    "github:receptron/avatarscript": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "6652d8c11876e86192a485f4d108a2fd35e469542a6b8d407a85c2b5d4f7ac4a",
+      "checked_on": "2026-10-10"
+    },
+    "github:reiarthur/photo-restorer": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "6808fe7b8a13dae93647ba2b573bf4b7fa827acb731392f39585c1ce89ecf176",
+      "checked_on": "2026-10-10"
+    },
+    "github:resemble-ai/chatterbox": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "723534ca50d3c36ccdaa2def54b0d261302ab9cef3434398259d4a60c7d2152e",
+      "checked_on": "2026-10-10"
+    },
+    "github:revstudio/rev2d": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "36af4ab886a17b40f7e108e2e6fdb06fba3e7a3824c2767498aa2178f2a65ba8",
+      "checked_on": "2026-10-10"
+    },
+    "github:ridgebackzulu/cadjitsu": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "3dd33ccbf7e978cd5ddfdb010b591afe9fb2a53d58e36cb74d92d47261c85569",
+      "checked_on": "2026-10-10"
+    },
+    "github:riffusion/riffusion-hobby": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "ac4c56bd6864f491c1e391decb7580eaf03ecf7d0b379c808cb808766433da06",
+      "checked_on": "2026-10-10"
+    },
+    "github:rinste/turbo-mlx": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "07168e4bd6b653b912de8796447cf33e7df29986d848b13030539c76a5ef9fc2",
+      "checked_on": "2026-10-10"
+    },
+    "github:riorgord/slimemold-artist-explorer": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "cea701f90e36f116181b19d35bc3ce47b4ad7e5b1068f4e982ced98a8e5f7466",
+      "checked_on": "2026-10-10"
+    },
+    "github:rioshiina47/comfy-webui": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "31bd2d79c9b34b4ca93ae97ababb084d5a01fa0a85e19a6f659392c0c0d13a24",
+      "checked_on": "2026-10-10"
+    },
+    "github:ripemangobox/reactdance": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "eb895137cab9c5ae88d0f398217c6ccb1b430c889931c3c648ae11ea67756868",
+      "checked_on": "2026-10-10"
+    },
+    "github:rishikanthc/scriberr": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "2b06147c01a3b5bb0cf096e6bdb6479499ae2c7b39a12220e63aea9aed9202b8",
+      "checked_on": "2026-10-10"
+    },
+    "github:riskcapital/ghost-arcade": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "e5d2844f0392b3670131590ce81ef8e3b0a4cdfff19834ebd0fa214a07db4383",
+      "checked_on": "2026-10-10"
+    },
+    "github:rockman6/scanscore": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "197839791c5b7f530a829b7981c79564591836996ddad7fe199b5dd46b48e070",
+      "checked_on": "2026-10-10"
+    },
+    "github:rodrigodzf/neuralresonatorvst": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "0117226fef1410e41c99bed844f8d6e12a4280ccfd6466775cf19f1d0dc09300",
+      "checked_on": "2026-10-10"
+    },
+    "github:rohitacharyams/motionmind": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "b707038f2910112b5b36c4c5cadf1f89af9338fe3bcd23bdd009f58af4117b4f",
+      "checked_on": "2026-10-10"
+    },
+    "github:rougem/blender-ai-assistant": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "8cf4c7406c438496fe0a69a2e4ae833a6a6f320f4afef3760122a0ca01d63731",
+      "checked_on": "2026-10-10"
+    },
+    "github:rsasaki0109/movie2threejs": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "8faacfc46a1e203f8d06e08e20384ceb4bd3d154b58bdac1f05e33e07f1cbc55",
+      "checked_on": "2026-10-10"
+    },
+    "github:rsxdalv/tts-webui": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "18335de2aa1bf47a8eb2348a87547328a64172df4e0ea1650afd4a3b3731f99c",
+      "checked_on": "2026-10-10"
+    },
+    "github:rvc-project/retrieval-based-voice-conversion-webui": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "5e0159a3e33295252b53bb8cb27475c5b70b17217493a46809776ce2c8d9f637",
+      "checked_on": "2026-10-10"
+    },
+    "github:sagipolaczek/neuralsvg": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "2bdcb0d1a83360c40224d99b2cec4b33f5d6c3604d765c8ee215e9b06882d58c",
+      "checked_on": "2026-10-10"
+    },
+    "github:saintbrodie/orange": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "bd92d2748a4ce32cc3e35aeb3bf10d75e1f24cde379b8a337bba88fb0682c9b5",
+      "checked_on": "2026-10-10"
+    },
+    "github:sakalond/stablegen": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "233f304b0a57bd07eb457b100757d220a5154079bd9f2a2c3e2b441c5a3d88c7",
+      "checked_on": "2026-10-10"
+    },
+    "github:salu133445/musegan": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "f9ca6e59415233913d39f346d27a34a3df160d3cd61476f092f5c131478f460d",
+      "checked_on": "2026-10-10"
+    },
+    "github:samchon/automovie": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "274afe945c33a6e6c446ea332bffb2989f4db98f637ea88f9a6902b0c9531851",
+      "checked_on": "2026-10-10"
+    },
+    "github:sandai-org/magi-1": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "017b2637e6e8857114c262cc70c5324e97f6dd01961fbe9d468811d4180bf282",
+      "checked_on": "2026-10-10"
+    },
+    "github:sato942/game-asset-mcp": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "297fdbf5006db9ea9a8313adefd1bcf01bd3cc058d71ad9685c75c29a0444c23",
+      "checked_on": "2026-10-10"
+    },
+    "github:scenario-labs/blender-plugin": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "1b21e23a5bd619d9f453d4af5f0a0910a5814006fa9d5b47a4f4998cd0f0ad12",
+      "checked_on": "2026-10-10"
+    },
+    "github:scigjh1/scent-soul-digital-perfume-ip": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "a8991d3388e3adbc06ea6b7736b6c815be76c7c3d935bc2126618eb071eb36a1",
+      "checked_on": "2026-10-10"
+    },
+    "github:scottconverse/kimcadclaude": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "6a269e010ae25ce235877ae3229d4b4f4e080c11ae34aaf1e59011c626c5afc8",
+      "checked_on": "2026-10-10"
+    },
+    "github:senzube4n/aiplay-studio": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "7bc68a800cce588eae18e6ce8ee4a94e9a12bc32210def731dce104fe6609479",
+      "checked_on": "2026-10-10"
+    },
+    "github:sethrobinson/patchy": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "822230ae0aa1f84f5cbc4e7a975f72b3bd44f55a5aa290c9d67e5175c832136d",
+      "checked_on": "2026-10-10"
+    },
+    "github:sevenevesai/riso-windowseat": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "f03fe2216af8f134a021261c72895baeff99c912658a47a2bb6258a2b458d24f",
+      "checked_on": "2026-10-10"
+    },
+    "github:shinshin86/svg-aituber-chat": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "dab78aa9dd1a80402c3dee62fffdc690976de9abccaa43861362131c5db8c259",
+      "checked_on": "2026-10-10"
+    },
+    "github:sid-thephysicskid/leap-mcp": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "0339f21e45d91be9fc2359465e7ad4ef0695d0d07cdc14016455fac8dc504168",
+      "checked_on": "2026-10-10"
+    },
+    "github:silentbyte/artai": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "f8e698908824b7f005804d9abd03d43ab446e4692866ce900de234452edcdfb3",
+      "checked_on": "2026-10-10"
+    },
+    "github:sinoyou/nelf-pro": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "f690ec798d5a4a7e95fc2a7df9fb20912adeafe10cdce1b3e8e6de716e655856",
+      "checked_on": "2026-10-10"
+    },
+    "github:slicerx-oss/slicerx": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "2b7aec4a9fcdd65039ecb69a95fba4852b247aa987d0a7f2a3102147de5e5d8c",
+      "checked_on": "2026-10-10"
+    },
+    "github:sociallyineptweeb/aicovergen": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "83e9901f1d9d11d57dbee7f7f247ebaa2b483f370cca131e2da281af5ab13653",
+      "checked_on": "2026-10-10"
+    },
+    "github:spla-tam/splatam": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "ab9ff2d0eb9507a54d98c94e8c9280e5b8918d6d3c896d5b4341de3c5af04c1f",
+      "checked_on": "2026-10-10"
+    },
+    "github:sprocketvideo/sprocket": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "0e4259c22d643aa934a6811898fd711cb7aa11eac0beeb44ca6bddc9e4d66b76",
+      "checked_on": "2026-10-10"
+    },
+    "github:stability-ai/stable-audio-tools": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "231a6f5dd24b5d115ca6fe1dfee0769a548c690947acf897bedee7b4741488ef",
+      "checked_on": "2026-10-10"
+    },
+    "github:stakepoolplace/laplace-drawing-dynamic": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "1dfaf9c55b6552a8dd8d4d4784fa627b05383217634ced4c7142789dbfb18bdd",
+      "checked_on": "2026-10-10"
+    },
+    "github:suno-ai/bark": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "91ce73ca2840041cfab587a92b04f010e00f1c8bf5384c522e5741017d6a109c",
+      "checked_on": "2026-10-10"
+    },
+    "github:superworldsavior/mcp-build123d": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "7198a1200c82aac341e6651c4262f2e0bbdd83273165722647849ecea386a106",
+      "checked_on": "2026-10-10"
+    },
+    "github:swivid/f5-tts": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "6bcba3fa2d5851858faf3eb05a03bc6c06609713aa9d80392cfb8c0bd8b9ce80",
+      "checked_on": "2026-10-10"
+    },
+    "github:takimdigital/svg-animator": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "f4620f923b010098dcb215de2fe21ff47ddacaf5e6c3999ea655766e9f880368",
+      "checked_on": "2026-10-10"
+    },
+    "github:tangsy/aedifex": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "cf92b86e7cd23599571f951c2e6f511bc0251b3f2d8773cf0c0f91bb82b63307",
+      "checked_on": "2026-10-10"
+    },
+    "github:taucad/tau": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "9cf07c21154ea165371885cc2c93db78e3386437e669e032317689c0be5f0bb7",
+      "checked_on": "2026-10-10"
+    },
+    "github:tauptlab/atlaspec": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "5ac28060ce26c9a73ee73a465299c9215461d6093b34f111d27c34621812700b",
+      "checked_on": "2026-10-10"
+    },
+    "github:tccnnd/comic-drama": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "e6f886714adceb6b67afb640ac1c79e00054c2d11b73f1dc29b8678c3e5ed8a0",
+      "checked_on": "2026-10-10"
+    },
+    "github:techjarves/portable-local-studio": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "bcee76fdf99fa2c2710c1b456b4f946f90cec4847562abe89337a4271c236393",
+      "checked_on": "2026-10-10"
+    },
+    "github:tencentarc/instantmesh": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "03ea910ff99da2cd18acc199160a74cc15f6c2f09807dc3c06f5d6e4c26c99b7",
+      "checked_on": "2026-10-10"
+    },
+    "github:tencentarc/pixal3d": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "e7cf98a6f1de1c007f474d4d05ddb079adc5308268f075302295636f8138d681",
+      "checked_on": "2026-10-10"
+    },
+    "github:tend33/auracut": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "093e5893538748ef23739f391eed0c7ab05402f3dea9483946e3d73f06fca766",
+      "checked_on": "2026-10-10"
+    },
+    "github:thealiraza2/capshorts": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "2fe0e1002f7a116ae226f3f04cffad7111e21d3bdd5e5766d5d5d4db3eed3482",
+      "checked_on": "2026-10-10"
+    },
+    "github:threestudio-project/threestudio": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "ab5ef60a28c480c9f35fe0a43512944d4c14b9f512831a4b5985187167712b08",
+      "checked_on": "2026-10-10"
+    },
+    "github:thu-ml/turbodiffusion": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "74302407a16ff059c8e131d64245ab125b202f45908210f9ad5aef09e1aa0871",
+      "checked_on": "2026-10-10"
+    },
+    "github:timamamu/soma-eeg-to-art-feedback-loop": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "1b05f2b64ae9178b9421b38007e6ec6cdf8e7362f8ad294aaca7c85ef94f62fa",
+      "checked_on": "2026-10-10"
+    },
+    "github:timoncool/yue2-studio": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "b6f0e7f120a159d5b887ed4d7f715d254f6129af0d25c8dbb1aa11ab76716172",
+      "checked_on": "2026-10-10"
+    },
+    "github:tin2tin/pallaidium": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "54dbb1ae7a6f12f057b9024978921cea42bfff3219a805f79f6f1d21a9a86243",
+      "checked_on": "2026-10-10"
+    },
+    "github:tju-tomorrow/lingrui-cavanote": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "6e98cc6bd50e3ac0733681364f0c6a1ba51f4a888180f58a92d8c1b0dfc3cd58",
+      "checked_on": "2026-10-10"
+    },
+    "github:tmoroney/auto-subs": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "7deb03fc1026660fb9f51b62c04d0af3fa9bb4bc0b2aa9a587e0e735d7de5705",
+      "checked_on": "2026-10-10"
+    },
+    "github:tondo-audio/timbro": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "7d8a9ba012a73ee5b26718491b8f8ef0207afc17cbde4e58cd43f503aec3be2b",
+      "checked_on": "2026-10-10"
+    },
+    "github:tristmeister/heiss-ui": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "6d7c5e99a78fcc8f8083194d1ac71377d531e13997c32bcd4dd7cf457ebdbe57",
+      "checked_on": "2026-10-10"
+    },
+    "github:tskovlund/mcp-score": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "e9ce73251858fda106e8c4eefc74c0155effcd50e43ec15290e166b2a9f6bda5",
+      "checked_on": "2026-10-10"
+    },
+    "github:uezo/aiavatarkit": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "c3bbb63f51193c9a35d1aa3b1996fa4da63863f8da2ad6f543a3f24cc41a0d6e",
+      "checked_on": "2026-10-10"
+    },
+    "github:upscayl/upscayl": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "d435ade418533e9fea088746b00e66432bb5448cee5b6de0aaf804bc8eec04d1",
+      "checked_on": "2026-10-10"
+    },
+    "github:upstandplatform/openrive": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "35d93207c6bc91c4f4fde9878afc64a6ec74d484da0b460b3821534edef9211a",
+      "checked_on": "2026-10-10"
+    },
+    "github:uxkero/aimo": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "efbc41a8d6f602dc6ef943aa0574b39e4e7b18a6b16df410a24e2fd2f1c56f94",
+      "checked_on": "2026-10-10"
+    },
+    "github:vast-ai-research/triposg": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "77d23c2e9c60c2a3e7f67c21ac06c3a7a86ec70b76e598b812908267cff5efc6",
+      "checked_on": "2026-10-10"
+    },
+    "github:vast-ai-research/triposr": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "e734b2450090ab817da1257673a9e02b650b8a4ef34f0475e258eddb13df3500",
+      "checked_on": "2026-10-10"
+    },
+    "github:vectorspacelab/omnigen": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "a676b3a6ca9aeaa1fc2ed2708064f3e994dc5484e1a838057e4a74c44c87f0ed",
+      "checked_on": "2026-10-10"
+    },
+    "github:velornlabs/velorn": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "520965f73f3a42133d4a36bccb82a81d10e38a02aab1bb59022660b1763ca4b3",
+      "checked_on": "2026-10-10"
+    },
+    "github:vijishmadhavan/artline": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "8adf216079f0059bdf99537e20802501f7f043ffdd464ea07836ff942dbd2ba9",
+      "checked_on": "2026-10-10"
+    },
+    "github:vincentsch/explainroo": {
+      "basis_edition": "2026-10-01",
+      "record_sha256": "93fe19f711bf72c06e514d20743b22d59fee908799ff1c8a09ef8c786393538e",
+      "checked_on": "2026-10-10"
+    },
+    "github:vincentwei1021/video-shotcraft": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "f19001c5701aab65e9f0684db5fad7049c52390746707cb92b81ae7236544298",
+      "checked_on": "2026-10-10"
+    },
+    "github:vladmandic/sdnext": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "fcd40a011d44df28fb9f83aae325c12988ca2cdd1755d01c97a49de956442f05",
+      "checked_on": "2026-10-10"
+    },
+    "github:vlobanov/gaido": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "ec1086a7d8a9df901dd42f7d9e9f240bf11fdbfdb46cfd270d8b0882cf4d5d8a",
+      "checked_on": "2026-10-10"
+    },
+    "github:volksrat71/sam-ui": {
+      "basis_edition": "2026-10-05",
+      "record_sha256": "5a796317999cd00affd5d49098a406a7cfa40fa1754aef5e14f24040f9391a10",
+      "checked_on": "2026-10-10"
+    },
+    "github:vroomai/vst": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "92221fe9c21fc12007bcf8b2c15431f803a47295ecca278170b1226653eec612",
+      "checked_on": "2026-10-10"
+    },
+    "github:wamellia/ccraw": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "293fb79be8e878197707c9445fa425c76c5601628b104f67da9417413d33c2d5",
+      "checked_on": "2026-10-10"
+    },
+    "github:wan-video/wan2.2": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "6a8543d90e900f3407d5522e90e78d24021fb7f4627e511049f6fbd2a8471ba3",
+      "checked_on": "2026-10-10"
+    },
+    "github:wanshuiyin/align-agentic-loop-image-generation": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "3f4cc636efd5c7416b1dd330c35b960ab8c168757fc6c18aa7c8c0afe1cc047d",
+      "checked_on": "2026-10-10"
+    },
+    "github:waymakerschool/2026_verslicer_checkered": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "bf6659d90284cde09b5f50022e1c0fff9fe9b944df700903d90b01fa7848fc06",
+      "checked_on": "2026-10-10"
+    },
+    "github:weifeng2333/videocaptioner": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "ed00a86dcf0b476af220391afb509bafac14eb75559d449f540d9e7397d3f55b",
+      "checked_on": "2026-10-10"
+    },
+    "github:well-noted/puppetstudio": {
+      "basis_edition": "2026-10-06",
+      "record_sha256": "7df7f49472b4ada56aad42ba19a93fe6b5bd7bb73722cd0947f6dc8774e5fc21",
+      "checked_on": "2026-10-10"
+    },
+    "github:wenbin-lin/relightableavatar": {
+      "basis_edition": "2026-10-09",
+      "record_sha256": "fb39a446fe3022197584d679293fee6747ba3b21a54b596d85224fb165714d02",
+      "checked_on": "2026-10-10"
+    },
+    "github:wendy7756/ai-video-transcriber": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "697d0b5c67be8e2f74d03126401121ce0198e092983eaa5e114233fbf3e7e7b7",
+      "checked_on": "2026-10-10"
+    },
+    "github:wgsxm/partcrafter": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "5fd7243bcb1830afdf57c28d43d2b602a9ecc16a26ed5a42dd31f9668db75ac7",
+      "checked_on": "2026-10-10"
+    },
+    "github:xandergos/terrain-diffusion": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "ba7cfc57e46f30ad0afd5a4cb49cd057d689be79663b893958da32b09f7765e0",
+      "checked_on": "2026-10-10"
+    },
+    "github:xbishi/mocap-skills": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "c4fc80c7157d9639f4f3129ad218bdc4c65cf573bca868d10ac38c0e84c6695c",
+      "checked_on": "2026-10-10"
+    },
+    "github:xemle/home-gallery": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "c0f499b69dca7e06547739dd519857555494cb7e95d0b515c05c4612fa4a0fcc",
+      "checked_on": "2026-10-10"
+    },
+    "github:xget7/splatkit": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "efc000035ea6d5c1f5377153c8bdd0e6c98e2f3663c12a2b44fe24bf24e9a97e",
+      "checked_on": "2026-10-10"
+    },
+    "github:ximinng/pytorch-svgrender": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "cd9d2aab1766ddb13b9d9afa2d2461b29c14b0d377286159c48660b4ba5831cc",
+      "checked_on": "2026-10-10"
+    },
+    "github:xinntao/real-esrgan": {
+      "basis_edition": "2026-10-01-r2",
+      "record_sha256": "2943afe232be7a993ddedbc309fef492e5f5e60fbcaf50b72aa299d5e85c914b",
+      "checked_on": "2026-10-10"
+    },
+    "github:xionluhnis/neural_inverse_knitting": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "08e9f5864713f3fe7f91aa6e5df1436459a9600d451c9a3fbbef3a387ac75196",
+      "checked_on": "2026-10-10"
+    },
+    "github:xulongt/customdance": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "3fc6cb3a3cebe7f8d7932ec1437b8295b37e072cb38a6503b8424d9b8b8c5024",
+      "checked_on": "2026-10-10"
+    },
+    "github:xxlong0/wonder3d": {
+      "basis_edition": "2026-10-04",
+      "record_sha256": "75a36666ff974e8fdd66702f37ebd9fc39d98f16fd7900708c73385c44140af4",
+      "checked_on": "2026-10-10"
+    },
+    "github:yaofanguk/video-subtitle-remover": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "77072bfdd9b3c088787617bfa98d48dad2907fbce86af1487575fc611af77603",
+      "checked_on": "2026-10-10"
+    },
+    "github:yizhiyanhua-ai/fireworks-tech-graph": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "ca7b3bc9ae863b44bb8c4edeae7063f57fd2bfcf46443ed088c7e14488fde027",
+      "checked_on": "2026-10-10"
+    },
+    "github:yuichi-suzuki-highdrama/relight-anime": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "716570495b32acdaf8780d2cc7c21a46f022fd92ee5bf69d52a7165975c8c7e8",
+      "checked_on": "2026-10-10"
+    },
+    "github:yunfanye/openhouse-3d": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "3bbd8f775da32e925d5c62326271c6615f59321e27016a353dc4eebe62e12592",
+      "checked_on": "2026-10-10"
+    },
+    "github:yutongwen/hrtf_field_norm": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "ce4d224c87e4987668508808f5195acd21c9493851a5cda29845d2143a25a694",
+      "checked_on": "2026-10-10"
+    },
+    "github:yvanlouise/aiscripter-for-ani": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "eca2f23225df26b9ad7162b1c1f4835b547fc2f2e67f6a4ae24c113e2834ffb2",
+      "checked_on": "2026-10-10"
+    },
+    "github:yzyouzhang/dafx2026-hrtf-tutorial": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "8f024a95c399d8ae30f2cd391e5625a0ba6d2d6210513c6fa1a6137619054a58",
+      "checked_on": "2026-10-10"
+    },
+    "github:yzyouzhang/hrtf_field": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "181b02272b23c85c721f565c8cb1a6399b23606f7bebb8abb40fd3a17570931a",
+      "checked_on": "2026-10-10"
+    },
+    "github:zai-org/cogvideo": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "56a5e77ad76c46d80e0c246538f78ee7793dc6b124b13cb1f0d6ef8b2a9108ec",
+      "checked_on": "2026-10-10"
+    },
+    "github:zanllp/infinite-image-browsing": {
+      "basis_edition": "2026-10-07",
+      "record_sha256": "a9c7a5c489b4ba80594b2aedfc2be9e98dd9987decb54f9cd75ae1d2a5106775",
+      "checked_on": "2026-10-10"
+    },
+    "github:zedarvates/foveacore": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "a557d8f2aadb103485a7176756cb3784fe79d6430d3b4a55e6856f158cee6599",
+      "checked_on": "2026-10-10"
+    },
+    "github:zenhg/comfyui-h3-latent-relay": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "f9bb66e2df9a3a9c03917ccd82f71d518909502e83e827b791980cbbf10ad960",
+      "checked_on": "2026-10-10"
+    },
+    "github:zhan-xu/rignet": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "9329d1ce4706a72b67bd687d89bcfa1172d1d554ec5fed2b1917655b9e0d8624",
+      "checked_on": "2026-10-10"
+    },
+    "github:zhengpeng7/birefnet": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "a8370a7ba0e02ac6871f66b2c4216cae55086a547950116318b2b796bf0d8a82",
+      "checked_on": "2026-10-10"
+    },
+    "github:zhouxiaoka/autoclip": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "2a17da29ffb746759888e55baef8b5544eede129b3982dde87f17beaa8aa220f",
+      "checked_on": "2026-10-10"
+    },
+    "github:zhuyichuan/infinite-canvas": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "0f085f35c05e353053adca25ca529ded35b8706fac1ed768db153abe699b7e03",
+      "checked_on": "2026-10-10"
+    },
+    "github:zju3dv/neuralrecon": {
+      "basis_edition": "2026-10-08",
+      "record_sha256": "556658262157ef120c481e7722cb0c8d83cf72997e4347e005354aae734e69c7",
+      "checked_on": "2026-10-10"
+    },
+    "github:zliucz/animate-your-word": {
+      "basis_edition": "2026-10-02",
+      "record_sha256": "ec4e38ef131e067310a084217f667f07832bb0ca7442c9d02d7ae72ab06e69e2",
+      "checked_on": "2026-10-10"
+    },
+    "github:zoushunyu144000-ui/oral-video-workflow": {
+      "basis_edition": "2026-10-03",
+      "record_sha256": "9278706c99e8873ae6c259b003c8e63f1e6ff0d85f4d2320b62551c953deea2e",
+      "checked_on": "2026-10-10"
+    },
+    "github:zuoxingdong/lerobot-cad-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "4ffcf13e30ae1cebe289d8737ff1f63fd5b82bfa701ced00fb263eb783c8de7c",
+      "checked_on": "2026-10-10"
+    }
+  },
+  "reviews": {
+    "github:nirholas/3d-ar-studio": {
+      "basis_edition": "2026-10-10",
+      "record_sha256": "5ea106b0666839810cd51af2e689d48bd7af8ed0d081788a9dec32f387077e52",
+      "checked_on": "2026-10-10",
+      "assessment": {
+        "tier": "experimental",
+        "checked_on": "2026-10-10",
+        "method": "source-review",
+        "summary": "Useful AR authoring ideas and a documented web component, but reliable AI output and independent real-world use are not established by the reviewed evidence.",
+        "scope": "Browser 3D scene embedding and documented AI-assisted scene generation; client documentation and repository metadata reviewed.",
+        "caveats": [
+          "No installation, generated output or device tracking was tested by AI Media Scout.",
+          "The software license does not establish the license, cost, availability or quality of the default three.ws generation service and its model weights.",
+          "Eight GitHub stars observed during this review are a discovery signal, not the reason for this quality label.",
+          "The current package requires Node.js 20 or newer. This reassessment supplements the preserved daily guide; it does not rewrite it."
+        ],
+        "sources": [
+          {
+            "title": "Official documentation",
+            "url": "https://github.com/nirholas/3D-AR-Studio/blob/main/README.md"
+          },
+          {
+            "title": "Complete Apache-2.0 software license",
+            "url": "https://github.com/nirholas/3D-AR-Studio/blob/main/LICENSE"
+          },
+          {
+            "title": "Package requirements",
+            "url": "https://github.com/nirholas/3D-AR-Studio/blob/main/package.json"
+          },
+          {
+            "title": "Maintainer demo",
+            "url": "https://nirholas.github.io/3D-AR-Studio/"
+          },
+          {
+            "title": "GitHub releases",
+            "url": "https://github.com/nirholas/3D-AR-Studio/releases"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "verified",
+            "note": "The complete repository software license is Apache-2.0; this finding applies to the client code.",
+            "source_urls": [
+              "https://github.com/nirholas/3D-AR-Studio/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "documented",
+            "note": "The maintainer provides a browser demo and examples. Their AI output quality and AR reliability were not independently established.",
+            "source_urls": [
+              "https://github.com/nirholas/3D-AR-Studio/blob/main/README.md",
+              "https://nirholas.github.io/3D-AR-Studio/"
+            ]
+          },
+          "setup": {
+            "status": "documented",
+            "note": "The repository documents usage and package installation; package.json specifies Node.js >=20. Reproduction was not tested.",
+            "source_urls": [
+              "https://github.com/nirholas/3D-AR-Studio/blob/main/README.md",
+              "https://github.com/nirholas/3D-AR-Studio/blob/main/package.json"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "No GitHub releases were listed at review time. That does not rule out npm releases, but substantive maintenance and support need further review.",
+            "source_urls": [
+              "https://github.com/nirholas/3D-AR-Studio/releases"
+            ]
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "No independent first-hand deployment or creative-use evidence was established in this review.",
+            "source_urls": []
+          },
+          "dependencies": {
+            "status": "unknown",
+            "note": "Default AI generation uses the remote three.ws service; its operational guarantees, model terms and costs remain unresolved for a recommendation.",
+            "source_urls": [
+              "https://github.com/nirholas/3D-AR-Studio/blob/main/README.md"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

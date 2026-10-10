@@ -17,6 +17,7 @@ from .report import build, verify_report
 from .status import report_status
 from .storage import ROOT, read_json, report_date
 from .updates import export_update, prepare_update, update_workspace
+from .quality import audit_existing, quality_backlog
 
 
 def main():
@@ -40,6 +41,10 @@ def main():
     command.add_argument("--full", action="store_true")
     command.add_argument("--date")
     command.add_argument("--revision", type=int)
+    command = sub.add_parser("quality-backlog", help="Evidence gaps across published tools, including full profiles")
+    command.add_argument("--full", action="store_true")
+    command = sub.add_parser("audit-existing-quality", help="Reassess published records without changing dated editions")
+    command.add_argument("--date", required=True)
     command = sub.add_parser("build")
     command.add_argument("--editorial", required=True, type=Path)
     command.add_argument("--revision", type=int)
@@ -87,6 +92,12 @@ def main():
                 output["candidate_catalog"] = str(root / "state/discovery_catalog.json")
         elif args.command == "verify-search":
             output = verify_search(day, root)
+        elif args.command == "audit-existing-quality":
+            output = audit_existing(root, day)
+        elif args.command == "quality-backlog":
+            output = quality_backlog(root)
+            if not args.full:
+                output["pending"] = len(output.pop("items"))
         elif args.command == "discover":
             result = collect(day, root=root, plan_path=args.plan)
             output = {"report_date": day, "repositories": len(result["candidates"]),

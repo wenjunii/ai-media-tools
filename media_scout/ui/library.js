@@ -14,6 +14,16 @@
     return (edition && tool.versions.find(function (v) { return editionKey(v) === edition; })) ||
       tool.versions.find(function (v) { return v.kind === "profile"; }) || tool.versions[0];
   }
+  const qualityLabels = {recommended: "Recommended", unverified: "Quality unverified", experimental: "Experimental"};
+  function qualityOf(tool) {
+    return tool && tool.quality_assessment || {tier: "unverified", checked_on: null,
+      summary: "Quality evidence has not been assessed.", checks: {}, caveats: [], sources: []};
+  }
+  function qualityText(tool) {
+    const value = qualityOf(tool);
+    return qualityLabels[value.tier] + " · " + (value.checked_on ? "assessed " + value.checked_on : "assessment pending") +
+      ". " + value.summary;
+  }
   function savedIds(serialized, tools) {
     try {
       const ids = JSON.parse(serialized), known = new Set(tools.map(function (tool) { return tool.id; }));
@@ -77,6 +87,15 @@
           "Documentation review; installation and output were not independently tested.") : "Screened discovery — full profile pending.", "");
       Object.entries(p.links || {}).forEach(function (entry) { lines.push("- " + md(entry[0].replace(/_/g, " ")) + ": " + url(entry[1])); });
       lines.push("");
+      const assessment = qualityOf(tool);
+      lines.push("### Current library quality assessment", "", md(qualityText(tool)), "",
+        "This assessment is separate from the dated guide below.", "", md(assessment.scope || "Evidence review pending"), "");
+      Object.entries(assessment.checks).forEach(function (entry) {
+        const check = entry[1];
+        lines.push("- **" + md(entry[0].replace(/_/g, " ")) + " · " + md(check.status) + ":** " + md(check.note) +
+          " " + (check.source_urls || []).map(url).join(" · "));
+      });
+      lines.push("", ...assessment.caveats.map(md), "");
       if (p.ai_relevance) section("How it uses AI", p.ai_relevance);
       if (full) {
         section("Why it appeared in this edition", p.novelty);
@@ -109,7 +128,7 @@
       }).slice(0, 4).map(function (entry) { return {id: entry.id, edition: entry.edition}; });
     } catch (error) { return []; }
   }
-  function comparisonRows(version) {
+  function comparisonRows(version, tool) {
     const p = version.profile, full = version.kind === "profile", pending = "Not reviewed yet · full profile pending";
     function row(label, value, source) {
       return {label: label, text: typeof value === "string" && value.trim() ? value : (full ? "Not documented" : pending),
@@ -117,6 +136,7 @@
     }
     const requirements = p.requirements || {}, license = p.license || {};
     return [
+      row("Current quality assessment", qualityText(tool), {source_urls: qualityOf(tool).sources.map(function (s) { return s.url; })}),
       row("Good for", full ? p.good_for && p.good_for.text : p.good_for, full ? p.good_for : p.ai_relevance),
       row("Hardware", full ? requirements.hardware : null, requirements),
       row("Software", full ? requirements.software : null, requirements),
@@ -146,6 +166,7 @@
     if (filters.field && !(filters.edition ? profile.categories : tool.categories).includes(filters.field)) return false;
     if (filters.platform && !(filters.edition ? platformMentions(profile) : tool.platform_mentions).includes(filters.platform)) return false;
     if (filters.review && (filters.edition ? version.kind : tool.review) !== filters.review) return false;
+    if (filters.quality && qualityOf(tool).tier !== filters.quality) return false;
     const license = version.kind === "profile" ? profile.license.code : profile.code_license;
     if (filters.license && license !== filters.license) return false;
     const tokens = Array.from(fold(filters.q || "").matchAll(/"([^"]+)"|(\S+)/g), function (m) { return m[1] || m[2]; });
@@ -173,6 +194,7 @@
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
                       coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
+                      qualityOf: qualityOf, qualityText: qualityText,
                       comparisonSelection: comparisonSelection, comparisonRows: comparisonRows,
                       shortlistJSON: shortlistJSON, importShortlist: importShortlist, researchNotes: researchNotes};
   }
@@ -187,7 +209,7 @@
     return (edition && edition.report_path || prefix + (edition && edition.report_directory || day + "/")) + "report." + extension;
   }
   const controls = {q: "search", field: "field-filter", platform: "platform-filter", license: "license-filter",
-                    review: "review-filter", edition: "edition-filter", sort: "sort"};
+                    review: "review-filter", quality: "quality-filter", edition: "edition-filter", sort: "sort"};
   const $ = function (id) { return document.getElementById(id); };
   const savedKey = "ai-media-scout.saved.v1";
   let saved = new Set(), storageAvailable = true;
@@ -326,6 +348,7 @@
     node.append(title);
     node.append(element("p", "card-description", full ? p.introduction.text : p.ai_relevance.text));
     const badges = element("div", "badge-row");
+    badges.append(qualityBadge(tool));
     badges.append(element("span", "badge license", full ? p.license.code : p.code_license));
     badges.append(element("span", "badge" + (full ? "" : " pending"), full ? "Detailed profile" : "Profile pending"));
     node.append(badges);
@@ -349,7 +372,8 @@
     $("empty").hidden = results.length !== 0; $("load-more").hidden = results.length <= visible;
     $("search-scope").textContent = values.edition ? "Search this edition" : "Search every review";
     $("search-label").textContent = values.edition ? "Search profiles in the selected edition" : "Search all profiles and review history";
-    $("empty-message").textContent = $("saved-only").checked ?
+    $("empty-message").textContent = values.quality === "recommended" && !data.quality_counts.recommended ?
+      "No tools have met all recommendation checks yet. Choose All quality tiers to explore the library and its documented evidence gaps." : $("saved-only").checked ?
       (saved.size ? "Your saved tools do not match these filters. Try fewer words or clear the filters." :
         "Save a tool from the library to start your shortlist, then return here.") :
       "Try fewer words, another creative field, or clear your filters.";
@@ -386,6 +410,28 @@
     });
     node.append(refs(value, profile)); return node;
   }
+  function qualityBadge(tool) {
+    const value = qualityOf(tool), badge = element("span", "badge quality-" + value.tier, qualityLabels[value.tier]);
+    badge.title = qualityText(tool); return badge;
+  }
+  function qualityPanel(tool) {
+    const value = qualityOf(tool), panel = element("section", "quality-panel");
+    panel.append(element("h3", "", "Current quality assessment"), qualityBadge(tool),
+      element("p", "", value.summary), element("p", "profile-meta",
+        (value.checked_on ? "Assessed " + date(value.checked_on) + " · " : "Assessment pending · ") +
+        (data.quality_methods[value.method] || "Evidence review pending")),
+      element("p", "", "Scope: " + (value.scope || "Evidence review pending")),
+      element("p", "profile-meta", "This current library assessment is separate from the preserved review selected below. Verified checks refer to cited evidence, not our own runtime testing."));
+    const details = element("details"), summary = element("summary", "", "Evidence and remaining gaps");
+    details.append(summary);
+    Object.entries(value.checks).forEach(function (entry) {
+      const check = entry[1], item = element("div", "quality-check");
+      item.append(element("h4", "", data.quality_checks[entry[0]] + " · " + check.status),
+        element("p", "", check.note), refs(check, value)); details.append(item);
+    });
+    const caveats = element("ul"); value.caveats.forEach(function (note) { caveats.append(element("li", "", note)); });
+    details.append(caveats); panel.append(details); return panel;
+  }
   function openProfile(id, versionDate) {
     const tool = byId.get(id); if (!tool) return;
     const version = primaryVersion(tool, versionDate), p = version.profile, full = version.kind === "profile";
@@ -394,6 +440,7 @@
     header.append(element("p", "card-category", p.categories.map(function (c) { return names.get(c) || c; }).join(" · ")));
     const title = element("h2", "", p.name); title.id = "profile-title"; header.append(title);
     const badges = element("div", "badge-row");
+    badges.append(qualityBadge(tool));
     badges.append(element("span", "badge license", full ? p.license.code : p.code_license),
                   element("span", "badge" + (full ? "" : " pending"), full ? p.maturity : "Screened · full profile pending"));
     header.append(badges);
@@ -422,6 +469,7 @@
     select.addEventListener("change", function () { openProfile(id, select.value); $("version-select").focus(); });
     versionControl.append(versionLabel, select); header.append(versionControl);
     const body = element("div", "profile-body");
+    body.append(qualityPanel(tool));
     body.append(element("p", "profile-notice", full ?
       (p.quality.hands_on_tested ? "Hands-on testing is recorded in this review. Read its scope and limitations below." :
         "Documentation review; installation and output were not independently tested. Check the dated requirements and model terms before production use.") :
@@ -446,7 +494,7 @@
     if (comparison.length < 2) return;
     const selected = comparison.map(function (entry) {
       const tool = byId.get(entry.id), version = primaryVersion(tool, entry.edition);
-      return {tool: tool, version: version, rows: comparisonRows(version)};
+      return {tool: tool, version: version, rows: comparisonRows(version, tool)};
     });
     const table = element("table", "comparison-table"), caption = element("caption", "sr-only", "Dated tool reviews, requirements, licenses and costs");
     table.style.minWidth = (155 + selected.length * 250) + "px";
@@ -513,6 +561,9 @@
   options("edition-filter", data.editions.map(function (e) { return [editionKey(e), editionLabel(e)]; }));
   $("profile-total").textContent = data.counts.profiles; $("screened-total").textContent = data.counts.screened;
   $("edition-total").textContent = data.counts.editions;
+  $("quality-totals").textContent = Object.entries(qualityLabels).map(function (entry) {
+    return (data.quality_counts[entry[0]] || 0) + " " + entry[1].toLowerCase();
+  }).join(" · ") + ". Quality unverified means evidence is incomplete; no tools are hidden by default.";
   if (data.editions.length) {
     const latest = data.editions[0]; $("latest-date").textContent = editionLabel(latest);
     $("latest-summary").textContent = latest.summary.length > 105 ? latest.summary.slice(0, 102) + "…" : latest.summary;

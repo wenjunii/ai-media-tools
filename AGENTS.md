@@ -84,6 +84,14 @@ non-commercial code licenses belong in excluded/watchlist notes. Research tools
 can be valuable but must be labeled as experimental. Recent commits and star
 counts are discovery signals, not proof of quality or significant upgrades.
 Every featured tool or pending lead needs a concrete, cited creative AI use.
+Read `docs/QUALITY_POLICY.md`. Every new profile and lead requires a dated,
+structured `quality_assessment`. Review depth is separate from quality confidence.
+Recommended needs all six verified evidence checks, including independent use;
+stars and a complete guide never grant that label. Keep incomplete evidence
+Quality unverified and research/prototype tools Experimental. Inspect
+`quality-backlog --full` alongside `review-backlog` to improve existing entries.
+Library reassessments use `config/quality_reviews.json` bound to the latest
+published record; run `build-library`, preserving sealed reports and receipts.
 Search adjacent and newly emerging practices, unfamiliar ecosystems and projects
 outside GitHub. Add categories and queries to the daily plan when useful.
 Preserve screened additional discoveries in the report appendix and review queue;

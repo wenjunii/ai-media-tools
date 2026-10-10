@@ -3,7 +3,8 @@
 Live site: **https://wenjunii.github.io/ai-media-tools/**
 
 The web UI and its downloadable `library.json` are generated from every finished
-edition under `public/reports/`. They include complete researched profiles and
+edition under `public/reports/`, with current quality curation from
+`config/quality_reviews.json`. They include complete researched profiles and
 the report's screened open-source AI discoveries. Unreviewed collector results
 and private research remain in the local discovery catalog and review queue.
 
@@ -11,10 +12,16 @@ and private research remain in the local discovery catalog and review queue.
 
 - Search names, creative uses, hardware/software requirements, install commands,
   model/license terms, and older reviews. Words combine; quotes match a phrase.
-  Selecting a daily edition limits both the filters and search text to that
+  Selecting a daily edition limits the dated profile filters and search text to that
   edition's review. Clear the edition to search all preserved reviews again.
 - Combine creative-field, platform-mention, software-license, review-depth,
   and daily-edition filters. Platform mentions do not certify platform support.
+- **Quality confidence** filters Recommended, Quality unverified and Experimental.
+  It always uses the current assessment, even with an older edition selected.
+  Cards show quality separately from review depth. The profile's **Evidence and
+  remaining gaps** lists all six checks, citations, method, date and limitations.
+  A detailed guide does not automatically earn a recommendation. See
+  [QUALITY_POLICY.md](QUALITY_POLICY.md) for the criteria and retrospective audit.
 - Sort by latest detailed review, first appearance, or name.
 - Open a tool for its introduction, practical uses, demos, installation, first
   project, requirements, licenses/costs, quality assessment, limitations and sources.
@@ -43,6 +50,7 @@ and private research remain in the local discovery catalog and review queue.
   testing disclosures, limitations and primary-source citations. Unknown values
   and pending research remain labeled. This is useful context for planning a PC
   experiment; it does not install a tool or claim it was tested.
+  The current quality assessment is included separately from the dated guide.
 - Select **Compare** on 2–4 cards or profiles, then use **Compare tools**.
   The table shows creative uses, hardware, software, platforms, software
   licenses, model terms, commercial-use notes, costs, maturity and review
@@ -50,6 +58,8 @@ and private research remain in the local discovery catalog and review queue.
   documented**; screened leads show **full profile pending** for unreviewed
   details. Comparison does not treat a platform mention as verified support.
   Each selection retains its dated review when you change filters.
+  A separate current-quality row identifies the assessment date and evidence;
+  it is not a claim about the quality label at the selected historical date.
 - **Copy comparison link** includes the selected tool IDs and review editions
   so it opens the same comparison on another browser. Comparisons are encoded
   in the URL and do not require an account or a remote service. Saved-tool
@@ -96,6 +106,12 @@ server. If port 8766 already serves this checkout, use its existing `/site/` URL
 view. It reads existing public editions and never recollects research, rebuilds
 a report, prepares an email, or changes a delivery receipt. It works in a fresh
 clone without private evidence, configuration overrides, or GitHub access.
+It also reads the public curation registry. Reassessments are bound to the exact
+latest published record; a newer or changed record invalidates an older binding.
+Current assessments sit outside preserved `versions` in library JSON. Use
+`quality-backlog --full` for evidence gaps in existing profiles and leads, and
+`audit-existing-quality --date YYYY-MM-DD` only for an intended conservative audit
+of published records. Neither command manufactures recommendations or runtime tests.
 
 Daily `build` prepares a local preview from sealed editions. Daily `export-report`
 updates the cumulative public and local library after adding the finished edition.

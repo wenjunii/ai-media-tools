@@ -338,6 +338,7 @@
     "category_policy": "Starter fields, never an eligibility boundary; add emerging fields to each daily search plan.",
     "require_expanded_search": true,
     "require_license_review": true,
+    "require_quality_assessment": true,
     "required_ecosystems": [
       "gitlab",
       "codeberg",
