@@ -6,11 +6,12 @@ use and reviewed open-source software license. It does not establish output qual
 **Review depth and quality confidence are separate.** A complete installation guide
 can still have unverified quality; a small project can earn a recommendation.
 
-## Three labels
+## Four labels
 
 | Label | Meaning |
 | --- | --- |
 | Recommended | A complete profile with all six evidence checks verified for an explicit creative workflow, with citations and caveats. |
+| Ready to try | A complete profile with the five checks other than creative results verified. Creative-result review is still pending; this label does not establish output quality. |
 | Quality unverified | Eligible discovery with incomplete quality evidence. This is not a claim that the tool is poor. |
 | Experimental | Research, prototype, alpha/beta or other explicitly assessed experimental software. Suitable for exploration; quality and production readiness are not established. |
 
@@ -48,6 +49,22 @@ installs discovered tools. `quality.hands_on_tested` remains a separate disclosu
 Recommendations must state scope, review date and limitations. All platforms
 remain equally eligible; do not invent compatibility or hardware requirements.
 
+## Ready to try while result review waits
+
+Use `tier: ready_to_try` when **license, setup, maintenance, independent use and
+dependencies** all have verified, cited evidence under the criteria above, but
+creative-result review is still pending. This requires a full profile,
+`method: source-review`, and `source_kind: independent` on independent use.
+Keep the `results` check with status `unknown` or `documented`, explain what is
+missing, and disclose that output quality has not been verified. A failed result
+check cannot be bypassed with this tier. Research/prototype tools remain Experimental.
+
+Creating our own demo or video is not a prerequisite for either Ready to try or
+Recommended. Result review can inspect existing concrete outputs or a suitable
+primary evaluation. Our PC demo workflow is separate and can happen later.
+When result evidence is verified, a fresh cited assessment can promote the tool
+to Recommended. The review does not claim local execution unless it happened.
+
 ## New profiles and pending leads
 
 `scope.require_quality_assessment` requires a `quality_assessment` on every new
@@ -55,7 +72,9 @@ profile and screened lead. All six checks must be addressed, even when unknown.
 The assessment has its own declared HTTPS source list. Non-unknown checks require
 citations from that list. Recommended requires all checks verified, a full
 profile, `method: source-review`, and `source_kind: independent` on independent use.
-The builder rejects missing assessments and unsupported recommendation labels.
+Ready to try uses the same requirements except that results must still be unknown
+or documented. Pending leads cannot receive either tier. The builder rejects
+missing assessments and unsupported quality labels.
 
 Example conservative assessment (replace dates, notes and sources with actual
 review evidence; do not turn unknowns into passes to finish an edition):
@@ -92,7 +111,9 @@ record establishes all six new checks, so none was automatically recommended.
 Explicit research/prototype/experimental/alpha/beta maturity descriptions receive
 Experimental; remaining entries receive Quality unverified. 3D AR Studio also has
 a fresh, cited Experimental reassessment of its client, demo and backend caveats.
-These labels do not claim 486 fresh source audits or runtime tests.
+These labels do not claim 486 fresh source audits or runtime tests. Adding Ready
+to try does not automatically promote these records: their five other checks
+still need verified evidence. The same criteria apply to old and new tools.
 
 `config/quality_reviews.json` contains recipient-free curation metadata. `audits`
 records the date, edition identity and SHA-256 of each latest published record.
@@ -117,7 +138,8 @@ assessment's binding; the library uses the new record's assessment or an unverif
 fallback. Even a later screened mention invalidates an old recommendation.
 
 Use `quality-backlog --full` alongside `review-backlog` on subsequent runs. It
-includes full profiles with missing quality evidence. Review promising workflows
+includes full profiles with missing quality evidence, including Ready to try tools
+whose only remaining check is creative results. Review promising workflows
 and older gaps, not only popular projects. Update library curation when evidence
 improves; do not repeat unchanged tools in a daily report just to change a label.
 

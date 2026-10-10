@@ -9,7 +9,8 @@ from urllib.parse import urlparse
 
 from .storage import read_json, report_date, write_json, locked
 
-TIERS = {"recommended": "Recommended", "unverified": "Quality unverified", "experimental": "Experimental"}
+TIERS = {"recommended": "Recommended", "ready_to_try": "Ready to try",
+         "unverified": "Quality unverified", "experimental": "Experimental"}
 CHECKS = {"license": "Open-source software license", "results": "Creative results",
           "setup": "Reproducible setup", "maintenance": "Maintenance and support",
           "independent_use": "Independent use", "dependencies": "Models, services and costs"}
@@ -80,11 +81,16 @@ def validate_assessment(value, kind="profile", expected_date=None):
                 raise ValueError("Invalid quality source provenance")
             cleaned["source_kind"] = check["source_kind"]
         output["checks"][name] = cleaned
-    if value["tier"] == "recommended":
+    if value["tier"] in {"recommended", "ready_to_try"}:
+        required = [name for name in CHECKS if value["tier"] == "recommended" or name != "results"]
         if (kind != "profile" or value["method"] != "source-review"
-                or any(c["status"] != "verified" for c in checks.values())
+                or any(checks[name]["status"] != "verified" for name in required)
                 or checks["independent_use"].get("source_kind") != "independent"):
-            raise ValueError("Recommended requires a full profile and all six verified checks, including independent use")
+            label = TIERS[value["tier"]]
+            evidence = "all six" if value["tier"] == "recommended" else "the five non-results"
+            raise ValueError(f"{label} requires a full profile and {evidence} verified checks, including independent use")
+        if value["tier"] == "ready_to_try" and checks["results"]["status"] not in {"unknown", "documented"}:
+            raise ValueError("Ready to try requires creative-result review to be pending (unknown or documented), not failed or verified")
     return output
 
 

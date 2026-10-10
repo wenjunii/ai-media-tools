@@ -208,3 +208,22 @@ test("comparison and saved notes disclose current quality separately from preser
     assert.ok(notes.includes(value));
   assert.match(notes, /Edition: 2026-10-02/);
 });
+test("ready to try can be filtered while comparison and notes disclose pending creative results", () => {
+  const assessed = {...tool, quality_assessment: {tier: "ready_to_try", checked_on: "2026-10-10",
+    summary: "The five other checks have cited evidence.", scope: "Source review of an image-editing workflow.",
+    checks: {results: {status: "unknown", note: "Creative results have not yet been reviewed.", source_urls: []}},
+    sources: [], caveats: ["Output quality is still pending review."]}};
+  assert.ok(matches(assessed, {quality: "ready_to_try", review: "profile", edition: "2026-10-01"}));
+  assert.equal(matches(assessed, {quality: "recommended"}), false);
+  assert.equal(matches(tool, {quality: "ready_to_try"}), false);
+  const row = comparisonRows(primaryVersion(assessed, "2026-10-01"), assessed)
+    .find(item => item.label === "Current quality assessment");
+  const notes = researchNotes([assessed.id], [assessed], {});
+  for (const text of [row.text, notes]) {
+    assert.match(text, /Ready to try.*2026-10-10/);
+    assert.match(text, /creative-result review pending/);
+    assert.match(text, /Our own demo is not required/);
+  }
+  assert.match(notes, /results.*unknown/);
+  assert.match(notes, /Edition: 2026-10-02/);
+});

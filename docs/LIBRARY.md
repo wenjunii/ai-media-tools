@@ -16,7 +16,9 @@ and private research remain in the local discovery catalog and review queue.
   edition's review. Clear the edition to search all preserved reviews again.
 - Combine creative-field, platform-mention, software-license, review-depth,
   and daily-edition filters. Platform mentions do not certify platform support.
-- **Quality confidence** filters Recommended, Quality unverified and Experimental.
+- **Quality confidence** filters Recommended, Ready to try, Quality unverified and
+  Experimental. Ready to try verifies the five checks other than creative results;
+  result review remains pending and our own demo can happen later.
   It always uses the current assessment, even with an older edition selected.
   Cards show quality separately from review depth. The profile's **Evidence and
   remaining gaps** lists all six checks, citations, method, date and limitations.

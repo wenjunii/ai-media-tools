@@ -46,9 +46,11 @@ no private destination or credentials. Use the existing single chat automation.
    unreviewed or excluded candidates local. Do not recycle unchanged discoveries.
    Include sourced coverage findings for all observed fields and ecosystem checks.
    Include a dated structured quality_assessment for every profile and lead.
-   Recommended requires all six verified checks, including independent use;
-   full guides and stars do not grant a recommendation. Incomplete evidence stays
-   Quality unverified; research/prototype tools stay Experimental. Inspect
+   Recommended requires all six verified checks, including independent use.
+   Ready to try requires a full profile and the five non-results checks verified;
+   results stay unknown or documented, never failed. Our own demo is not a
+   prerequisite. Full guides and stars do not grant either tier. Other evidence
+   gaps stay Quality unverified; research/prototype tools stay Experimental. Inspect
    `quality-backlog --full` to improve earlier entries, including complete guides.
    Apply retrospective assessments through the bound library curation registry;
    never rewrite sealed editions or repeat an unchanged tool merely for a new label.

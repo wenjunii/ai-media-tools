@@ -6,7 +6,9 @@ Every new tool also requires the full `quality_assessment` object defined in
 `quality` in the example below; `quality` remains the inclusion rationale and
 hands-on disclosure. The example's guide fields alone are not a complete new
 submission. Use unknown evidence explicitly; a complete guide is not automatically
-Recommended. The assessment date must match the edition date.
+Recommended. Ready to try requires the five non-results checks verified; keep
+results explicitly unknown or documented until reviewed. Our own demo is not a
+prerequisite. The assessment date must match the edition date.
 All URLs must use HTTPS. Each section's source URLs must appear in `sources`.
 Use actual source facts and mark unknowns. Use the candidate's canonical `id`,
 observed software SPDX license, and exact `novelty` value from discovery.

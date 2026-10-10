@@ -100,8 +100,10 @@ expanded plan remain resumable when `--plan` is omitted.
 
 Follow [QUALITY_POLICY.md](QUALITY_POLICY.md). Broad eligibility and quality
 confidence are separate: low stars are allowed, but Recommended requires six
-verified checks including independent use. All new profiles and pending leads
-need a structured quality assessment. Keep incomplete quality evidence explicit.
+verified checks including independent use. Ready to try verifies the other five
+checks while creative-result review remains pending; our own demo is not required.
+All new profiles and pending leads need a structured quality assessment. Keep
+incomplete quality evidence explicit; pending leads cannot receive either tier.
 Review `quality-backlog --full` as well as the candidate backlog; finished guides
 can still need quality research. Prior labels can be reassessed through library
 curation without changing original reports or recycling unchanged discoveries.

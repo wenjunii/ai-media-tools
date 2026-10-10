@@ -14,7 +14,8 @@
     return (edition && tool.versions.find(function (v) { return editionKey(v) === edition; })) ||
       tool.versions.find(function (v) { return v.kind === "profile"; }) || tool.versions[0];
   }
-  const qualityLabels = {recommended: "Recommended", unverified: "Quality unverified", experimental: "Experimental"};
+  const qualityLabels = {recommended: "Recommended", ready_to_try: "Ready to try", unverified: "Quality unverified", experimental: "Experimental"};
+  const readyToTryNote = "Five checks verified; creative-result review pending. Our own demo is not required.";
   function qualityOf(tool) {
     return tool && tool.quality_assessment || {tier: "unverified", checked_on: null,
       summary: "Quality evidence has not been assessed.", checks: {}, caveats: [], sources: []};
@@ -22,7 +23,7 @@
   function qualityText(tool) {
     const value = qualityOf(tool);
     return qualityLabels[value.tier] + " · " + (value.checked_on ? "assessed " + value.checked_on : "assessment pending") +
-      ". " + value.summary;
+      ". " + (value.tier === "ready_to_try" ? readyToTryNote + " " : "") + value.summary;
   }
   function savedIds(serialized, tools) {
     try {
@@ -373,7 +374,9 @@
     $("search-scope").textContent = values.edition ? "Search this edition" : "Search every review";
     $("search-label").textContent = values.edition ? "Search profiles in the selected edition" : "Search all profiles and review history";
     $("empty-message").textContent = values.quality === "recommended" && !data.quality_counts.recommended ?
-      "No tools have met all recommendation checks yet. Choose All quality tiers to explore the library and its documented evidence gaps." : $("saved-only").checked ?
+      "No tools have met all recommendation checks yet. Choose All quality tiers to explore the library and its documented evidence gaps." :
+      values.quality === "ready_to_try" && !data.quality_counts.ready_to_try ?
+      "No tools have completed the five checks for Ready to try yet. Creative-result review can wait; licensing, setup, maintenance, independent use and dependencies still need verified evidence. Choose All quality tiers to explore the library." : $("saved-only").checked ?
       (saved.size ? "Your saved tools do not match these filters. Try fewer words or clear the filters." :
         "Save a tool from the library to start your shortlist, then return here.") :
       "Try fewer words, another creative field, or clear your filters.";
@@ -422,6 +425,7 @@
         (data.quality_methods[value.method] || "Evidence review pending")),
       element("p", "", "Scope: " + (value.scope || "Evidence review pending")),
       element("p", "profile-meta", "This current library assessment is separate from the preserved review selected below. Verified checks refer to cited evidence, not our own runtime testing."));
+    if (value.tier === "ready_to_try") panel.append(element("p", "", readyToTryNote));
     const details = element("details"), summary = element("summary", "", "Evidence and remaining gaps");
     details.append(summary);
     Object.entries(value.checks).forEach(function (entry) {
