@@ -7,6 +7,7 @@ import re
 
 from .report import LABELS, SECTIONS, safe_url
 from .storage import edition_key, edition_revision, read_json, report_date, sha256, write_text
+from .quality import CHECKS, METHODS, TIERS, assess_entry, read_reviews, validate_assessment
 
 UI = Path(__file__).with_name("ui")
 ASSETS = ("library.css", "library.js")
@@ -42,6 +43,8 @@ def _profile(source, kind):
     output["categories"] = categories
     output["sources"] = [{"title": _text(s["title"]), "url": safe_url(s["url"])} for s in source["sources"]]
     output["links"] = {name: safe_url(url) for name, url in source.get("links", {}).items()}
+    if "quality_assessment" in source:
+        output["quality_assessment"] = validate_assessment(source["quality_assessment"], kind, output["checked_on"])
     if "ai_relevance" in source:
         output["ai_relevance"] = {"text": _text(source["ai_relevance"]["text"]),
                                   "source_urls": [safe_url(u) for u in source["ai_relevance"]["source_urls"]]}
@@ -65,9 +68,10 @@ def _profile(source, kind):
     return output
 
 
-def make_library(documents, config):
+def make_library(documents, config, quality_reviews=None):
     """Deduplicate tools by stable ID while retaining every published version."""
     names = {c["id"]: c["name"] for c in config["categories"]}
+    quality_reviews = quality_reviews or {"audits": {}, "reviews": {}}
     tools, editions, dates, identities = {}, [], set(), set()
     for report in sorted(documents, key=lambda r: (r["report_date"], edition_revision(r.get("revision", 1)))):
         day = report_date(report["report_date"])
@@ -112,15 +116,20 @@ def make_library(documents, config):
                                  for v in entry["versions"])
         entry["platform_mentions"] = [label for label, pattern in PLATFORMS.items()
                                       if re.search(pattern, platform_text, re.I)]
+        entry["quality_assessment"] = assess_entry(entry, quality_reviews)
         for category in entry["categories"]:
             names.setdefault(category, category.replace("_", " ").replace("-", " ").title())
     used = {c for entry in tools.values() for c in entry["categories"]}
     profiles = sum(entry["review"] == "profile" for entry in tools.values())
+    if (set(quality_reviews.get("audits", {})) | set(quality_reviews.get("reviews", {}))) - set(tools):
+        raise ValueError("Quality registry contains an unknown published tool ID")
     return {"format_version": 1, "latest_edition": max(dates) if dates else None,
             "counts": {"tools": len(tools), "profiles": profiles, "screened": len(tools) - profiles,
                        "editions": len(editions)},
             "categories": [{"id": c, "name": names[c]} for c in sorted(used, key=lambda c: names[c].casefold())],
             "section_labels": LABELS, "tools": sorted(tools.values(), key=lambda t: t["id"]),
+            "quality_labels": TIERS, "quality_checks": CHECKS, "quality_methods": METHODS,
+            "quality_counts": {tier: sum(t["quality_assessment"]["tier"] == tier for t in tools.values()) for tier in TIERS},
             "editions": list(reversed(editions))}
 
 
@@ -170,7 +179,7 @@ def write_local_library(root, config):
         identity = edition_key(day, manifest.get("revision", 1))
         reports[identity] = read_json(path.parent / "report.json")
         paths[identity] = "../reports/" + day + "/"
-    data = make_library(list(reports.values()), config)
+    data = make_library(list(reports.values()), config, read_reviews(root))
     for edition in data["editions"]:
         identity = edition_key(edition["report_date"], edition.get("revision", 1))
         edition["report_path"] = paths[identity]

@@ -5,7 +5,7 @@ recipient and 8:00 AM America/New_York timing. This checklist is public and cont
 no private destination or credentials. Use the existing single chat automation.
 
 1. Read AGENTS.md, SEARCH_SCOPE.md, DAILY_WORKFLOW.md, GITHUB_SYNC.md,
-   PROFILE_FORMAT.md, LEADS_FORMAT.md and LIBRARY.md. Read local preferences with
+   PROFILE_FORMAT.md, LEADS_FORMAT.md, LIBRARY.md and QUALITY_POLICY.md. Read local preferences with
    `doctor`. Determine today's date in the configured time zone and inspect
    `status` first. If the edition was sent, verify and stop quietly. Preserve a
    sealed edition. Reserved or uncertain sends require confirmed Sent-mail
@@ -45,6 +45,13 @@ no private destination or credentials. Use the existing single chat automation.
    appendix and review queue; complete earlier reviews on later runs. Keep raw
    unreviewed or excluded candidates local. Do not recycle unchanged discoveries.
    Include sourced coverage findings for all observed fields and ecosystem checks.
+   Include a dated structured quality_assessment for every profile and lead.
+   Recommended requires all six verified checks, including independent use;
+   full guides and stars do not grant a recommendation. Incomplete evidence stays
+   Quality unverified; research/prototype tools stay Experimental. Inspect
+   `quality-backlog --full` to improve earlier entries, including complete guides.
+   Apply retrospective assessments through the bound library curation registry;
+   never rewrite sealed editions or repeat an unchanged tool merely for a new label.
 6. Build and inspect the full report, its automatically derived search/review
    counts and collection gaps; verify its sealed artifacts. Export the finished
    edition to the cumulative public library and local UI. Audit the full Git index.

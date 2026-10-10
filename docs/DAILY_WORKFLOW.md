@@ -9,6 +9,14 @@ The default research start is 8:00 AM America/New_York, with all platforms
 equally represented. Keep the existing single chat automation.
 Search only open-source AI tools, across any digital media or creative workflow.
 Read `docs/SEARCH_SCOPE.md`; starter fields and examples are not boundaries.
+Read `docs/QUALITY_POLICY.md` and inspect `python3 -m media_scout quality-backlog --full`
+alongside the discovery backlog. New profiles and leads require a dated structured
+quality assessment addressing all six checks. Preserve broad discovery; recommend
+only with verified results, reproducible setup, maintenance, independent use,
+licensing and dependency evidence. Complete guides with gaps remain Quality
+unverified; research/prototype tools remain Experimental. Improve prior quality
+reviews through the bound library registry and `build-library`, without repeating
+unchanged tools in a new report or rewriting preserved editions.
 
 ## 1. Resume safely
 

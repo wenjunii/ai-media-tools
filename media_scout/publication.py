@@ -175,9 +175,10 @@ def _archive_readme(root):
 
 
 def _public_library_contents(root, config=None):
+    from .quality import read_reviews
     editions = _public_editions(root)
     documents = [read_json(root / "public/reports" / day / "report.json") for day in editions]
-    data = make_library(documents, config or load_config(root))
+    data = make_library(documents, config or load_config(root), read_reviews(root))
     contents = {"public/" + name: value for name, value in library_files(data).items()}
     contents["public/README.md"] = _readme_for_editions(editions)
     return data, contents

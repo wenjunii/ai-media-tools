@@ -184,3 +184,27 @@ test("same-day updates have independent filters and preserved original reviews",
   assert.equal(matches(revised, {edition: "2026-10-01", field: "video"}), false);
   assert.equal(matches(revised, {edition: "2026-10-01-r3"}), false);
 });
+
+test("quality confidence is separate from guide depth and follows current curation", () => {
+  const experimental = {...tool, quality_assessment: {tier: "experimental", checked_on: "2026-10-10",
+    summary: "Independent output evidence is missing.", sources: [], checks: {}, caveats: []}};
+  assert.ok(matches(experimental, {review: "profile", quality: "experimental"}));
+  assert.equal(matches(experimental, {quality: "recommended"}), false);
+  assert.ok(matches(experimental, {quality: "experimental", edition: "2026-10-01"}));
+  assert.ok(matches(tool, {quality: "unverified"}));
+  assert.equal(matches(tool, {quality: "recommended"}), false);
+});
+test("comparison and saved notes disclose current quality separately from preserved reviews", () => {
+  const assessed = {...tool, quality_assessment: {tier: "unverified", checked_on: "2026-10-10",
+    summary: "Reproduction and independent use remain unverified.", scope: "Stored documentation review only.",
+    checks: {independent_use: {status: "unknown", note: "No direct evidence of independent creative use.", source_urls: []}},
+    sources: [{title: "Reviewed source", url: "https://example.com/quality"}], caveats: ["No runtime testing was performed."]}};
+  const rows = comparisonRows(primaryVersion(assessed, "2026-10-01"), assessed);
+  const quality = rows.find(row => row.label === "Current quality assessment");
+  assert.match(quality.text, /Quality unverified.*2026-10-10/);
+  assert.deepEqual(quality.source_urls, ["https://example.com/quality"]);
+  const notes = researchNotes([assessed.id], [assessed], {});
+  for (const value of ["Current library quality assessment", "2026-10-10", "Stored documentation review only.", "No runtime testing was performed."])
+    assert.ok(notes.includes(value));
+  assert.match(notes, /Edition: 2026-10-02/);
+});

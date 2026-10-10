@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from .discovery import OSI_LICENSES
 from .configuration import load_config
 from .coverage import verify_search
+from .quality import CHECKS, TIERS, require_assessment
 from .storage import ROOT, edition_revision, locked, now, read_json, report_date, sha256, write_json, write_text
 
 SECTIONS = ("introduction", "good_for", "demo", "installation", "usage", "requirements", "license", "quality", "limitations")
@@ -131,6 +132,7 @@ def validate(editorial, discovery, config, catalog, queue=None):
                 raise ValueError(f"Missing license.{field} for {key}")
         if not isinstance(tool["quality"].get("hands_on_tested"), bool):
             raise ValueError("Disclose whether the tool was actually run")
+        require_assessment(tool, "profile", config, editorial["report_date"])
         if not tool["installation"].get("steps") or not tool["usage"].get("steps"):
             raise ValueError(f"Install and first-use steps are required for {key}")
         if tool.get("novelty", {}).get("kind") != candidate.get("novelty"):
@@ -169,6 +171,7 @@ def validate(editorial, discovery, config, catalog, queue=None):
             raise ValueError("Pending leads need official documentation and license sources")
         validate_license_review(candidate, sources, config)
         validate_ai_relevance(lead, sources)
+        require_assessment(lead, "screened", config, editorial["report_date"])
         previous = (queue or {}).get(key, {})
         if (previous.get("last_listed") and previous["last_listed"] != editorial["report_date"]
                 and previous.get("source_fingerprint") == candidate["source_fingerprint"]):
@@ -197,6 +200,28 @@ def refs_html(section, sources):
     return " ".join(f'<a href="{escape(url, quote=True)}">[{indices[url]}]</a>' for url in section["source_urls"])
 
 
+def quality_html(value):
+    out = ['<section class="notice"><h3>Quality assessment: ' + TIERS[value["tier"]] + '</h3>',
+           '<p>' + escape(value["summary"]) + '</p><p>Scope: ' + escape(value["scope"]) + '</p>',
+           '<p class="meta">Evidence checked ' + escape(value["checked_on"]) + '; documentation review does not imply hands-on testing.</p><ul>']
+    for key, label in CHECKS.items():
+        check = value["checks"][key]
+        out.append('<li><strong>' + label + ' · ' + escape(check["status"]) + ':</strong> ' +
+                   escape(check["note"]) + ' ' + refs_html(check, value["sources"]) + '</li>')
+    out.append('</ul><p>' + escape(' '.join(value["caveats"])) + '</p></section>')
+    return ''.join(out)
+
+
+def quality_markdown(value):
+    out = ['### Quality assessment: ' + TIERS[value["tier"]], '', value["summary"], '',
+           'Scope: ' + value["scope"], '', 'Evidence checked: ' + value["checked_on"] + '. No local execution implied.', '']
+    for key, label in CHECKS.items():
+        check = value["checks"][key]
+        out.append('- **' + label + ' · ' + check["status"] + ':** ' + check["note"] + ' ' +
+                   ' '.join('[Source](' + url + ')' for url in check["source_urls"]))
+    return out + ['', ' '.join(value["caveats"]), '']
+
+
 def card_html(tool, candidate, category_names):
     out = [f'<article class="tool" data-categories="{escape(" ".join(tool["categories"]))}">',
            f'<div class="eyebrow">{escape(" · ".join(category_names[c] for c in tool["categories"]))}</div>',
@@ -210,6 +235,8 @@ def card_html(tool, candidate, category_names):
     if release:
         meta += f' · Release {release["tag"]} ({(release.get("published_at") or "date unreported")[:10]})'
     out.append(f'<p class="meta">{escape(meta)} · {"Hands-on tested" if tool["quality"]["hands_on_tested"] else "Documentation review; installation not tested"}</p>')
+    if tool.get("quality_assessment"):
+        out.append(quality_html(tool["quality_assessment"]))
     if tool.get("ai_relevance"):
         out.append('<section><h3>How it uses AI</h3><p>' + escape(tool["ai_relevance"]["text"]) + ' ' + refs_html(tool["ai_relevance"], tool["sources"]) + '</p></section>')
     for name in SECTIONS:
@@ -285,11 +312,12 @@ def render_html(editorial, discovery, config):
     for tool in editorial["tools"]:
         out.append(card_html(tool, candidates[tool["id"]], names))
     if editorial.get("leads"):
-        out.append('<h2>Additional open-source AI discoveries</h2><p>These projects have been screened for creative AI relevance and software licensing. Full setup, requirements and quality profiles are pending; they are not equivalent to the detailed recommendations above.</p><table><thead><tr><th>Tool</th><th>Creative use and review status</th></tr></thead><tbody>')
+        out.append('<h2>Additional open-source AI discoveries</h2><p>These projects have been screened for creative AI relevance and software licensing. Full profiles are pending. Profile depth and quality confidence are separate; only tools explicitly labeled Recommended meet all quality checks.</p><table><thead><tr><th>Tool</th><th>Creative use and review status</th></tr></thead><tbody>')
         for lead in editorial["leads"]:
             candidate = candidates[lead["id"]]
             out.append(f'<tr><td><a href="{escape(candidate["url"], quote=True)}">{escape(lead["name"])}</a><br>{escape(lead["code_license"])}</td><td>{escape(lead["good_for"])}<br>{escape(lead["ai_relevance"]["text"])}<br><em>{escape(lead["review_status"])}</em> ' +
-                       ' '.join(f'<a href="{escape(source["url"], quote=True)}">{escape(source["title"])}</a>' for source in lead["sources"]) + '</td></tr>')
+                       ' '.join(f'<a href="{escape(source["url"], quote=True)}">{escape(source["title"])}</a>' for source in lead["sources"]) +
+                       (quality_html(lead["quality_assessment"]) if lead.get("quality_assessment") else '') + '</td></tr>')
         out.append('</tbody></table>')
     if editorial.get("watchlist"):
         out.append('<h2>Excluded and unresolved findings</h2><p>These findings are retained as research notes and are not part of the eligible tool library.</p><ul>')
@@ -324,6 +352,8 @@ def render_markdown(editorial, discovery, config):
         out += ['', '## Collection limitations', ''] + ['- ' + warning for warning in discovery["warnings"]]
     for tool in editorial["tools"]:
         out += ['', f'## {tool["name"]}', '', ' · '.join(names[c] for c in tool["categories"]), '', tool["novelty"]["text"], '']
+        if tool.get("quality_assessment"):
+            out += quality_markdown(tool["quality_assessment"])
         if tool.get("ai_relevance"):
             out += ['### How it uses AI', '', tool["ai_relevance"]["text"] + ' ' +
                     ' '.join(f'[Source]({url})' for url in tool["ai_relevance"]["source_urls"]), '']
@@ -345,6 +375,8 @@ def render_markdown(editorial, discovery, config):
         for lead in editorial["leads"]:
             out += [f'### {lead["name"]} · {lead["code_license"]}', '', lead["good_for"],
                     lead["ai_relevance"]["text"], lead["review_status"], '']
+            if lead.get("quality_assessment"):
+                out += quality_markdown(lead["quality_assessment"])
             out += [f'- [{source["title"]}]({source["url"]})' for source in lead["sources"]]
     if editorial.get("watchlist"):
         out += ['', '## Excluded and unresolved findings', '',

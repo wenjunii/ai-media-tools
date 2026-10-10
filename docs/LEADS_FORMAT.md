@@ -1,5 +1,10 @@
 # Additional-discovery appendix
 
+Every new lead also requires the `quality_assessment` object from
+[QUALITY_POLICY.md](QUALITY_POLICY.md#new-profiles-and-pending-leads), alongside the
+fields below. Use Quality unverified or Experimental with explicit evidence gaps;
+pending leads cannot be Recommended. Include all six checks and the edition date.
+
 Add an optional `leads` list beside `tools` in editorial JSON. Every entry needs
 an archived candidate, a matching recognized open-source software license, two
 primary sources, a concrete cited creative AI use, and today's check date.

@@ -98,6 +98,14 @@ expanded plan remain resumable when `--plan` is omitted.
 
 ## Review and reporting
 
+Follow [QUALITY_POLICY.md](QUALITY_POLICY.md). Broad eligibility and quality
+confidence are separate: low stars are allowed, but Recommended requires six
+verified checks including independent use. All new profiles and pending leads
+need a structured quality assessment. Keep incomplete quality evidence explicit.
+Review `quality-backlog --full` as well as the candidate backlog; finished guides
+can still need quality research. Prior labels can be reassessed through library
+curation without changing original reports or recycling unchanged discoveries.
+
 The automatic README enrichment settings are a first-pass evidence shortlist,
 not a limit on tools to screen or publish. Inspect all collected candidate
 metadata and retained backlog for concrete creative AI uses; archive other
