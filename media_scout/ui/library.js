@@ -84,7 +84,7 @@
       lines.push("## " + md(p.name), "", "Tool ID: " + md(tool.id), "",
         "Edition: " + md(editionKey(version)) + " · Documentation checked: " + md(p.checked_on || "Not documented"), "",
         full ? (p.quality && p.quality.hands_on_tested ? "Hands-on testing recorded; see the quality review for its scope." :
-          "Documentation review; installation and output were not independently tested.") : "Screened discovery — full profile pending.", "");
+          "Documentation review; installation and output were not independently tested by AI Media Scout.") : "Screened discovery — full profile pending.", "");
       Object.entries(p.links || {}).forEach(function (entry) { lines.push("- " + md(entry[0].replace(/_/g, " ")) + ": " + url(entry[1])); });
       lines.push("");
       const assessment = qualityOf(tool);
@@ -148,7 +148,7 @@
       row("Costs and services", full ? license.cost : null, license),
       row("Maturity", full ? p.maturity : null),
       row("Review evidence", full ? (p.quality && p.quality.hands_on_tested ? "Hands-on testing recorded; see its scope in the profile" :
-        "Documentation review; installation and output not independently tested") : "Creative AI use and software license screened; full review pending", p.quality)
+        "Documentation review; installation and output not independently tested by AI Media Scout") : "Creative AI use and software license screened; full review pending", p.quality)
     ];
   }
   function platformMentions(profile) {
@@ -472,7 +472,7 @@
     body.append(qualityPanel(tool));
     body.append(element("p", "profile-notice", full ?
       (p.quality.hands_on_tested ? "Hands-on testing is recorded in this review. Read its scope and limitations below." :
-        "Documentation review; installation and output were not independently tested. Check the dated requirements and model terms before production use.") :
+        "Documentation review; installation and output were not independently tested by AI Media Scout. Check the dated requirements and model terms before production use.") :
       "Creative AI use and the software license were screened. A full installation, requirements and quality review is still pending."));
     if (tool.last_seen > version.date) body.append(element("p", "profile-meta", "This tool also appeared in a later edition on " + date(tool.last_seen) + ". Choose a review above to compare."));
     if (full) body.append(section("Why it appeared in this edition", {text: p.novelty.text}, p));
