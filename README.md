@@ -59,18 +59,27 @@ clearly labeled until their complete profiles are finished.
 
 ## Quality confidence
 
-Every library tool now shows **Recommended**, **Quality unverified**, or
-**Experimental**, independently of whether its profile is complete. Recommended
-requires cited evidence for creative results, reproducible setup, substantive
-maintenance, independent use, licensing and dependencies. Stars help discovery;
-neither popularity nor a detailed guide proves quality. All eligible tools remain
-searchable, including emerging projects with few stars.
+Every library tool shows one of four quality tiers, separately from profile depth:
+
+- **Recommended:** all six evidence checks verified, including creative results.
+- **Ready to try:** licensing, reproducible setup, substantive maintenance,
+  independent use and dependencies verified; creative-result review still pending.
+- **Quality unverified:** the evidence is incomplete.
+- **Experimental:** research, prototype or other experimental software.
+
+Our own demo or video is not required for either of the first two tiers. Existing
+outputs can support result review; demo production can happen later. Ready to try
+does not certify output quality, and a known failed result cannot use that tier.
+Stars help discovery; neither popularity nor a detailed guide proves quality.
+All eligible tools remain searchable, including emerging projects with few stars.
 
 The October 10 retrospective audit covers all **486 existing tools** using their
 published evidence. It does not claim fresh installation tests. Existing records
 do not establish all six checks, so none was automatically recommended. Research
 and prototype tools are labeled Experimental; 3D AR Studio has an additional
 cited Experimental review. Original reports and sent receipts stay unchanged.
+Adding Ready to try applies to the whole library but does not automatically
+promote tools whose other five checks are still unverified.
 
 Use **Quality confidence** to filter the web library, and open **Evidence and
 remaining gaps** in a profile for the rationale. Current quality also appears in

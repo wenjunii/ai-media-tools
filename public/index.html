@@ -42,7 +42,7 @@
     </div>
     <section id="library" aria-labelledby="library-heading">
       <div class="section-heading"><div><p class="eyebrow">FIND YOUR NEXT EXPERIMENT</p><h2 id="library-heading">The tool library</h2></div><a href="library.json" download class="quiet-link">Download library JSON <span aria-hidden="true">↓</span></a></div>
-      <div class="quality-intro"><p><strong>Discovery is broad. Recommendations need evidence.</strong> A detailed guide does not certify quality. Recommended requires reviewed results, reproducible setup, maintenance, independent use and clear licensing and dependencies. Experimental tools remain available for exploration.</p><p id="quality-totals"></p><a href="https://github.com/wenjunii/ai-media-tools/blob/main/docs/QUALITY_POLICY.md" target="_blank" rel="noopener">How quality is assessed ↗</a></div>
+      <div class="quality-intro"><p><strong>Discovery is broad. Recommendations need evidence.</strong> Ready to try means licensing, setup, maintenance, independent use and dependencies are verified while creative-result review is pending. Recommended also requires reviewed creative results. Our own demo is not required for either tier. Experimental tools remain available for exploration.</p><p id="quality-totals"></p><a href="https://github.com/wenjunii/ai-media-tools/blob/main/docs/QUALITY_POLICY.md" target="_blank" rel="noopener">How quality is assessed ↗</a></div>
       <div class="search-row">
         <div class="search-wrap"><span aria-hidden="true" class="search-icon">⌕</span><label id="search-label" class="sr-only" for="search">Search all profiles and review history</label><input id="search" type="search" placeholder="Try “Blender”, “music”, “8 GB”, or an idea…" autocomplete="off"><span id="search-scope" class="search-hint">Search every review</span></div>
         <label class="sort-wrap" for="sort">Sort by<select id="sort"><option value="updated">Latest review</option><option value="added">Recently added</option><option value="name">Name A–Z</option></select></label>
@@ -57,7 +57,7 @@
           <div class="filter-group"><label for="platform-filter">Platform mentions</label><select id="platform-filter"><option value="">All platforms</option></select><p class="filter-note">Mentions in the documentation; see the profile for support and limitations.</p></div>
           <div class="filter-group"><label for="license-filter">Software license</label><select id="license-filter"><option value="">All licenses</option></select></div>
           <div class="filter-group"><label for="review-filter">Review depth</label><select id="review-filter"><option value="">All discoveries</option><option value="profile">Detailed profiles</option><option value="screened">Screened · profile pending</option></select></div>
-          <div class="filter-group"><label for="quality-filter">Quality confidence</label><select id="quality-filter"><option value="">All quality tiers</option><option value="recommended">Recommended</option><option value="unverified">Quality unverified</option><option value="experimental">Experimental</option></select><p class="filter-note">Current assessment, including when viewing older editions. Unverified means evidence is incomplete, not that the tool is poor.</p></div>
+          <div class="filter-group"><label for="quality-filter">Quality confidence</label><select id="quality-filter"><option value="">All quality tiers</option><option value="recommended">Recommended</option><option value="ready_to_try">Ready to try · results pending</option><option value="unverified">Quality unverified</option><option value="experimental">Experimental</option></select><p class="filter-note">Current assessment, including when viewing older editions. Unverified means evidence is incomplete, not that the tool is poor.</p></div>
           <div class="filter-group edition-filter-group"><label for="edition-filter">Daily edition</label><select id="edition-filter"><option value="">All editions</option></select></div>
           <div class="filter-footer"><span class="small-mark" aria-hidden="true">✳</span><p>Only open-source AI.<br>Across every creative practice.</p></div>
         </aside>
@@ -102511,6 +102511,7 @@
   ],
   "quality_labels": {
     "recommended": "Recommended",
+    "ready_to_try": "Ready to try",
     "unverified": "Quality unverified",
     "experimental": "Experimental"
   },
@@ -102529,6 +102530,7 @@
   },
   "quality_counts": {
     "recommended": 0,
+    "ready_to_try": 0,
     "unverified": 313,
     "experimental": 173
   },

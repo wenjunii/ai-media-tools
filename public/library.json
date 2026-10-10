@@ -102398,6 +102398,7 @@
   ],
   "quality_labels": {
     "recommended": "Recommended",
+    "ready_to_try": "Ready to try",
     "unverified": "Quality unverified",
     "experimental": "Experimental"
   },
@@ -102416,6 +102417,7 @@
   },
   "quality_counts": {
     "recommended": 0,
+    "ready_to_try": 0,
     "unverified": 313,
     "experimental": 173
   },

@@ -3,7 +3,9 @@
 Every new lead also requires the `quality_assessment` object from
 [QUALITY_POLICY.md](QUALITY_POLICY.md#new-profiles-and-pending-leads), alongside the
 fields below. Use Quality unverified or Experimental with explicit evidence gaps;
-pending leads cannot be Recommended. Include all six checks and the edition date.
+pending leads cannot be Recommended or Ready to try. Include all six checks and
+the edition date. Ready to try requires a complete profile with the five checks
+other than creative results verified.
 
 Add an optional `leads` list beside `tools` in editorial JSON. Every entry needs
 an archived candidate, a matching recognized open-source software license, two
