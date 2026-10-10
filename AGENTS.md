@@ -80,8 +80,8 @@ report as cited text. Never display or store credentials.
 
 Feature software with verified open-source licenses. Separate software terms,
 model-weight terms, paid services, and required proprietary hosts. Custom or
-non-commercial code licenses belong in excluded/watchlist notes. Research tools
-can be valuable but must be labeled as experimental. Recent commits and star
+non-commercial code licenses belong in excluded/watchlist notes. Research origin
+does not determine quality confidence. Recent commits and star
 counts are discovery signals, not proof of quality or significant upgrades.
 Every featured tool or pending lead needs a concrete, cited creative AI use.
 Read `docs/QUALITY_POLICY.md`. Every new profile and lead requires a dated,
@@ -90,8 +90,11 @@ Recommended needs all six verified evidence checks, including independent use.
 Ready to try needs a full profile and the five non-results checks verified;
 keep creative results explicitly unknown or documented, never failed. Neither
 tier requires our own demo. Stars and a complete guide never grant either label.
-Other incomplete evidence stays Quality unverified; research/prototype tools
-stay Experimental. Inspect
+Other incomplete evidence stays Quality unverified. Experimental requires an
+explicit, cited `experimental_reason` about the current software's prototype,
+unstable or unfinished state. Historical maturity words, research provenance,
+missing demos and an optional experimental feature/port are not automatic verdicts.
+Keep reasons specific to the assessed workflow. Inspect
 `quality-backlog --full` alongside `review-backlog` to improve existing entries.
 Library reassessments use `config/quality_reviews.json` bound to the latest
 published record; run `build-library`, preserving sealed reports and receipts.

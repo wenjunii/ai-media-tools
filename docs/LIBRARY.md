@@ -22,6 +22,8 @@ and private research remain in the local discovery catalog and review queue.
   It always uses the current assessment, even with an older edition selected.
   Cards show quality separately from review depth. The profile's **Evidence and
   remaining gaps** lists all six checks, citations, method, date and limitations.
+  Experimental entries also show **Why Experimental** with its source. Research
+  origin and historical maturity text do not automatically assign that label.
   A detailed guide does not automatically earn a recommendation. See
   [QUALITY_POLICY.md](QUALITY_POLICY.md) for the criteria and retrospective audit.
 - Sort by latest detailed review, first appearance, or name.

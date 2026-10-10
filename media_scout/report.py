@@ -204,6 +204,9 @@ def quality_html(value):
     out = ['<section class="notice"><h3>Quality assessment: ' + TIERS[value["tier"]] + '</h3>',
            '<p>' + escape(value["summary"]) + '</p><p>Scope: ' + escape(value["scope"]) + '</p>',
            '<p class="meta">Evidence checked ' + escape(value["checked_on"]) + '; documentation review does not imply hands-on testing.</p><ul>']
+    if value.get("experimental_reason"):
+        reason = value["experimental_reason"]
+        out.append('<li><strong>Why Experimental:</strong> ' + escape(reason["text"]) + ' ' + refs_html(reason, value["sources"]) + '</li>')
     for key, label in CHECKS.items():
         check = value["checks"][key]
         out.append('<li><strong>' + label + ' · ' + escape(check["status"]) + ':</strong> ' +
@@ -215,6 +218,9 @@ def quality_html(value):
 def quality_markdown(value):
     out = ['### Quality assessment: ' + TIERS[value["tier"]], '', value["summary"], '',
            'Scope: ' + value["scope"], '', 'Evidence checked: ' + value["checked_on"] + '. No local execution implied.', '']
+    if value.get("experimental_reason"):
+        reason = value["experimental_reason"]
+        out.extend(['Why Experimental: ' + reason["text"] + ' ' + ' '.join(reason["source_urls"]), ''])
     for key, label in CHECKS.items():
         check = value["checks"][key]
         out.append('- **' + label + ' · ' + check["status"] + ':** ' + check["note"] + ' ' +

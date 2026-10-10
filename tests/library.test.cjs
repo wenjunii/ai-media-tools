@@ -187,7 +187,7 @@ test("same-day updates have independent filters and preserved original reviews",
 
 test("quality confidence is separate from guide depth and follows current curation", () => {
   const experimental = {...tool, quality_assessment: {tier: "experimental", checked_on: "2026-10-10",
-    summary: "Independent output evidence is missing.", sources: [], checks: {}, caveats: []}};
+    summary: "The maintainer describes an unfinished prototype.", sources: [], checks: {}, caveats: []}};
   assert.ok(matches(experimental, {review: "profile", quality: "experimental"}));
   assert.equal(matches(experimental, {quality: "recommended"}), false);
   assert.ok(matches(experimental, {quality: "experimental", edition: "2026-10-01"}));
@@ -226,4 +226,22 @@ test("ready to try can be filtered while comparison and notes disclose pending c
   }
   assert.match(notes, /results.*unknown/);
   assert.match(notes, /Edition: 2026-10-02/);
+});
+
+test("experimental reasons remain visible and cited in comparisons and exported notes", () => {
+  const reason = {text: "The project format is unstable; <prototype> text is not markup.",
+    source_urls: ["https://example.com/release-notes"]};
+  const assessed = {...tool, quality_assessment: {tier: "experimental", checked_on: "2026-10-10",
+    summary: "An unfinished export pipeline is documented.", scope: "Current prototype release.",
+    experimental_reason: reason, checks: {}, caveats: ["No local execution."],
+    sources: [{title: "Maintainer release notes", url: reason.source_urls[0]}]}};
+  const row = comparisonRows(primaryVersion(assessed), assessed)
+    .find(item => item.label === "Current quality assessment");
+  assert.match(row.text, /Why Experimental: The project format is unstable/);
+  assert.ok(row.source_urls.includes(reason.source_urls[0]));
+  const notes = researchNotes([assessed.id], [assessed], {});
+  assert.match(notes, /### Why Experimental/);
+  assert.ok(notes.includes(reason.source_urls[0]));
+  assert.match(notes, /&lt;prototype&gt;/);
+  assert.ok(!notes.includes("<prototype>"));
 });

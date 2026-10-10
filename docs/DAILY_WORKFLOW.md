@@ -16,7 +16,10 @@ only with verified results, reproducible setup, maintenance, independent use,
 licensing and dependency evidence. Ready to try requires all five non-results
 checks verified while creative results remain unknown or documented. Our own
 demo is not a prerequisite; a known failed result cannot qualify. Other evidence
-gaps remain Quality unverified; research/prototype tools remain Experimental. Improve prior quality
+gaps remain Quality unverified. Experimental needs a cited `experimental_reason`
+about current prototype, instability or unfinished functionality; research origin
+and historical maturity words never assign it automatically. Scope optional-feature
+or platform caveats to the affected route. Improve prior quality
 reviews through the bound library registry and `build-library`, without repeating
 unchanged tools in a new report or rewriting preserved editions.
 

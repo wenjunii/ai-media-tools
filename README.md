@@ -65,7 +65,8 @@ Every library tool shows one of four quality tiers, separately from profile dept
 - **Ready to try:** licensing, reproducible setup, substantive maintenance,
   independent use and dependencies verified; creative-result review still pending.
 - **Quality unverified:** the evidence is incomplete.
-- **Experimental:** research, prototype or other experimental software.
+- **Experimental:** cited evidence identifies the assessed software or workflow
+  as a prototype, unstable or unfinished.
 
 Our own demo or video is not required for either of the first two tiers. Existing
 outputs can support result review; demo production can happen later. Ready to try
@@ -73,13 +74,20 @@ does not certify output quality, and a known failed result cannot use that tier.
 Stars help discovery; neither popularity nor a detailed guide proves quality.
 All eligible tools remain searchable, including emerging projects with few stars.
 
-The October 10 retrospective audit covers all **486 existing tools** using their
-published evidence. It does not claim fresh installation tests. Existing records
-do not establish all six checks, so none was automatically recommended. Research
-and prototype tools are labeled Experimental; 3D AR Studio has an additional
-cited Experimental review. Original reports and sent receipts stay unchanged.
-Adding Ready to try applies to the whole library but does not automatically
-promote tools whose other five checks are still unverified.
+The October 10, 2026 source review covers all **486 existing tools**: **0 Recommended,
+3 Ready to try, 463 Quality unverified and 20 Experimental**. It refreshes current
+documentation and complete license files, with bounded samples of releases,
+commits and support items. Each tool has six check results with citations and gaps.
+Depth Anything V2 Small, Whisper transcription and BiRefNet general masks are Ready
+to try for the stated workflows; their creative-result checks remain pending.
+This was source review, with no app installation or runtime testing. Original
+reports and sent receipts stay unchanged.
+
+Research origin and old maturity descriptions no longer assign Experimental.
+Each Experimental assessment displays **Why Experimental** with a cited reason.
+3D AR Studio is Quality unverified because its evidence is incomplete. A missing
+demo or an optional experimental port does not establish that a whole app is
+experimental. See the [review scope and limitations](docs/QUALITY_POLICY.md#existing-editions-and-ongoing-review).
 
 Use **Quality confidence** to filter the web library, and open **Evidence and
 remaining gaps** in a profile for the rationale. Current quality also appears in
