@@ -23,7 +23,8 @@
   function qualityText(tool) {
     const value = qualityOf(tool);
     return qualityLabels[value.tier] + " · " + (value.checked_on ? "assessed " + value.checked_on : "assessment pending") +
-      ". " + (value.tier === "ready_to_try" ? readyToTryNote + " " : "") + value.summary;
+      ". " + (value.tier === "ready_to_try" ? readyToTryNote + " " : "") + value.summary +
+      (value.experimental_reason ? " Why Experimental: " + value.experimental_reason.text : "");
   }
   function savedIds(serialized, tools) {
     try {
@@ -97,6 +98,7 @@
           " " + (check.source_urls || []).map(url).join(" · "));
       });
       lines.push("", ...assessment.caveats.map(md), "");
+      if (assessment.experimental_reason) section("Why Experimental", assessment.experimental_reason);
       if (p.ai_relevance) section("How it uses AI", p.ai_relevance);
       if (full) {
         section("Why it appeared in this edition", p.novelty);
@@ -426,6 +428,9 @@
       element("p", "", "Scope: " + (value.scope || "Evidence review pending")),
       element("p", "profile-meta", "This current library assessment is separate from the preserved review selected below. Verified checks refer to cited evidence, not our own runtime testing."));
     if (value.tier === "ready_to_try") panel.append(element("p", "", readyToTryNote));
+    if (value.experimental_reason) {
+      panel.append(element("p", "", "Why Experimental: " + value.experimental_reason.text), refs(value.experimental_reason, value));
+    }
     const details = element("details"), summary = element("summary", "", "Evidence and remaining gaps");
     details.append(summary);
     Object.entries(value.checks).forEach(function (entry) {

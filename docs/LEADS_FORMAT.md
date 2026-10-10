@@ -2,7 +2,8 @@
 
 Every new lead also requires the `quality_assessment` object from
 [QUALITY_POLICY.md](QUALITY_POLICY.md#new-profiles-and-pending-leads), alongside the
-fields below. Use Quality unverified or Experimental with explicit evidence gaps;
+fields below. Use Quality unverified for incomplete evidence. Experimental needs
+a cited `experimental_reason` about the current software's state, not research origin;
 pending leads cannot be Recommended or Ready to try. Include all six checks and
 the edition date. Ready to try requires a complete profile with the five checks
 other than creative results verified.

@@ -13,9 +13,14 @@ can still have unverified quality; a small project can earn a recommendation.
 | Recommended | A complete profile with all six evidence checks verified for an explicit creative workflow, with citations and caveats. |
 | Ready to try | A complete profile with the five checks other than creative results verified. Creative-result review is still pending; this label does not establish output quality. |
 | Quality unverified | Eligible discovery with incomplete quality evidence. This is not a claim that the tool is poor. |
-| Experimental | Research, prototype, alpha/beta or other explicitly assessed experimental software. Suitable for exploration; quality and production readiness are not established. |
+| Experimental | Positive, cited evidence identifies the assessed software/workflow as a prototype, unstable or unfinished. The assessment states the specific reason. |
 
-Research/prototype tools remain Experimental. Do not promote a tool merely because
+Research origin does not imply Experimental. Missing evidence defaults to Quality
+unverified. Historical maturity words, a prerelease tag alone, an experimental
+artistic practice, and an optional experimental feature or port do not determine
+the whole tool's tier. Review the current source in context and narrow the scope
+when a limitation affects one route. An explicit current testing-stage statement
+can support Experimental; explain what it applies to. Do not promote a tool merely because
 it has many stars, recent commits, a recognized SPDX badge, an attractive README,
 working project-page CI, or a complete profile. Low stars alone do not exclude it.
 Default search shows every eligible tool; the Quality confidence filter narrows it.
@@ -57,7 +62,8 @@ creative-result review is still pending. This requires a full profile,
 `method: source-review`, and `source_kind: independent` on independent use.
 Keep the `results` check with status `unknown` or `documented`, explain what is
 missing, and disclose that output quality has not been verified. A failed result
-check cannot be bypassed with this tier. Research/prototype tools remain Experimental.
+check cannot be bypassed with this tier. Resolve any contrary Experimental evidence
+for the selected workflow before assigning this or a higher tier.
 
 Creating our own demo or video is not a prerequisite for either Ready to try or
 Recommended. Result review can inspect existing concrete outputs or a suitable
@@ -75,6 +81,19 @@ profile, `method: source-review`, and `source_kind: independent` on independent 
 Ready to try uses the same requirements except that results must still be unknown
 or documented. Pending leads cannot receive either tier. The builder rejects
 missing assessments and unsupported quality labels.
+
+Experimental additionally requires an `experimental_reason` object with meaningful
+`text` and nonempty `source_urls` from the assessment's declared sources. All six
+checks are still required. The validator rejects an uncited reason and rejects
+carrying an unresolved Experimental reason into another tier. It does not make
+editorial judgments from keyword matching. Example reason structure:
+
+```json
+{
+  "text": "The maintainer describes this release as a prototype with an unfinished export pipeline and an unstable project format.",
+  "source_urls": ["https://official.example/release-notes"]
+}
+```
 
 Example conservative assessment (replace dates, notes and sources with actual
 review evidence; do not turn unknowns into passes to finish an edition):
@@ -105,15 +124,30 @@ allowed; unverified software licensing is not eligible for the library.
 
 ## Existing editions and ongoing review
 
-The October 10, 2026 retrospective audit covers all **486 existing library tools**.
-It reassesses their published evidence, not their installed behavior. No existing
-record establishes all six new checks, so none was automatically recommended.
-Explicit research/prototype/experimental/alpha/beta maturity descriptions receive
-Experimental; remaining entries receive Quality unverified. 3D AR Studio also has
-a fresh, cited Experimental reassessment of its client, demo and backend caveats.
-These labels do not claim 486 fresh source audits or runtime tests. Adding Ready
-to try does not automatically promote these records: their five other checks
-still need verified evidence. The same criteria apply to old and new tools.
+The October 10, 2026 follow-up source review covers all **486 existing library
+tools**, replacing the earlier keyword-based retrospective labels. The snapshot
+has **0 Recommended, 3 Ready to try, 463 Quality unverified and 20 Experimental**.
+Each entry has a current assessment with all six checks and citations. Depth
+Anything V2 Small image depth, Whisper draft transcription and BiRefNet general
+foreground masks have five supported checks and pending result reviews. No tool
+was promoted merely to populate a tier. 3D AR Studio is Quality unverified because
+its client/demo/backend evidence is incomplete, without a substantiated reason to
+classify the software as Experimental.
+
+Scope: current README and full license snapshots for every entry, plus up to five
+releases, ten commits and fifteen recently updated support items per repository.
+Pull requests share GitHub's issue endpoint, so this is not an exhaustive bug
+survey. GitLab commit history was unavailable for Embedded Amp Model; that gap is
+recorded. All 486 complete license files were checked: 450 were byte-identical to
+preserved full-text reviews, and 36 received full-text comparisons or notice
+review. This verifies software grants, not every model, asset or service.
+
+The whole-library pass identifies documentation and unresolved evidence; selected
+deeper reviews also inspected independent implementations, model cards, maintainer
+clarifications and primary evaluation context. It is not 486 exhaustive dependency,
+independent-use or output evaluations. No discovered software was installed or run.
+Check-level statuses distinguish verified evidence, documented claims, unknowns and
+failures. The same criteria apply to old and new tools.
 
 `config/quality_reviews.json` contains recipient-free curation metadata. `audits`
 records the date, edition identity and SHA-256 of each latest published record.

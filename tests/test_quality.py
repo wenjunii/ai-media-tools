@@ -8,7 +8,7 @@ import test_workflow
 from media_scout.library import make_library
 from media_scout.publication import export_report, rebuild_library, verify_public_archive
 from media_scout.quality import (CHECKS, audit_existing, baseline_assessment, quality_backlog,
-                                 is_experimental, read_reviews, record_binding, validate_assessment)
+                                 read_reviews, record_binding, validate_assessment)
 from media_scout.report import render_html, render_markdown, validate
 from media_scout.storage import write_json
 
@@ -126,8 +126,7 @@ class QualityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Ready to try requires"):
             validate_assessment(value)
         self.report["tools"][0].update(quality_assessment=good, maturity="Research prototype")
-        with self.assertRaisesRegex(ValueError, "Experimental"):
-            validate(self.report, self.fixture.discovery, self.config, {})
+        validate(self.report, self.fixture.discovery, self.config, {})  # Historical maturity text cannot override cited evidence.
 
     def test_ready_to_try_cannot_hide_failed_or_completed_result_review(self):
         for status in ("failed", "verified"):
@@ -165,8 +164,7 @@ class QualityTests(unittest.TestCase):
         self.report["tools"][0]["quality_assessment"] = self.assessment()
         validate(self.report, self.fixture.discovery, self.config, {})
         self.report["tools"][0]["maturity"] = "Research prototype"
-        with self.assertRaisesRegex(ValueError, "Experimental"):
-            validate(self.report, self.fixture.discovery, self.config, {})
+        validate(self.report, self.fixture.discovery, self.config, {})  # Historical maturity text cannot override cited evidence.
         legacy = make_library([self.fixture.editorial], self.config)
         self.assertEqual(legacy["quality_counts"]["unverified"], 1)
 
@@ -218,15 +216,54 @@ class QualityTests(unittest.TestCase):
         for maturity in ("Research toolkit", "Prototype", "Experimental", "Alpha application", "Beta plugin"):
             self.report["tools"][0]["maturity"] = maturity
             data = make_library([self.report], self.config)
-            self.assertEqual(data["tools"][0]["quality_assessment"]["tier"], "experimental")
+            self.assertEqual(data["tools"][0]["quality_assessment"]["tier"], "unverified")
         registry = self.registry(self.assessment())
         registry["reviews"]["typo"] = registry["reviews"].pop(self.version["profile"]["id"])
         with self.assertRaisesRegex(ValueError, "unknown published tool"):
             make_library([self.report], self.config, registry)
 
-    def test_research_only_model_terms_do_not_classify_the_software_as_experimental(self):
-        self.assertFalse(is_experimental({"review_status": "Model weights allow only non-commercial research; full profile pending."}))
-        self.assertTrue(is_experimental({"review_status": "MIT research code; full profile pending."}))
+    def test_experimental_needs_current_cited_evidence_not_a_keyword(self):
+        value = baseline_assessment(self.version, self.fixture.day)
+        value.update(tier="experimental", method="source-review")
+        with self.assertRaisesRegex(ValueError, "Experimental requires"):
+            validate_assessment(value)
+        value["experimental_reason"] = {"text": "The maintainer documents an unfinished export pipeline and unstable project format.",
+                                        "source_urls": [value["sources"][0]["url"]]}
+        self.assertIn("experimental_reason", validate_assessment(value))
+        for urls in ([], ["https://uncited.example/"], [{}], [None]):
+            broken = copy.deepcopy(value)
+            broken["experimental_reason"]["source_urls"] = urls
+            with self.assertRaisesRegex(ValueError, "Experimental requires"):
+                validate_assessment(broken)
+        value["tier"] = "unverified"
+        with self.assertRaisesRegex(ValueError, "Resolve experimental"):
+            validate_assessment(value)
+
+    def test_cited_reassessment_overrides_historical_research_label_without_rewriting_it(self):
+        self.report["tools"][0]["maturity"] = "Experimental research toolkit"
+        self.version = make_library([self.report], self.config)["tools"][0]["versions"][0]
+        original = copy.deepcopy(self.report)
+        data = make_library([self.report], self.config, self.registry(self.ready_assessment()))
+        tool = data["tools"][0]
+        self.assertEqual(tool["quality_assessment"]["tier"], "ready_to_try")
+        self.assertEqual(tool["versions"][0]["profile"]["maturity"], "Experimental research toolkit")
+        self.assertEqual(self.report, original)
+
+    def test_experimental_reason_is_cited_and_escaped_in_new_report_rendering(self):
+        value = baseline_assessment(self.version, self.fixture.day)
+        url = value["sources"][0]["url"]
+        value.update(tier="experimental", method="source-review",
+                     experimental_reason={"text": "The export pipeline is unfinished; <unsafe> markup stays text.",
+                                          "source_urls": [url]})
+        self.report["tools"][0]["quality_assessment"] = value
+        validate(self.report, self.fixture.discovery, self.config, {})
+        html = render_html(self.report, self.fixture.discovery, self.config)
+        markdown = render_markdown(self.report, self.fixture.discovery, self.config)
+        for text in (html, markdown):
+            self.assertIn("Why Experimental", text)
+            self.assertIn(url, text)
+        self.assertNotIn("<unsafe>", html)
+        self.assertIn("&lt;unsafe&gt;", html)
 
     def test_a_newer_brief_mention_invalidates_a_full_profile_recommendation(self):
         p = self.report["tools"][0]

@@ -17,14 +17,6 @@ CHECKS = {"license": "Open-source software license", "results": "Creative result
 METHODS = {"source-review": "Source review; no local execution implied",
            "published-record-audit": "Reassessment of existing published evidence",
            "unassessed": "Evidence review pending"}
-EXPERIMENTAL = re.compile(r"\b(research|prototype|experimental|alpha|beta|proof.of.concept)\b", re.I)
-LEAD_EXPERIMENTAL = re.compile(r"\b(prototype|experimental|alpha|beta|proof.of.concept)\b|"
-                               r"\bresearch (code|prototype|toolkit|workflow|candidate|implementation|release|lead)\b", re.I)
-
-
-def is_experimental(profile):
-    return bool(EXPERIMENTAL.search(profile.get("maturity", "")) or
-                LEAD_EXPERIMENTAL.search(profile.get("review_status", "")))
 
 
 def _text(value, minimum=1):
@@ -64,6 +56,15 @@ def validate_assessment(value, kind="profile", expected_date=None):
     if len(output["sources"]) != len(sources):
         raise ValueError("Invalid quality source")
     urls = {s["url"] for s in output["sources"]}
+    if value["tier"] == "experimental":
+        reason = value.get("experimental_reason")
+        if (not isinstance(reason, dict) or not isinstance(reason.get("source_urls"), list)
+                or not reason["source_urls"]
+                or any(not isinstance(u, str) or u not in urls for u in reason["source_urls"])):
+            raise ValueError("Experimental requires a cited reason about prototype status, instability or unfinished functionality")
+        output["experimental_reason"] = {"text": _text(reason.get("text"), 30), "source_urls": reason["source_urls"]}
+    elif value.get("experimental_reason"):
+        raise ValueError("Resolve experimental evidence before assigning another quality tier")
     checks = value.get("checks")
     if not isinstance(checks, dict) or set(checks) != set(CHECKS):
         raise ValueError("Quality assessment must address all six evidence checks")
@@ -101,8 +102,6 @@ def require_assessment(entry, kind, config, day):
             raise ValueError("Every new profile and lead needs a quality_assessment; unknown evidence stays unverified")
         return
     validate_assessment(value, kind, day)
-    if value["tier"] != "experimental" and is_experimental(entry):
-        raise ValueError("Research and prototype tools must remain labeled Experimental")
 
 
 def record_binding(version):
@@ -136,16 +135,13 @@ def read_reviews(root):
 def baseline_assessment(version, checked_on=None):
     """A conservative record audit never manufactures a verified quality claim."""
     p = version["profile"]
-    experimental = is_experimental(p)
-    assessment = {"tier": "experimental" if experimental else "unverified", "checked_on": checked_on,
+    assessment = {"tier": "unverified", "checked_on": checked_on,
                   "method": "published-record-audit" if checked_on else "unassessed",
                   "summary": "The published record does not establish all six recommendation checks.",
                   "scope": "Existing creative guidance; no new installation or output testing.",
                   "caveats": ["A detailed profile describes a tool; it does not certify its quality.",
                               "Stars, recent commits and a license badge do not establish reliable creative results."],
                   "sources": deepcopy(p["sources"]), "checks": {}}
-    if experimental:
-        assessment["summary"] = "The published review describes research, prototype or experimental software or features. Quality remains unverified."
     sections = {"license": "license", "results": "demo", "setup": "installation", "dependencies": "license"}
     for name in CHECKS:
         section = p.get(sections.get(name, ""), {})
@@ -175,8 +171,6 @@ def assess_entry(entry, registry):
         assessment = validate_assessment(latest["profile"]["quality_assessment"], latest["kind"], latest["profile"]["checked_on"])
     else:
         assessment = baseline_assessment(latest, audit["checked_on"] if matches(audit) else None)
-    if assessment["tier"] != "experimental" and is_experimental(latest["profile"]):
-        raise ValueError("Research and prototype tools must remain labeled Experimental")
     if review and not matches(review):
         assessment["caveats"].append("An earlier library reassessment applies to a different published record and was not carried forward.")
     return {**assessment, **binding}

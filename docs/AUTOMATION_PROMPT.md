@@ -50,7 +50,10 @@ no private destination or credentials. Use the existing single chat automation.
    Ready to try requires a full profile and the five non-results checks verified;
    results stay unknown or documented, never failed. Our own demo is not a
    prerequisite. Full guides and stars do not grant either tier. Other evidence
-   gaps stay Quality unverified; research/prototype tools stay Experimental. Inspect
+   gaps stay Quality unverified. Experimental requires a cited `experimental_reason`
+   about current prototype, unstable or unfinished functionality. Research origin,
+   historical maturity words and an optional experimental feature/port do not
+   assign the whole tool that tier. Inspect
    `quality-backlog --full` to improve earlier entries, including complete guides.
    Apply retrospective assessments through the bound library curation registry;
    never rewrite sealed editions or repeat an unchanged tool merely for a new label.
