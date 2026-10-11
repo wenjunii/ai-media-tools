@@ -1,0 +1,11 @@
+{
+  "report_date": "2026-10-11",
+  "sealed_at": "2026-10-11T12:38:18.655846+00:00",
+  "profile_count": 33,
+  "lead_count": 18,
+  "sha256": {
+    "report.html": "0c200d87a2fe6d4ba3b176485a21a4a6142559d305f23ca3f260a822038b1236",
+    "report.md": "afc19d203cfb76cc48ec5b381854c011e2f726cb71bb20d6602fdd4b8cb5200e",
+    "report.json": "aac48e139f7d0b8f6a1a94e71b7b6067c381dba7e8e684631695a38463d79aa0"
+  }
+}
