@@ -60,6 +60,10 @@ match all finished public editions and the current UI source.
    existing dated report exports, even when revised metadata matches their bytes.
    The library and report list can grow as new editions are added.
    Review the staged diff as well. Use the checkout's GitHub noreply commit email.
+   Dated Markdown exports retain their sealed bytes, including historical or
+   Markdown-significant trailing spaces. Their Git attributes exempt only
+   end-of-line whitespace styling; archive hashes and the publication audit still
+   verify every byte. Source files and other publication checks remain strict.
 4. Commit and push the publication branch. Open a PR to the configured main branch,
    using a file for the multiline PR body. Describe the final edition and relevant
    validation. Attach every created PR with the Codex `attach_artifact` tool, even

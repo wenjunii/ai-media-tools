@@ -223,8 +223,9 @@ def quality_markdown(value):
         out.extend(['Why Experimental: ' + reason["text"] + ' ' + ' '.join(reason["source_urls"]), ''])
     for key, label in CHECKS.items():
         check = value["checks"][key]
-        out.append('- **' + label + ' · ' + check["status"] + ':** ' + check["note"] + ' ' +
-                   ' '.join('[Source](' + url + ')' for url in check["source_urls"]))
+        line = '- **' + label + ' · ' + check["status"] + ':** ' + check["note"]
+        citations = ' '.join('[Source](' + url + ')' for url in check["source_urls"])
+        out.append(line + (' ' + citations if citations else ''))
     return out + ['', ' '.join(value["caveats"]), '']
 
 

@@ -182,6 +182,9 @@ screened leads first; the automatic evidence shortlist is never a profile quota.
 
 The **report builder** validates the profiles, produces HTML/Markdown/JSON,
 seals artifacts with SHA-256 hashes, and updates a searchable static archive.
+Unknown evidence checks may have no citation; new Markdown renders those lines
+without an empty citation separator. Previously sealed editions retain their
+exact bytes, including historical whitespace, under the archive integrity checks.
 GitHub star counts appear only on GitHub-hosted profiles; projects collected
 from other hosts retain their own primary-source links without a GitHub metric.
 The research agent exports the finished edition to `public/`, synchronizes code,
