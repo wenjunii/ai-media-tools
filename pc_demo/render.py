@@ -10,6 +10,7 @@ from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont
 from .common import ROOT, execute, read_json, sha256, stamp, write_json
 from .storyboard import load_storyboard
+from .inputs import input_relative, validate_size
 
 W, H = 1080, 1920
 INK, PAPER, MUTED, ACCENT = '#111c20', '#f4eddc', '#9db4b6', '#d6f780'
@@ -41,13 +42,22 @@ def crop_pair(before, after, box):
     return one(before), one(after)
 
 
-def poster(after):
+def contain(image, size, background=INK):
+    factor=min(size[0]/image.width,size[1]/image.height)
+    fitted=image.resize((round(image.width*factor),round(image.height*factor)),Image.Resampling.LANCZOS)
+    canvas=Image.new('RGB',size,background)
+    canvas.paste(fitted,((size[0]-fitted.width)//2,(size[1]-fitted.height)//2))
+    return canvas
+
+
+def poster(after, custom=False):
     result=Image.new('RGB',(760,1040),PAPER)
     d=ImageDraw.Draw(result)
-    label(d,(38,22),'NIGHT',100,INK,True)
-    label(d,(36,119),'GARDEN',100,INK,True)
-    result.paste(after.resize((688,688),Image.Resampling.LANCZOS),(36,252))
-    label(d,(39,970),'BOTANICAL STUDY / No. 001',25,INK,False,True)
+    label(d,(38,22),'YOUR' if custom else 'NIGHT',100,INK,True)
+    label(d,(36,119),'ARTWORK' if custom else 'GARDEN',100,INK,True)
+    art=contain(after,(688,688),PAPER) if custom else after.resize((688,688),Image.Resampling.LANCZOS)
+    result.paste(art,(36,252))
+    label(d,(39,970),'LAYOUT STUDY / ACTUAL OUTPUT' if custom else 'BOTANICAL STUDY / No. 001',25,INK,False,True)
     return result
 
 
@@ -56,10 +66,27 @@ class Composer:
         self.run=run
         self.story=load_storyboard(run/'storyboard.json')
         self.manifest=read_json(run/'manifest.json')
-        self.before=Image.open(run/'inputs/input.jpg').convert('RGB').resize((1024,1024),Image.Resampling.BICUBIC)
+        self.custom=bool(self.manifest.get('source_asset'))
+        self.input_file=input_relative(self.manifest)
+        self.input_size=validate_size(self.manifest['settings']['input_size'])
         self.after=Image.open(run/'outputs/actual-output.png').convert('RGB')
-        self.poster=poster(self.after)
-        self.detail_before,self.detail_after=crop_pair(self.before,self.after,(.12,.33,.60,.81))
+        with Image.open(run/self.input_file) as original:
+            if original.size!=self.input_size or self.after.size!=tuple(value*4 for value in self.input_size):
+                raise ValueError('Image dimensions do not match the recorded 4x inference')
+            self.before=original.convert('RGB').resize(self.after.size,Image.Resampling.BICUBIC)
+        self.poster=poster(self.after,self.custom)
+        box=(.12,.33,.60,.81)
+        if self.custom:
+            side=min(self.after.size)*.6
+            dx,dy=side/self.after.width/2,side/self.after.height/2
+            box=(.5-dx,.5-dy,.5+dx,.5+dy)
+        self.detail_before,self.detail_after=crop_pair(self.before,self.after,box)
+        self.full_art={}
+        if self.custom:
+            for kind,source in (('input',self.before),('result',self.after)):
+                art=Image.new('RGB',(870,870),INK)
+                art.paste(contain(source,(870,798)),(0,72))
+                self.full_art[kind]=art
         self.cards=[]
         for segment in self.story['segments']:
             base=Image.new('RGB',(W,H),INK)
@@ -93,11 +120,16 @@ class Composer:
             # Editorial camera motion only; the app creates a still PNG.
             edge=870
             extra=int(18*progress)
-            art=source.resize((edge+extra,edge+extra),Image.Resampling.LANCZOS)
-            art=art.crop((extra//2,extra//2,extra//2+edge,extra//2+edge))
+            if self.custom:
+                # Keep the entire artwork visible without stretching or cropping.
+                art=self.full_art[kind]
+            else:
+                art=source.resize((edge+extra,edge+extra),Image.Resampling.LANCZOS)
+                art=art.crop((extra//2,extra//2,extra//2+edge,extra//2+edge))
             im.paste(art,(78,480))
             d=ImageDraw.Draw(im)
-            text='ACTUAL OUTPUT  /  1024 x 1024' if kind=='result' else 'INPUT  /  256 x 256  /  BICUBIC PREVIEW'
+            width,height=self.after.size if kind=='result' else self.input_size
+            text=f'ACTUAL OUTPUT  /  {width} x {height}' if kind=='result' else f'INPUT  /  {width} x {height}  /  BICUBIC PREVIEW'
             d.rectangle((78,480,948,536),fill=INK)
             label(d,(96,490),text,24,ACCENT,False,True)
         elif kind in ('compare','limitation'):
@@ -115,19 +147,20 @@ class Composer:
             label(d,(647,492),'AI OUTPUT',26,ACCENT,True)
             if kind=='limitation':
                 d.rectangle((98,1234,928,1318),fill=INK)
-                label(d,(120,1255),'Notice the softened fine texture.',34,PAPER)
+                label(d,(120,1255),'Inspect edges and fine texture.' if self.custom else 'Notice the softened fine texture.',34,PAPER)
         elif kind=='process':
             d.rounded_rectangle((78,490,948,1328),radius=24,fill='#1c2c31',outline='#415053',width=2)
             heading='ORIGINAL RUN / REUSED OUTPUT' if self.manifest.get('reused_inference') else 'RECORDED EXECUTION'
             label(d,(110,526),heading,27,ACCENT,True)
             label(d,(110,596),'realesrgan-ncnn-vulkan.exe',35,PAPER,False,True)
-            for j,line in enumerate(('-i input.jpg  -o actual-output.png','-n realesrgan-x4plus-anime','-s 4  -t 256',f'-g {self.manifest["settings"]["gpu_id"]}' if self.manifest['settings']['gpu_id']>=0 else 'GPU: automatic selection')):
+            for j,line in enumerate((f'-i {pathlib.PurePosixPath(self.input_file).name}  -o actual-output.png','-n realesrgan-x4plus-anime','-s 4  -t 256',f'-g {self.manifest["settings"]["gpu_id"]}' if self.manifest['settings']['gpu_id']>=0 else 'GPU: automatic selection')):
                 label(d,(110,668+j*53),line,29,PAPER,False,True)
             d.line((110,918,910,918),fill='#415053',width=2)
             seconds=self.manifest['inference']['elapsed_seconds']
             label(d,(110,954),f'{seconds:.2f}s',76,ACCENT,True)
             label(d,(110,1056),'MEASURED WALL TIME / THIS INPUT',24,MUTED,False,True)
-            label(d,(110,1123),'256 x 256  >  1024 x 1024',36,PAPER,True)
+            width,height=self.input_size
+            label(d,(110,1123),f'{width} x {height}  >  {width*4} x {height*4}',36,PAPER,True)
             label(d,(110,1224),'Log-derived card; not a screen recording.',26,MUTED)
         elif kind=='use':
             p=self.poster.resize((610,835),Image.Resampling.LANCZOS)
@@ -191,7 +224,7 @@ def render_video(run,ffmpeg):
           '-ar','48000','-movflags','+faststart','-t','45',str(run/'draft.mp4')]
     start=time.perf_counter()
     meta={'argv':args,'started_utc':stamp(),'source_output_sha256':sha256(run/'outputs/actual-output.png'),
-          'source_input_sha256':sha256(run/'inputs/input.jpg'),'editorial_motion':True,'screen_recording':False}
+          'source_input_sha256':sha256(run/composer.input_file),'editorial_motion':True,'screen_recording':False}
     try:
         with (run/'logs/render.stderr.log').open('wb') as log:
             process=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.DEVNULL,stderr=log)

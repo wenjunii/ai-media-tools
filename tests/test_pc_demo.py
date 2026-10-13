@@ -11,7 +11,8 @@ from unittest.mock import patch
 from pc_demo.audit import validate_index_entry
 from pc_demo.common import download, execute, read_json, resolve_run, select_profile, sha256, write_json
 from pc_demo.setup_runtime import verified_runtime
-from pc_demo.status import VERIFIED_ARTIFACTS, draft_status, local_status, review_state
+from pc_demo.status import VERIFIED_ARTIFACTS, draft_status, local_status, review_state, verified_artifacts
+from pc_demo.inputs import input_relative, source_relative, validate_size
 from pc_demo.storyboard import validate_storyboard
 from pc_demo.revisions import prepare_revision, revise_demo
 from pc_demo.history import local_history, format_history
@@ -177,6 +178,12 @@ class StoryboardTests(unittest.TestCase):
         self.story['segments'][0]['caption'] = ['Actual preserved app output.']
         self.assertEqual(validate_storyboard(self.story), self.story)
 
+    def test_custom_artwork_template_makes_no_controlled_test_claim(self):
+        story = read_json(pathlib.Path(__file__).resolve().parents[1] / 'pc_demo/storyboard-artwork.json')
+        validate_storyboard(story)
+        self.assertNotIn('256', str(story))
+        self.assertNotIn('deliberately reduced', str(story))
+
     def test_unsupported_timing_layout_and_missing_limitation_are_rejected(self):
         changes = [lambda s: s.update(duration_seconds=60),
                    lambda s: s.update(fps=30.0),
@@ -256,6 +263,23 @@ class RevisionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Source integrity failure'):
             prepare_revision(self.source)
         self.assertEqual(list((self.local / 'runs').iterdir()), [self.source])
+
+    def test_custom_artwork_revision_preserves_original_and_normalized_input(self):
+        (self.source / 'inputs/input.png').write_bytes(b'normalized artwork')
+        (self.source / 'inputs/source.jpg').write_bytes(b'original artwork with metadata')
+        self.manifest.update(input_file='inputs/input.png',
+                             input_sha256=sha256(self.source / 'inputs/input.png'),
+                             source_asset={'file': 'inputs/source.jpg', 'sha256': sha256(self.source / 'inputs/source.jpg')})
+        self.manifest['settings']['input_size'] = [320, 192]
+        write_json(self.source / 'manifest.json', self.manifest)
+        run, manifest, _ = prepare_revision(self.source)
+        self.assertEqual((run / 'inputs/source.jpg').read_bytes(), b'original artwork with metadata')
+        self.assertEqual((run / 'inputs/input.png').read_bytes(), b'normalized artwork')
+        self.assertFalse((run / 'inputs/input.jpg').exists())
+        self.assertEqual(manifest['settings']['input_size'], [320, 192])
+        (self.source / 'inputs/source.jpg').write_bytes(b'changed original')
+        with self.assertRaisesRegex(ValueError, 'Source integrity failure'):
+            prepare_revision(self.source)
 
     def test_failed_inference_cannot_be_reused(self):
         self.command['returncode'] = 7
@@ -343,6 +367,48 @@ class VerificationStateTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     local_history(0)
             self.assertFalse(local.exists())
+
+    def test_custom_original_and_dimensions_are_bound_to_verification(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = pathlib.Path(tmp)
+            manifest = {'status': 'automated_checks_passed', 'input_file': 'inputs/input.png',
+                        'settings': {'input_size': [320, 192]}, 'source_asset': {'file': 'inputs/source.png'}}
+            for name in verified_artifacts(manifest):
+                path = run / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(name.encode())
+            manifest.update(video_sha256=sha256(run / 'draft.mp4'), input_sha256=sha256(run / 'inputs/input.png'),
+                            output_sha256=sha256(run / 'outputs/actual-output.png'))
+            manifest['source_asset']['sha256'] = sha256(run / 'inputs/source.png')
+            write_json(run / 'manifest.json', manifest)
+            write_json(run / 'qa/verification.json', {'automated_pass': True, 'input_size': [320, 192],
+                       'video_sha256': manifest['video_sha256'],
+                       'checked_artifact_sha256': {name: sha256(run / name) for name in verified_artifacts(manifest)}})
+            self.assertTrue(draft_status(run)['automated_checks_passed'])
+            manifest['settings']['input_size'] = [192, 320]
+            write_json(run / 'manifest.json', manifest)
+            self.assertFalse(draft_status(run)['automated_checks_passed'])
+            manifest['settings']['input_size'] = [320, 192]
+            write_json(run / 'manifest.json', manifest)
+            (run / 'inputs/source.png').write_bytes(b'substitute')
+            self.assertFalse(draft_status(run)['automated_checks_passed'])
+
+
+class ArtworkContractTests(unittest.TestCase):
+    def test_manifest_cannot_select_arbitrary_asset_paths(self):
+        self.assertEqual(input_relative({}), 'inputs/input.jpg')
+        self.assertIsNone(source_relative({}))
+        for path in ('../secret.png', '/tmp/image.png', 'inputs/../../outside.png', ''):
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                input_relative({'input_file': path})
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                source_relative({'source_asset': {'file': path}})
+
+    def test_dimension_budget_is_explicit(self):
+        self.assertEqual(validate_size([64, 1024]), (64, 1024))
+        for size in ([63, 256], [256, 1025], [True, 256], [256.0, 256], None, [256]):
+            with self.subTest(size=size), self.assertRaises(ValueError):
+                validate_size(size)
 
 
 class PcGitBoundaryTests(unittest.TestCase):

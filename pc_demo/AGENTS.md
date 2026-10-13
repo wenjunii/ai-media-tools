@@ -18,6 +18,11 @@ flow in `../docs/GITHUB_SYNC.md`; never refresh Mac publication checkpoints here
 - Preserve every run in a new directory. Save settings, source input, exact command,
   stdout/stderr, return code, timing, checksums, outputs, and failure history.
   A failed app invocation must never become a success label or a substitute image.
+- For custom artwork, preserve the original bytes separately from the normalized
+  model input. Record orientation, color handling, dimensions and hashes. Keep
+  the image's aspect ratio and use accurate dimensions/captions; never describe
+  an arbitrary input as the built-in controlled degradation test. Keep input
+  limits explicit and reject unsupported assets before inference.
 - Use `revise` for editorial changes to a successful saved inference. Verify its
   input/output hashes, preserve the parent and original execution evidence, and
   create a new run. Never carry a previous video's manual review to a revision.

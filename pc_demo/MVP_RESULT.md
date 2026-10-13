@@ -103,3 +103,40 @@ invalidation of an older pass after a failed recheck.
 Validation: 162 full Python regression tests, 29 native Windows PC tests, all 18
 browser tests and compile checks passed. Run artifacts and the edited storyboard
 remain ignored local files; see the README for `history` and `revise` commands.
+
+## Custom artwork check: 2026-10-12
+
+The Windows launcher accepted an original procedural landscape PNG from a path
+containing spaces. The existing reviewed app/model enlarged **320×192 to
+1280×768 in 3.205 seconds** on Vulkan GPU 1. This is another controlled fixture,
+not a claim about restoration of someone else's artwork or photographs.
+
+The first assembly rejected its input-scene narration at 7.56 seconds. The failed
+run is preserved at `.local/runs/20261013T022415247288Z-realesrgan/` (UTC naming).
+After shortening that line, `revise` reused the successful output and produced
+`.local/runs/20261013T022452579458Z-realesrgan-revision/`. No inference was repeated
+for the revision. The original and normalized PNGs, actual output, logs, source
+snapshots and failure history remain in those ignored run directories.
+
+The 45-second, 1080×1920 H.264/AAC draft passed full decode, original-to-input
+normalization, provenance hashes, six scene comparisons, caption-width and audio
+checks. Mean/peak sample levels were −20.3/−1.5 dBFS; all speech fit its scenes.
+The browser played to 45 seconds without an error, unmuted. All six scenes were
+visually inspected: the landscape art keeps its proportions, labels show the
+actual dimensions and the process card identifies reused inference. A fresh
+hash-bound review is saved in `qa/manual-review.json`. Subjective human listening
+is not claimed; the creator should listen before upload.
+
+Replay this exact input on the installed PC:
+
+```powershell
+.\pc_demo\demo.ps1 run -GpuId 1 -InputImage .\pc_demo\.local\runs\20261013T022452579458Z-realesrgan-revision\inputs\source.png
+```
+
+Validation passed: 202 full Python regression tests under WSL, including all
+image tests; 43 native Windows PC tests; 24 browser tests; compile checks; and
+archive verification for 13 editions, 39 report files and 550 library tools.
+Reverification of the original October 3 video also passed with its existing
+video/input/output hashes and manual review intact. Windows CI now runs the image
+tests with the already reviewed, hash-pinned Pillow wheel, without app/model
+downloads. See the README for supported input limits and color/metadata handling.

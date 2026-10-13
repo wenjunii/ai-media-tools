@@ -1,9 +1,16 @@
 """Inspect local installation and draft evidence without running or downloading apps."""
 from .common import ROOT, LOCAL, read_json, resolve_run, sha256
 from .setup_runtime import verified_runtime
+from .inputs import input_relative, provenance_hashes, source_relative
 
 VERIFIED_ARTIFACTS = ('inputs/input.jpg', 'outputs/actual-output.png', 'draft.mp4',
                       'storyboard.json', 'logs/inference.command.json', 'logs/render.command.json')
+
+
+def verified_artifacts(manifest):
+    names = (input_relative(manifest), *VERIFIED_ARTIFACTS[1:])
+    original = source_relative(manifest)
+    return (*names, original) if original else names
 
 
 def draft_status(run):
@@ -18,10 +25,14 @@ def draft_status(run):
         raise ValueError('Verification record must be a JSON object')
     recorded = verification.get('checked_artifact_sha256', {})
     artifacts_match = isinstance(recorded, dict) and all(
-        (run / name).is_file() and recorded.get(name) == sha256(run / name) for name in VERIFIED_ARTIFACTS)
+        (run / name).is_file() and recorded.get(name) == sha256(run / name) for name in verified_artifacts(manifest))
     matches = {}
-    for relative, field in (('inputs/input.jpg', 'input'), ('outputs/actual-output.png', 'output')):
+    for relative, field in ((input_relative(manifest), 'input'), ('outputs/actual-output.png', 'output')):
         matches[field + '_matches_manifest'] = (run / relative).is_file() and sha256(run / relative) == manifest.get(field + '_sha256')
+    if source_relative(manifest):
+        matches['original_matches_manifest'] = all((run / name).is_file() and sha256(run / name) == digest
+                                                   for name, digest in provenance_hashes(manifest).items())
+        matches['input_size_matches_verification'] = verification.get('input_size') == manifest.get('settings', {}).get('input_size')
     passed = (verification.get('automated_pass') is True and artifacts_match and all(matches.values())
               and manifest.get('status') != 'failed'
               and digest == verification.get('video_sha256') == manifest.get('video_sha256'))

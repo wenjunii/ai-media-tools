@@ -1,0 +1,45 @@
+{
+  "title": "Your artwork. Four times larger.",
+  "duration_seconds": 45,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "segments": [
+    {
+      "start": 0, "end": 7.5, "kind": "result",
+      "eyebrow": "THE FINISHED RESULT", "title": ["Your artwork.", "Four times larger."],
+      "caption": ["Actual Real-ESRGAN output, made locally.", "Four times the width and height."],
+      "narration": "Your artwork, four times larger in each dimension. This is the actual app output."
+    },
+    {
+      "start": 7.5, "end": 15, "kind": "input",
+      "eyebrow": "01 / YOUR INPUT", "title": ["Start with", "your own artwork."],
+      "caption": ["Your original file is saved unchanged.", "The model receives a normalized PNG."],
+      "narration": "The original stays intact. The model receives a normalized image."
+    },
+    {
+      "start": 15, "end": 22.5, "kind": "compare",
+      "eyebrow": "02 / THE COMPARISON", "title": ["Same crop.", "Compare the edges."],
+      "caption": ["Bicubic enlargement versus AI output.", "Both sides show the same area and scale."],
+      "narration": "Compare bicubic enlargement with the AI result. Both sides show the same crop."
+    },
+    {
+      "start": 22.5, "end": 30, "kind": "process",
+      "eyebrow": "03 / THE REAL RUN", "title": ["One local run.", "Every step saved."],
+      "caption": ["Windows + Vulkan. Illustration model.", "Input, settings and execution log saved."],
+      "narration": "The illustration model runs locally. The settings, execution log and output are saved."
+    },
+    {
+      "start": 30, "end": 37.5, "kind": "use",
+      "eyebrow": "04 / PUT IT TO WORK", "title": ["Make room for", "a bigger layout."],
+      "caption": ["Try thumbnails, mood boards or mockups.", "Layout and typography are editorial."],
+      "narration": "Try the result in a layout or mood board. The typography is added during editing."
+    },
+    {
+      "start": 37.5, "end": 45, "kind": "limitation",
+      "eyebrow": "THE LIMITATION", "title": ["More pixels.", "Inferred detail."],
+      "caption": ["It can invent edges or smooth texture.", "Keep the original. Compare before use."],
+      "narration": "More pixels do not guarantee faithful detail. Check for invented edges and lost texture."
+    }
+  ]
+}

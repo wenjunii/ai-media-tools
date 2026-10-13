@@ -58,6 +58,15 @@ No licensed photo or other creator's artwork is used. The input is deliberately
 downsampled and compressed, and the video says so; it is not evidence of recovery
 from an unknown real-world original.
 
+Custom artwork support added 2026-10-12 uses the same reviewed app, model and
+Pillow version. The creator selects a local PNG/JPEG they own or may use;
+the software license does not grant rights to that input. Tests use original
+procedural fixtures. Originals stay local, including any embedded metadata.
+Pillow's [orientation handling](https://pillow.readthedocs.io/en/11.3.0/reference/ImageOps.html#PIL.ImageOps.exif_transpose)
+and [color-profile conversion](https://pillow.readthedocs.io/en/11.3.0/reference/ImageCms.html)
+prepare a separate RGB PNG; normalization is recorded and checked against the
+archived original. This does not change the model-license gap above.
+
 FFmpeg/ffprobe are pre-existing PC tools, not installed or redistributed by this
 project. Their full version/build strings and executable hashes are recorded in
 `setup.json`. This PC's FFmpeg build reports GPL/version3 components. It encodes
