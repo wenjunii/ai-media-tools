@@ -17,7 +17,7 @@ from .report import build, verify_report
 from .status import report_status
 from .storage import ROOT, read_json, report_date
 from .updates import export_update, prepare_update, update_workspace
-from .quality import CHECKS, TIERS, audit_existing, quality_backlog
+from .quality import CHECKS, TIERS, audit_existing, quality_backlog, record_quality_reviews
 
 
 def main():
@@ -48,6 +48,9 @@ def main():
     command.add_argument("--sort", choices=("priority", "oldest"), default="priority")
     command = sub.add_parser("audit-existing-quality", help="Reassess published records without changing dated editions")
     command.add_argument("--date", required=True)
+    command = sub.add_parser("record-quality-reviews", help="Preview a cited review batch; --apply merges it into library curation")
+    command.add_argument("--file", type=Path, required=True, help="JSON batch of reviews bound to the latest published records")
+    command.add_argument("--apply", action="store_true", help="Apply all validated reviews atomically; the default preview writes nothing")
     command = sub.add_parser("build")
     command.add_argument("--editorial", required=True, type=Path)
     command.add_argument("--revision", type=int)
@@ -101,6 +104,8 @@ def main():
             output = quality_backlog(root, check=args.check, tier=args.tier, sort=args.sort)
             if not args.full:
                 output.pop("items")
+        elif args.command == "record-quality-reviews":
+            output = record_quality_reviews(root, args.file, apply=args.apply)
         elif args.command == "discover":
             result = collect(day, root=root, plan_path=args.plan)
             output = {"report_date": day, "repositories": len(result["candidates"]),

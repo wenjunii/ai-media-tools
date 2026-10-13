@@ -135,6 +135,12 @@ preparation, or email delivery as part of source maintenance.
 If the requested change affects the library UI or data schema, use
 `build-library` to refresh only the derived views before staging. It preserves
 all dated report files, source evidence and delivery records.
+For researched quality-label changes, preview the batch with
+`record-quality-reviews --file PATH`, inspect its label/check changes, then use
+`--apply` and `build-library`. See the [batch format](QUALITY_POLICY.md#applying-reviewed-assessments).
+Publish the reviewed `config/quality_reviews.json`, documentation and derived
+library together through the same audit and protected PR flow. The batch input
+and raw source snapshots remain ignored; the command itself does not publish.
 
 ## PC source and documentation sync
 

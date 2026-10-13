@@ -130,6 +130,13 @@ only maintainer evidence cannot satisfy the independent-use requirement.
 The CLI queue includes next steps and citations, with optional `--check`, `--tier`
 and `--sort oldest` filters. Its default order helps prioritize review work without
 changing quality labels. See [queue semantics](QUALITY_POLICY.md#existing-editions-and-ongoing-review).
+Full queue items also provide `basis_edition` and `record_sha256` for an exact
+latest-record binding. Use `record-quality-reviews --file PATH` to preview a
+researched batch, then repeat with `--apply` to save it. The command validates
+every supplied row before an atomic registry update, preserving other reviews
+and audits. It reports label changes and closed/reopened checks, and rejects stale
+bindings or backward assessment dates. Run `build-library` and archive verification
+after applying; see the [review batch format](QUALITY_POLICY.md#applying-reviewed-assessments).
 
 Daily `build` prepares a local preview from sealed editions. Daily `export-report`
 updates the cumulative public and local library after adding the finished edition.

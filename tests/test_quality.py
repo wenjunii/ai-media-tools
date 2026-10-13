@@ -1,7 +1,7 @@
 """Recommendations require evidence; historical reports remain immutable."""
 
 import copy
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 import json
 import unittest
@@ -12,7 +12,7 @@ from media_scout import cli
 from media_scout.library import make_library
 from media_scout.publication import export_report, rebuild_library, verify_public_archive
 from media_scout.quality import (CHECKS, audit_existing, baseline_assessment, evidence_gaps, quality_backlog,
-                                 read_reviews, record_binding, review_item, validate_assessment)
+                                 read_reviews, record_binding, record_quality_reviews, review_item, validate_assessment)
 from media_scout.report import render_html, render_markdown, validate
 from media_scout.storage import write_json
 
@@ -230,6 +230,7 @@ class QualityTests(unittest.TestCase):
         self.assertTrue(item["needs_profile"])
         self.assertTrue(item["needs_source_review"])
         self.assertEqual(item["basis_edition"], self.fixture.day + "-r2")
+        self.assertEqual(item["record_sha256"], record_binding(latest)["record_sha256"])
         self.assertEqual(item["queue"], "profile_needed")
         self.assertEqual(item["next_steps"][0]["requirement"], "full_profile")
         reason = {"text": "The current scene editor cannot save projects yet.", "source_urls": ["https://example.com/editor"]}
@@ -405,6 +406,161 @@ class QualityTests(unittest.TestCase):
         write_json(self.root / "config/quality_reviews.json", registry)
         with self.assertRaisesRegex(ValueError, "record binding"):
             read_reviews(self.root)
+
+    def review_batch(self, assessment=None):
+        batch = self.registry(assessment if assessment is not None else self.ready_assessment())
+        del batch["audits"]
+        path = self.root / "state/quality_research/reviews.json"
+        write_json(path, batch)
+        return path, batch
+
+    def test_batch_preview_apply_and_repeat_preserve_editions_and_other_curation(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        audit_existing(self.root, self.fixture.day)
+        original_registry = read_reviews(self.root)
+        path, _ = self.review_batch()
+        before = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        preview = record_quality_reviews(self.root, path)
+        self.assertEqual(preview["mode"], "preview")
+        self.assertEqual(preview["changed"], 1)
+        self.assertEqual(preview["counts_before"]["ready_to_try"], 0)
+        self.assertEqual(preview["counts_after"]["ready_to_try"], 1)
+        self.assertEqual(preview["closed_checks"], 5)
+        self.assertEqual(preview["reopened_checks"], 0)
+        self.assertEqual(before, {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()})
+        applied = record_quality_reviews(self.root, path, apply=True)
+        self.assertEqual(applied["items"], preview["items"])
+        self.assertEqual(applied["mode"], "applied")
+        self.assertEqual(read_reviews(self.root)["audits"], original_registry["audits"])
+        for p, content in before.items():
+            if p != self.root / "config/quality_reviews.json":
+                self.assertEqual(p.read_bytes(), content)
+        with patch("media_scout.quality.write_json") as write:
+            repeated = record_quality_reviews(self.root, path, apply=True)
+            self.assertEqual(repeated["changed"], 0)
+            self.assertEqual(repeated["closed_checks"], 0)
+            write.assert_not_called()
+        rebuild_library(self.root)
+        verify_public_archive(self.root)
+
+    def test_batch_rejects_a_late_invalid_entry_without_partial_writes(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        write_json(self.root / "config/quality_reviews.json", self.registry(self.assessment()))
+        before = (self.root / "config/quality_reviews.json").read_bytes()
+        path, batch = self.review_batch()
+        batch["reviews"]["github:unknown/tool"] = copy.deepcopy(next(iter(batch["reviews"].values())))
+        write_json(path, batch)
+        for apply in (False, True):
+            with self.subTest(apply=apply), self.assertRaisesRegex(ValueError, "unknown published tool"):
+                record_quality_reviews(self.root, path, apply=apply)
+            self.assertEqual((self.root / "config/quality_reviews.json").read_bytes(), before)
+
+    def test_batch_rejects_stale_record_old_dates_and_unsupported_promotions(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        current = self.ready_assessment()
+        current["checked_on"] = "2026-10-03"
+        registry = self.registry(current)
+        next(iter(registry["reviews"].values()))["checked_on"] = "2026-10-03"
+        write_json(self.root / "config/quality_reviews.json", registry)
+        before = (self.root / "config/quality_reviews.json").read_bytes()
+        path, base = self.review_batch(current)
+        next(iter(base["reviews"].values()))["checked_on"] = "2026-10-03"
+        cases = []
+        for key, value in (("basis_edition", "2026-10-01-r2"), ("record_sha256", "0" * 64)):
+            batch = copy.deepcopy(base)
+            next(iter(batch["reviews"].values()))[key] = value
+            cases.append((batch, "latest published record"))
+        for day in ("2026-09-30", "2026-10-02"):
+            batch = copy.deepcopy(base)
+            row = next(iter(batch["reviews"].values()))
+            row["checked_on"] = row["assessment"]["checked_on"] = day
+            cases.append((batch, "cannot predate"))
+        batch = copy.deepcopy(base)
+        next(iter(batch["reviews"].values()))["assessment"]["tier"] = "recommended"
+        cases.append((batch, "all six"))
+        batch = copy.deepcopy(base)
+        next(iter(batch["reviews"].values()))["assessment"]["checked_on"] = "2026-10-04"
+        cases.append((batch, "edition date"))
+        for batch, message in cases:
+            write_json(path, batch)
+            with self.subTest(message=message), self.assertRaisesRegex(ValueError, message):
+                record_quality_reviews(self.root, path, apply=True)
+            self.assertEqual((self.root / "config/quality_reviews.json").read_bytes(), before)
+
+    def test_batch_checks_latest_profile_kind_and_normalizes_public_fields(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        path, batch = self.review_batch()
+        library = make_library([self.report], self.config)
+        latest = library["tools"][0]["versions"][0]
+        latest["kind"] = "screened"
+        row = next(iter(batch["reviews"].values()))
+        row.update(record_binding(latest))
+        write_json(path, batch)
+        with patch("media_scout.quality.public_quality_library", return_value=library), \
+                self.assertRaisesRegex(ValueError, "full profile"):
+            record_quality_reviews(self.root, path, apply=True)
+        path, batch = self.review_batch()
+        row = next(iter(batch["reviews"].values()))
+        row["assessment"]["private_notes"] = "Do not publish this extra field"
+        write_json(path, batch)
+        record_quality_reviews(self.root, path, apply=True)
+        self.assertNotIn("private_notes", (self.root / "config/quality_reviews.json").read_text())
+
+    def test_batch_discloses_reopened_checks_and_preserves_other_reviews(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        registry = self.registry(self.assessment())
+        write_json(self.root / "config/quality_reviews.json", registry)
+        other = copy.deepcopy(make_library([self.report], self.config)["tools"][0])
+        other["id"] = "github:second/tool"
+        other["name"] = "Second tool"
+        other["versions"][0]["profile"]["id"] = other["id"]
+        registry["reviews"][other["id"]] = {**record_binding(other["versions"][0]),
+                                           "checked_on": self.fixture.day, "assessment": self.assessment()}
+        write_json(self.root / "config/quality_reviews.json", registry)
+        library = make_library([self.report], self.config, self.registry(self.assessment()))
+        library["tools"].append(other)
+        library["quality_counts"]["unverified"] = 1
+        path, _ = self.review_batch()
+        with patch("media_scout.quality.public_quality_library", return_value=library):
+            result = record_quality_reviews(self.root, path, apply=True)
+        self.assertEqual(result["reopened_checks"], 1)
+        self.assertEqual(result["items"][0]["reopened_checks"], ["results"])
+        self.assertEqual(read_reviews(self.root)["reviews"][other["id"]], registry["reviews"][other["id"]])
+
+    def test_batch_cli_defaults_to_preview_and_returns_json_for_malformed_fields(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        path, good = self.review_batch()
+        for extra, mode in (([], "preview"), (["--apply"], "applied")):
+            output = StringIO()
+            with patch.object(cli, "ROOT", self.root), redirect_stdout(output), \
+                    patch("sys.argv", ["media-scout", "record-quality-reviews", "--file", str(path), *extra]):
+                self.assertEqual(cli.main(), 0)
+            self.assertEqual(json.loads(output.getvalue())["mode"], mode)
+        invalid = [None, [], {"format_version": True, "reviews": good["reviews"]},
+                   {"format_version": 1, "reviews": {}}, {**good, "audits": {}}]
+        for fields in (("tier",), ("method",), ("checks", "setup", "status"),
+                       ("checks", "independent_use", "source_kind")):
+            batch = copy.deepcopy(good)
+            target = next(iter(batch["reviews"].values()))["assessment"]
+            for key in fields[:-1]:
+                target = target[key]
+            target[fields[-1]] = []
+            invalid.append(batch)
+        before = (self.root / "config/quality_reviews.json").read_bytes()
+        for batch in invalid:
+            write_json(path, batch)
+            error = StringIO()
+            with self.subTest(batch=batch), patch.object(cli, "ROOT", self.root), redirect_stderr(error), \
+                    patch("sys.argv", ["media-scout", "record-quality-reviews", "--file", str(path), "--apply"]):
+                self.assertEqual(cli.main(), 1)
+            self.assertIn("error", json.loads(error.getvalue()))
+            self.assertEqual((self.root / "config/quality_reviews.json").read_bytes(), before)
 
     def test_new_reports_show_quality_separately_from_profile_depth(self):
         for assessment, label in ((self.assessment(), "Recommended"), (self.ready_assessment(), "Ready to try")):
