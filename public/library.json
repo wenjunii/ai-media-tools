@@ -367,9 +367,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Quality remains unverified. GitLab commit history is now available, but modeled chip budgets and synthetic-target error do not establish real-hardware audio performance.",
+        "scope": "Synthetic guitar-amp approximation and size/compute tradeoff studies. A deployed physical guitar pedal is outside the demonstrated evidence.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
@@ -406,7 +406,7 @@
           },
           "results": {
             "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. Scripts generate local A/B WAVs; no hosted listening demo or completed hardware performance was verified.",
+            "note": "The README reports ESR against simple and more complex synthetic amp targets and explains that the smallest model fails the harder target. MCU utilization is estimated, not measured hardware performance. A/B listening and real amp/pedal output evidence remain unverified.",
             "source_urls": [
               "https://gitlab.com/ar39907/embedded-amp-model/-/blob/main/README.md"
             ]
@@ -420,11 +420,11 @@
             ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "GitLab commit history could not be retrieved in this pass. README, full license, issues and releases were fetched; maintenance remains unresolved.",
+            "status": "documented",
+            "note": "GitLab history was successfully retrieved this pass, closing the previous source-access gap. It shows the C-port validation implementation and a September change moving build artifacts out of source. Real DI/reamp capture and flashing a working MCU pedal remain roadmap items; support and independent hardware reproduction are not established.",
             "source_urls": [
               "https://gitlab.com/ar39907/embedded-amp-model/-/commits/main",
-              "https://gitlab.com/ar39907/embedded-amp-model/-/issues"
+              "https://gitlab.com/ar39907/embedded-amp-model/-/blob/main/README.md"
             ]
           },
           "independent_use": {
@@ -576,9 +576,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-12",
-        "summary": "Creative AI workflow and full GPL software license reviewed; version-specific setup and quality evidence remain incomplete.",
-        "scope": "Exploring a user-supplied sound corpus as a learned two-dimensional musical instrument.",
+        "checked_on": "2026-10-13",
+        "summary": "The fresh GitLab review identifies substantive fixes but leaves current setup and independent reproduction unresolved. The musical term experimental sampler is not a software-quality verdict.",
+        "scope": "The current audiostellar2 JUCE branch for learned sound-corpus maps and interactive sampling; historical openFrameworks setup is not treated as current reproduction.",
         "caveats": [
           "Documentation review only; not installed or run.",
           "Current JUCE branch and older openFrameworks/Python 3.6 build notes conflict; historical docs do not establish current macOS setup."
@@ -595,6 +595,10 @@
           {
             "title": "Project creator presentation at Ircam",
             "url": "https://forum.ircam.fr/article/detail/audiostellar/"
+          },
+          {
+            "title": "Reviewed evidence: audiostellar2",
+            "url": "https://gitlab.com/ayrsd/audiostellar/-/commits/audiostellar2"
           }
         ],
         "checks": {
@@ -613,14 +617,18 @@
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Current source and legacy build documentation do not establish one reproduced current installation route.",
-            "source_urls": []
+            "status": "documented",
+            "note": "The current README specifies JUCE 8.0.10, Linux/Windows CMake steps and a separate Python analysis pipeline. It leaves macOS compilation as TODO and includes a manual Windows source-edit workaround. This is a documented, incomplete current setup route, not independently verified installation.",
+            "source_urls": [
+              "https://gitlab.com/ayrsd/audiostellar/-/blob/audiostellar2/README.md"
+            ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "The active branch does not by itself establish sustained support or resolution of build inconsistencies.",
-            "source_urls": []
+            "status": "documented",
+            "note": "Retrieved current GitLab commits, including project save/open fixes and a correction for accented Mac-generated maps failing on Linux. These are substantive changes, but the incomplete JUCE/analysis build route and independent compatibility evidence still need resolution.",
+            "source_urls": [
+              "https://gitlab.com/ayrsd/audiostellar/-/commits/audiostellar2"
+            ]
           },
           "independent_use": {
             "status": "unknown",
@@ -1690,12 +1698,13 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Independent creative use and substantive support are now verified. Model-specific reproduction, output quality and the complete selected dependency set still prevent a higher label.",
+        "scope": "AI-assisted generation and inpainting in Krita through a local ComfyUI server. Stable Krita 5/plugin 1.53 and Krita 6/plugin 1.54 prerelease are separate installation routes.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Source review only; the plugin and models were not run.",
+          "The documented stable and prerelease builds target different Krita major versions. Do not mix their installation guidance.",
+          "Users report style, queue-cache and outpainting-band issues. Default model packs and optional ControlNet/IP-Adapter/LoRA assets each retain their own terms."
         ],
         "sources": [
           {
@@ -1741,6 +1750,30 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/Acly/krita-ai-diffusion/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 447",
+            "url": "https://github.com/Acly/krita-ai-diffusion/issues/447"
+          },
+          {
+            "title": "Reviewed evidence: 2465",
+            "url": "https://github.com/Acly/krita-ai-diffusion/issues/2465"
+          },
+          {
+            "title": "Reviewed evidence: v1.53.0",
+            "url": "https://github.com/Acly/krita-ai-diffusion/releases/tag/v1.53.0"
+          },
+          {
+            "title": "Reviewed evidence: 2135",
+            "url": "https://github.com/Acly/krita-ai-diffusion/issues/2135"
+          },
+          {
+            "title": "Reviewed evidence: resources.py",
+            "url": "https://github.com/Acly/krita-ai-diffusion/blob/main/ai_diffusion/backend/resources.py"
+          },
+          {
+            "title": "Reviewed evidence: LICENSE.md",
+            "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md"
           }
         ],
         "checks": {
@@ -1763,41 +1796,37 @@
           },
           "setup": {
             "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Choose a plugin release compatible with your Krita major version. Today's v1.54.0-pre explicitly requires Krita 6; its notes recommend 6.0.4.",
+            "note": "Current installation instructions and client implementation are available, but older first-hand reports do not reproduce an exact current plugin/Krita/checkpoint combination. The stable/prerelease split and model/cache reports need a version-matched independent reproduction.",
             "source_urls": [
-              "https://github.com/Acly/krita-ai-diffusion/blob/828b70c33c5c97f326e03170cd693beef798231e/README.md",
-              "https://github.com/Acly/krita-ai-diffusion",
               "https://docs.interstice.cloud/installation/",
-              "https://github.com/Acly/krita-ai-diffusion/releases/tag/v1.54.0-pre"
+              "https://github.com/Acly/krita-ai-diffusion/issues/2135"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "History sample includes 2026-10-03: Fix lint error. This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: v1.54.0-pre. Sampled discussion (open): Qwen 2.1 Image gguf model Detects as Flux Architecture. User reports are not confirmed reproductions by this review.",
+            "status": "verified",
+            "note": "Release notes distinguish stable 1.53 for Krita 5 from 1.54 prerelease for Krita 6 and document model/client compatibility work. Reviewed support includes Flux/Qwen model recognition and a queue-cache report. Substantive support is present, with these unresolved workflow limits retained.",
             "source_urls": [
-              "https://github.com/Acly/krita-ai-diffusion/commit/828b70c33c5c97f326e03170cd693beef798231e",
-              "https://github.com/Acly/krita-ai-diffusion/issues",
-              "https://github.com/Acly/krita-ai-diffusion/releases",
+              "https://github.com/Acly/krita-ai-diffusion/releases/tag/v1.53.0",
+              "https://github.com/Acly/krita-ai-diffusion/releases/tag/v1.54.0-pre",
+              "https://github.com/Acly/krita-ai-diffusion/issues/2135",
               "https://github.com/Acly/krita-ai-diffusion/issues/2634"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "A first-hand user describes switching to Krita for this plugin and repeated inpainting/generation while reporting a style-selection defect. Another user describes outpainting edge bands. These are concrete independent creative-use reports, not proof that every output or current setup succeeds.",
             "source_urls": [
-              "https://github.com/Acly/krita-ai-diffusion/blob/828b70c33c5c97f326e03170cd693beef798231e/README.md",
-              "https://github.com/Acly/krita-ai-diffusion/issues"
-            ]
+              "https://github.com/Acly/krita-ai-diffusion/issues/447",
+              "https://github.com/Acly/krita-ai-diffusion/issues/2465"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
             "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. GPL-3.0 plugin; checkpoints, LoRAs and auxiliary models retain their own terms.",
+            "note": "The resource manifest identifies numerous required and optional models. SDXL Base terms were reviewed separately, but that does not clear the plugin complete managed install, auxiliary checkpoints or a user-selected style. A named minimal plugin/model configuration still needs a full dependency review.",
             "source_urls": [
-              "https://github.com/Acly/krita-ai-diffusion/blob/828b70c33c5c97f326e03170cd693beef798231e/README.md",
-              "https://github.com/Acly/krita-ai-diffusion/blob/main/LICENSE",
-              "https://github.com/Acly/krita-ai-diffusion",
-              "https://docs.interstice.cloud/installation/",
-              "https://github.com/Acly/krita-ai-diffusion/releases/tag/v1.54.0-pre"
+              "https://github.com/Acly/krita-ai-diffusion/blob/main/ai_diffusion/backend/resources.py",
+              "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md"
             ]
           }
         },
@@ -1807,8 +1836,6 @@
       "evidence_gaps": [
         "results",
         "setup",
-        "maintenance",
-        "independent_use",
         "dependencies"
       ]
     },
@@ -3923,12 +3950,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Producing a draft edit while retaining editable captions, overlays and project decisions.",
         "caveats": [
           "Source review only; not installed or run.",
-          "MIT project; bundled FFmpeg is GPL and whisper.cpp is MIT, with separate notices. Apple Silicon and Windows x64 apps; Linux CLI is a separate route. Agent services, cloud options, assets and model weights retain separate terms."
+          "MIT project; bundled FFmpeg is GPL and whisper.cpp is MIT, with separate notices. Apple Silicon and Windows x64 apps; Linux CLI is a separate route. Agent services, cloud options, assets and model weights retain separate terms.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -4437,12 +4465,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -21363,14 +21392,16 @@
         "Cloud"
       ],
       "quality_assessment": {
-        "tier": "unverified",
+        "tier": "ready_to_try",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Ready to try for a bounded local SDXL workflow: setup, substantive support, independent integration and selected model terms are supported. Representative creative output review remains pending.",
+        "scope": "Local built-in SDXL Base 1.0 text-to-image workflow using the official Stability AI checkpoint, without custom nodes, refiner, external LoRAs or paid API nodes.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Documentation and implementation review only; ComfyUI was not installed or run.",
+          "SDXL weights use CreativeML Open RAIL++-M with use restrictions, separately from the open-source ComfyUI code. This is not a claim of unrestricted model licensing.",
+          "Custom nodes, other checkpoints, hosted/API workflows and their costs are not covered.",
+          "Platform-specific PyTorch instructions must be followed. Current unrelated model/XPU and loop-cache issues do not prove this basic SDXL path is broken or universally compatible."
         ],
         "sources": [
           {
@@ -21412,6 +21443,42 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/Comfy-Org/ComfyUI/blob/master/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: ",
+            "url": "https://comfyanonymous.github.io/ComfyUI_examples/sdxl/"
+          },
+          {
+            "title": "Reviewed evidence: comfy_client.py",
+            "url": "https://github.com/Acly/krita-ai-diffusion/blob/main/ai_diffusion/backend/comfy_client.py"
+          },
+          {
+            "title": "Reviewed evidence: v0.39.0",
+            "url": "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.39.0"
+          },
+          {
+            "title": "Reviewed evidence: 0ebee95bbbdd1c5c983ab46a6a4af1e304b8a744",
+            "url": "https://github.com/Comfy-Org/ComfyUI/commit/0ebee95bbbdd1c5c983ab46a6a4af1e304b8a744"
+          },
+          {
+            "title": "Reviewed evidence: 16991",
+            "url": "https://github.com/Comfy-Org/ComfyUI/issues/16991"
+          },
+          {
+            "title": "Reviewed evidence: 16978",
+            "url": "https://github.com/Comfy-Org/ComfyUI/issues/16978"
+          },
+          {
+            "title": "Reviewed evidence: 447",
+            "url": "https://github.com/Acly/krita-ai-diffusion/issues/447"
+          },
+          {
+            "title": "Reviewed evidence: stable-diffusion-xl-base-1.0",
+            "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+          },
+          {
+            "title": "Reviewed evidence: LICENSE.md",
+            "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md"
           }
         ],
         "checks": {
@@ -21431,38 +21498,40 @@
             ]
           },
           "setup": {
-            "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Choose the official desktop build or create a Python virtual environment.",
+            "status": "verified",
+            "note": "The README gives platform-specific Python/PyTorch installation and checkpoint placement; official SDXL examples supply a base-only first workflow. Inspected Krita integration discovers checkpoints, submits prompt graphs and receives generated images through the ComfyUI API. This supports an implemented route, not a new runtime test on every platform.",
             "source_urls": [
-              "https://github.com/Comfy-Org/ComfyUI/blob/0df64eb242b7c5759c3e86afd5d1846d923b1033/README.md",
               "https://github.com/Comfy-Org/ComfyUI",
-              "https://docs.comfy.org/comfy-cli/getting-started"
+              "https://comfyanonymous.github.io/ComfyUI_examples/sdxl/",
+              "https://github.com/Acly/krita-ai-diffusion/blob/main/ai_diffusion/backend/comfy_client.py"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "History sample includes 2026-10-10: fix(assets): date scanned assets by their file's mtime (#16810). This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: v0.39.0. Sampled discussion (closed): torch.AcceleratorError: CUDA error: invalid argument on 9060xt 16g. User reports are not confirmed reproductions by this review.",
+            "status": "verified",
+            "note": "Current release and commit histories include image/model handling fixes, output encoding changes and correction of asset-scanning behavior. The bounded support review found Qwen/XPU multi-image and loop-cache issues, which are disclosed and excluded from the single built-in SDXL workflow. A release count alone was not used as evidence.",
             "source_urls": [
-              "https://github.com/Comfy-Org/ComfyUI/commit/0df64eb242b7c5759c3e86afd5d1846d923b1033",
-              "https://github.com/Comfy-Org/ComfyUI/issues",
-              "https://github.com/Comfy-Org/ComfyUI/releases",
-              "https://github.com/Comfy-Org/ComfyUI/issues/15653"
+              "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.39.0",
+              "https://github.com/Comfy-Org/ComfyUI/commit/0ebee95bbbdd1c5c983ab46a6a4af1e304b8a744",
+              "https://github.com/Comfy-Org/ComfyUI/issues/16991",
+              "https://github.com/Comfy-Org/ComfyUI/issues/16978"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "Krita AI Diffusion independently implements ComfyUI model discovery, prompt submission and result-image transfer. Its first-hand users describe repeated generation/inpainting and concrete limitations. The implementation was inspected rather than accepting a link or star count.",
             "source_urls": [
-              "https://github.com/Comfy-Org/ComfyUI/blob/0df64eb242b7c5759c3e86afd5d1846d923b1033/README.md",
-              "https://github.com/Comfy-Org/ComfyUI/issues"
-            ]
+              "https://github.com/Acly/krita-ai-diffusion/blob/main/ai_diffusion/backend/comfy_client.py",
+              "https://github.com/Acly/krita-ai-diffusion/issues/447"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Every checkpoint has its own terms; inclusion in a template does not establish open or unrestricted weights.",
+            "status": "verified",
+            "note": "Reviewed the complete SDXL Base 1.0 model license and official card: weights have CreativeML Open RAIL++-M use/distribution conditions, separate from ComfyUI GPL code. The selected base-only checkpoint bundles the required image-generation components; documented local PyTorch execution does not require Comfy Cloud or paid API credits. Hardware, storage and download costs remain local.",
             "source_urls": [
-              "https://github.com/Comfy-Org/ComfyUI/blob/0df64eb242b7c5759c3e86afd5d1846d923b1033/README.md",
-              "https://github.com/Comfy-Org/ComfyUI/blob/master/LICENSE",
+              "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md",
+              "https://comfyanonymous.github.io/ComfyUI_examples/sdxl/",
               "https://github.com/Comfy-Org/ComfyUI"
             ]
           }
@@ -21471,11 +21540,7 @@
         "record_sha256": "54598d2767b5aeb80adb70a22036a77a0a5cad5697fcf564dd69bdd3c1f04107"
       },
       "evidence_gaps": [
-        "results",
-        "setup",
-        "maintenance",
-        "independent_use",
-        "dependencies"
+        "results"
       ]
     },
     {
@@ -24395,12 +24460,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -24946,12 +25012,14 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Quality remains unverified for v2: new model and build details are documented, but Windows transcription failures and independent successful reproduction remain unresolved.",
+        "scope": "NeuralNote v2 local multi-instrument audio-to-MIDI transcription with MuScriptor GGUF weights, for non-commercial study. Older Basic Pitch evidence is not transferred to v2.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Source review only; no audio was transcribed.",
+          "The v2 weights are CC BY-NC 4.0 and limited to non-commercial use, separately from Apache-2.0 software.",
+          "Published downloads do not establish broad GPU compatibility. Current Windows reports include crashes after transcription and rejected GGUF checkpoints.",
+          "A proprietary ASIO agreement applies to distributing ASIO-enabled Windows builds; it can be disabled for source builds. Other components retain their notices."
         ],
         "sources": [
           {
@@ -24989,6 +25057,34 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/DamRsn/NeuralNote/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: NeuralNote#whats-new-in-v2",
+            "url": "https://github.com/DamRsn/NeuralNote#whats-new-in-v2"
+          },
+          {
+            "title": "Reviewed evidence: NeuralNote",
+            "url": "https://github.com/DamRsn/NeuralNote"
+          },
+          {
+            "title": "Reviewed evidence: 205",
+            "url": "https://github.com/DamRsn/NeuralNote/issues/205"
+          },
+          {
+            "title": "Reviewed evidence: 212",
+            "url": "https://github.com/DamRsn/NeuralNote/issues/212"
+          },
+          {
+            "title": "Reviewed evidence: 7f3a686058a8dbd1ac72c82eb924465634536825",
+            "url": "https://github.com/DamRsn/NeuralNote/commit/7f3a686058a8dbd1ac72c82eb924465634536825"
+          },
+          {
+            "title": "Reviewed evidence: 201",
+            "url": "https://github.com/DamRsn/NeuralNote/issues/201"
+          },
+          {
+            "title": "Reviewed evidence: NeuralNote#license",
+            "url": "https://github.com/DamRsn/NeuralNote#license"
           }
         ],
         "checks": {
@@ -25001,28 +25097,27 @@
           },
           "results": {
             "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The official README shows the piano-roll interface and playback/transcription workflow.",
+            "note": "The current release replaces Basic Pitch with MuScriptor and documents instrument-separated MIDI output. Earlier Basic Pitch demonstrations cannot validate this v2 workflow. No representative v2 note/timing/instrument output assessment was completed.",
             "source_urls": [
-              "https://github.com/DamRsn/NeuralNote/blob/1640b22e59b6b33fa1419709aa7653ac4ec768ce/README.md",
-              "https://github.com/DamRsn/NeuralNote/blob/main/README.md"
+              "https://github.com/DamRsn/NeuralNote#whats-new-in-v2"
             ]
           },
           "setup": {
             "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Choose the official Apple Silicon macOS or Windows x64 installer; other documented platforms currently require source builds.",
+            "note": "The README now documents platform installers, exact GGUF file naming/sizes, C++23 source builds and limited tested devices. Current reports describe Windows crashes after processing and invalid-model errors; a reproducible successful current configuration was not established by these reports.",
             "source_urls": [
-              "https://github.com/DamRsn/NeuralNote/blob/1640b22e59b6b33fa1419709aa7653ac4ec768ce/README.md",
-              "https://github.com/DamRsn/NeuralNote/blob/main/README.md"
+              "https://github.com/DamRsn/NeuralNote",
+              "https://github.com/DamRsn/NeuralNote/issues/205",
+              "https://github.com/DamRsn/NeuralNote/issues/212"
             ]
           },
           "maintenance": {
             "status": "documented",
-            "note": "History sample includes 2026-10-09: Update muscriptor.cpp. This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: v2.0.0. Sampled discussion (open): v2: every note is exported with the same velocity (hardcoded), per-note dynamics lost since v1. User reports are not confirmed reproductions by this review.",
+            "note": "Recent changes add persistent logging, crash handling and resumable transcription. The support sample still contains Windows analyze/finish crashes and model-load failures. Those fixes are documented, but their resolution for the assessed workflow was not established.",
             "source_urls": [
-              "https://github.com/DamRsn/NeuralNote/commit/1640b22e59b6b33fa1419709aa7653ac4ec768ce",
-              "https://github.com/DamRsn/NeuralNote/issues",
-              "https://github.com/DamRsn/NeuralNote/releases",
-              "https://github.com/DamRsn/NeuralNote/issues/209"
+              "https://github.com/DamRsn/NeuralNote/commit/7f3a686058a8dbd1ac72c82eb924465634536825",
+              "https://github.com/DamRsn/NeuralNote/issues/201",
+              "https://github.com/DamRsn/NeuralNote/issues/205"
             ]
           },
           "independent_use": {
@@ -25035,11 +25130,9 @@
           },
           "dependencies": {
             "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Apache-2.0 application code. MuScriptor/GGUF weights use CC-BY-NC-4.0. JUCE, ASIO, fonts and soundfonts have separate notices; Windows ASIO redistribution has an additional agreement.",
+            "note": "Upstream expressly separates Apache-2.0 code from MuScriptor CC BY-NC 4.0 weights. It also lists JUCE, GGUF/ggml, soundfonts, fonts and optional proprietary ASIO conditions. This materially limits commercial use; a complete component notice review and exact model conversion verification remain pending.",
             "source_urls": [
-              "https://github.com/DamRsn/NeuralNote/blob/1640b22e59b6b33fa1419709aa7653ac4ec768ce/README.md",
-              "https://github.com/DamRsn/NeuralNote/blob/main/LICENSE",
-              "https://github.com/DamRsn/NeuralNote/blob/main/README.md"
+              "https://github.com/DamRsn/NeuralNote#license"
             ]
           }
         },
@@ -25199,14 +25292,16 @@
       ],
       "platform_mentions": [],
       "quality_assessment": {
-        "tier": "unverified",
+        "tier": "ready_to_try",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Ready to try for local general-model draft cutouts: independent integration, setup and selected model terms close the non-results gaps. Exact-checkpoint output review remains pending.",
+        "scope": "Local CPU image-background removal with rembg and the explicitly selected birefnet-general / general-epoch_244 ONNX model. Excludes hosted sessions, GPU packaging and other downloadable models.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Source review only; no installation or cutout generation was performed.",
+          "The selected general checkpoint still needs an output review on representative subjects; thin or low-contrast edges may need correction.",
+          "This scope uses CPU execution. Closed CUDA fallback/container reports do not certify a particular GPU installation.",
+          "Other models and newly added remote providers have separate terms and costs."
         ],
         "sources": [
           {
@@ -25256,6 +25351,26 @@
           {
             "title": "Maintenance and support evidence",
             "url": "https://github.com/danielgatis/rembg/commit/030a9ed79dbfcf8c58a1dc15a8dca3ccd2355709"
+          },
+          {
+            "title": "Reviewed evidence: rembg_and_center.py",
+            "url": "https://github.com/chenguolin/DiffSplat/blob/a99d75707541009283bc5c073f1a07b5add41d00/extensions/rembg_and_center.py"
+          },
+          {
+            "title": "Reviewed evidence: birefnet_general.py",
+            "url": "https://github.com/danielgatis/rembg/blob/main/rembg/sessions/birefnet_general.py"
+          },
+          {
+            "title": "Reviewed evidence: BiRefNet",
+            "url": "https://huggingface.co/ZhengPeng7/BiRefNet"
+          },
+          {
+            "title": "Reviewed evidence: 316#issuecomment-5120372022",
+            "url": "https://github.com/ZhengPeng7/BiRefNet/issues/316#issuecomment-5120372022"
+          },
+          {
+            "title": "Reviewed evidence: 2401.03407v5",
+            "url": "https://arxiv.org/html/2401.03407v5"
           }
         ],
         "checks": {
@@ -25268,20 +25383,18 @@
           },
           "results": {
             "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The README contains input/output examples and CLI usage; no cutout was generated here.",
+            "note": "An independently implemented RGBA workflow and upstream sample links are available, but neither constitutes a reviewed comparison for the selected general-epoch_244 output. The BiRefNet paper uses different task-specific training; its scores were not transferred to this checkpoint.",
             "source_urls": [
-              "https://github.com/danielgatis/rembg/blob/dcced408dca80d7bbe74f86c60cd36940129014f/README.md",
-              "https://github.com/danielgatis/rembg",
-              "https://pypi.org/project/rembg/"
+              "https://github.com/chenguolin/DiffSplat/blob/a99d75707541009283bc5c073f1a07b5add41d00/extensions/rembg_and_center.py",
+              "https://arxiv.org/html/2401.03407v5"
             ]
           },
           "setup": {
-            "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Create a Python environment in the documented supported version range.",
+            "status": "verified",
+            "note": "The current README specifies Python >=3.11,<3.14, a CPU backend, CLI/Python use and the named ONNX download. DiffSplat independently implements rembg.new_session(model_name=...) and rembg.remove(...), including birefnet-general as an explicit selectable model, then writes RGBA files. This establishes an implemented setup route, not a fresh local test.",
             "source_urls": [
-              "https://github.com/danielgatis/rembg/blob/dcced408dca80d7bbe74f86c60cd36940129014f/README.md",
-              "https://pypi.org/project/rembg/",
-              "https://github.com/danielgatis/rembg"
+              "https://github.com/danielgatis/rembg",
+              "https://github.com/chenguolin/DiffSplat/blob/a99d75707541009283bc5c073f1a07b5add41d00/extensions/rembg_and_center.py"
             ]
           },
           "maintenance": {
@@ -25294,20 +25407,21 @@
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "Inspected DiffSplat image-preparation code: it imports rembg, creates a selected-model session, removes backgrounds and saves the alpha-bearing output for 3D preparation. This is an actual independent integration, not a directory link; it does not establish the fidelity of every model option.",
             "source_urls": [
-              "https://github.com/danielgatis/rembg/blob/dcced408dca80d7bbe74f86c60cd36940129014f/README.md",
-              "https://github.com/danielgatis/rembg/issues"
-            ]
+              "https://github.com/chenguolin/DiffSplat/blob/a99d75707541009283bc5c073f1a07b5add41d00/extensions/rembg_and_center.py"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Each downloaded segmentation model has independent terms; optional hosted APIs are separate.",
+            "status": "verified",
+            "note": "The scoped route uses the MIT rembg package and the identified BiRefNet general-epoch_244 model. BiRefNet has a complete MIT software grant, an official MIT model card and a maintainer clarification covering the weights. CPU ONNX inference requires local downloads/compute, with no required paid API or proprietary host. This does not clear other models or hosted sessions.",
             "source_urls": [
-              "https://github.com/danielgatis/rembg/blob/dcced408dca80d7bbe74f86c60cd36940129014f/README.md",
               "https://github.com/danielgatis/rembg/blob/main/LICENSE.txt",
-              "https://github.com/danielgatis/rembg"
+              "https://github.com/danielgatis/rembg/blob/main/rembg/sessions/birefnet_general.py",
+              "https://huggingface.co/ZhengPeng7/BiRefNet",
+              "https://github.com/ZhengPeng7/BiRefNet/issues/316#issuecomment-5120372022"
             ]
           }
         },
@@ -25315,10 +25429,7 @@
         "record_sha256": "a8c17717d85b2f542a6338c606b9715270a88f0ef8aead9476bbc2688c41d8a4"
       },
       "evidence_gaps": [
-        "results",
-        "setup",
-        "independent_use",
-        "dependencies"
+        "results"
       ]
     },
     {
@@ -26350,9 +26461,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Quality remains unverified. The complete updated license was reviewed: adapter code is MIT, while newly added artwork retains separate rights.",
+        "scope": "The open-source Inkscape MCP adapter for AI-directed editable SVG authoring and export. The Night Atlas example artwork is excluded from the software grant.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
@@ -26389,14 +26500,23 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: LICENSES.md",
+            "url": "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/tests/fixtures/night_atlas/LICENSES.md"
+          },
+          {
+            "title": "Reviewed evidence: dcc-mcp-inkscape",
+            "url": "https://github.com/dcc-mcp/dcc-mcp-inkscape"
           }
         ],
         "checks": {
           "license": {
             "status": "verified",
-            "note": "The complete current MIT software license is byte-identical to the previously archived full-text review. This verifies the repository software grant; model, bundled-asset and service terms are addressed separately.",
+            "note": "Read the entire updated license and linked artwork notice. The adapter code and regression harness retain the MIT grant. Night Atlas vector plans are explicitly excluded; their repository test/review permission is not a general reuse license. This scope covers the software, not redistribution of those example designs.",
             "source_urls": [
-              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/31d4d643d233f7fcf855d388cb04764135bb92e0/LICENSE"
+              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/LICENSE",
+              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/tests/fixtures/night_atlas/LICENSES.md"
             ]
           },
           "results": {
@@ -26434,12 +26554,10 @@
           },
           "dependencies": {
             "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. MIT bridge; Inkscape, fonts, gateway/client components and any external model retain separate terms.",
+            "note": "Current documentation names Inkscape 1.4, a controller Python environment, DCC-MCP Core and a selected gateway. macOS execution is not validated. Fonts retain their own licenses; Night Atlas artwork is not broadly licensed for reuse. Independent setup and selected AI gateway/model terms still need verification.",
             "source_urls": [
-              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/31d4d643d233f7fcf855d388cb04764135bb92e0/README.md",
-              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/LICENSE",
-              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/README.md",
-              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/install.md"
+              "https://github.com/dcc-mcp/dcc-mcp-inkscape",
+              "https://github.com/dcc-mcp/dcc-mcp-inkscape/blob/main/tests/fixtures/night_atlas/LICENSES.md"
             ]
           }
         },
@@ -27428,12 +27546,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Collaborating with an image-aware agent while retaining manual control over layers and undo history.",
         "caveats": [
           "Source review only; not installed or run.",
-          "GPL-3.0 native Rust editor; AI model choice stays with the external agent and optional learned-selection provider. Supported PSD structures remain editable, while unsupported structures may open as protected previews. Model costs, host compatibility and complete color-management behavior need further review."
+          "GPL-3.0 native Rust editor; AI model choice stays with the external agent and optional learned-selection provider. Supported PSD structures remain editable, while unsupported structures may open as protected previews. Model costs, host compatibility and complete color-management behavior need further review.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -27446,7 +27565,7 @@
           }
         ],
         "experimental_reason": {
-          "text": "The current 0.2 release explicitly identifies the editor as an experimental prerelease with changing features, APIs and project structure; full Photoshop compatibility and color management remain future work.",
+          "text": "The current 0.25 release is explicitly described as experimental, with changing features, APIs and project structure. This applies to the editor release, not merely an optional feature.",
           "source_urls": [
             "https://github.com/Deftr0y/PeerBrush/blob/main/README.md"
           ]
@@ -27636,17 +27755,16 @@
       ],
       "platform_mentions": [],
       "quality_assessment": {
-        "tier": "ready_to_try",
+        "tier": "recommended",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Ready to try for Small-model still-image depth maps: license, setup, maintenance, independent integration and dependency terms are supported. Creative-result review remains pending.",
-        "scope": "Relative-depth maps from still images using Depth Anything V2 Small / Small-hf. Metric-depth variants, larger non-commercial checkpoints, the Gradio service and video temporal consistency are outside this assessment.",
+        "checked_on": "2026-10-13",
+        "summary": "Recommended for scoped still-image relative-depth guidance: all six checks have cited support, including a reviewed Small-model evaluation and independent inference implementations.",
+        "scope": "Depth Anything V2 Small / Small-hf relative depth from still images for draft depth masks and depth-guided creative editing. Excludes metric reconstruction, larger non-commercial checkpoints and temporally stable video.",
         "caveats": [
-          "Source review only; AI Media Scout did not install or execute this software.",
-          "Verified means the cited evidence supports the check, not a guarantee on every platform or model variant.",
-          "Relative depth does not establish physical scale, printable geometry or video temporal stability.",
-          "OpenCV and Transformers/Pillow resizing can yield different predictions; the upstream README documents this.",
-          "Larger and metric model terms must be reviewed separately. Maintenance is sparse; this is not an assurance of rapid support."
+          "Source review only; AI Media Scout did not install or execute the model.",
+          "DA-2K measures sparse depth ordering, not dense geometric accuracy, final compositing quality or video consistency. Inspect depth edges before using them in artwork.",
+          "Small is not best on every benchmark. Larger and metric variants have separate terms and unresolved questions; this assessment does not cover them.",
+          "Upstream development is sparse, requirements are not fully pinned, and the support sample is bounded."
         ],
         "sources": [
           {
@@ -27719,12 +27837,10 @@
             ]
           },
           "results": {
-            "status": "documented",
-            "note": "The primary paper reports a Small-model DA-2K evaluation with annotated depth pairs; it also explains why sparse depth accuracy does not establish dense reconstruction quality. This pass did not assess finished compositing/parallax outputs. Separate Large-model reproduction questions remain open and are not proof that Small inference fails. Creative-result verification is therefore still pending.",
+            "status": "verified",
+            "note": "Reviewed the paper methods, Small-model tables and limitations. DA-2K has 1,000 images and 2,000 manually checked depth pairs across eight scenarios; ViT-S obtains 95.3% pair-order accuracy. This supports relative-depth guidance for draft image editing. The authors explain that sparse ordering does not establish dense reconstruction accuracy, and Small does not improve every legacy benchmark. No finished composite or local runtime test is claimed.",
             "source_urls": [
-              "https://arxiv.org/html/2406.09414v2",
-              "https://github.com/DepthAnything/Depth-Anything-V2/issues/280",
-              "https://github.com/DepthAnything/Depth-Anything-V2/issues/281"
+              "https://arxiv.org/html/2406.09414v2"
             ]
           },
           "setup": {
@@ -27769,9 +27885,7 @@
         "basis_edition": "2026-10-01-r2",
         "record_sha256": "6247ab3cf80aebf5c546ee78152e3ac23e53ef5dc43fd1293e129cf5801c08ea"
       },
-      "evidence_gaps": [
-        "results"
-      ]
+      "evidence_gaps": []
     },
     {
       "id": "github:diffusionstudio/lottie",
@@ -34249,14 +34363,15 @@
       ],
       "platform_mentions": [],
       "quality_assessment": {
-        "tier": "experimental",
+        "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-12",
-        "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
-        "scope": "Drafting animated explanatory diagrams with editable keyframes and video/vector exports.",
+        "checked_on": "2026-10-13",
+        "summary": "Quality unverified replaces Experimental: the cited caution concerns ongoing cleanup and bug fixing, which does not alone establish a prototype or unstable whole application.",
+        "scope": "Current Excalimate browser animation editing and optional MCP-assisted authoring. Quality evidence remains incomplete.",
         "caveats": [
-          "Source review only; not installed or run.",
-          "MIT application; external AI agent required. Current README and website disagree on tool counts, so no count-based capability claim is adopted. Browser export and HTTP/stdio preview behavior differ."
+          "Source review only; no app was run or animation judged.",
+          "The maintainer warns about ongoing cleanup and bugs. That remains relevant, but AI-assisted development and routine bug fixing do not establish the Experimental criterion.",
+          "Setup reproduction, selected agent/service terms and contextual output quality still need evidence."
         ],
         "sources": [
           {
@@ -34268,12 +34383,6 @@
             "url": "https://github.com/excalimate/excalimate/blob/main/LICENSE"
           }
         ],
-        "experimental_reason": {
-          "text": "The current README explicitly cautions that code cleanup and bug fixing are still ongoing for this editor; the selected AI-assisted animation workflow needs validation before dependable use.",
-          "source_urls": [
-            "https://github.com/excalimate/excalimate/blob/main/README.md"
-          ]
-        },
         "checks": {
           "license": {
             "status": "verified",
@@ -35330,14 +35439,17 @@
         "Linux"
       ],
       "quality_assessment": {
-        "tier": "unverified",
+        "tier": "recommended",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Recommended for human-corrected masks: the reviewed SAM 2.1 evaluation, independent predictor integration, setup, maintenance and checkpoint terms support all six checks.",
+        "scope": "Official SAM 2.1 Large predictor for prompted image masks and short-shot video mask propagation, with manual correction for compositing/rotoscoping preparation. Excludes unattended long-video processing, shot changes and third-party wrapper stability.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Source review only; no model or demo was run by AI Media Scout.",
+          "Shot changes, long occlusions, similar objects and fast thin details can break tracking. Inspect every mask sequence and add corrective prompts.",
+          "Long videos can exceed GPU memory even with offloading; the reviewed support history does not establish a universal clip length or VRAM requirement.",
+          "The independent ComfyUI wrapper labels its own UI testing-stage and omits mask postprocessing. That wrapper is evidence of integration, not a recommendation for its release quality.",
+          "Substantive upstream fixes are older; a bounded support review is not a guarantee of compatibility with every current PyTorch/CUDA version."
         ],
         "sources": [
           {
@@ -35371,6 +35483,42 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/facebookresearch/sam2/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 2408.00714v2",
+            "url": "https://arxiv.org/html/2408.00714v2"
+          },
+          {
+            "title": "Reviewed evidence: INSTALL.md",
+            "url": "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md"
+          },
+          {
+            "title": "Reviewed evidence: nodes.py",
+            "url": "https://github.com/kijai/ComfyUI-segment-anything-2/blob/main/nodes.py"
+          },
+          {
+            "title": "Reviewed evidence: 722d1d15111c689908aeeb82d49a57780aac5153",
+            "url": "https://github.com/facebookresearch/sam2/commit/722d1d15111c689908aeeb82d49a57780aac5153"
+          },
+          {
+            "title": "Reviewed evidence: 196",
+            "url": "https://github.com/facebookresearch/sam2/issues/196"
+          },
+          {
+            "title": "Reviewed evidence: 264",
+            "url": "https://github.com/facebookresearch/sam2/issues/264"
+          },
+          {
+            "title": "Reviewed evidence: readme.md",
+            "url": "https://github.com/kijai/ComfyUI-segment-anything-2/blob/main/readme.md"
+          },
+          {
+            "title": "Reviewed evidence: sam2#license",
+            "url": "https://github.com/facebookresearch/sam2#license"
+          },
+          {
+            "title": "Reviewed evidence: LICENSE_cctorch",
+            "url": "https://github.com/facebookresearch/sam2/blob/main/LICENSE_cctorch"
           }
         ],
         "checks": {
@@ -35382,58 +35530,55 @@
             ]
           },
           "results": {
-            "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The repository links image/video notebooks, Colab examples and an official interactive demo.",
+            "status": "verified",
+            "note": "Reviewed the revised paper, which explicitly evaluates SAM 2.1. Interactive tests simulate three corrective clicks per selected frame across nine densely annotated datasets and report J&F; the offline average is 80.3. Appendix C identifies shot-change, occlusion, crowd and thin-detail failures. This supports manually corrected mask preparation, not final automatic rotoscoping or guaranteed runtime.",
             "source_urls": [
-              "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/README.md",
-              "https://github.com/facebookresearch/sam2"
+              "https://arxiv.org/html/2408.00714v2"
             ]
           },
           "setup": {
-            "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Use Python >=3.10 with PyTorch >=2.5.1 and torchvision >=0.20.1.",
+            "status": "verified",
+            "note": "The official README and INSTALL guide specify Python >=3.10, PyTorch >=2.5.1, torchvision >=0.20.1, matching CUDA tooling, checkpoint/config pairs and image/video predictor examples. Inspected independent nodes load SAM 2.1 variants, add point prompts and propagate masks. Kernel/postprocessing and wrapper limitations are explicitly disclosed.",
             "source_urls": [
-              "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/README.md",
-              "https://github.com/facebookresearch/sam2"
+              "https://github.com/facebookresearch/sam2",
+              "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md",
+              "https://github.com/kijai/ComfyUI-segment-anything-2/blob/main/nodes.py"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "History sample includes 2024-12-16: remove `.pin_memory()` in `obj_pos` of `SAM2Base` to resolve and error in MPS (#495). This is evidence of a change, not a verified support or reliability outcome. Sampled discussion (open): Verify evals on Papers with Code. User reports are not confirmed reproductions by this review.",
+            "status": "verified",
+            "note": "The history contains concrete fixes for CPU-state offloading, MPS pin-memory errors and multi-object prediction. The current support sample includes memory-growth and two-hour-video questions; these remain relevant limits. The evidence supports maintained predictor functionality within a bounded short-shot workflow, without claiming broad current-device validation.",
             "source_urls": [
+              "https://github.com/facebookresearch/sam2/commit/722d1d15111c689908aeeb82d49a57780aac5153",
               "https://github.com/facebookresearch/sam2/commit/2b90b9f5ceec907a1c18123530e92e794ad901a4",
-              "https://github.com/facebookresearch/sam2/issues",
-              "https://github.com/facebookresearch/sam2/issues/773"
+              "https://github.com/facebookresearch/sam2/issues/196",
+              "https://github.com/facebookresearch/sam2/issues/264"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "The inspected kijai ComfyUI implementation loads SAM 2.1 checkpoints/configs and performs prompted image/video inference, including add_new_points_or_box and propagate_in_video. Its README describes a functional testing-stage wrapper with disabled postprocessing. This is independent integration evidence for the predictor, with wrapper maturity kept separate.",
             "source_urls": [
-              "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/README.md",
-              "https://github.com/facebookresearch/sam2/issues"
-            ]
+              "https://github.com/kijai/ComfyUI-segment-anything-2/blob/main/nodes.py",
+              "https://github.com/kijai/ComfyUI-segment-anything-2/blob/main/readme.md"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. The repository states Apache-2.0 for SAM 2 code and checkpoints; dependency and example-asset terms remain separate.",
+            "status": "verified",
+            "note": "The complete Apache-2.0 software grant and upstream license section explicitly cover official SAM 2 checkpoints. The optional connected-component code has a separately reviewed BSD-3-Clause license. The local Python predictor requires no paid API; NVIDIA acceleration needs the applicable CUDA stack and local compute. Web-demo fonts, third-party converted weights and training-dataset rights are outside this route.",
             "source_urls": [
-              "https://github.com/facebookresearch/sam2/blob/2b90b9f5ceec907a1c18123530e92e794ad901a4/README.md",
+              "https://github.com/facebookresearch/sam2#license",
               "https://github.com/facebookresearch/sam2/blob/main/LICENSE",
-              "https://github.com/facebookresearch/sam2"
+              "https://github.com/facebookresearch/sam2/blob/main/LICENSE_cctorch",
+              "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md"
             ]
           }
         },
         "basis_edition": "2026-10-01-r2",
         "record_sha256": "fc87cd977e7411d41cc5c10ae22f02275c7a9b659d00cae03ae2b56f9af3a0ba"
       },
-      "evidence_gaps": [
-        "results",
-        "setup",
-        "maintenance",
-        "independent_use",
-        "dependencies"
-      ]
+      "evidence_gaps": []
     },
     {
       "id": "github:faisal8143/shotloom",
@@ -35956,13 +36101,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -37162,12 +37308,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Drafting generated shots and finishing them alongside subtitles and narration in a local timeline.",
         "caveats": [
           "Source review only; not installed or run.",
-          "MIT application, with upstream OpenReel attribution and separate GPL FFmpeg. Documented AI generation uses RTX 50-series NVFP4, recommended 16 GB VRAM and 64 GB RAM; ComfyUI/LTX/Gemma weights must be obtained separately under their terms."
+          "MIT application, with upstream OpenReel attribution and separate GPL FFmpeg. Documented AI generation uses RTX 50-series NVFP4, recommended 16 GB VRAM and 64 GB RAM; ComfyUI/LTX/Gemma weights must be obtained separately under their terms.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -37180,7 +37327,7 @@
           }
         ],
         "experimental_reason": {
-          "text": "The current editor is explicitly a 0.1.0 preview under development, with features and UI still being refined for the selected local generation/editing workflow.",
+          "text": "The current 0.3.0 preview is explicitly under development, with features and interface still being refined for the selected local generation/editing workflow.",
           "source_urls": [
             "https://github.com/flameblade-studio/flameblade-cut/blob/main/README.md"
           ]
@@ -40862,12 +41009,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Managing draft product stories or interview edits with reviewable candidate versions and cost records.",
         "caveats": [
           "Source review only; not installed or run.",
-          "MIT application; Apple Silicon route with uv, Node 22+ and FFmpeg. Local ASR weights and configured generation providers retain separate terms. Synthetic test footage does not demonstrate model output quality."
+          "MIT application; Apple Silicon route with uv, Node 22+ and FFmpeg. Local ASR weights and configured generation providers retain separate terms. Synthetic test footage does not demonstrate model output quality.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -42368,13 +42516,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software licensing and a concrete creative AI use are supported. The remaining checks do not establish a recommendation.",
         "scope": "Reviewing a circuit for an interactive artwork and investigating fit between a board and its enclosure.",
         "caveats": [
           "Documentation review only; AI Media Scout did not install or run this software.",
           "AI explanations do not replace KiCad checks or electrical/manufacturing review. It does not autonomously validate a safe or manufacturable board.",
-          "An earlier library reassessment applies to a different published record and was not carried forward."
+          "An earlier library reassessment applies to a different published record and was not carried forward.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -43919,11 +44068,11 @@
       ],
       "platform_mentions": [],
       "quality_assessment": {
-        "tier": "unverified",
+        "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Experimental for the explicitly documented current testing/unfinished software scope; the existing missing evidence remains open.",
+        "scope": "The current source-only agent-controlled video editing engine.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
@@ -43949,8 +44098,18 @@
           {
             "title": "Reviewed change: engine: native GPU video effect stack + adjustment layers",
             "url": "https://github.com/gtwatts/ferrocut/commit/701b88f0991a6f9a5fa7c9123b065c60c6904079"
+          },
+          {
+            "title": "Current documented software stage",
+            "url": "https://github.com/gtwatts/ferrocut"
           }
         ],
+        "experimental_reason": {
+          "text": "The maintainer explicitly describes version 0.0.1 as early software with changing interfaces and no release. The status section also identifies unfinished editing operations and untested platforms; this is current software-stage evidence, not a star-count judgment.",
+          "source_urls": [
+            "https://github.com/gtwatts/ferrocut"
+          ]
+        },
         "checks": {
           "license": {
             "status": "verified",
@@ -47407,12 +47566,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -51205,9 +51365,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Independent video interpolation is now evidenced, but version-specific quality, setup, support and weight terms remain incomplete.",
+        "scope": "RIFE frame interpolation for owned video, with checkpoint/version-specific output review still required; no blanket approval of newer model families or extrapolation.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
@@ -51248,6 +51408,10 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/hzwer/ECCV2022-RIFE/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 326",
+            "url": "https://github.com/hzwer/ECCV2022-RIFE/issues/326"
           }
         ],
         "checks": {
@@ -51260,9 +51424,9 @@
           },
           "results": {
             "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The repository links video examples and command-line inference instructions.",
+            "note": "The independent comparison reports checkpoint-dependent behavior but provides no controlled contextual output assessment sufficient for this review. Paper evaluations and repository examples were not generalized to all later RIFE checkpoints.",
             "source_urls": [
-              "https://github.com/hzwer/ECCV2022-RIFE/blob/5d8adbdd40e12c2c8f91930eff838aebe561c086/README.md",
+              "https://github.com/hzwer/ECCV2022-RIFE/issues/326",
               "https://github.com/hzwer/ECCV2022-RIFE"
             ]
           },
@@ -51285,12 +51449,12 @@
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "An independent user reports testing interpolation on their own videos, comparing v2.3 against later checkpoints and running the RIFE.py training path before encountering a different training-interface problem. This is concrete first-hand use, not a reproduction of every current model or the original paper benchmark.",
             "source_urls": [
-              "https://github.com/hzwer/ECCV2022-RIFE/blob/5d8adbdd40e12c2c8f91930eff838aebe561c086/README.md",
-              "https://github.com/hzwer/ECCV2022-RIFE/issues"
-            ]
+              "https://github.com/hzwer/ECCV2022-RIFE/issues/326"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
             "status": "documented",
@@ -51309,7 +51473,6 @@
         "results",
         "setup",
         "maintenance",
-        "independent_use",
         "dependencies"
       ]
     },
@@ -59472,12 +59635,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -70470,11 +70634,11 @@
       ],
       "platform_mentions": [],
       "quality_assessment": {
-        "tier": "unverified",
+        "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Experimental for the explicitly documented current testing/unfinished software scope; the existing missing evidence remains open.",
+        "scope": "The R3 single-machine source-test build for AI storyboards and media workflows.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
@@ -70504,8 +70668,18 @@
           {
             "title": "Release history",
             "url": "https://github.com/lnblfkj-del/Dralo-Studio/releases"
+          },
+          {
+            "title": "Current documented software stage",
+            "url": "https://github.com/lnblfkj-del/dralo-studio"
           }
         ],
+        "experimental_reason": {
+          "text": "The current README identifies the R3 source distribution as an internal testing build, says model/platform acceptance is incomplete and requires a reviewed database upgrade path. This label is scoped to that current test build.",
+          "source_urls": [
+            "https://github.com/lnblfkj-del/dralo-studio"
+          ]
+        },
         "checks": {
           "license": {
             "status": "verified",
@@ -70680,12 +70854,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Prototyping a narrated story with licensed sounds and permitted personal-voice references.",
         "caveats": [
           "Source review only; not installed or run.",
-          "MIT application; native Apple Silicon path and separate Kokoro/Qwen/Whisper weights. The sample audio demonstrates Kokoro only; personal-voice integration was tested with a simulated backend, and real M1 cloning/listening confirmation remains pending."
+          "MIT application; native Apple Silicon path and separate Kokoro/Qwen/Whisper weights. The sample audio demonstrates Kokoro only; personal-voice integration was tested with a simulated backend, and real M1 cloning/listening confirmation remains pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -73253,12 +73428,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -77014,12 +77190,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -77665,12 +77842,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -87669,12 +87847,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Investigating a trainable restoration pipeline for rendered reconstruction views.",
         "caveats": [
           "Source review only; not installed or run.",
-          "MIT implementation; SD-Turbo weights use separate Stability terms. The repository has no trained checkpoint or evaluation results. Training needs more than the maintainer’s 6 GB GPU; no ready-to-use restoration model is supplied."
+          "MIT implementation; SD-Turbo weights use separate Stability terms. The repository has no trained checkpoint or evaluation results. Training needs more than the maintainer’s 6 GB GPU; no ready-to-use restoration model is supplied.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -88986,12 +89165,13 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Result, setup and independent-use evidence are now supported for Nerfacto; unresolved current stack and dependency details keep overall quality unverified.",
+        "scope": "Nerfacto reconstruction and novel-view rendering from owned posed image captures, considering the version-pinned NerfBaselines implementation. No claim of general current-GPU installation or print-ready geometry.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Source review only; no scene was trained or rendered.",
+          "The independent integration pins an older Nerfstudio revision and CUDA/PyTorch environment; it does not validate the latest release on new GPUs.",
+          "Current reports describe RTX 5070 installation and COLMAP vocabulary-tree incompatibilities. Novel-view artifacts and dataset rights remain workflow-specific."
         ],
         "sources": [
           {
@@ -89029,6 +89209,26 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/nerfstudio-project/nerfstudio/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 2302.04264v4",
+            "url": "https://arxiv.org/html/2302.04264v4"
+          },
+          {
+            "title": "Reviewed evidence: nerfstudio.py",
+            "url": "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio.py"
+          },
+          {
+            "title": "Reviewed evidence: nerfstudio_spec.py",
+            "url": "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio_spec.py"
+          },
+          {
+            "title": "Reviewed evidence: 3732",
+            "url": "https://github.com/nerfstudio-project/nerfstudio/issues/3732"
+          },
+          {
+            "title": "Reviewed evidence: installation.md",
+            "url": "https://github.com/nerfstudio-project/nerfstudio/blob/main/docs/quickstart/installation.md"
           }
         ],
         "checks": {
@@ -89040,46 +89240,44 @@
             ]
           },
           "results": {
-            "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The repository links interactive viewers and the provided poster dataset workflow.",
+            "status": "verified",
+            "note": "Reviewed the seven-scene Mip-NeRF360 comparison and ablations: 7/8 training views, 1/8 held-out views, downsampled inputs and 5K/70K training steps. Nerfacto reports 27.98 PSNR at 70K but trails Mip-NeRF360; the paper explains why nearby-view metrics miss floaters and aliasing. This supports bounded novel-view studies, not reliable distant geometry or mesh fabrication.",
             "source_urls": [
-              "https://github.com/nerfstudio-project/nerfstudio/blob/50e0e3c70c775e89333256213363badbf074f29d/README.md",
-              "https://github.com/nerfstudio-project/nerfstudio"
+              "https://arxiv.org/html/2302.04264v4"
             ]
           },
           "setup": {
-            "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Follow the NVIDIA/CUDA and PyTorch prerequisites, including tiny-cuda-nn where required.",
+            "status": "verified",
+            "note": "NerfBaselines supplies an actual Nerfstudio training/rendering adapter and a pinned environment: Python 3.10, PyTorch 2.3.0, CUDA 11.8 and source revision 3a90cb5. Its registry marks supported datasets working/reproducing. This is version-bounded reproduction evidence; it does not remove newer COLMAP or Blackwell setup issues.",
             "source_urls": [
-              "https://github.com/nerfstudio-project/nerfstudio/blob/50e0e3c70c775e89333256213363badbf074f29d/README.md",
-              "https://github.com/nerfstudio-project/nerfstudio"
+              "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio.py",
+              "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio_spec.py"
             ]
           },
           "maintenance": {
             "status": "documented",
-            "note": "History sample includes 2025-07-29: Add image tiling option to ColmapDataParser to use less memory (#3685). This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: v1.1.5. Sampled discussion (open): COLMAP vocab tree needs to be converted to Faiss. User reports are not confirmed reproductions by this review.",
+            "note": "Current history fixes variable-resolution sampling, image-tiling memory use and viewer integration. However, open reports describe recent COLMAP vocabulary-tree format changes and RTX 5070/CUDA/tiny-cuda-nn installation failures. A current end-to-end supported stack was not established; old pinned reproduction does not close that gap.",
             "source_urls": [
               "https://github.com/nerfstudio-project/nerfstudio/commit/50e0e3c70c775e89333256213363badbf074f29d",
-              "https://github.com/nerfstudio-project/nerfstudio/issues",
-              "https://github.com/nerfstudio-project/nerfstudio/releases",
-              "https://github.com/nerfstudio-project/nerfstudio/issues/3664"
+              "https://github.com/nerfstudio-project/nerfstudio/issues/3664",
+              "https://github.com/nerfstudio-project/nerfstudio/issues/3732"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "NerfBaselines implements Nerfstudio training, camera handling and rendering and publishes a versioned environment and per-dataset reproduction status. This is a separately maintained evaluation integration, not a popularity measure or a paper link alone.",
             "source_urls": [
-              "https://github.com/nerfstudio-project/nerfstudio/blob/50e0e3c70c775e89333256213363badbf074f29d/README.md",
-              "https://github.com/nerfstudio-project/nerfstudio/issues"
-            ]
+              "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio.py",
+              "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio_spec.py"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
             "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Methods, pretrained components and captured datasets retain their own terms.",
+            "note": "The local route identifies COLMAP, tiny-cuda-nn, PyTorch/CUDA, rendering and evaluation dependencies, without a mandatory paid hosted service. This pass did not complete the component/model terms review for the exact pinned environment. Training-data rights and evaluation weights are not covered merely by Nerfstudio Apache-2.0.",
             "source_urls": [
-              "https://github.com/nerfstudio-project/nerfstudio/blob/50e0e3c70c775e89333256213363badbf074f29d/README.md",
-              "https://github.com/nerfstudio-project/nerfstudio/blob/main/LICENSE",
-              "https://github.com/nerfstudio-project/nerfstudio"
+              "https://github.com/nerfbaselines/nerfbaselines/blob/main/nerfbaselines/methods/nerfstudio_spec.py",
+              "https://github.com/nerfstudio-project/nerfstudio/blob/main/docs/quickstart/installation.md"
             ]
           }
         },
@@ -89087,10 +89285,7 @@
         "record_sha256": "bb803ff18e335db32e200f381548cdd51dfb4f24d7ba3c8c1eef412d6b79de49"
       },
       "evidence_gaps": [
-        "results",
-        "setup",
         "maintenance",
-        "independent_use",
         "dependencies"
       ]
     },
@@ -90666,9 +90861,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Independent CPU use is supported, while GPU black frames, RGBA artifacts, old release support and selected model terms keep quality unverified.",
+        "scope": "Legacy RIFE NCNN frame interpolation, distinguishing CPU execution from Vulkan GPU paths. RGBA sprite interpolation and long-video reliability are not established.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
@@ -90709,6 +90904,10 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/nihui/rife-ncnn-vulkan/blob/master/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 14",
+            "url": "https://github.com/nihui/rife-ncnn-vulkan/issues/14"
           }
         ],
         "checks": {
@@ -90729,29 +90928,28 @@
           },
           "setup": {
             "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Download the official release for the host platform; binaries and model files are included.",
+            "note": "Portable binaries and a CPU command are documented and a user reports CPU success. The report does not identify a complete currently supported checkpoint/runtime configuration; GPU black frames and RGBA support remain unresolved in the sampled issues.",
             "source_urls": [
-              "https://github.com/nihui/rife-ncnn-vulkan/blob/a7532fc3f9f8f008cd6eecd6f2ffe2a9698e0cf7/README.md",
-              "https://github.com/nihui/rife-ncnn-vulkan/blob/master/README.md"
+              "https://github.com/nihui/rife-ncnn-vulkan/issues/41",
+              "https://github.com/nihui/rife-ncnn-vulkan/issues/14"
             ]
           },
           "maintenance": {
             "status": "documented",
-            "note": "History sample includes 2022-10-23: implement cpu temporal tta for rife v4. This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: 20221029. Sampled discussion (open): GPU generates black image on Adreno 618/660 (Android/Termux). User reports are not confirmed reproductions by this review.",
+            "note": "The sampled implementation history ends in 2022 with temporal/spatial augmentation work. Open reports include GPU black frames and RGBA artifacts; a currently supported resolution was not established. Age alone does not imply Experimental, but old release availability cannot verify support.",
             "source_urls": [
               "https://github.com/nihui/rife-ncnn-vulkan/commit/a7532fc3f9f8f008cd6eecd6f2ffe2a9698e0cf7",
-              "https://github.com/nihui/rife-ncnn-vulkan/issues",
-              "https://github.com/nihui/rife-ncnn-vulkan/releases",
-              "https://github.com/nihui/rife-ncnn-vulkan/issues/41"
+              "https://github.com/nihui/rife-ncnn-vulkan/issues/41",
+              "https://github.com/nihui/rife-ncnn-vulkan/issues/14"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "A first-hand Termux/Android report distinguishes successful CPU interpolation from black GPU output on identified Adreno devices, using both supplied and other images. That is independent execution evidence with an explicit failed backend, not universal Vulkan compatibility.",
             "source_urls": [
-              "https://github.com/nihui/rife-ncnn-vulkan/blob/a7532fc3f9f8f008cd6eecd6f2ffe2a9698e0cf7/README.md",
-              "https://github.com/nihui/rife-ncnn-vulkan/issues"
-            ]
+              "https://github.com/nihui/rife-ncnn-vulkan/issues/41"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
             "status": "documented",
@@ -90770,7 +90968,6 @@
         "results",
         "setup",
         "maintenance",
-        "independent_use",
         "dependencies"
       ]
     },
@@ -90972,9 +91169,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Quality remains unverified: the open-source client is documented, but independent use, output quality and hosted-generation terms are unresolved.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Quality remains unverified: new promotion links do not resolve independent reproduction, output quality or hosted-generation terms. No concrete new software-stage evidence warrants Experimental.",
+        "scope": "The browser-based AI 3D/AR client and its documented generation service; no assessment of unrelated projects by the same author.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
@@ -91016,6 +91213,10 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/nirholas/3D-AR-Studio/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 3D-AR-Studio",
+            "url": "https://github.com/nirholas/3D-AR-Studio"
           }
         ],
         "checks": {
@@ -91056,10 +91257,9 @@
           },
           "independent_use": {
             "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "note": "The refreshed README adds promotion/share links and asks for stars. Those are not first-hand use or independent implemented integration. This bounded refresh did not establish an independent successful creative workflow.",
             "source_urls": [
-              "https://github.com/nirholas/3D-AR-Studio/blob/76c417d491d71dbc3fdb60fdc6476372adb16d03/README.md",
-              "https://github.com/nirholas/3D-AR-Studio/issues"
+              "https://github.com/nirholas/3D-AR-Studio"
             ]
           },
           "dependencies": {
@@ -98603,17 +98803,16 @@
         "Linux"
       ],
       "quality_assessment": {
-        "tier": "ready_to_try",
+        "tier": "recommended",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Ready to try for draft transcription: the five non-results checks are supported by source and independent implementation evidence. Final caption accuracy still requires a creative-output review.",
-        "scope": "Local Whisper transcription of recorded speech to draft text/subtitles, using released small or small.en weights and the documented Python/FFmpeg route. Excludes diarization, live latency guarantees and translation with turbo.",
+        "checked_on": "2026-10-13",
+        "summary": "Recommended for human-reviewed draft English transcripts: all six checks are supported, with long-form evaluation context and independent Small-model reproduction.",
+        "scope": "Released Whisper small / small.en for local English recorded-speech transcription and human-corrected draft subtitles using the documented Python/FFmpeg route. Excludes unattended publication, diarization, live latency and guaranteed word timing.",
         "caveats": [
-          "Source review only; AI Media Scout did not install or execute this software.",
-          "Verified means the cited evidence supports the check, not a guarantee on every platform or model variant.",
-          "Treat transcripts as editable drafts; hallucinations and uneven language performance are documented.",
-          "Published VRAM figures and independent benchmark memory measurements are not universal minimum requirements.",
-          "The independent reproduction uses an earlier pinned version; later fixes were reviewed as source history, not rerun."
+          "Source review only; no recording was transcribed by AI Media Scout.",
+          "The paper evaluates the released model family, not every current dependency combination. Small-model word error rates vary substantially by dataset.",
+          "Hallucinations, repetition, omitted words and timing errors require listening and correction before captions are published. This assessment does not certify other languages or translation.",
+          "The recent issue-endpoint sample consists mainly of pull requests and is not an exhaustive bug survey."
         ],
         "sources": [
           {
@@ -98675,6 +98874,10 @@
           {
             "title": "Output evaluation and limitations",
             "url": "https://github.com/openai/whisper/blob/main/model-card.md"
+          },
+          {
+            "title": "Reviewed evidence: whisper.pdf",
+            "url": "https://cdn.openai.com/papers/whisper.pdf"
           }
         ],
         "checks": {
@@ -98686,9 +98889,10 @@
             ]
           },
           "results": {
-            "status": "documented",
-            "note": "The model card documents transcription evaluations and known hallucination, repetition and language-dependent error risks. This pass has not compared generated captions against an authorized creative recording or independently reviewed a contextual caption sample; the output check remains pending.",
+            "status": "verified",
+            "note": "Reviewed long-form decoding, the seven evaluation datasets, Table 16 and the limitations section. Small records 4.2–22.3% English word error across those datasets; small.en records 4.6–21.9%. The varied talks, interview/broadcast and earnings-call material supports a draft transcription workflow with human correction, not error-free captions. The authors identify hallucinations, repetition and language-dependent errors.",
             "source_urls": [
+              "https://cdn.openai.com/papers/whisper.pdf",
               "https://github.com/openai/whisper/blob/main/model-card.md"
             ]
           },
@@ -98732,9 +98936,7 @@
         "basis_edition": "2026-10-01-r2",
         "record_sha256": "f0452545e01092f5279c3449abbf58f1ff361e8e329132bbac2fcc98ff186532"
       },
-      "evidence_gaps": [
-        "results"
-      ]
+      "evidence_gaps": []
     },
     {
       "id": "github:openfilm/openfilm",
@@ -103658,12 +103860,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -108254,14 +108457,16 @@
         "Windows"
       ],
       "quality_assessment": {
-        "tier": "unverified",
+        "tier": "ready_to_try",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Ready to try for scoped English narration: independent generation code and selected Turbo terms close the five non-results checks. Listening-quality evaluation remains pending.",
+        "scope": "Local Chatterbox Turbo English short-form draft narration with an authorized reference recording, using the official Turbo weights and documented Python route. Excludes Nano, multilingual V3, unattended long-form synthesis and hosted APIs.",
         "caveats": [
-          "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "Source review only; no speech was generated or listened to in this pass.",
+          "Use reference audio you are authorized to use. Weight licensing does not supply voice or recording permissions.",
+          "The independent UI implements chunking, but long-form continuity and final narration quality have not been evaluated.",
+          "Multilingual V3 pronunciation/default-voice issues and newer GPU installation constraints remain outside this Turbo assessment. The selected PyTorch build still needs to match the device."
         ],
         "sources": [
           {
@@ -108299,6 +108504,46 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/resemble-ai/chatterbox/blob/master/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: chatterbox-turbo",
+            "url": "https://huggingface.co/ResembleAI/chatterbox-turbo"
+          },
+          {
+            "title": "Reviewed evidence: longform_turbo_gui.py",
+            "url": "https://github.com/fLaMePr0oF/chatterbox-turbo-longform-ui/blob/main/longform_turbo_gui.py"
+          },
+          {
+            "title": "Reviewed evidence: README.md",
+            "url": "https://github.com/fLaMePr0oF/chatterbox-turbo-longform-ui/blob/main/README.md"
+          },
+          {
+            "title": "Reviewed evidence: v0.1.2",
+            "url": "https://github.com/resemble-ai/chatterbox/releases/tag/v0.1.2"
+          },
+          {
+            "title": "Reviewed evidence: 59bc590b3cad826e5d5987745bf6844627a21ad5",
+            "url": "https://github.com/resemble-ai/chatterbox/commit/59bc590b3cad826e5d5987745bf6844627a21ad5"
+          },
+          {
+            "title": "Reviewed evidence: 551",
+            "url": "https://github.com/resemble-ai/chatterbox/issues/551"
+          },
+          {
+            "title": "Reviewed evidence: 567",
+            "url": "https://github.com/resemble-ai/chatterbox/issues/567"
+          },
+          {
+            "title": "Reviewed evidence: 64",
+            "url": "https://github.com/resemble-ai/chatterbox/issues/64"
+          },
+          {
+            "title": "Reviewed evidence: 571",
+            "url": "https://github.com/resemble-ai/chatterbox/issues/571"
+          },
+          {
+            "title": "Reviewed evidence: tts_turbo.py",
+            "url": "https://github.com/resemble-ai/chatterbox/blob/master/src/chatterbox/tts_turbo.py"
           }
         ],
         "checks": {
@@ -108318,38 +108563,41 @@
             ]
           },
           "setup": {
-            "status": "documented",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified. First documented step: Use an isolated environment; the project reports testing Python 3.11 on Debian 11.",
+            "status": "verified",
+            "note": "The official Turbo card identifies its tested Python 3.11/Debian environment, model loader and audio-prompt generation. Inspected independent longform_turbo_gui.py loads ChatterboxTurboTTS and calls generate for narration chunks, with explicit PyTorch/CUDA requirements. This is an implemented reproduction route, not certification of every device or dependency release.",
             "source_urls": [
-              "https://github.com/resemble-ai/chatterbox/blob/5de7a54aa4e5e2baadb0182dde554908b48b85c2/README.md",
-              "https://github.com/resemble-ai/chatterbox"
+              "https://huggingface.co/ResembleAI/chatterbox-turbo",
+              "https://github.com/fLaMePr0oF/chatterbox-turbo-longform-ui/blob/main/longform_turbo_gui.py",
+              "https://github.com/fLaMePr0oF/chatterbox-turbo-longform-ui/blob/main/README.md"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "History sample includes 2026-07-21: Update ChatterboxNano (#542). This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: v0.1.2. Sampled discussion (open): Error when loading multilanguage model into cpu. User reports are not confirmed reproductions by this review.",
+            "status": "verified",
+            "note": "The reviewed history includes CPU/MPS support, safer weight storage, dependency compatibility work and updated model loading. The current support review identified V3 Danish/default-reference failures and Blackwell installation reports; these are disclosed rather than transferred to the scoped Turbo English path. Independent Turbo integration provides additional current usage context.",
             "source_urls": [
-              "https://github.com/resemble-ai/chatterbox/commit/5de7a54aa4e5e2baadb0182dde554908b48b85c2",
-              "https://github.com/resemble-ai/chatterbox/issues",
-              "https://github.com/resemble-ai/chatterbox/releases",
-              "https://github.com/resemble-ai/chatterbox/issues/472"
+              "https://github.com/resemble-ai/chatterbox/releases/tag/v0.1.2",
+              "https://github.com/resemble-ai/chatterbox/commit/59bc590b3cad826e5d5987745bf6844627a21ad5",
+              "https://github.com/resemble-ai/chatterbox/issues/551",
+              "https://github.com/resemble-ai/chatterbox/issues/567",
+              "https://github.com/resemble-ai/chatterbox/issues/64"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "The independent long-form UI author reports a narration workflow and publishes actual Turbo model loading, reference-audio handling, per-chunk generation and WAV assembly. Those implementation paths were inspected. The evidence establishes integration, not a successful listening assessment.",
             "source_urls": [
-              "https://github.com/resemble-ai/chatterbox/blob/5de7a54aa4e5e2baadb0182dde554908b48b85c2/README.md",
-              "https://github.com/resemble-ai/chatterbox/issues"
-            ]
+              "https://github.com/resemble-ai/chatterbox/issues/571",
+              "https://github.com/fLaMePr0oF/chatterbox-turbo-longform-ui/blob/main/longform_turbo_gui.py"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Check the selected Chatterbox variant and checkpoint terms separately; the reviewed repository code is MIT.",
+            "status": "verified",
+            "note": "The repository has a complete MIT software grant and the official Turbo model card declares MIT for the selected weights. The inspected loader downloads the named Turbo repository and applies local PerTh watermarking; a paid Resemble API is optional, not required. Python/PyTorch and local compute are required; reference voice and text rights remain separate.",
             "source_urls": [
-              "https://github.com/resemble-ai/chatterbox/blob/5de7a54aa4e5e2baadb0182dde554908b48b85c2/README.md",
               "https://github.com/resemble-ai/chatterbox/blob/master/LICENSE",
-              "https://github.com/resemble-ai/chatterbox"
+              "https://huggingface.co/ResembleAI/chatterbox-turbo",
+              "https://github.com/resemble-ai/chatterbox/blob/master/src/chatterbox/tts_turbo.py"
             ]
           }
         },
@@ -108357,11 +108605,7 @@
         "record_sha256": "723534ca50d3c36ccdaa2def54b0d261302ab9cef3434398259d4a60c7d2152e"
       },
       "evidence_gaps": [
-        "results",
-        "setup",
-        "maintenance",
-        "independent_use",
-        "dependencies"
+        "results"
       ]
     },
     {
@@ -114969,13 +115213,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -115260,13 +115505,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -117651,13 +117897,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -119056,12 +119303,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -121151,13 +121399,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -121302,13 +121551,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -122876,12 +123126,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-11",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Trying provider-assisted image edits with undoable layers in the required development host.",
         "caveats": [
           "Source review only; not installed or run.",
-          "MIT plugin; proprietary/third-party provider terms and costs separate. Requires Photon SDK v1 plus host modifications unavailable in stock 0.1.42."
+          "MIT plugin; proprietary/third-party provider terms and costs separate. Requires Photon SDK v1 plus host modifications unavailable in stock 0.1.42.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -126078,12 +126329,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -127007,9 +127259,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Independent art-file use is now supported. Output-save failures, selected-model terms and a contextual image-quality review remain open, so the label stays Quality unverified.",
+        "scope": "Local image upscaling and batch art-file processing in Upscayl 2.15.0; no assumption that every bundled or custom model has the same terms.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
@@ -127054,6 +127306,22 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/upscayl/upscayl/blob/main/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 1504",
+            "url": "https://github.com/upscayl/upscayl/issues/1504"
+          },
+          {
+            "title": "Reviewed evidence: 729ce04fd6e7e20ffdd4712aed1f9ad811e4e4b4",
+            "url": "https://github.com/upscayl/upscayl/commit/729ce04fd6e7e20ffdd4712aed1f9ad811e4e4b4"
+          },
+          {
+            "title": "Reviewed evidence: 1492",
+            "url": "https://github.com/upscayl/upscayl/issues/1492"
+          },
+          {
+            "title": "Reviewed evidence: 1510",
+            "url": "https://github.com/upscayl/upscayl/issues/1510"
           }
         ],
         "checks": {
@@ -127084,21 +127352,20 @@
           },
           "maintenance": {
             "status": "documented",
-            "note": "History sample includes 2026-03-27: Fix link display for macOS installation instructions. This is evidence of a change, not a verified support or reliability outcome. Latest sampled release: v2.15.0. Sampled discussion (closed): Upscayl results in black image. User reports are not confirmed reproductions by this review.",
+            "note": "The reviewed history includes language-selection and installation-documentation fixes. Current support reports describe failed output saving in 2.15.0 and batch path errors. An adequately supported resolution for the scoped batch workflow was not established; availability of a packaged release is insufficient.",
             "source_urls": [
-              "https://github.com/upscayl/upscayl/commit/a00d55fee90e0f9435d5eaa86e76700df8199af8",
-              "https://github.com/upscayl/upscayl/issues",
-              "https://github.com/upscayl/upscayl/releases",
-              "https://github.com/upscayl/upscayl/issues/362"
+              "https://github.com/upscayl/upscayl/commit/729ce04fd6e7e20ffdd4712aed1f9ad811e4e4b4",
+              "https://github.com/upscayl/upscayl/issues/1492",
+              "https://github.com/upscayl/upscayl/issues/1510"
             ]
           },
           "independent_use": {
-            "status": "unknown",
-            "note": "The bounded repository/support review did not establish independent successful creative use or a working integration. Stars, forks, directory listings and issue counts were not accepted as substitutes.",
+            "status": "verified",
+            "note": "A user describes upscaling batches of art files and subsequent sequential editing, with a concrete output-ordering problem and attempted filename workaround. This supports first-hand creative use, while not establishing image fidelity or every model/backend combination.",
             "source_urls": [
-              "https://github.com/upscayl/upscayl/blob/a00d55fee90e0f9435d5eaa86e76700df8199af8/README.md",
-              "https://github.com/upscayl/upscayl/issues"
-            ]
+              "https://github.com/upscayl/upscayl/issues/1504"
+            ],
+            "source_kind": "independent"
           },
           "dependencies": {
             "status": "documented",
@@ -127117,7 +127384,6 @@
         "results",
         "setup",
         "maintenance",
-        "independent_use",
         "dependencies"
       ]
     },
@@ -132524,12 +132790,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
-          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
+          "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -133652,12 +133919,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software license and creative AI relevance screened; full guide and quality checks remain pending.",
         "scope": "Prototyping web games and branching interactive films with editable project files.",
         "caveats": [
           "Source review only; not installed or run.",
-          "Apache-2.0 studio; no bundled AI model. Apple Silicon and Windows x64 builds are documented; Intel Mac/Linux packages remain on the roadmap. Separate media-provider keys and charges apply."
+          "Apache-2.0 studio; no bundled AI model. Apple Silicon and Windows x64 builds are documented; Intel Mac/Linux packages remain on the roadmap. Separate media-provider keys and charges apply.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -135008,13 +135276,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-12",
+        "checked_on": "2026-10-13",
         "summary": "Software licensing and a concrete creative AI use are supported. The remaining checks do not establish a recommendation.",
         "scope": "Building a mobile walkthrough of an AI-derived Gaussian scene and measuring device-specific performance.",
         "caveats": [
           "Documentation review only; AI Media Scout did not install or run this software.",
           "This SDK consumes AI-derived scene assets; it does not train a reconstruction model. Large-scene limits and backend differences need measurement.",
-          "An earlier library reassessment applies to a different published record and was not carried forward."
+          "An earlier library reassessment applies to a different published record and was not carried forward.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -135816,9 +136085,9 @@
       "quality_assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-13",
+        "summary": "Quality remains unverified. A fresh review found no maintainer answer to the official checkpoint-terms question; that dependency gap remains material.",
+        "scope": "Real-ESRGAN image restoration/upscaling with official pretrained checkpoints, without assuming the software license grants all checkpoint uses.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical."
@@ -135859,6 +136128,10 @@
           {
             "title": "Published license and dependency reference",
             "url": "https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE"
+          },
+          {
+            "title": "Reviewed evidence: 677",
+            "url": "https://github.com/xinntao/Real-ESRGAN/issues/677"
           }
         ],
         "checks": {
@@ -135871,10 +136144,9 @@
           },
           "results": {
             "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The README provides restoration comparisons, sample inputs and portable/Python routes.",
+            "note": "Current support includes an illustrated report of color artifacts after NCNN upscaling. This is a workflow-specific limitation, not a controlled assessment of every model; representative restoration fidelity and invented-detail behavior still need review.",
             "source_urls": [
-              "https://github.com/xinntao/Real-ESRGAN/blob/a4abfb2979a7bbff3f69f58f58ae324608821e27/README.md",
-              "https://github.com/xinntao/Real-ESRGAN"
+              "https://github.com/xinntao/Real-ESRGAN/issues/207"
             ]
           },
           "setup": {
@@ -135904,12 +136176,10 @@
             ]
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Code is BSD-3-Clause; model checkpoints and optional GFPGAN dependencies need separate terms checks.",
+            "status": "unknown",
+            "note": "Reviewed issue 677 and all returned comments: multiple users ask about official checkpoint use and redistribution, with no authorized maintainer clarification in that thread. The complete BSD-3-Clause software grant does not by itself resolve this explicit model-terms question. Converted weights and optional face-restoration models need separate review.",
             "source_urls": [
-              "https://github.com/xinntao/Real-ESRGAN/blob/a4abfb2979a7bbff3f69f58f58ae324608821e27/README.md",
-              "https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE",
-              "https://github.com/xinntao/Real-ESRGAN"
+              "https://github.com/xinntao/Real-ESRGAN/issues/677"
             ]
           }
         },
@@ -137459,12 +137729,13 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-11",
+        "checked_on": "2026-10-13",
         "summary": "Software licensing and a concrete creative AI use are supported. The remaining checks do not establish a recommendation.",
         "scope": "Trying the explicitly alpha-supported text-to-audio route and assembling reusable Foley node graphs.",
         "caveats": [
           "Documentation review only; AI Media Scout did not install or run this software.",
-          "Text-only low_vram does not apply to video. The pinned public upstream ignores staged_offload, despite the option appearing in templates. Muxing replaces the original audio; mixing is unfinished."
+          "Text-only low_vram does not apply to video. The pinned public upstream ignores staged_offload, despite the option appearing in templates. Muxing replaces the original audio; mixing is unfinished.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -138446,13 +138717,14 @@
       "quality_assessment": {
         "tier": "experimental",
         "method": "source-review",
-        "checked_on": "2026-10-10",
+        "checked_on": "2026-10-13",
         "summary": "Experimental for the specific, cited software-stage reason below; other evidence gaps remain explicit.",
         "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "October 13 stage review reconfirmed the cited current prototype/testing/unfinished scope. The six existing evidence-check findings remain unchanged; no new independent reproduction or output-quality pass is claimed."
         ],
         "sources": [
           {
@@ -140558,14 +140830,13 @@
       "quality_assessment": {
         "tier": "ready_to_try",
         "method": "source-review",
-        "checked_on": "2026-10-10",
-        "summary": "Ready to try for draft foreground masks: source terms, setup, substantive maintenance, independent use and model terms are supported. Edge fidelity remains unverified for finished artwork.",
+        "checked_on": "2026-10-13",
+        "summary": "Ready to try remains appropriate for general-model draft masks. The paper was reviewed, but its task-specific evaluated checkpoints do not establish the exact general-epoch_244 output quality.",
         "scope": "BiRefNet general image-foreground masks, using the documented model or the identified general-epoch_244 ONNX integration for draft cutouts. Excludes blanket approval of Portrait/HR variants, dynamic-resolution exports and unattended final vehicle/product masks.",
         "caveats": [
-          "Source review only; AI Media Scout did not install or execute this software.",
-          "Verified means the cited evidence supports the check, not a guarantee on every platform or model variant.",
-          "Inspect and correct edges before using a cutout in final work; thin and camouflaged structures are reported failure cases.",
-          "Use the documented preprocessing. This assessment does not validate arbitrary-resolution ONNX exports or every model-zoo checkpoint."
+          "Source review only; no model was installed or run.",
+          "The paper evaluates task-specific training and test sets. Its DIS training uses 600 epochs; it does not directly validate the independently integrated general-epoch_244 checkpoint.",
+          "Thin structures, low-contrast objects and changed preprocessing remain documented limitations. Human mask inspection is necessary before final cutouts."
         ],
         "sources": [
           {
@@ -140635,6 +140906,10 @@
           {
             "title": "Maintenance and support evidence",
             "url": "https://github.com/ZhengPeng7/BiRefNet/issues/315"
+          },
+          {
+            "title": "Reviewed evidence: 2401.03407v5",
+            "url": "https://arxiv.org/html/2401.03407v5"
           }
         ],
         "checks": {
@@ -140647,9 +140922,11 @@
           },
           "results": {
             "status": "documented",
-            "note": "The documentation provides examples, but finished-mask fidelity was not judged here. Independent users report missed thin structures and low-contrast objects, and altered resizing can degrade masks. Draft-mask use can be explored; a representative output review is still required before recommending finished cutouts.",
+            "note": "Reviewed the paper training protocols, DIS/HRSOD/COD tests, boundary/error metrics and qualitative comparison context. Its task-specific checkpoints and 1024-square evaluation preprocessing cannot be assumed to validate general-epoch_244. The general model card supplies an inference recipe and sample links without a matched contextual evaluation; exact-checkpoint edge fidelity remains pending.",
             "source_urls": [
+              "https://arxiv.org/html/2401.03407v5",
               "https://huggingface.co/ZhengPeng7/BiRefNet",
+              "https://github.com/danielgatis/rembg/blob/main/rembg/sessions/birefnet_general.py",
               "https://github.com/ZhengPeng7/BiRefNet/issues/315",
               "https://github.com/ZhengPeng7/BiRefNet/issues/318"
             ]
@@ -142768,10 +143045,10 @@
     "unassessed": "Evidence review pending"
   },
   "quality_counts": {
-    "recommended": 0,
-    "ready_to_try": 3,
-    "unverified": 517,
-    "experimental": 30
+    "recommended": 3,
+    "ready_to_try": 4,
+    "unverified": 512,
+    "experimental": 31
   },
   "editions": [
     {

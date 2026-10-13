@@ -124,7 +124,7 @@ allowed; unverified software licensing is not eligible for the library.
 
 ## Existing editions and ongoing review
 
-The October 10, 2026 follow-up source review covers all **486 existing library
+The October 10, 2026 follow-up source review covered all **486 existing library
 tools**, replacing the earlier keyword-based retrospective labels. The snapshot
 has **0 Recommended, 3 Ready to try, 463 Quality unverified and 20 Experimental**.
 Each entry has a current assessment with all six checks and citations. Depth
@@ -148,6 +148,27 @@ clarifications and primary evaluation context. It is not 486 exhaustive dependen
 independent-use or output evaluations. No discovered software was installed or run.
 Check-level statuses distinguish verified evidence, documented claims, unknowns and
 failures. The same criteria apply to old and new tools.
+
+The [October 13 follow-up](QUALITY_REVIEW_2026-10-13.md) refreshed sources for the
+expanded **550-tool** library and updated **50 assessments**: 18 deeper workflow
+follow-ups, all 30 existing Experimental decisions, and two newly documented
+testing-stage workflows. It closed 26 check-level gaps and changed nine labels.
+The resulting snapshot has **3 Recommended, 4 Ready to try, 512 Quality unverified
+and 31 Experimental**. The policy and tier thresholds did not change.
+
+The result reviews distinguish the selected checkpoint from related research.
+Depth Anything V2 Small and Whisper Small have applicable primary evaluations;
+the revised SAM 2 paper explicitly evaluates SAM 2.1. BiRefNet's task-specific
+paper results were not transferred to its general-epoch_244 checkpoint. That
+workflow remains Ready to try. Excalimate's routine cleanup caution did not
+establish the required software-stage reason, so its label became Quality
+unverified. Every recommendation retains its scope, date and limitations.
+
+The refresh archived current source material across the library; the 50 updated
+assessments identify the actual follow-up review depth. The remaining entries
+retain their prior assessments. There are still 547 pending tools, including
+four awaiting only result review. Collection coverage is not evidence that all
+dependencies, independent uses or creative outputs have been exhaustively reviewed.
 
 `config/quality_reviews.json` contains recipient-free curation metadata. `audits`
 records the date, edition identity and SHA-256 of each latest published record.

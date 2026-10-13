@@ -76,14 +76,21 @@ does not certify output quality, and a known failed result cannot use that tier.
 Stars help discovery; neither popularity nor a detailed guide proves quality.
 All eligible tools remain searchable, including emerging projects with few stars.
 
-The October 10, 2026 source review covers all **486 existing tools**: **0 Recommended,
-3 Ready to try, 463 Quality unverified and 20 Experimental**. It refreshes current
-documentation and complete license files, with bounded samples of releases,
-commits and support items. Each tool has six check results with citations and gaps.
-Depth Anything V2 Small, Whisper transcription and BiRefNet general masks are Ready
-to try for the stated workflows; their creative-result checks remain pending.
-This was source review, with no app installation or runtime testing. Original
-reports and sent receipts stay unchanged.
+The [October 13, 2026 evidence review](docs/QUALITY_REVIEW_2026-10-13.md) refreshed
+source snapshots for all **550 tools** and updated **50 scoped assessments**,
+including all 30 previous Experimental labels. It closed **26 individual evidence
+gaps**. The library now has **3 Recommended, 4 Ready to try, 512 Quality unverified
+and 31 Experimental** tools.
+
+Depth Anything V2 Small relative-depth guidance, Whisper human-reviewed draft
+English transcription and SAM 2.1 corrected masks are Recommended for their
+stated workflows. BiRefNet general masks, rembg with that model, ComfyUI with
+SDXL Base and Chatterbox Turbo English are Ready to try. Their specific output
+reviews remain pending. Recommendations use reviewed evaluations and independent
+integrations; no app was installed or run by AI Media Scout. Detailed citations,
+version limits and remaining work appear in each assessment and the review note.
+The other entries retain their evidence gaps; source collection alone does not
+change a label. Original reports and sent receipts stay unchanged.
 
 Research origin and old maturity descriptions no longer assign Experimental.
 Each Experimental assessment displays **Why Experimental** with a cited reason.
