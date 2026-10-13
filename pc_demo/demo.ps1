@@ -3,6 +3,7 @@ param(
     [string]$RunDirectory,
     [ValidateRange(-1,16)][int]$GpuId = -1,
     [string]$Storyboard,
+    [string]$InputImage,
     [ValidateRange(1,10000)][int]$Limit = 20,
     [switch]$Json
 )
@@ -17,6 +18,12 @@ $pythonCommand = if ($Action -in @('run','revise','verify')) {
 if (-not (Test-Path -LiteralPath $pythonCommand)) { throw 'Run setup first.' }
 $processArgs = @('-u', '-m', 'pc_demo', $Action)
 if ($Action -eq 'run') { $processArgs += @('--gpu-id', $GpuId.ToString()) }
+if ($InputImage) {
+    if ($Action -ne 'run') { throw '-InputImage is only valid with run; revise reuses saved inputs.' }
+    if ($InputImage.Contains('"')) { throw 'Invalid image path.' }
+    $resolvedImage = (Resolve-Path -LiteralPath $InputImage -ErrorAction Stop).Path
+    $processArgs += @('--input', ('"' + $resolvedImage + '"'))
+}
 if ($RunDirectory -and $Action -notin @('verify','revise')) { throw '-RunDirectory is only valid with verify or revise.' }
 if ($RunDirectory) {
     if ($RunDirectory.Contains('"')) { throw 'Invalid path.' }

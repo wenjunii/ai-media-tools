@@ -36,8 +36,15 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.10'
-      - name: PC guardrails without models or app downloads
-        run: python -m unittest discover -s tests -p test_pc_demo.py -v
+      - name: Install the reviewed image-test dependency only
+        shell: python
+        run: |
+          import json, pathlib, subprocess, sys
+          pillow = json.loads(pathlib.Path('pc_demo/runtime.lock.json').read_text())['pillow']
+          subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps',
+                          pillow['url'] + '#sha256=' + pillow['sha256']], check=True)
+      - name: PC guardrails and image tests without models or app downloads
+        run: python -m unittest discover -s tests -p 'test_pc_demo*.py' -v
       - name: PC command launcher on a fresh checkout
         run: |
           ./pc_demo/demo.ps1 status

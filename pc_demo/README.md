@@ -4,8 +4,8 @@ Manual, local video production in the shared AI Media Scout repository. The Mac
 continues to own research, library/report publication, scheduling, and email.
 Read [the brief](../PROJECT_BRIEF.md) and [PC instructions](AGENTS.md).
 
-This MVP runs the official portable Real-ESRGAN application on a reproducible
-original illustration, then makes a 45-second vertical draft from its actual
+This MVP runs the official portable Real-ESRGAN application on your local artwork
+or a reproducible original illustration, then makes a 45-second vertical draft from its actual
 output. It includes six scenes: result, input, comparison, process, practical use,
 and limitation. There is no scheduler, social API client, or uploader.
 
@@ -34,6 +34,45 @@ and visual review belong to the current video bytes. `verify` defaults to the
 latest completed draft and reruns full media checks. An existing matching manual
 review is preserved; a changed video requires a new review. The PowerShell
 launcher saves its own output logs under `.local/launcher-logs/`.
+
+## Make a draft from your own artwork
+
+```powershell
+.\pc_demo\demo.ps1 run -InputImage "C:\Art\my illustration.png" -GpuId 1
+.\pc_demo\demo.ps1 verify
+```
+
+Use PNG or JPEG artwork you own or may use. The selected model is still
+`realesrgan-x4plus-anime`, intended for illustration/anime; this feature does not
+install a photo, face or video model. Omit `-InputImage` to run the original
+controlled 256×256 demonstration.
+
+The current adapter accepts one opaque, 8-bit RGB/grayscale or palette image,
+**64–1024 pixels on each side, up to 20 MiB**. These are this wrapper's resource
+limits, not published app minimums. Animated images, transparency, CMYK and
+high-bit-depth inputs are rejected with an explanation. Export a suitable copy
+with your chosen background first. Invalid input is rejected before downloads
+or GPU execution. The existing output check also rejects an unexpectedly blank
+or near-uniform result; inspect a failure instead of treating it as a valid demo.
+
+The original file's exact bytes are saved as `inputs/source.png` or `source.jpg`.
+A separate `inputs/input.png` applies EXIF orientation, converts an embedded
+color profile to sRGB, converts to opaque RGB and removes metadata. Unprofiled
+pixels are treated as sRGB. No resizing or JPEG recompression is applied to this
+model input. Unsupported color profiles require an sRGB export instead of being
+silently discarded. Original filenames, normalization details, dimensions and
+both hashes are recorded locally. Archived originals may retain their metadata;
+only the finished draft is intended for creator review/upload.
+
+The app produces four times the input width and height. The video uses those
+actual dimensions, keeps the full artwork's aspect ratio, and compares matching
+square detail crops. Layout and typography are added during editing. Custom
+artwork uses `storyboard-artwork.json`, with narration that makes no claim about
+deliberate degradation or an unseen original master. `-Storyboard` can override
+it; keep your edited claims accurate for the selected input. The same `revise`
+command works with these runs and preserves both source and normalized input.
+Verification checks that the normalized pixels really come from the archived
+original, in addition to input/output/video hashes.
 
 ## Revise a video without repeating inference
 
@@ -134,14 +173,17 @@ To replay the actual inference independently, use the saved argument list in
 
 ```powershell
 $app = Join-Path $PWD 'pc_demo\.local\apps\realesrgan-20220424'
+$manifest = Get-Content (Join-Path $run 'manifest.json') -Raw | ConvertFrom-Json
+$inputFile = if ($manifest.input_file) { $manifest.input_file } else { 'inputs/input.jpg' }
 & "$app\realesrgan-ncnn-vulkan.exe" `
-  -i "$run\inputs\input.jpg" -o "$run\outputs\replay.png" `
+  -i (Join-Path $run $inputFile) -o "$run\outputs\replay.png" `
   -n realesrgan-x4plus-anime -s 4 -t 256 -m "$app\models" -g 1 -v
 ```
 
 Keep the original `actual-output.png` untouched. Exact output can depend on GPU
 driver/runtime; compare hashes and pixels instead of promising bitwise identity
-across machines. The procedural source uses seed 31. Only its 256×256 JPEG at
+across machines. In the default controlled demo, the procedural source uses
+seed 31. Only its 256×256 JPEG at
 quality 48 is passed to the app, which emits a 1024×1024 PNG. There is no text
 prompt. The comparison shows bicubic enlargement at the same crop and scale.
 
@@ -162,7 +204,7 @@ exact invocation are retained.
 
 | File or directory | Evidence |
 | --- | --- |
-| `inputs/` | Original master and exact deliberately reduced JPEG |
+| `inputs/` | Original artwork and exact model input; custom files are preserved byte for byte |
 | `outputs/actual-output.png` | Untouched app output |
 | `manifest.json` | Settings, hashes, timing, state, failures and provenance |
 | `evidence/` | Library snapshot/profile, hardware, setup, terms, complete PC source snapshot |
@@ -224,7 +266,7 @@ This MVP has no endpoint that can publish, email, or create a schedule.
 Run the PC checks from the repo root on Windows:
 
 ```powershell
-python -m unittest discover -s tests -p test_pc_demo.py -v
+.\pc_demo\.local\venv\Scripts\python.exe -m unittest discover -s tests -p "test_pc_demo*.py" -v
 python -m compileall -q media_scout pc_demo tests
 node --test tests/library.test.cjs
 # Stage reviewed source/docs explicitly, then:
@@ -233,8 +275,11 @@ git diff --cached --check
 ```
 
 CI runs the full research/PC suite on Linux with Python 3.10 and 3.13, plus the
-PC guardrail tests and launcher smoke check on Windows with Python 3.10. CI does
-not install Real-ESRGAN or download its model; inference remains a local check.
+PC guardrail/image tests and launcher smoke check on Windows with Python 3.10.
+Windows CI installs only the existing hash-pinned Pillow wheel for temporary
+image fixtures. The image tests also run locally in the PC venv; environments
+without Pillow skip them and can still run the standard-library guardrails.
+CI does not install Real-ESRGAN or download its model; inference remains a local check.
 
 The existing research package imports Unix `fcntl`; its complete suite and
 archive/publication audits must run under macOS/Linux, including the already

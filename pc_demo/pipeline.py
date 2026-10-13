@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from .common import ROOT, LOCAL, download, execute, read_json, select_profile, sha256, stamp, write_json
 from .setup_runtime import verified_runtime
 from .storyboard import load_storyboard
+from .inputs import input_relative, load_custom_input, save_custom_input
 
 
 def snapshot_source(run):
@@ -56,9 +57,10 @@ def finish_draft(run, manifest, receipt):
     write_json(LOCAL/'latest-run.json',{'run':str(run),'video':str(run/'draft.mp4')})
 
 
-def run_demo(gpu_id=-1, storyboard=None):
+def run_demo(gpu_id=-1, storyboard=None, input_image=None):
     from PIL import Image
-    story=load_storyboard(storyboard or ROOT/'storyboard.json')
+    story=load_storyboard(storyboard or ROOT/('storyboard-artwork.json' if input_image else 'storyboard.json'))
+    prepared=load_custom_input(input_image) if input_image else None
     app,receipt=verified_runtime()
     lock=read_json(ROOT/'runtime.lock.json')
     run=LOCAL/'runs'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ-realesrgan')
@@ -75,6 +77,16 @@ def run_demo(gpu_id=-1, storyboard=None):
               'isolation':'Portable app + Python virtual environment, not OS sandbox'}
     write_json(run/'manifest.json',manifest)
     try:
+        if prepared:
+            manifest.update(save_custom_input(run,prepared))
+            manifest['settings'].update(input_size=prepared[2]['input_size'])
+            for setting in ('jpeg_quality','input_seed'):
+                manifest['settings'].pop(setting)
+        else:
+            from .artwork import make_artwork
+            make_artwork(run/'inputs')
+        manifest['input_sha256']=sha256(run/input_relative(manifest))
+        write_json(run/'manifest.json',manifest)
         try:
             download(lock['library_url'],run/'evidence/library.json')
             manifest['library_source']=lock['library_url']
@@ -96,19 +108,16 @@ def run_demo(gpu_id=-1, storyboard=None):
             shutil.copyfile(ROOT/'LICENSE_REVIEW.md',run/'evidence/LICENSE_REVIEW.md')
         for source in receipt['sources']:
             shutil.copyfile(LOCAL/'sources'/source['name'],run/'evidence'/source['name'])
-        from .artwork import make_artwork
-        make_artwork(run/'inputs')
-        args=[app/lock['app']['executable'],'-i',run/'inputs/input.jpg','-o',run/'outputs/actual-output.png',
+        args=[app/lock['app']['executable'],'-i',run/input_relative(manifest),'-o',run/'outputs/actual-output.png',
               '-n',lock['app']['model'],'-s','4','-t','256','-m',app/'models','-v']
         if gpu_id>=0:
             args += ['-g',str(gpu_id)]
         manifest['inference']=execute(args,run/'logs','inference',timeout=300,cwd=app)
         with Image.open(run/'outputs/actual-output.png') as output:
-            if output.size!=(1024,1024):
+            if output.size!=tuple(value*4 for value in manifest['settings']['input_size']):
                 raise ValueError('App did not produce the required 4x PNG')
             if max(channel[1]-channel[0] for channel in output.convert('RGB').getextrema())<32:
                 raise ValueError('App output is unexpectedly blank')
-        manifest['input_sha256']=sha256(run/'inputs/input.jpg')
         manifest['output_sha256']=sha256(run/'outputs/actual-output.png')
         print(f'Real app inference completed in {manifest["inference"]["elapsed_seconds"]:.3f}s',flush=True)
         write_json(run/'manifest.json',manifest)
@@ -134,8 +143,17 @@ body{margin:0;background:#111c20;color:#f4eddc;font:17px system-ui}main{max-widt
 <p>Publishing disabled. Limitation: inferred details can change edges or smooth texture. Keep the original. The footage is an edited still-image demo, not AI-generated video.</p></section></main>
 <script>const v=document.querySelector('video'),s=document.querySelector('#status');v.ontimeupdate=()=>s.textContent=`Playback: ${v.currentTime.toFixed(1)} / ${v.duration.toFixed(1)} seconds`;v.onerror=()=>s.textContent='Playback error: '+v.error?.message;</script></html>'''
     page=page.replace('Small file.<br>Bigger possibilities.',html.escape(story['title']))
+    if manifest.get('source_asset'):
+        width,height=manifest['settings']['input_size']
+        page=page.replace('This is a controlled test using an original illustration deliberately reduced to 256 × 256. The model receives only that JPEG.',
+            'This run uses locally selected artwork. Original bytes are archived separately. The model receives an opaque RGB PNG with EXIF orientation applied and color normalized to sRGB, without resizing. Metadata is removed from that PNG.')
+        page=page.replace('inputs/input.jpg',input_relative(manifest))
+        page=page.replace('256 × 256 input',f'{width} × {height} input')
+        page=page.replace('1024 × 1024 actual output',f'{width*4} × {height*4} actual output')
+        page=page.replace('AI MEDIA SCOUT / PC DEMO 001','AI MEDIA SCOUT / LOCAL ARTWORK DEMO')
     if manifest.get('reused_inference'):
         page=page.replace('AI MEDIA SCOUT / PC DEMO 001','AI MEDIA SCOUT / REVISED LOCAL DRAFT')
+        page=page.replace('AI MEDIA SCOUT / LOCAL ARTWORK DEMO','AI MEDIA SCOUT / REVISED LOCAL DRAFT')
         page=page.replace('Publishing disabled.',
             'Reuses the preserved app output from an earlier run; narration and editing are new. Publishing disabled.')
     (run/'review.html').write_text(page,encoding='utf-8')

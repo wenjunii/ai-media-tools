@@ -3,7 +3,8 @@ import re
 import shutil
 import uuid
 from .common import execute,read_json,sha256,stamp,write_json
-from .status import VERIFIED_ARTIFACTS, review_state
+from .status import verified_artifacts, review_state
+from .inputs import provenance_hashes, verify_custom_input
 
 
 def verify_run(run):
@@ -35,12 +36,11 @@ def _verify_run(run):
             raise ValueError(f'{name} changed since the run setup')
     # Check the bytes actually consumed by the compositor, not just a label.
     render=read_json(run/'logs/render.command.json')
-    expected={'inputs/input.jpg':manifest['input_sha256'],
-              'outputs/actual-output.png':manifest['output_sha256'],
-              'draft.mp4':manifest['video_sha256']}
+    expected={**provenance_hashes(manifest),'draft.mp4':manifest['video_sha256']}
     for path,digest in expected.items():
         if sha256(run/path)!=digest:
             raise ValueError(f'Provenance mismatch: {path}')
+    verify_custom_input(run,manifest)
     if (render['source_output_sha256']!=manifest['output_sha256'] or render['returncode']!=0
             or render['source_input_sha256']!=manifest['input_sha256']):
         raise ValueError('Rendered video does not match the successful app output')
@@ -83,7 +83,8 @@ def _verify_run(run):
             raise ValueError('Encoded visual content does not match the recorded compositor')
         pixel_errors.append(round(error,3))
     result={'verified_utc':stamp(),'automated_pass':True,'duration_seconds':duration,
-            'status':'passed','checked_artifact_sha256':{name:sha256(run/name) for name in VERIFIED_ARTIFACTS},
+            'status':'passed','checked_artifact_sha256':{name:sha256(run/name) for name in verified_artifacts(manifest)},
+            'input_size':manifest['settings']['input_size'],
             'dimensions':[video['width'],video['height']],'video_codec':video['codec_name'],
             'pixel_format':video['pix_fmt'],'frame_rate':video['r_frame_rate'],
             'audio_codec':audio['codec_name'],'audio_sample_rate':audio['sample_rate'],
