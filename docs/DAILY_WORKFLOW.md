@@ -22,6 +22,11 @@ and historical maturity words never assign it automatically. Scope optional-feat
 or platform caveats to the affected route. Improve prior quality
 reviews through the bound library registry and `build-library`, without repeating
 unchanged tools in a new report or rewriting preserved editions.
+The quality queue includes a workflow scope, current source notes and next actions.
+Use its default order to address failed checks and focused evidence gaps; also use
+`quality-backlog --full --sort oldest` to revisit older work. `--check independent_use`
+or another check key narrows a research pass without dropping other pending tools.
+These are review priorities, not automatic tier decisions or limits on discovery.
 
 ## 1. Resume safely
 

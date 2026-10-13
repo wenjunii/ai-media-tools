@@ -17,6 +17,21 @@ CHECKS = {"license": "Open-source software license", "results": "Creative result
 METHODS = {"source-review": "Source review; no local execution implied",
            "published-record-audit": "Reassessment of existing published evidence",
            "unassessed": "Evidence review pending"}
+REVIEW_ACTIONS = {
+    "license": "Review and archive the complete current software license for the scoped workflow.",
+    "results": "Review cited creative outputs and their limitations for this workflow; our own demo is not required.",
+    "setup": "Check current installation and first-use instructions, versions and documented platform requirements.",
+    "maintenance": "Review current releases, support responses and unresolved issues affecting this workflow.",
+    "independent_use": "Find and review first-hand use or integration by someone independent of the maintainer.",
+    "dependencies": "Verify required models, weight terms, proprietary hosts, paid services and costs separately.",
+}
+REVIEW_QUEUES = {
+    "failed_checks": "Resolve documented failed checks",
+    "results_review": "Review creative results",
+    "evidence_review": "Complete evidence review",
+    "profile_needed": "Complete the latest profile",
+    "experimental_review": "Reassess the cited experimental limitation",
+}
 
 
 def _text(value, minimum=1):
@@ -206,14 +221,80 @@ def audit_existing(root, day):
             "note": "Published evidence reassessed; no fresh runtime tests or automatic recommendations. Run build-library to refresh views."}
 
 
-def quality_backlog(root):
+def evidence_gaps(assessment):
+    """Use the promotion criteria, including independent provenance, for gap views."""
+    checks = assessment.get("checks", {})
+    return [key for key in CHECKS if checks.get(key, {}).get("status") != "verified"
+            or (key == "independent_use" and checks[key].get("source_kind") != "independent")]
+
+
+def review_item(tool):
+    """Describe review work without assigning or changing a quality tier."""
+    assessment = tool["quality_assessment"]
+    latest = tool["versions"][0]
+    missing = evidence_gaps(assessment)
+    failed = [key for key in missing if assessment["checks"][key]["status"] == "failed"]
+    needs_profile = latest["kind"] != "profile"
+    needs_source_review = assessment["method"] != "source-review"
+    if failed:
+        queue = "failed_checks"
+    elif assessment["tier"] == "experimental":
+        queue = "experimental_review"
+    elif needs_profile:
+        queue = "profile_needed"
+    elif missing == ["results"] and not needs_source_review:
+        queue = "results_review"
+    else:
+        queue = "evidence_review"
+    steps = []
+    if assessment["tier"] == "experimental":
+        reason = assessment["experimental_reason"]
+        steps.append({"requirement": "experimental_reason", "action": REVIEW_QUEUES["experimental_review"],
+                      "note": reason["text"], "source_urls": reason["source_urls"]})
+    if needs_profile:
+        steps.append({"requirement": "full_profile", "action":
+                      "Complete a detailed profile for the latest record; an older guide does not qualify this assessment."})
+    if needs_source_review:
+        steps.append({"requirement": "source_review", "action":
+                      "Review live sources for a dated assessment; a published-record audit alone cannot grant a higher tier."})
+    for key in sorted(missing, key=lambda key: key not in failed):
+        check = assessment["checks"][key]
+        action = REVIEW_ACTIONS[key]
+        if key in failed:
+            action = "Resolve the cited failure before considering a higher tier. " + action
+        steps.append({"requirement": key, "action": action, "status": check["status"],
+                      "note": check["note"], "source_urls": check["source_urls"]})
+    if not steps:
+        steps.append({"requirement": "assessment", "action":
+                      "Review the current scope and citations, then explicitly record the supported tier; labels never promote automatically."})
+    return {"id": tool["id"], "name": tool["name"], "tier": assessment["tier"],
+            "profile_date": tool["profile_date"], "checked_on": assessment["checked_on"],
+            "basis_edition": latest.get("edition_id", latest["date"]),
+            "scope": assessment["scope"], "queue": queue,
+            "needs_profile": needs_profile, "needs_source_review": needs_source_review,
+            "missing_checks": missing, "failed_checks": failed, "next_steps": steps}
+
+
+def quality_backlog(root, *, check=None, tier=None, sort="priority"):
+    if check is not None and check not in CHECKS:
+        raise ValueError("Unknown quality evidence check")
+    if tier is not None and tier not in TIERS:
+        raise ValueError("Unknown quality tier")
+    if sort not in {"priority", "oldest"}:
+        raise ValueError("Unknown quality backlog order")
     data = public_quality_library(root)
-    items = []
-    for tool in data["tools"]:
-        assessment = tool["quality_assessment"]
-        if assessment["tier"] == "recommended":
-            continue
-        items.append({"id": tool["id"], "name": tool["name"], "tier": assessment["tier"],
-                      "profile_date": tool["profile_date"], "checked_on": assessment["checked_on"],
-                      "missing_checks": [k for k, v in assessment["checks"].items() if v["status"] != "verified"]})
-    return {"counts": data["quality_counts"], "items": sorted(items, key=lambda t: (t["profile_date"], t["id"]))}
+    pending = [review_item(tool) for tool in data["tools"] if tool["quality_assessment"]["tier"] != "recommended"]
+    items = [item for item in pending if (check is None or check in item["missing_checks"])
+             and (tier is None or item["tier"] == tier)]
+    def order(item):
+        oldest = (item["checked_on"] or "", item["profile_date"], item["id"])
+        if sort == "oldest":
+            return oldest
+        return (list(REVIEW_QUEUES).index(item["queue"]),
+                len(set(item["missing_checks"]) - {"results"}), len(item["missing_checks"]), *oldest)
+    return {"counts": data["quality_counts"], "pending": len(pending), "matching": len(items),
+            "gap_counts": {key: sum(key in item["missing_checks"] for item in pending) for key in CHECKS},
+            "queue_counts": {key: sum(item["queue"] == key for item in pending) for key in REVIEW_QUEUES},
+            "queue_labels": REVIEW_QUEUES, "filters": {"check": check, "tier": tier}, "sort": sort,
+            "note": "Work order only, not a quality score. Counts cover the complete pending library; filters narrow items. No automatic tier changes or own-demo requirement.",
+            "items": sorted(items, key=order)}

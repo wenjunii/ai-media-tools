@@ -17,7 +17,7 @@ from .report import build, verify_report
 from .status import report_status
 from .storage import ROOT, read_json, report_date
 from .updates import export_update, prepare_update, update_workspace
-from .quality import audit_existing, quality_backlog
+from .quality import CHECKS, TIERS, audit_existing, quality_backlog
 
 
 def main():
@@ -43,6 +43,9 @@ def main():
     command.add_argument("--revision", type=int)
     command = sub.add_parser("quality-backlog", help="Evidence gaps across published tools, including full profiles")
     command.add_argument("--full", action="store_true")
+    command.add_argument("--check", choices=CHECKS, help="Show tools still needing this evidence check")
+    command.add_argument("--tier", choices=TIERS, help="Filter the current quality tier")
+    command.add_argument("--sort", choices=("priority", "oldest"), default="priority")
     command = sub.add_parser("audit-existing-quality", help="Reassess published records without changing dated editions")
     command.add_argument("--date", required=True)
     command = sub.add_parser("build")
@@ -95,9 +98,9 @@ def main():
         elif args.command == "audit-existing-quality":
             output = audit_existing(root, day)
         elif args.command == "quality-backlog":
-            output = quality_backlog(root)
+            output = quality_backlog(root, check=args.check, tier=args.tier, sort=args.sort)
             if not args.full:
-                output["pending"] = len(output.pop("items"))
+                output.pop("items")
         elif args.command == "discover":
             result = collect(day, root=root, plan_path=args.plan)
             output = {"report_date": day, "repositories": len(result["candidates"]),
