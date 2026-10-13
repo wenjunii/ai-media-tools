@@ -174,7 +174,8 @@ dependencies, independent uses or creative outputs have been exhaustively review
 records the date, edition identity and SHA-256 of each latest published record.
 `reviews` can add a full cited assessment using the same binding plus `assessment`.
 Use `media_scout.quality.record_binding(version)` on the latest version to bind a
-review. Archive fresh source snapshots under ignored `state/quality_research/DATE/`
+review, or copy `basis_edition` and `record_sha256` from `quality-backlog --full`.
+Archive fresh source snapshots under ignored `state/quality_research/DATE/`
 during maintenance, or that new edition's evidence folder during daily research.
 Never put raw research, credentials or private paths in the registry.
 
@@ -229,3 +230,48 @@ editions, sent emails and delivery receipts remain byte-for-byte unchanged.
 `verify-public-archive` recomputes the library from editions, curation and UI source,
 including in a clean public clone. Publish through the protected GitHub flow;
 quality maintenance does not send another email or change the daily schedule.
+
+## Applying reviewed assessments
+
+Use `record-quality-reviews` to preview and apply a researched subset of reviews.
+Keep the input under ignored `state/quality_research/DATE/`. Its JSON object has
+exactly two top-level fields: `format_version: 1` and a nonempty `reviews` object
+keyed by existing library tool IDs. Each review row has these four fields:
+
+| Field | Required value |
+| --- | --- |
+| `basis_edition` | The exact latest published edition ID from the full queue or `record_binding`. |
+| `record_sha256` | The matching latest record hash, including the published assessment when present. |
+| `checked_on` | The actual assessment date in `YYYY-MM-DD` form, on or after both the latest record and current assessment dates. |
+| `assessment` | The complete quality assessment object described above, with the same `checked_on`, all six checks, declared citations, scope and caveats. |
+
+Do not include the registry's `audits` object in a batch. The command retains
+existing audits and all reviews not named in the batch. Unknown assessment fields
+are omitted when storing the validated public fields; raw notes and source captures
+belong in separate ignored files. Source review must be completed before applying.
+
+```sh
+# Read-only preview; inspect each proposed label and its check changes.
+python3 -m media_scout record-quality-reviews --file state/quality_research/DATE/reviews.json
+# Apply the same reviewed file, then refresh derived views.
+python3 -m media_scout record-quality-reviews --file state/quality_research/DATE/reviews.json --apply
+python3 -m media_scout build-library
+python3 -m media_scout verify-public-archive
+```
+
+Preview reports `counts_before`, `counts_after`, the number of changed registry
+rows, and each tool's old/new tier and closed/reopened checks. It does not write
+files or acquire a write lock. `--apply` revalidates the full batch under the
+project lock, then atomically writes the registry once. An invalid late entry
+rejects the entire batch; a repeated identical batch performs no registry write.
+
+Stale bindings, unknown tool IDs, older assessment dates, mismatched dates within
+a row, and unsupported tier claims fail before saving. Validation uses the latest
+record's kind, so an older full guide cannot promote a later screened mention.
+After a newer edition, refresh the binding and review the new evidence. The
+command never assigns a tier, supplies missing evidence, or verifies the truth
+of a citation. Review scope and source quality remain editorial responsibilities.
+
+The command changes only current curation. It does not rebuild a report, collect
+sources, install software, publish or prepare email. Apply, regenerate the library,
+verify and use the protected publication workflow; sealed editions remain intact.

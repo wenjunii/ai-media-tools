@@ -121,6 +121,27 @@ use remains a gap until independent provenance is verified. No tool limit or own
 requirement is added. New reports must include a structured quality assessment.
 See [quality policy and format](docs/QUALITY_POLICY.md).
 
+Apply researched label updates with a reviewed batch rather than editing the
+whole registry. `quality-backlog --full` now includes the exact record hash and
+edition needed for each binding. Prepare complete cited assessments using the
+[batch format](docs/QUALITY_POLICY.md#applying-reviewed-assessments), then preview:
+
+```sh
+python3 -m media_scout record-quality-reviews --file state/quality_research/YYYY-MM-DD/reviews.json
+# After reviewing the proposed labels and evidence changes:
+python3 -m media_scout record-quality-reviews --file state/quality_research/YYYY-MM-DD/reviews.json --apply
+python3 -m media_scout build-library
+python3 -m media_scout verify-public-archive
+```
+
+The default preview writes nothing. It shows before/after tier totals, individual
+label changes, and closed or reopened evidence checks. Applying rejects unknown
+tools, stale record bindings, backward assessment dates and unsupported labels
+before saving the batch atomically. Repeating an identical batch is a no-op;
+other assessments and record audits are preserved. The command validates the
+supplied review structure; the research agent still checks the actual sources.
+Publish the refreshed library through the [protected GitHub flow](docs/GITHUB_SYNC.md).
+
 ## What an edition contains
 
 Every featured tool includes an introduction, useful creative workflows, demos,

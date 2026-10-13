@@ -51,9 +51,11 @@ def _url(value):
 
 def validate_assessment(value, kind="profile", expected_date=None):
     """Reject unsupported recommendations; return only public review fields."""
-    if not isinstance(value, dict) or value.get("tier") not in TIERS:
+    if (not isinstance(value, dict) or not isinstance(value.get("tier"), str)
+            or value["tier"] not in TIERS):
         raise ValueError("Quality assessment needs a recognized tier")
-    if value.get("method") not in {"source-review", "published-record-audit"}:
+    if (not isinstance(value.get("method"), str)
+            or value["method"] not in {"source-review", "published-record-audit"}):
         raise ValueError("Quality assessment needs an explicit review method")
     day = report_date(_text(value.get("checked_on")))
     if expected_date and day != expected_date:
@@ -85,7 +87,8 @@ def validate_assessment(value, kind="profile", expected_date=None):
         raise ValueError("Quality assessment must address all six evidence checks")
     output["checks"] = {}
     for name, check in checks.items():
-        if not isinstance(check, dict) or check.get("status") not in {"verified", "documented", "unknown", "failed"}:
+        if (not isinstance(check, dict) or not isinstance(check.get("status"), str)
+                or check["status"] not in {"verified", "documented", "unknown", "failed"}):
             raise ValueError("Invalid quality evidence status")
         cited = check.get("source_urls")
         if (not isinstance(cited, list) or any(not isinstance(u, str) or u not in urls for u in cited)
@@ -93,7 +96,7 @@ def validate_assessment(value, kind="profile", expected_date=None):
             raise ValueError("Quality evidence must cite declared sources")
         cleaned = {"status": check["status"], "note": _text(check.get("note"), 15), "source_urls": cited}
         if "source_kind" in check:
-            if check["source_kind"] not in {"maintainer", "independent"}:
+            if not isinstance(check["source_kind"], str) or check["source_kind"] not in {"maintainer", "independent"}:
                 raise ValueError("Invalid quality source provenance")
             cleaned["source_kind"] = check["source_kind"]
         output["checks"][name] = cleaned
@@ -191,13 +194,13 @@ def assess_entry(entry, registry):
     return {**assessment, **binding}
 
 
-def public_quality_library(root):
+def public_quality_library(root, registry=None):
     from .configuration import load_config
     from .library import make_library
     from .publication import _public_editions
     root = Path(root).resolve()
     documents = [read_json(root / "public/reports" / directory / "report.json") for directory in _public_editions(root)]
-    return make_library(documents, load_config(root), read_reviews(root))
+    return make_library(documents, load_config(root), read_reviews(root) if registry is None else registry)
 
 
 def audit_existing(root, day):
@@ -226,6 +229,64 @@ def evidence_gaps(assessment):
     checks = assessment.get("checks", {})
     return [key for key in CHECKS if checks.get(key, {}).get("status") != "verified"
             or (key == "independent_use" and checks[key].get("source_kind") != "independent")]
+
+
+def record_quality_reviews(root, batch_path, *, apply=False):
+    """Preview or atomically merge explicit reviews; never infer evidence or tiers."""
+    root = Path(root).resolve()
+
+    def prepare():
+        batch = read_json(batch_path)
+        if (not isinstance(batch, dict) or set(batch) != {"format_version", "reviews"}
+                or type(batch["format_version"]) is not int or batch["format_version"] != 1
+                or not isinstance(batch["reviews"], dict) or not batch["reviews"]):
+            raise ValueError("Quality review batch needs format_version 1 and a nonempty reviews object")
+        registry = read_reviews(root)
+        data = public_quality_library(root, registry)
+        tools = {tool["id"]: tool for tool in data["tools"]}
+        counts = dict(data["quality_counts"])
+        items = []
+        for tool_id, row in batch["reviews"].items():
+            if tool_id not in tools:
+                raise ValueError(f"Quality review refers to an unknown published tool: {tool_id}")
+            if (not isinstance(row, dict)
+                    or set(row) != {"basis_edition", "record_sha256", "checked_on", "assessment"}):
+                raise ValueError(f"Quality review for {tool_id} needs only its record binding, checked_on and assessment")
+            tool = tools[tool_id]
+            latest, previous = tool["versions"][0], tool["quality_assessment"]
+            binding = record_binding(latest)
+            if any(row[key] != value for key, value in binding.items()):
+                raise ValueError(f"Quality review for {tool_id} does not match the latest published record; refresh the binding")
+            day = report_date(_text(row["checked_on"]))
+            if day < max(latest["date"], previous["checked_on"] or latest["date"]):
+                raise ValueError(f"Quality review for {tool_id} cannot predate its published record or current assessment")
+            assessment = validate_assessment(row["assessment"], latest["kind"], day)
+            cleaned = {**binding, "checked_on": day, "assessment": assessment}
+            changed = registry["reviews"].get(tool_id) != cleaned
+            old_gaps, new_gaps = evidence_gaps(previous), evidence_gaps(assessment)
+            items.append({"id": tool_id, "name": tool["name"], **binding, "changed": changed,
+                          "previous_checked_on": previous["checked_on"], "checked_on": day,
+                          "previous_tier": previous["tier"], "tier": assessment["tier"],
+                          "closed_checks": [key for key in old_gaps if key not in new_gaps],
+                          "reopened_checks": [key for key in new_gaps if key not in old_gaps]})
+            counts[previous["tier"]] -= 1
+            counts[assessment["tier"]] += 1
+            registry["reviews"][tool_id] = cleaned
+        return registry, {"mode": "applied" if apply else "preview", "submitted": len(items),
+                          "changed": sum(item["changed"] for item in items),
+                          "counts_before": data["quality_counts"], "counts_after": counts,
+                          "closed_checks": sum(len(item["closed_checks"]) for item in items),
+                          "reopened_checks": sum(len(item["reopened_checks"]) for item in items),
+                          "items": items,
+                          "note": "Validates supplied evidence structure, not source truth. No automatic labels, source collection or app execution. Apply reviewed batches, then run build-library and verify-public-archive before protected publication."}
+
+    if not apply:
+        return prepare()[1]
+    with locked(root):
+        registry, result = prepare()
+        if result["changed"]:
+            write_json(root / "config/quality_reviews.json", registry)
+        return result
 
 
 def review_item(tool):
@@ -269,7 +330,7 @@ def review_item(tool):
                       "Review the current scope and citations, then explicitly record the supported tier; labels never promote automatically."})
     return {"id": tool["id"], "name": tool["name"], "tier": assessment["tier"],
             "profile_date": tool["profile_date"], "checked_on": assessment["checked_on"],
-            "basis_edition": latest.get("edition_id", latest["date"]),
+            **record_binding(latest),
             "scope": assessment["scope"], "queue": queue,
             "needs_profile": needs_profile, "needs_source_review": needs_source_review,
             "missing_checks": missing, "failed_checks": failed, "next_steps": steps}
