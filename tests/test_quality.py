@@ -1,14 +1,18 @@
 """Recommendations require evidence; historical reports remain immutable."""
 
 import copy
+from contextlib import redirect_stdout
+from io import StringIO
 import json
 import unittest
+from unittest.mock import patch
 
 import test_workflow
+from media_scout import cli
 from media_scout.library import make_library
 from media_scout.publication import export_report, rebuild_library, verify_public_archive
-from media_scout.quality import (CHECKS, audit_existing, baseline_assessment, quality_backlog,
-                                 read_reviews, record_binding, validate_assessment)
+from media_scout.quality import (CHECKS, audit_existing, baseline_assessment, evidence_gaps, quality_backlog,
+                                 read_reviews, record_binding, review_item, validate_assessment)
 from media_scout.report import render_html, render_markdown, validate
 from media_scout.storage import write_json
 
@@ -156,6 +160,117 @@ class QualityTests(unittest.TestCase):
         self.assertEqual(backlog["counts"]["recommended"], 1)
         self.assertEqual(backlog["counts"]["ready_to_try"], 0)
         self.assertEqual(backlog["items"], [])
+
+    def test_evidence_gaps_require_independent_provenance_without_changing_the_assessment(self):
+        assessment = self.assessment()
+        assessment["tier"] = "unverified"
+        assessment["checks"]["independent_use"]["source_kind"] = "maintainer"
+        before = copy.deepcopy(assessment)
+        self.assertEqual(evidence_gaps(assessment), ["independent_use"])
+        library = make_library([self.report], self.config, self.registry(assessment))
+        tool = library["tools"][0]
+        self.assertEqual(tool["evidence_gaps"], ["independent_use"])
+        item = review_item(tool)
+        self.assertEqual(item["next_steps"][0]["requirement"], "independent_use")
+        self.assertIn("independent of the maintainer", item["next_steps"][0]["action"])
+        self.assertEqual(item["next_steps"][0]["source_urls"], assessment["checks"]["independent_use"]["source_urls"])
+        self.assertEqual(assessment, before)
+        self.assertEqual(tool["quality_assessment"]["tier"], "unverified")
+        self.assertEqual(evidence_gaps({}), list(CHECKS))
+
+    def test_backlog_prioritizes_failures_then_results_and_fewer_gaps_without_star_ranking(self):
+        base = make_library([self.report], self.config)["tools"][0]
+        def tool(name, assessment):
+            return {**copy.deepcopy(base), "id": name, "name": name, "quality_assessment": assessment}
+        ready = tool("ready", self.ready_assessment())
+        failed = tool("failed", self.assessment())
+        failed["quality_assessment"]["tier"] = "unverified"
+        failed["quality_assessment"]["checks"]["results"]["status"] = "failed"
+        near = tool("near", self.ready_assessment())
+        near["quality_assessment"]["tier"] = "unverified"
+        near["quality_assessment"]["checks"]["setup"]["status"] = "documented"
+        far = tool("far", baseline_assessment(self.version))
+        far["stars"] = 1000000
+        screened = tool("screened", baseline_assessment(self.version))
+        screened["versions"][0]["kind"] = "screened"
+        experimental = tool("experimental", baseline_assessment(self.version))
+        experimental["quality_assessment"].update(tier="experimental", experimental_reason={
+            "text": "The current export pipeline is explicitly unfinished.", "source_urls": ["https://example.com/status"]})
+        recommended = tool("recommended", self.assessment())
+        items = [experimental, screened, far, near, ready, failed, recommended]
+        data = {"tools": items, "quality_counts": {"recommended": 1, "ready_to_try": 1, "unverified": 4, "experimental": 1}}
+        before = copy.deepcopy(data)
+        with patch("media_scout.quality.public_quality_library", return_value=data):
+            result = quality_backlog(self.root)
+            self.assertEqual([item["id"] for item in result["items"]], ["failed", "ready", "near", "far", "screened", "experimental"])
+            self.assertEqual(result["pending"], 6)
+            self.assertEqual(result["matching"], 6)
+            self.assertEqual(result["queue_counts"]["results_review"], 1)
+            self.assertEqual(result["items"][0]["failed_checks"], ["results"])
+            self.assertIn("Resolve the cited failure", result["items"][0]["next_steps"][0]["action"])
+            self.assertIn("our own demo is not required", result["items"][1]["next_steps"][0]["action"])
+            filtered = quality_backlog(self.root, check="setup", tier="unverified")
+            self.assertEqual([item["id"] for item in filtered["items"]], ["near", "far", "screened"])
+            self.assertEqual(filtered["matching"], 3)
+            for field in ("counts", "pending", "gap_counts", "queue_counts"):
+                self.assertEqual(filtered[field], result[field])
+            oldest = quality_backlog(self.root, sort="oldest")
+            self.assertEqual(oldest["items"][0]["id"], "experimental")  # Unassessed first; deterministic ID tie-break.
+            self.assertEqual(quality_backlog(self.root, tier="recommended")["items"], [])
+        self.assertEqual(data, before)
+
+    def test_review_tasks_use_latest_record_and_keep_experimental_evidence(self):
+        tool = make_library([self.report], self.config)["tools"][0]
+        latest = copy.deepcopy(tool["versions"][0])
+        latest.update(kind="screened", revision=2, edition_id=self.fixture.day + "-r2")
+        tool["versions"].insert(0, latest)
+        tool["quality_assessment"] = baseline_assessment(latest)
+        item = review_item(tool)
+        self.assertEqual(tool["review"], "profile")
+        self.assertTrue(item["needs_profile"])
+        self.assertTrue(item["needs_source_review"])
+        self.assertEqual(item["basis_edition"], self.fixture.day + "-r2")
+        self.assertEqual(item["queue"], "profile_needed")
+        self.assertEqual(item["next_steps"][0]["requirement"], "full_profile")
+        reason = {"text": "The current scene editor cannot save projects yet.", "source_urls": ["https://example.com/editor"]}
+        tool["quality_assessment"].update(tier="experimental", experimental_reason=reason)
+        item = review_item(tool)
+        self.assertEqual(item["queue"], "experimental_review")
+        self.assertEqual(item["next_steps"][0]["note"], reason["text"])
+        self.assertEqual(item["next_steps"][0]["source_urls"], reason["source_urls"])
+
+    def test_complete_checks_still_need_an_explicit_tier_review(self):
+        assessment = self.assessment()
+        assessment["tier"] = "unverified"
+        tool = make_library([self.report], self.config, self.registry(assessment))["tools"][0]
+        item = review_item(tool)
+        self.assertEqual(item["missing_checks"], [])
+        self.assertEqual(item["tier"], "unverified")
+        self.assertEqual(item["next_steps"][0]["requirement"], "assessment")
+
+    def test_backlog_filters_are_read_only_and_cli_summary_keeps_global_counts(self):
+        self.fixture.build()
+        export_report(self.fixture.day, self.root)
+        write_json(self.root / "config/quality_reviews.json", self.registry(self.ready_assessment()))
+        rebuild_library(self.root)
+        before = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        for extra, matching in (([], 1), (["--check", "setup"], 0), (["--check", "results", "--full"], 1)):
+            output = StringIO()
+            with patch.object(cli, "ROOT", self.root), redirect_stdout(output), \
+                    patch("sys.argv", ["media-scout", "quality-backlog", "--tier", "ready_to_try", *extra]):
+                self.assertEqual(cli.main(), 0)
+            result = json.loads(output.getvalue())
+            self.assertEqual(result["pending"], 1)
+            self.assertEqual(result["matching"], matching)
+            self.assertEqual(result["gap_counts"]["results"], 1)
+            self.assertEqual("items" in result, "--full" in extra)
+        after = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        self.assertEqual(before, after)
+
+    def test_backlog_rejects_unknown_filters_instead_of_silently_hiding_tools(self):
+        for options in ({"check": "unknown"}, {"tier": "unknown"}, {"sort": "stars"}):
+            with self.subTest(options=options), self.assertRaises(ValueError):
+                quality_backlog(self.root, **options)
 
     def test_new_editions_require_assessments_without_breaking_legacy_reads(self):
         self.config["scope"] = {"require_quality_assessment": True}

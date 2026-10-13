@@ -170,6 +170,7 @@
     if (filters.platform && !(filters.edition ? platformMentions(profile) : tool.platform_mentions).includes(filters.platform)) return false;
     if (filters.review && (filters.edition ? version.kind : tool.review) !== filters.review) return false;
     if (filters.quality && qualityOf(tool).tier !== filters.quality) return false;
+    if (filters.evidence && !(tool.evidence_gaps || []).includes(filters.evidence)) return false;
     const license = version.kind === "profile" ? profile.license.code : profile.code_license;
     if (filters.license && license !== filters.license) return false;
     const tokens = Array.from(fold(filters.q || "").matchAll(/"([^"]+)"|(\S+)/g), function (m) { return m[1] || m[2]; });
@@ -212,7 +213,8 @@
     return (edition && edition.report_path || prefix + (edition && edition.report_directory || day + "/")) + "report." + extension;
   }
   const controls = {q: "search", field: "field-filter", platform: "platform-filter", license: "license-filter",
-                    review: "review-filter", quality: "quality-filter", edition: "edition-filter", sort: "sort"};
+                    review: "review-filter", quality: "quality-filter", evidence: "evidence-filter",
+                    edition: "edition-filter", sort: "sort"};
   const $ = function (id) { return document.getElementById(id); };
   const savedKey = "ai-media-scout.saved.v1";
   let saved = new Set(), storageAvailable = true;
@@ -431,12 +433,21 @@
     if (value.experimental_reason) {
       panel.append(element("p", "", "Why Experimental: " + value.experimental_reason.text), refs(value.experimental_reason, value));
     }
+    if (tool.evidence_gaps && tool.evidence_gaps.length) {
+      panel.append(element("p", "", "Evidence still needed: " + tool.evidence_gaps.map(function (key) {
+        return data.quality_checks[key];
+      }).join("; ") + "."));
+    }
     const details = element("details"), summary = element("summary", "", "Evidence and remaining gaps");
     details.append(summary);
     Object.entries(value.checks).forEach(function (entry) {
       const check = entry[1], item = element("div", "quality-check");
       item.append(element("h4", "", data.quality_checks[entry[0]] + " · " + check.status),
-        element("p", "", check.note), refs(check, value)); details.append(item);
+        element("p", "", check.note), refs(check, value));
+      if (entry[0] === "independent_use" && check.status === "verified" && check.source_kind !== "independent") {
+        item.append(element("p", "", "Independent provenance still needs verification; maintainer evidence alone does not satisfy this check."));
+      }
+      details.append(item);
     });
     const caveats = element("ul"); value.caveats.forEach(function (note) { caveats.append(element("li", "", note)); });
     details.append(caveats); panel.append(details); return panel;
@@ -568,6 +579,10 @@
   const licenses = data.tools.flatMap(function (tool) { return tool.versions.map(function (v) { return v.kind === "profile" ? v.profile.license.code : v.profile.code_license; }); });
   options("license-filter", Array.from(new Set(licenses)).sort().map(function (license) { return [license, license]; }));
   options("edition-filter", data.editions.map(function (e) { return [editionKey(e), editionLabel(e)]; }));
+  options("evidence-filter", Object.entries(data.quality_checks).map(function (entry) {
+    const count = data.tools.filter(function (tool) { return (tool.evidence_gaps || []).includes(entry[0]); }).length;
+    return [entry[0], entry[1] + " (" + count + ")"];
+  }));
   $("profile-total").textContent = data.counts.profiles; $("screened-total").textContent = data.counts.screened;
   $("edition-total").textContent = data.counts.editions;
   $("quality-totals").textContent = Object.entries(qualityLabels).map(function (entry) {

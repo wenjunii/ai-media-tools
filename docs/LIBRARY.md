@@ -117,6 +117,20 @@ Current assessments sit outside preserved `versions` in library JSON. Use
 `audit-existing-quality --date YYYY-MM-DD` only for an intended conservative audit
 of published records. Neither command manufactures recommendations or runtime tests.
 
+**Evidence still needed** filters the current assessment by license, creative
+results, setup, maintenance, independent use, or dependencies and costs. Option
+counts cover the whole library; the result count reflects all selected filters.
+The filter combines with search, quality tiers, saved tools and historical editions,
+and persists in shareable URLs as `evidence=CHECK`. Clear resets it with the other
+filters. An old edition keeps its dated guide while the evidence filter uses the
+current assessment. Each tool's derived `evidence_gaps` array uses the same criteria
+as the review queue, including independent provenance; a verified status citing
+only maintainer evidence cannot satisfy the independent-use requirement.
+
+The CLI queue includes next steps and citations, with optional `--check`, `--tier`
+and `--sort oldest` filters. Its default order helps prioritize review work without
+changing quality labels. See [queue semantics](QUALITY_POLICY.md#existing-editions-and-ongoing-review).
+
 Daily `build` prepares a local preview from sealed editions. Daily `export-report`
 updates the cumulative public and local library after adding the finished edition.
 A fresh checkout retains older public tools even when its private catalog is empty.

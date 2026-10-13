@@ -208,6 +208,26 @@ test("comparison and saved notes disclose current quality separately from preser
     assert.ok(notes.includes(value));
   assert.match(notes, /Edition: 2026-10-02/);
 });
+test("missing-evidence filters combine with quality and historical editions using current assessment gaps", () => {
+  const assessed = {...tool, evidence_gaps: ["results", "independent_use"],
+    quality_assessment: {tier: "unverified"}};
+  const before = JSON.stringify(assessed);
+  assert.ok(matches(assessed, {evidence: "independent_use", quality: "unverified", edition: "2026-10-01", field: "images"}));
+  assert.ok(matches(assessed, {evidence: "results", q: "paint"}));
+  assert.equal(matches(assessed, {evidence: "setup"}), false);
+  assert.equal(matches(assessed, {evidence: "results", quality: "recommended"}), false);
+  assert.equal(matches(assessed, {evidence: "results", edition: "2026-10-03"}), false);
+  assert.equal(matches(assessed, {evidence: "unknown-check"}), false);
+  assert.equal(JSON.stringify(assessed), before);
+});
+test("evidence filtering uses backend provenance decisions and never infers gaps from stars or guide length", () => {
+  const provenanceGap = {...tool, evidence_gaps: ["independent_use"], stars: 100000,
+    quality_assessment: {tier: "unverified", checks: {independent_use: {status: "verified", source_kind: "maintainer"}}}};
+  assert.ok(matches(provenanceGap, {evidence: "independent_use", review: "profile"}));
+  assert.equal(matches({...provenanceGap, evidence_gaps: []}, {evidence: "independent_use"}), false);
+  assert.ok(matches({...tool, evidence_gaps: []}, {evidence: ""}));
+  assert.equal(matches(tool, {evidence: "results"}), false); // Older exported data cannot invent an assessment.
+});
 test("ready to try can be filtered while comparison and notes disclose pending creative results", () => {
   const assessed = {...tool, quality_assessment: {tier: "ready_to_try", checked_on: "2026-10-10",
     summary: "The five other checks have cited evidence.", scope: "Source review of an image-editing workflow.",

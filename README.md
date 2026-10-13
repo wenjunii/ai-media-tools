@@ -89,12 +89,28 @@ Each Experimental assessment displays **Why Experimental** with a cited reason.
 demo or an optional experimental port does not establish that a whole app is
 experimental. See the [review scope and limitations](docs/QUALITY_POLICY.md#existing-editions-and-ongoing-review).
 
-Use **Quality confidence** to filter the web library, and open **Evidence and
-remaining gaps** in a profile for the rationale. Current quality also appears in
+Use **Quality confidence** and **Evidence still needed** to filter the web library,
+then open **Evidence and remaining gaps** in a profile for the rationale. Evidence
+filters show whole-library counts and can be shared in the page URL, including
+with search, saved tools and edition filters. Current quality also appears in
 comparisons and exported research notes, separately from dated guides.
-`python3 -m media_scout quality-backlog --full` lists the evidence still needed,
-including tools that already have complete profiles. New reports must include a
-structured quality assessment. See [quality policy and format](docs/QUALITY_POLICY.md).
+
+The review queue now provides scoped next steps, cited gaps and failed checks:
+
+```sh
+python3 -m media_scout quality-backlog
+python3 -m media_scout quality-backlog --full
+python3 -m media_scout quality-backlog --full --check independent_use --tier unverified
+python3 -m media_scout quality-backlog --full --sort oldest
+```
+
+Default review order puts documented failures first, then creative-result reviews,
+other full-profile evidence gaps, unfinished profiles and experimental reassessments.
+Within each group, fewer remaining checks come first, followed by older assessments.
+This orders research work; labels still require an explicit cited review. Independent
+use remains a gap until independent provenance is verified. No tool limit or own-demo
+requirement is added. New reports must include a structured quality assessment.
+See [quality policy and format](docs/QUALITY_POLICY.md).
 
 ## What an edition contains
 

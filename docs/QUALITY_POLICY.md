@@ -159,6 +159,8 @@ Never put raw research, credentials or private paths in the registry.
 
 ```sh
 python3 -m media_scout quality-backlog --full
+python3 -m media_scout quality-backlog --full --check independent_use --tier unverified
+python3 -m media_scout quality-backlog --full --sort oldest
 # Only when a retrospective record audit is intended:
 python3 -m media_scout audit-existing-quality --date YYYY-MM-DD
 python3 -m media_scout build-library
@@ -173,8 +175,29 @@ fallback. Even a later screened mention invalidates an old recommendation.
 
 Use `quality-backlog --full` alongside `review-backlog` on subsequent runs. It
 includes full profiles with missing quality evidence, including Ready to try tools
-whose only remaining check is creative results. Review promising workflows
-and older gaps, not only popular projects. Update library curation when evidence
+whose only remaining check is creative results. Each item identifies the assessed
+workflow, latest record, missing/failed checks, current evidence notes and citations,
+and concrete next review actions. A verified independent-use status with missing or
+maintainer provenance still counts as a gap. An older full guide cannot satisfy the
+latest screened record's profile requirement.
+
+Default work order is: documented failures, creative-result review when the other
+requirements are met, other full-profile evidence reviews, unfinished profiles,
+then cited experimental limitations. Within each group, fewer non-results gaps,
+then fewer total gaps, then older assessment dates come first; unassessed dates
+precede assessed dates, with profile date and tool ID breaking ties. Use
+`--sort oldest` to order the entire queue by assessment age instead. This is a
+research order, not a quality score or automatic promotion. Every pending tool
+remains in the queue, including an otherwise complete assessment awaiting an
+explicit tier decision.
+
+`--check` filters any of the six check keys; `--tier` filters the current tier.
+The summary's `pending`, `gap_counts` and `queue_counts` always cover the complete
+pending library. Quality `counts` cover every tool, including Recommended.
+`matching` counts filtered items; `--full` adds those items and their next steps.
+The read-only command does not collect sources, install apps or change assessments.
+Review promising workflows and older gaps, not only popular projects.
+Update library curation when evidence
 improves; do not repeat unchanged tools in a daily report just to change a label.
 
 The library's current `quality_assessment` sits outside preserved `versions`.

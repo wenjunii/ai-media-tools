@@ -7,7 +7,7 @@ import re
 
 from .report import LABELS, SECTIONS, safe_url
 from .storage import edition_key, edition_revision, read_json, report_date, sha256, write_text
-from .quality import CHECKS, METHODS, TIERS, assess_entry, read_reviews, validate_assessment
+from .quality import CHECKS, METHODS, TIERS, assess_entry, evidence_gaps, read_reviews, validate_assessment
 
 UI = Path(__file__).with_name("ui")
 ASSETS = ("library.css", "library.js")
@@ -117,6 +117,7 @@ def make_library(documents, config, quality_reviews=None):
         entry["platform_mentions"] = [label for label, pattern in PLATFORMS.items()
                                       if re.search(pattern, platform_text, re.I)]
         entry["quality_assessment"] = assess_entry(entry, quality_reviews)
+        entry["evidence_gaps"] = evidence_gaps(entry["quality_assessment"])
         for category in entry["categories"]:
             names.setdefault(category, category.replace("_", " ").replace("-", " ").title())
     used = {c for entry in tools.values() for c in entry["categories"]}
