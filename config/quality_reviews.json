@@ -10134,18 +10134,19 @@
     "github:comfy-org/comfyui": {
       "basis_edition": "2026-10-01",
       "record_sha256": "54598d2767b5aeb80adb70a22036a77a0a5cad5697fcf564dd69bdd3c1f04107",
-      "checked_on": "2026-10-13",
+      "checked_on": "2026-10-14",
       "assessment": {
         "tier": "ready_to_try",
         "method": "source-review",
-        "checked_on": "2026-10-13",
-        "summary": "Ready to try for a bounded local SDXL workflow: setup, substantive support, independent integration and selected model terms are supported. Representative creative output review remains pending.",
+        "checked_on": "2026-10-14",
+        "summary": "Ready to try for the scoped SDXL Base 1.0 workflow. A fresh review found exact-version author preference data, but not enough disclosed evaluation method or representative base-only output context to verify creative results.",
         "scope": "Local built-in SDXL Base 1.0 text-to-image workflow using the official Stability AI checkpoint, without custom nodes, refiner, external LoRAs or paid API nodes.",
         "caveats": [
           "Documentation and implementation review only; ComfyUI was not installed or run.",
           "SDXL weights use CreativeML Open RAIL++-M with use restrictions, separately from the open-source ComfyUI code. This is not a claim of unrestricted model licensing.",
           "Custom nodes, other checkpoints, hosted/API workflows and their costs are not covered.",
-          "Platform-specific PyTorch instructions must be followed. Current unrelated model/XPU and loop-cache issues do not prove this basic SDXL path is broken or universally compatible."
+          "Platform-specific PyTorch instructions must be followed. Current unrelated model/XPU and loop-cache issues do not prove this basic SDXL path is broken or universally compatible.",
+          "October 14 follow-up concerns creative-result evidence. The five non-results checks retain their October 13 source reviews; no runtime test or broader support audit was performed today."
         ],
         "sources": [
           {
@@ -10223,6 +10224,10 @@
           {
             "title": "Reviewed evidence: LICENSE.md",
             "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md"
+          },
+          {
+            "title": "Inspected SDXL 1.0 versus 0.9 and earlier-model preference chart",
+            "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/comparison.png"
           }
         ],
         "checks": {
@@ -10235,10 +10240,11 @@
           },
           "results": {
             "status": "documented",
-            "note": "Published examples are described, but this pass has not evaluated their creative fidelity or repeatability. The README links official templates and example workflows. Begin with a small image template whose required models fit your machine.",
+            "note": "On October 14, inspected the official SDXL Base 1.0 model card and its preference chart: the exact base-only 1.0 bar is 22.7%, distinct from the 26.2% base-plus-refiner bar. The chart/card does not supply enough rater, prompt-set and uncertainty context to verify the scoped creative result by itself. Official ComfyUI example images here use the refiner; their appearance was not transferred to this base-only assessment. The linked initial paper predates the 1.0 release. Result review remains pending; this is not a failed-quality finding.",
             "source_urls": [
-              "https://github.com/Comfy-Org/ComfyUI/blob/0df64eb242b7c5759c3e86afd5d1846d923b1033/README.md",
-              "https://github.com/Comfy-Org/ComfyUI"
+              "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/comparison.png",
+              "https://comfyanonymous.github.io/ComfyUI_examples/sdxl/"
             ]
           },
           "setup": {
