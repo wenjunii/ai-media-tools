@@ -44966,17 +44966,18 @@
     "github:sociallyineptweeb/aicovergen": {
       "basis_edition": "2026-10-06",
       "record_sha256": "83e9901f1d9d11d57dbee7f7f247ebaa2b483f370cca131e2da281af5ab13653",
-      "checked_on": "2026-10-10",
+      "checked_on": "2026-10-16",
       "assessment": {
         "tier": "unverified",
-        "checked_on": "2026-10-10",
         "method": "source-review",
-        "summary": "Fresh source evidence has been checked; remaining gaps prevent a higher confidence label.",
-        "scope": "Current documentation and complete software-license refresh, with up to 5 releases, 10 commits and 15 recently updated support items. Creative-output and independent-reproduction checks remain pending unless explicitly verified below.",
+        "checked_on": "2026-10-16",
+        "summary": "Quality remains unverified. The complete MIT file and README restrictions do not yet establish an unambiguous grant for the selected voice-conversion workflow.",
+        "scope": "AICoverGen voice-converted song-cover workflow. October 16 review rechecked the complete software license and current README; earlier maintenance/support observations are retained with their original scope, not claimed as a fresh exhaustive review.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
-          "This is a screened discovery; its detailed installation/hardware profile is still pending."
+          "This is a screened discovery; its detailed installation/hardware profile is still pending.",
+          "A new full guide is held pending clarification of the README restrictions; historical reports remain unchanged."
         ],
         "sources": [
           {
@@ -45002,14 +45003,23 @@
           {
             "title": "Sampled support discussion",
             "url": "https://github.com/SociallyIneptWeeb/AICoverGen/issues/186"
+          },
+          {
+            "title": "Current README with Terms of Use",
+            "url": "https://github.com/SociallyIneptWeeb/AICoverGen/blob/main/README.md"
+          },
+          {
+            "title": "Complete current MIT license",
+            "url": "https://github.com/SociallyIneptWeeb/AICoverGen/blob/main/LICENSE"
           }
         ],
         "checks": {
           "license": {
-            "status": "verified",
-            "note": "The complete current MIT software license is byte-identical to the previously archived full-text review. This verifies the repository software grant; model, bundled-asset and service terms are addressed separately.",
+            "status": "unknown",
+            "note": "The complete root file is MIT, but the README also prohibits several converted-voice uses, including selling generated voice clips and voice models. The scope of these additional terms relative to code, models and outputs needs clarification before a full recommendation-specific grant can be verified. Do not assume the MIT badge clears the entire workflow.",
             "source_urls": [
-              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/1babc736e064749c92a481b142bb931b8297c820/LICENSE"
+              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/main/README.md",
+              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/main/LICENSE"
             ]
           },
           "results": {
@@ -45020,15 +45030,15 @@
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Installation is documented; independent successful reproduction of this exact workflow remains unverified.",
+            "status": "documented",
+            "note": "The current README specifies Python 3.9, FFmpeg, SoX, requirements installation, model downloads and a local WebUI on port 7860. Independent reproduction on a current system is not established.",
             "source_urls": [
-              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/1babc736e064749c92a481b142bb931b8297c820/README.md"
+              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/main/README.md"
             ]
           },
           "maintenance": {
             "status": "documented",
-            "note": "History sample includes 2025-02-15: Add simple table of contents to README. This is evidence of a change, not a verified support or reliability outcome. Sampled discussion (open): no need find alternative anynore!!!!. User reports are not confirmed reproductions by this review.",
+            "note": "Retained October 10 bounded observation, not refreshed today: History sample includes 2025-02-15: Add simple table of contents to README. This is evidence of a change, not a verified support or reliability outcome. Sampled discussion (open): no need find alternative anynore!!!!. User reports are not confirmed reproductions by this review.",
             "source_urls": [
               "https://github.com/SociallyIneptWeeb/AICoverGen/commit/54138979fedf5358b278a4a142290c248c45538c",
               "https://github.com/SociallyIneptWeeb/AICoverGen/issues",
@@ -45044,10 +45054,10 @@
             ]
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. Voice/source-music permissions, weight terms, separation quality and hardware need full review. Documentation screened; not installed or tested.",
+            "status": "unknown",
+            "note": "RVC, HuBERT/MDXNet downloads, individual voice models and source music have separate permissions. The README use restrictions add a workflow-specific uncertainty that this review did not resolve.",
             "source_urls": [
-              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/1babc736e064749c92a481b142bb931b8297c820/README.md"
+              "https://github.com/SociallyIneptWeeb/AICoverGen/blob/main/README.md"
             ]
           }
         }
