@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Media Scout · Creator review</title>
+<style>
+:root{color-scheme:dark;font-family:Segoe UI,system-ui,sans-serif;background:#111c20;color:#f4eddc}
+*{box-sizing:border-box}body{margin:0}main{max-width:1140px;margin:40px auto;padding:0 28px}
+header{border-bottom:1px solid #415053;display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;gap:20px}
+header strong{letter-spacing:.12em;font-size:13px}.pill{color:#d6f780;border:1px solid #677a50;border-radius:20px;padding:6px 12px;font-size:13px}
+.layout{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:48px;margin-top:32px}
+video{width:100%;max-height:72vh;background:#071013;border-radius:14px}h1{font-size:36px;line-height:1.15;margin:10px 0 18px}
+h2{font-size:21px;margin:28px 0 12px}p{line-height:1.6}.muted,small{color:#9db4b6}small{line-height:1.5}a{color:#d6f780}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}.eyebrow{font-size:12px;letter-spacing:.12em;color:#d6f780}
+fieldset{border:0;padding:0;margin:0}legend{font-weight:650;font-size:21px;margin-bottom:14px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #293b40;line-height:1.45}
+input[type=checkbox]{width:20px;height:20px;flex-shrink:0;margin-top:1px;accent-color:#d6f780}
+label small{display:block}select,textarea,button{font:inherit;border-radius:8px;padding:11px 13px}select,textarea{background:#1c2c31;border:1px solid #627c80;color:#f4eddc;width:100%;margin:8px 0 16px}
+textarea{resize:vertical;min-height:86px}button{cursor:pointer;background:#d6f780;color:#111c20;border:0;font-weight:650}button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #edb171;outline-offset:4px}
+.status{padding:12px 14px;border-radius:8px;background:#1c2c31;font-size:14px;line-height:1.5}.fine{font-size:13px;color:#9db4b6}
+@media(max-width:760px){main{margin:20px auto;padding:0 18px}.layout{grid-template-columns:1fr;gap:24px}video{max-height:65vh}h1{font-size:30px}header{flex-wrap:wrap}}
+</style>
+<main>
+<header><strong>AI MEDIA SCOUT</strong><span class="pill">LOCAL DRAFT · PUBLISHING OFF</span></header>
+<div class="layout"><section aria-label="Draft playback">
+<video id="draft" controls playsinline preload="metadata" src="draft.mp4"><track id="spoken-captions" kind="captions" srclang="en" label="Spoken narration"></video>
+<p class="links"><button type="button" id="play">Play draft</button><button type="button" id="captions-toggle" aria-pressed="false">Show spoken captions</button></p>
+<p id="playback-status" class="status" role="status">Play the full draft, then listen and inspect before marking checks.</p>
+<p class="links"><a href="draft.mp4" download>MP4</a><a href="captions.srt" download>Subtitles</a><a href="transcript.txt">Transcript</a></p>
+<p class="fine">The MP4 is the saved draft without re-encoding. Narration, captions, motion and layout are editorial additions to the app output.</p>
+</section><section aria-label="Creator checklist">
+<div class="eyebrow">CREATOR REVIEW</div><h1>__TITLE__</h1>
+<p class="muted">Check playback, visual accuracy, captions and audio. Automated checks have passed; these judgments are yours.</p>
+<p id="saved-status" class="status"></p>
+<form id="review-form">
+<fieldset><legend>What did you check?</legend>
+<label class="check"><input type="checkbox" name="playback"><span>The full video plays correctly<small>I watched it from beginning to end.</small></span></label>
+<label class="check"><input type="checkbox" name="visual"><span>The visual claims are accurate<small>The actual result, process and limitation are represented fairly.</small></span></label>
+<label class="check"><input type="checkbox" name="captions"><span>The captions are readable and accurate<small>I checked the on-screen text and spoken subtitles.</small></span></label>
+<label class="check"><input type="checkbox" name="audio"><span>The narration sounds usable<small>I listened for pronunciation, pacing, clipping and missing speech.</small></span></label>
+</fieldset>
+<h2>Review result</h2>
+<label for="decision">Choose after reviewing</label>
+<select id="decision" required><option value="">Select a result…</option><option value="passed">Review passed</option><option value="needs_changes">Needs changes</option></select>
+<label for="notes">Notes <span class="muted">(optional)</span></label><textarea id="notes" maxlength="2000" placeholder="What needs adjusting, or what worked well?"></textarea>
+<button id="save" type="submit" disabled>Save review.json</button>
+<p id="save-status" class="fine" role="status">Choose a result. Passing requires all four checks.</p>
+</form>
+<p class="fine">Saving downloads a local review file. It does not post anything or update the source run. Import it with the command in <a href="README.md">README.md</a>. A review is valid only for this run and these exact video/storyboard bytes.</p>
+<p class="fine">A passed review does not authorize publishing or clear asset/model rights. Use an authorized integration or creator upload route after your own final checks.</p>
+</section></div>
+</main>
+<script type="application/json" id="review-data">__REVIEW_DATA__</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('review-data').textContent);
+const video=document.getElementById('draft'), playback=document.getElementById('playback-status');
+const form=document.getElementById('review-form'), decision=document.getElementById('decision'), save=document.getElementById('save');
+const message=document.getElementById('save-status'), names=['playback','visual','captions','audio'];
+// A local Blob also supports subtitle playback when this page is opened from disk.
+document.getElementById('spoken-captions').src=URL.createObjectURL(new Blob([data.subtitles],{type:'text/vtt'}));
+const captionsToggle=document.getElementById('captions-toggle');
+captionsToggle.addEventListener('click',()=>{
+  const enabled=video.textTracks[0].mode!=='showing';
+  video.textTracks[0].mode=enabled?'showing':'disabled';
+  captionsToggle.setAttribute('aria-pressed',String(enabled));
+  captionsToggle.textContent=enabled?'Hide spoken captions':'Show spoken captions';
+});
+document.getElementById('saved-status').textContent='Creator review at packaging: '+data.creator_review_status+'. New checks start unchecked.';
+document.getElementById('play').addEventListener('click',()=>video.play().catch(()=>{playback.textContent='Could not start playback. Try the video controls or open the MP4 directly.';}));
+video.addEventListener('timeupdate',()=>{playback.textContent='Playback: '+video.currentTime.toFixed(1)+' / '+(Number.isFinite(video.duration)?video.duration.toFixed(1):'—')+' seconds';});
+video.addEventListener('ended',()=>{playback.textContent='Playback reached the end. Mark only the checks you completed.';});
+video.addEventListener('error',()=>{playback.textContent='Playback error. Open the MP4 directly and inspect the saved draft.';});
+function checks(){return Object.fromEntries(names.map(name=>[name,form.elements.namedItem(name).checked]));}
+function update(){
+  const passed=Object.values(checks()).every(Boolean);
+  save.disabled=!(decision.value==='needs_changes'||(decision.value==='passed'&&passed));
+  message.textContent=save.disabled?'Choose a result. Passing requires all four checks.':'Ready to save your review locally.';
+}
+form.addEventListener('input',update);form.addEventListener('change',update);
+form.addEventListener('submit',event=>{
+  event.preventDefault();update();if(save.disabled)return;
+  const record={schema_version:1,run_id:data.run_id,video_sha256:data.video_sha256,storyboard_sha256:data.storyboard_sha256,
+    reviewed_utc:new Date().toISOString(),checks:checks(),decision:decision.value,notes:document.getElementById('notes').value};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(record,null,2)+'\n'],{type:'application/json'}));
+  const link=document.createElement('a');link.href=url;link.download='review.json';link.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  message.textContent='Download requested. Import the saved review.json with the README command to update the source run.';
+});
+</script>
+</html>

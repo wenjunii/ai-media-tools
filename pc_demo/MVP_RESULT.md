@@ -140,3 +140,40 @@ Reverification of the original October 3 video also passed with its existing
 video/input/output hashes and manual review intact. Windows CI now runs the image
 tests with the already reviewed, hash-pinned Pillow wheel, without app/model
 downloads. See the README for supported input limits and color/metadata handling.
+
+## Creator handoff check: 2026-10-17
+
+`package` exported the saved October 12 artwork revision to
+`.local/packages/20261017T184708189727Z-review/`. It copied the existing 45-second
+MP4 without inference or re-encoding. Its SHA-256 remains
+`5e557d2f8b2e8fdb5458904708a13ed51dc51249bf8d9837ee510a3a4b28b14a`.
+Reverification passed full decode, provenance, scene/caption and audio checks;
+the earlier verification record was archived. The package contains only the
+video, SRT/WebVTT subtitles, transcript, review page, instructions and hashes.
+
+The review page was tested through a loopback-only server restricted to the
+package directory. Playback reached 45 seconds without error, unmuted. Spoken
+subtitles rendered, incomplete passing reviews stayed
+blocked, and a separate synthetic fixture downloaded valid feedback. The Windows
+launcher rejected that synthetic feedback for the real draft, including when
+the review file path contained spaces. Unit tests also exercise valid synthetic
+imports, preserved prior reviews, stale identities, failed exports, changed source
+artifacts and safe title/subtitle escaping. The actual creator review remains
+**pending**; agent playback checks do not claim creator listening or approval.
+
+Direct opening from disk was blocked by the browser tool's URL policy, so that
+route remains unverified. The README includes the tested loopback preview command.
+No source inputs, models, raw logs or machine inventory are included in the
+package. Review packages, downloads and browser evidence remain ignored local
+files. No research, email, social upload or schedule operation was run.
+
+Validation passed: 223 full Python tests under WSL, 58 native Windows PC tests,
+32 library browser tests, compile checks, and archive verification for 18 editions,
+54 report files and 756 library tools. The PC index audit and staged publication
+audit passed under WSL. Native Git subprocess startup failed twice during the PC
+index audit; the same read-only audit was completed successfully under WSL.
+
+Reproduce with `./pc_demo/demo.ps1 package`. Open its `review.html`, complete your
+checks, download `review.json`, then import with
+`./pc_demo/demo.ps1 review -ReviewFile "C:\path\to\review.json"`. Use `status` or
+`history` to inspect recorded creator feedback; a revision requires a fresh review.

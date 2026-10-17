@@ -1,9 +1,10 @@
 param(
-    [Parameter(Mandatory=$true)][ValidateSet('setup','doctor','status','run','revise','history','verify','audit-git')][string]$Action,
+    [Parameter(Mandatory=$true)][ValidateSet('setup','doctor','status','run','revise','history','verify','package','review','audit-git')][string]$Action,
     [string]$RunDirectory,
     [ValidateRange(-1,16)][int]$GpuId = -1,
     [string]$Storyboard,
     [string]$InputImage,
+    [string]$ReviewFile,
     [ValidateRange(1,10000)][int]$Limit = 20,
     [switch]$Json
 )
@@ -24,7 +25,7 @@ if ($InputImage) {
     $resolvedImage = (Resolve-Path -LiteralPath $InputImage -ErrorAction Stop).Path
     $processArgs += @('--input', ('"' + $resolvedImage + '"'))
 }
-if ($RunDirectory -and $Action -notin @('verify','revise')) { throw '-RunDirectory is only valid with verify or revise.' }
+if ($RunDirectory -and $Action -notin @('verify','revise','package','review')) { throw '-RunDirectory is only valid with verify, revise, package or review.' }
 if ($RunDirectory) {
     if ($RunDirectory.Contains('"')) { throw 'Invalid path.' }
     $resolvedRun = (Resolve-Path -LiteralPath $RunDirectory -ErrorAction Stop).Path.TrimEnd('\')
@@ -35,6 +36,13 @@ if ($Storyboard) {
     if ($Storyboard.Contains('"')) { throw 'Invalid storyboard path.' }
     $resolvedStory = (Resolve-Path -LiteralPath $Storyboard -ErrorAction Stop).Path
     $processArgs += @('--storyboard', ('"' + $resolvedStory + '"'))
+}
+if ($Action -eq 'review' -and -not $ReviewFile) { throw 'review requires -ReviewFile with the downloaded review.json.' }
+if ($ReviewFile) {
+    if ($Action -ne 'review') { throw '-ReviewFile is only valid with review.' }
+    if ($ReviewFile.Contains('"')) { throw 'Invalid review file path.' }
+    $resolvedReview = (Resolve-Path -LiteralPath $ReviewFile -ErrorAction Stop).Path
+    $processArgs += @('--review-file', ('"' + $resolvedReview + '"'))
 }
 if ($Action -eq 'history') {
     $processArgs += @('--limit', $Limit.ToString())

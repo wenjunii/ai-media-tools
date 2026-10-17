@@ -9,6 +9,8 @@ Check this PC with `./pc_demo/demo.ps1 status`; see the PC guide for setup on a
 new machine. Use `history` to inspect past runs and `revise` to edit narration
 and captions using preserved app output. Add `-InputImage "path\to\artwork.png"`
 to `run` to use your own PNG/JPEG illustration, with the original preserved.
+Use `package` to create an offline review folder with the video, subtitles and
+checklist; `review -ReviewFile` records your feedback against that exact draft.
 PC demo media and runtimes stay local;
 social publishing and daily demo scheduling are disabled. Explicitly requested PC source-code sync follows
 the [protected GitHub workflow](docs/GITHUB_SYNC.md#pc-source-and-documentation-sync).
