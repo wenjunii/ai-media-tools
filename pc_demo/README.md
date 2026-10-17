@@ -35,6 +35,60 @@ latest completed draft and reruns full media checks. An existing matching manual
 review is preserved; a changed video requires a new review. The PowerShell
 launcher saves its own output logs under `.local/launcher-logs/`.
 
+## Package a draft for creator review
+
+```powershell
+.\pc_demo\demo.ps1 package
+$package = (Get-Content .\pc_demo\.local\latest-package.json -Raw | ConvertFrom-Json).directory
+Start-Process -FilePath (Join-Path $package 'review.html')
+```
+
+`package` requires a current automated verification pass. It creates a new folder
+under `.local/packages/` with the unchanged MP4, spoken subtitles in SRT and
+WebVTT, a transcript, an offline review page, instructions and a file-hash
+manifest. It does not rerun inference or re-encode the video. Only a successful
+export updates `.local/latest-package.json`; earlier packages and failed attempts
+remain available. Add `-RunDirectory` to package an older verified run.
+
+Open `review.html`, play the whole video, inspect its visual claims and captions,
+and listen to the narration. Use **Show spoken captions** for the optional
+subtitles. Mark the checks you completed, choose **Review passed** or
+**Needs changes**, add notes if helpful, and save `review.json`. Passing requires
+all four checks; **Needs changes** can be saved with incomplete checks.
+
+Import the downloaded file from PowerShell at the repository root:
+
+```powershell
+.\pc_demo\demo.ps1 review -ReviewFile "$env:USERPROFILE\Downloads\review.json"
+.\pc_demo\demo.ps1 status
+.\pc_demo\demo.ps1 history
+```
+
+The import defaults to the latest completed run. Use `-RunDirectory` for the
+reviewed run if a newer draft exists. Reviews must match the exact run ID, video
+hash and storyboard hash. Imported feedback is saved in `qa/creator-review.json`;
+replaced reviews are retained under `qa/creator-review-history/`. Status reports
+`pending`, `passed`, `needs_changes`, `stale` or `invalid` separately from the
+automated checks and agent playback evidence. Revisions need a new creator review.
+The review is your recorded judgment, not proof of rights or publishing approval.
+
+The package excludes original images, model/runtime files, raw logs and machine
+inventory. The video, title and subtitles still contain your creative material.
+Inspect the package before transferring it to another device. Copies are local
+snapshots: later edits or reviews do not update an existing package. Create a new
+package when needed. Social publishing and scheduling remain disabled.
+
+If your browser cannot open the folder directly, use the same local preview
+approach as a run, restricted to this package:
+
+```powershell
+python -m http.server 8771 --bind 127.0.0.1 --directory "$package"
+# Open http://127.0.0.1:8771/review.html; Ctrl+C stops the preview.
+```
+
+The review page was tested through this loopback preview. Direct `file://`
+opening was blocked by the browser testing tool and has not been verified.
+
 ## Make a draft from your own artwork
 
 ```powershell
@@ -157,7 +211,7 @@ This is dependency isolation, not a security sandbox.
 
 ## Outputs and replay
 
-Each invocation creates a new UTC-named directory in `.local/runs/`. Successful
+Each new demo or revision creates a UTC-named directory in `.local/runs/`. Successful
 runs update `.local/latest-run.json`; failed attempts are kept with their logs.
 No run overwrites another. The finished video is `draft.mp4` in that directory.
 

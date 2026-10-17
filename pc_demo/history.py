@@ -26,6 +26,7 @@ def local_history(limit=20):
                 draft = draft_status(path)
                 row.update(video=draft['video'], automated_checks_passed=draft['automated_checks_passed'],
                            verification_state=draft['verification_state'],
+                           creator_review_status=draft['creator_review']['status'],
                            saved_review_status=draft['saved_review_status'])
         except (OSError, ValueError, RuntimeError, KeyError, TypeError) as error:
             row.update(status='unavailable or invalid', error=str(error))
@@ -38,6 +39,8 @@ def format_history(history):
     for run in history['runs']:
         checks = run.get('verification_state', 'no completed video')
         lines.append(f'\n{run["run"]} | {run["status"]} | checks: {checks}')
+        if 'creator_review_status' in run:
+            lines.append(f'  Creator review: {run["creator_review_status"]}')
         if run.get('parent_run'):
             lines.append(f'  Revised from: {run["parent_run"]}')
         for failure in run.get('failures', []):

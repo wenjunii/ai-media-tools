@@ -4,13 +4,13 @@ import os
 import pathlib
 import subprocess
 import time
-import textwrap
 import wave
 from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont
 from .common import ROOT, execute, read_json, sha256, stamp, write_json
 from .storyboard import load_storyboard
 from .inputs import input_relative, validate_size
+from .captions import write_captions
 
 W, H = 1080, 1920
 INK, PAPER, MUTED, ACCENT = '#111c20', '#f4eddc', '#9db4b6', '#d6f780'
@@ -249,13 +249,5 @@ def render_video(run,ffmpeg):
         meta['elapsed_seconds']=round(time.perf_counter()-start,3)
         write_json(run/'logs/render.command.json',meta)
     # Portable caption sidecar in addition to burned-in on-screen captions.
-    lines=[]
-    def timestamp(value):
-        millis=round(value*1000)
-        return f'{millis//3600000:02d}:{millis//60000%60:02d}:{millis//1000%60:02d},{millis%1000:03d}'
-    for index,segment in enumerate(composer.story['segments']):
-        lines += [str(index+1),f'{timestamp(segment["start"])} --> {timestamp(segment["end"])}',
-                  *textwrap.wrap(segment['narration'],width=48),'']
-    (run/'captions.srt').write_text('\n'.join(lines),encoding='utf-8')
-    (run/'transcript.txt').write_text('\n\n'.join(s['narration'] for s in composer.story['segments'])+'\n',encoding='utf-8')
+    write_captions(run,composer.story)
     write_json(run/'qa/font-provenance.json', {name:sha256(FONT_ROOT/name) for name in ('segoeui.ttf','segoeuib.ttf','consola.ttf')})

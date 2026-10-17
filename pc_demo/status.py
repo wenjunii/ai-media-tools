@@ -2,6 +2,7 @@
 from .common import ROOT, LOCAL, read_json, resolve_run, sha256
 from .setup_runtime import verified_runtime
 from .inputs import input_relative, provenance_hashes, source_relative
+from .creator_review import creator_review_state
 
 VERIFIED_ARTIFACTS = ('inputs/input.jpg', 'outputs/actual-output.png', 'draft.mp4',
                       'storyboard.json', 'logs/inference.command.json', 'logs/render.command.json')
@@ -45,6 +46,7 @@ def draft_status(run):
             'video_sha256': digest, 'video_matches_manifest': digest == manifest.get('video_sha256'),
             **matches, 'verified_artifacts_match': artifacts_match, 'automated_checks_passed': passed,
             'verification_state': state,
+            'creator_review': creator_review_state(run, digest),
             **review_state(run, digest)}
 
 

@@ -28,6 +28,14 @@ flow in `../docs/GITHUB_SYNC.md`; never refresh Mac publication checkpoints here
   create a new run. Never carry a previous video's manual review to a revision.
   Keep earlier verification attempts when rechecking; a failed recheck must not
   leave an older pass active. Validate storyboards before narration/rendering.
+- Package only drafts with a current automated pass. Export only the MP4 and
+  review materials, with hashes; keep originals, models, raw logs and machine
+  inventory in the run. Preserve earlier packages and export failures.
+- Keep explicit creator feedback separate from agent playback/visual evidence.
+  Import only the creator's submitted review for the exact run, video and
+  storyboard. Preserve prior reviews. Never mark creator listening or approval
+  complete from automated checks or agent testing; use synthetic fixtures for
+  review-import tests. A passed review does not enable publishing.
 - Show actual generated output first. Label comparisons and editorial motion.
   Distinguish native screen recordings from reconstructions or log-derived cards.
 - Export a 30–60 second 9:16 H.264/AAC MP4 with readable captions, practical use,

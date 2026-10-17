@@ -15,7 +15,7 @@ def snapshot_source(run):
     snapshot.mkdir(parents=True)
     source_hashes={}
     for path in ROOT.iterdir():
-        if path.is_file() and path.suffix in ('.py','.ps1','.json','.md') and not path.name.endswith('.local.json'):
+        if path.is_file() and path.suffix in ('.py','.ps1','.json','.md','.html') and not path.name.endswith('.local.json'):
             shutil.copyfile(path,snapshot/path.name)
             source_hashes[path.name]=sha256(path)
     write_json(run/'evidence/source/hashes.json',source_hashes)

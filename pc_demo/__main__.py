@@ -21,6 +21,11 @@ def main():
     history.add_argument('--json', action='store_true')
     verify = sub.add_parser('verify')
     verify.add_argument('--run', help='Run directory; defaults to the latest completed local draft')
+    package = sub.add_parser('package', help='Create a local creator-review package from a verified draft')
+    package.add_argument('--run', help='Source run; defaults to the latest completed draft')
+    review = sub.add_parser('review', help='Import an explicit creator review for the exact saved draft')
+    review.add_argument('--run', help='Reviewed run; defaults to the latest completed draft')
+    review.add_argument('--review-file', required=True, help='review.json downloaded from the local package review page')
     args = parser.parse_args()
     if args.action == 'status':
         from .status import local_status
@@ -32,6 +37,14 @@ def main():
     elif args.action == 'audit-git':
         from .audit import audit_git
         print(json.dumps(audit_git(), indent=2))
+    elif args.action == 'package':
+        from .common import resolve_run
+        from .package import export_package
+        print(json.dumps(export_package(resolve_run(args.run)), indent=2))
+    elif args.action == 'review':
+        from .common import resolve_run
+        from .creator_review import import_creator_review
+        print(json.dumps(import_creator_review(resolve_run(args.run), args.review_file), indent=2))
     elif args.action == 'setup':
         from .setup_runtime import setup
         setup()
