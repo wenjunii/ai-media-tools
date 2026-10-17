@@ -9,6 +9,10 @@
     if (value && typeof value === "object") return Object.values(value).map(searchText).join(" ");
     return typeof value === "string" ? fold(value) : "";
   }
+  function queryTerms(query) {
+    return Array.from(new Set(Array.from(fold(query || "").matchAll(/"([^"]+)"|(\S+)/g),
+      function (match) { return (match[1] || match[2]).trim(); }).filter(Boolean)));
+  }
   function editionKey(entry) { return entry.edition_id || entry.report_date || entry.date; }
   function primaryVersion(tool, edition) {
     return (edition && tool.versions.find(function (v) { return editionKey(v) === edition; })) ||
@@ -163,6 +167,64 @@
     };
     return Object.keys(patterns).filter(function (name) { return patterns[name].test(text || ""); });
   }
+  function searchIndex(tool, categoryNames) {
+    function categories(values) {
+      return (values || []).map(function (id) { return categoryNames && categoryNames.get(id) || id; });
+    }
+    return {
+      text: searchText(tool) + " " + searchText(categories(tool.categories)),
+      assessment: searchText(tool.quality_assessment),
+      versions: tool.versions.map(function (version) {
+        const p = version.profile;
+        return {edition: editionKey(version), name: fold(p.name || ""),
+          text: searchText({id: tool.id, date: version.date, profile: p}) + " " + searchText(categories(p.categories)),
+          sections: [
+            ["Tool name", p.name, 100],
+            ["Creative uses", typeof p.good_for === "string" ? p.good_for : p.good_for && p.good_for.text, 70],
+            ["Introduction", p.introduction && p.introduction.text, 60],
+            ["AI workflow", p.ai_relevance && p.ai_relevance.text, 60],
+            ["Creative field", categories(p.categories), 50],
+            ["Requirements", p.requirements, 40], ["Installation", p.installation, 40],
+            ["First project", p.usage, 40], ["License and costs", p.license || p.code_license, 30],
+            ["Demo and examples", p.demo, 30], ["Limitations", p.limitations, 20]
+          ].map(function (section) { return {label: section[0], text: searchText(section[1]), weight: section[2]}; })};
+      })
+    };
+  }
+  function searchDetails(tool, filters, index) {
+    const terms = queryTerms(filters.q);
+    if (!terms.length) return {score: 0, scope: "none", sections: [], edition: null};
+    index = index || searchIndex(tool);
+    const primary = editionKey(primaryVersion(tool, filters.edition));
+    const candidates = index.versions.filter(function (version) {
+      return !filters.edition || version.edition === filters.edition;
+    }).map(function (version) {
+      const count = terms.filter(function (term) { return version.text.includes(term); }).length;
+      const sections = version.sections.filter(function (section) {
+        return terms.some(function (term) { return section.text.includes(term); });
+      });
+      const weight = terms.reduce(function (total, term) {
+        return total + Math.max(0, ...sections.filter(function (section) { return section.text.includes(term); })
+          .map(function (section) { return section.weight; }));
+      }, 0) / terms.length;
+      return {score: (count === terms.length ? 1000 : 0) + count / terms.length * 100 + weight +
+          (version.name === terms.join(" ") ? 200 : 0),
+        complete: count === terms.length, scope: "review", edition: version.edition,
+        sections: sections.map(function (section) { return section.label; })};
+    });
+    candidates.sort(function (a, b) {
+      return b.score - a.score || Number(b.edition === primary) - Number(a.edition === primary) || b.edition.localeCompare(a.edition);
+    });
+    const best = candidates[0];
+    if (best && best.complete) return best;
+    // Current curation is distinct from a preserved edition's assessment.
+    if (!filters.edition && terms.every(function (term) { return index.assessment.includes(term); })) {
+      return {score: 1100, scope: "assessment", edition: null, sections: ["Current quality assessment"]};
+    }
+    // Whole-library matching can combine words from different reviews or metadata.
+    // Do not claim that one dated review contains the complete query in that case.
+    return {score: best ? best.score : 0, scope: "history", edition: null, sections: []};
+  }
   function matches(tool, filters, text) {
     const version = primaryVersion(tool, filters.edition), profile = version.profile;
     if (filters.edition && !tool.versions.some(function (v) { return editionKey(v) === filters.edition; })) return false;
@@ -173,17 +235,23 @@
     if (filters.evidence && !(tool.evidence_gaps || []).includes(filters.evidence)) return false;
     const license = version.kind === "profile" ? profile.license.code : profile.code_license;
     if (filters.license && license !== filters.license) return false;
-    const tokens = Array.from(fold(filters.q || "").matchAll(/"([^"]+)"|(\S+)/g), function (m) { return m[1] || m[2]; });
+    const tokens = queryTerms(filters.q), index = text && typeof text === "object" ? text : null;
     // An edition filter must not match requirements or uses from another review.
-    const haystack = filters.edition ? searchText({id: tool.id, date: version.date, profile: profile}) :
-      (text === undefined ? searchText(tool) : text);
+    const haystack = filters.edition ? (index ? index.versions.find(function (v) { return v.edition === filters.edition; }).text :
+      searchText({id: tool.id, date: version.date, profile: profile})) : (index ? index.text :
+      (text === undefined ? searchText(tool) : text));
     return tokens.every(function (token) { return haystack.includes(token); });
   }
-  function sortTools(tools, sort) {
+  function sortTools(tools, sort, filters, details) {
+    const ranked = sort === "relevance" && queryTerms(filters && filters.q).length;
+    const scores = new Map(ranked ? tools.map(function (tool) {
+      return [tool.id, (details && details.get(tool.id) || searchDetails(tool, filters)).score];
+    }) : []);
     return tools.slice().sort(function (a, b) {
-      if (sort === "name") return a.name.localeCompare(b.name);
+      if (ranked && scores.get(a.id) !== scores.get(b.id)) return scores.get(b.id) - scores.get(a.id);
+      if (sort === "name") return a.name.localeCompare(b.name) || a.id.localeCompare(b.id);
       const field = sort === "added" ? "first_seen" : "profile_date";
-      return b[field].localeCompare(a[field]) || a.name.localeCompare(b.name);
+      return b[field].localeCompare(a[field]) || a.name.localeCompare(b.name) || a.id.localeCompare(b.id);
     });
   }
   function coverageText(edition) {
@@ -197,6 +265,7 @@
   }
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
+                      queryTerms: queryTerms, searchIndex: searchIndex, searchDetails: searchDetails,
                       coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
                       qualityOf: qualityOf, qualityText: qualityText,
                       comparisonSelection: comparisonSelection, comparisonRows: comparisonRows,
@@ -206,7 +275,7 @@
   const data = JSON.parse(document.getElementById("library-data").textContent);
   const byId = new Map(data.tools.map(function (tool) { return [tool.id, tool]; }));
   const names = new Map(data.categories.map(function (field) { return [field.id, field.name]; }));
-  const cache = new Map(data.tools.map(function (tool) { return [tool.id, searchText(tool) + " " + tool.categories.map(function (c) { return fold(names.get(c) || c); }).join(" ")]; }));
+  const cache = new Map(data.tools.map(function (tool) { return [tool.id, searchIndex(tool, names)]; }));
   const prefix = document.body.dataset.reportPrefix;
   function reportPath(day, extension) {
     const edition = data.editions.find(function (e) { return editionKey(e) === day; });
@@ -253,7 +322,7 @@
   function updateURL() {
     const values = filters(), params = new URLSearchParams();
     Object.keys(values).forEach(function (name) {
-      if (values[name] && !(name === "sort" && values[name] === "updated")) params.set(name, values[name]);
+      if (values[name] && !(name === "sort" && values[name] === "relevance")) params.set(name, values[name]);
     });
     if ($("saved-only").checked) params.set("saved", "1");
     if (comparison.length) params.set("compare", JSON.stringify(comparison));
@@ -344,7 +413,7 @@
       chip.setAttribute("aria-label", "Remove " + version.profile.name + " from comparison"); return chip;
     }));
   }
-  function card(tool, values) {
+  function card(tool, values, match) {
     const version = primaryVersion(tool, values.edition), p = version.profile, full = version.kind === "profile";
     const node = element("article", "tool-card"); node.dataset.toolId = tool.id;
     node.append(element("div", "card-category", p.categories.map(function (c) { return names.get(c) || c; }).join(" · ")));
@@ -359,6 +428,23 @@
     node.append(badges);
     const use = element("p", "card-use"); use.append(element("strong", "", "Good for: "), document.createTextNode(full ? p.good_for.text : p.good_for));
     node.append(use);
+    if (match) {
+      const context = element("div", "search-match");
+      if (match.scope === "review") {
+        const matchedVersion = primaryVersion(tool, match.edition);
+        context.append(element("p", "", "Matches in " + (match.sections.slice(0, 3).join(", ") || "review text or sources") +
+          " · " + date(matchedVersion.date) + (matchedVersion.revision > 1 ? " · Update " + (matchedVersion.revision - 1) : "")));
+        const openMatch = button("profile-button", "Open matching review ↗", function () { openProfile(tool.id, match.edition); });
+        openMatch.setAttribute("aria-label", "Open matching review for " + p.name + " · " + match.edition);
+        context.append(openMatch);
+      } else if (match.scope === "assessment") {
+        context.append(element("p", "", "Matches the current quality assessment" +
+          (qualityOf(tool).checked_on ? " · " + date(qualityOf(tool).checked_on) : "")));
+      } else {
+        context.append(element("p", "", "Search words appear across review history or library metadata. No single dated review contains every word."));
+      }
+      node.append(context);
+    }
     const actions = element("div", "card-actions");
     actions.append(personalButton("save", tool, version), personalButton("compare", tool, version)); node.append(actions);
     const bottom = element("div", "card-bottom");
@@ -368,12 +454,16 @@
   }
   function render() {
     const values = filters();
-    const results = sortTools(data.tools.filter(function (tool) {
+    const filtered = data.tools.filter(function (tool) {
       return (!$("saved-only").checked || saved.has(tool.id)) && matches(tool, values, cache.get(tool.id));
-    }), values.sort);
+    });
+    const details = new Map(queryTerms(values.q).length ? filtered.map(function (tool) {
+      return [tool.id, searchDetails(tool, values, cache.get(tool.id))];
+    }) : []);
+    const results = sortTools(filtered, values.sort, values, details);
     $("result-count").textContent = results.length + (results.length === 1 ? " tool" : " tools") + " found" +
       (results.length > visible ? " · showing " + visible : "");
-    $("cards").replaceChildren.apply($("cards"), results.slice(0, visible).map(function (tool) { return card(tool, values); }));
+    $("cards").replaceChildren.apply($("cards"), results.slice(0, visible).map(function (tool) { return card(tool, values, details.get(tool.id)); }));
     $("empty").hidden = results.length !== 0; $("load-more").hidden = results.length <= visible;
     $("search-scope").textContent = values.edition ? "Search this edition" : "Search every review";
     $("search-label").textContent = values.edition ? "Search profiles in the selected edition" : "Search all profiles and review history";
@@ -388,7 +478,7 @@
     updateURL();
   }
   function reset() {
-    Object.keys(controls).forEach(function (name) { $(controls[name]).value = name === "sort" ? "updated" : ""; });
+    Object.keys(controls).forEach(function (name) { $(controls[name]).value = name === "sort" ? "relevance" : ""; });
     $("saved-only").checked = false;
     visible = 24; render();
   }
@@ -598,7 +688,7 @@
   comparison = comparisonSelection(params.get("compare"), data.tools);
   $("saved-only").checked = params.get("saved") === "1";
   Object.keys(controls).forEach(function (name) { if (params.has(name)) $(controls[name]).value = params.get(name); });
-  if (!$("sort").value) $("sort").value = "updated";
+  if (!$("sort").value) $("sort").value = "relevance";
   Object.keys(controls).forEach(function (name) {
     $(controls[name]).addEventListener(name === "q" ? "input" : "change", function () { visible = 24; render(); });
   });

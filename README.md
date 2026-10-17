@@ -41,6 +41,14 @@ screened discoveries accumulate
 without a fixed count limit. An edition with no qualifying discoveries preserves
 the existing collection.
 
+Search defaults to **Best match / latest**: names and creative uses rank above
+incidental mentions; an empty search shows the latest detailed reviews. Results
+identify where they matched. **Open matching review** opens the matching dated
+guide when one contains the whole query, including older editions. Words combine
+and quoted phrases stay together. You can still
+choose date or name ordering. Search relevance does not change quality labels or
+use star counts. See [search behavior](docs/LIBRARY.md#search-and-compare).
+
 Use **Move saved tools** to transfer a shortlist between your Mac, PC, local
 library and GitHub Pages. Download or copy its JSON and import it in the other
 browser; matching tools are merged into that browser's existing saves. You can
@@ -79,8 +87,9 @@ All eligible tools remain searchable, including emerging projects with few stars
 The [October 13, 2026 evidence review](docs/QUALITY_REVIEW_2026-10-13.md) refreshed
 source snapshots for all **550 tools** and updated **50 scoped assessments**,
 including all 30 previous Experimental labels. It closed **26 individual evidence
-gaps**. The library now has **3 Recommended, 4 Ready to try, 512 Quality unverified
-and 31 Experimental** tools.
+gaps**. At that review, the library had **3 Recommended, 4 Ready to try, 512 Quality
+unverified and 31 Experimental** tools. Current totals appear in the live library
+and continue to change as daily discoveries and evidence reviews are published.
 
 Depth Anything V2 Small relative-depth guidance, Whisper human-reviewed draft
 English transcription and SAM 2.1 corrected masks are Recommended for their

@@ -2,7 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {matches, searchText, primaryVersion, sortTools, coverageText, savedIds,
        comparisonSelection, comparisonRows, shortlistJSON, importShortlist,
-       researchNotes} = require("../media_scout/ui/library.js");
+       researchNotes, queryTerms, searchIndex, searchDetails} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -158,6 +158,78 @@ test("sort is deterministic and preserves the source library", () => {
   assert.equal(sortTools(input, "added")[0], tool);
   assert.equal(sortTools(input, "name")[0], older);
   assert.equal(input[0], older);
+});
+test("best match puts a named tool before recent incidental mentions regardless of popularity or quality", () => {
+  const mention = {...tool, id: "github:example/new", name: "Recent Editor", profile_date: "2026-10-17", stars: 100000,
+    quality_assessment: {tier: "recommended"}, versions: [{date: "2026-10-17", kind: "profile", profile: {
+      name: "Recent Editor", introduction: {text: "Use Café Paint as one of many alternatives. ".repeat(100)},
+      license: {code: "MIT"}}}]};
+  const input = [mention, tool], before = JSON.stringify(input);
+  assert.equal(sortTools(input, "relevance", {q: '"cafe paint"'})[0], tool);
+  assert.equal(sortTools(input, "updated", {q: "cafe paint"})[0], mention);
+  assert.equal(sortTools(input, "relevance", {q: "  "})[0], mention);
+  assert.equal(JSON.stringify(input), before);
+});
+test("creative uses rank above an incidental requirements mention without dropping either result", () => {
+  const make = (id, fields) => ({...tool, id, versions: [{date: "2026-10-02", kind: "profile", profile: {
+    name: "Editor", license: {code: "MIT"}, ...fields}}]});
+  const use = make("github:example/use", {good_for: {text: "Designing textile patterns"}});
+  const incidental = make("github:example/incidental", {requirements: {software: "Optional textile importer"}});
+  const results = [incidental, use].filter(t => matches(t, {q: "textile"}));
+  assert.deepEqual(sortTools(results, "relevance", {q: "textile"}), [use, incidental]);
+  assert.deepEqual(searchDetails(use, {q: "textile"}).sections, ["Creative uses"]);
+});
+test("query parsing preserves accents, phrases and installation flags with no invented operators", () => {
+  assert.deepEqual(queryTerms('Café cafe "8 GB" --animate'), ["cafe", "8 gb", "--animate"]);
+  assert.ok(matches(tool, {q: '"8 GB" --animate'}, searchIndex(tool)));
+  assert.ok(matches(tool, {q: "paint --animate"}, searchIndex(tool)));
+  assert.equal(matches(tool, {q: '"GB 8"'}, searchIndex(tool)), false);
+  assert.equal(searchDetails(tool, {q: "  "}).scope, "none");
+});
+test("match context identifies historical and same-day reviews without using another edition's evidence", () => {
+  const revised = {...tool, versions: [
+    {...tool.versions[0], date: "2026-10-01", revision: 2, edition_id: "2026-10-01-r2"}, tool.versions[1]
+  ]}, index = searchIndex(revised);
+  const older = searchDetails(revised, {q: "original texture"}, index);
+  assert.equal(older.edition, "2026-10-01");
+  assert.deepEqual(older.sections, ["Introduction"]);
+  assert.equal(searchDetails(revised, {q: '"8 GB"'}, index).edition, "2026-10-01-r2");
+  assert.equal(matches(revised, {q: "original texture", edition: "2026-10-01-r2"}, index), false);
+  assert.equal(matches(revised, {q: '"8 GB"', edition: "2026-10-01"}, index), false);
+  assert.equal(searchDetails(revised, {q: "paint", edition: "2026-10-01"}, index).edition, "2026-10-01");
+});
+test("queries spanning reviews disclose combined history and rank below a single matching review", () => {
+  const query = {q: 'original "8 GB"'}, match = searchDetails(tool, query);
+  assert.ok(matches(tool, query, searchIndex(tool)));
+  assert.equal(match.scope, "history");
+  assert.equal(match.edition, null);
+  const complete = {...tool, id: "github:example/complete", versions: [{...tool.versions[0], profile: {
+    ...tool.versions[0].profile, introduction: {text: "An original workflow with 8 GB"}}}]};
+  assert.deepEqual(sortTools([tool, complete], "relevance", query), [complete, tool]);
+});
+test("current assessment matches are identified separately and cannot leak into edition searches", () => {
+  const assessed = {...tool, quality_assessment: {tier: "unverified", checked_on: "2026-10-17",
+    summary: "Independent provenance awaits confirmation."}}, query = {q: "provenance"}, index = searchIndex(assessed);
+  assert.ok(matches(assessed, query, index));
+  assert.equal(searchDetails(assessed, query, index).scope, "assessment");
+  assert.equal(searchDetails(assessed, query, index).edition, null);
+  assert.equal(matches(assessed, {...query, edition: "2026-10-01"}, index), false);
+});
+test("category names remain searchable within their actual edition and other filters still apply", () => {
+  const index = searchIndex(tool, new Map([["images", "Still artwork"], ["video", "Moving picture"]]));
+  assert.ok(matches(tool, {q: '"Still artwork"', edition: "2026-10-01", license: "MIT"}, index));
+  assert.equal(matches(tool, {q: '"Still artwork"', edition: "2026-10-02"}, index), false);
+  assert.equal(matches(tool, {q: '"Still artwork"', edition: "2026-10-01", license: "Apache-2.0"}, index), false);
+  assert.deepEqual(searchDetails(tool, {q: '"Still artwork"'}, index).sections, ["Creative field"]);
+});
+test("cached match details preserve ordering, full guides win tied mentions and IDs break final ties", () => {
+  const later = {...tool, versions: [{date: "2026-10-17", kind: "screened", profile: {name: tool.name}}, ...tool.versions]};
+  assert.equal(searchDetails(later, {q: "cafe paint"}).edition, "2026-10-02");
+  const second = {...tool, id: "github:example/zpaint"}, input = [second, tool], filters = {q: "paint"};
+  const details = new Map(input.map(t => [t.id, searchDetails(t, filters, searchIndex(t))]));
+  assert.deepEqual(sortTools(input, "relevance", filters, details), [tool, second]);
+  assert.deepEqual(sortTools(input, "relevance", filters), [tool, second]);
+  assert.equal(input[0], second);
 });
 test("legacy editions do not claim a completed expanded search", () => {
   assert.match(coverageText({}), /predates expanded search tracking/);

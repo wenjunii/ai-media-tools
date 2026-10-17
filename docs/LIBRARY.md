@@ -26,7 +26,20 @@ and private research remain in the local discovery catalog and review queue.
   origin and historical maturity text do not automatically assign that label.
   A detailed guide does not automatically earn a recommendation. See
   [QUALITY_POLICY.md](QUALITY_POLICY.md) for the criteria and retrospective audit.
-- Sort by latest detailed review, first appearance, or name.
+- **Best match / latest** is the default order. With search text, it prioritizes
+  exact tool names, then matches in creative uses and introductions over incidental
+  mentions in requirements or other review text. A single review containing all
+  search terms ranks above terms spread across different reviews. With no search
+  text, it shows the latest detailed reviews. Date and name break ties; stable IDs
+  break any remaining tie. Stars and quality labels do not affect relevance.
+  You can also sort explicitly by latest detailed review, first appearance or name.
+- Search results show matching sections and the dated review they belong to.
+  **Open matching review** opens that exact preserved edition, including same-day
+  updates; the ordinary card and Explore tool still use the latest available guide
+  or the selected edition. Current-assessment matches are labeled separately.
+  When words occur only across multiple reviews or library metadata, the result
+  says so rather than attributing them to one guide. A match is a text reference,
+  not proof of platform support, installation success or creative quality.
 - Open a tool for its introduction, practical uses, demos, installation, first
   project, requirements, licenses/costs, quality assessment, limitations and sources.
 - Choose a version in Review history. Profiles disclose their documentation-check
