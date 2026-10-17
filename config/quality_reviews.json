@@ -34899,17 +34899,17 @@
     "github:nerfstudio-project/nerfstudio": {
       "basis_edition": "2026-10-01-r2",
       "record_sha256": "bb803ff18e335db32e200f381548cdd51dfb4f24d7ba3c8c1eef412d6b79de49",
-      "checked_on": "2026-10-13",
+      "checked_on": "2026-10-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-13",
-        "summary": "Result, setup and independent-use evidence are now supported for Nerfacto; unresolved current stack and dependency details keep overall quality unverified.",
+        "checked_on": "2026-10-17",
+        "summary": "Nerfacto retains supported result, setup and independent-use evidence. The follow-up records user-reported RTX workarounds, while current COLMAP compatibility and exact dependency details keep overall quality unverified.",
         "scope": "Nerfacto reconstruction and novel-view rendering from owned posed image captures, considering the version-pinned NerfBaselines implementation. No claim of general current-GPU installation or print-ready geometry.",
         "caveats": [
           "Source review only; no scene was trained or rendered.",
           "The independent integration pins an older Nerfstudio revision and CUDA/PyTorch environment; it does not validate the latest release on new GPUs.",
-          "Current reports describe RTX 5070 installation and COLMAP vocabulary-tree incompatibilities. Novel-view artifacts and dataset rights remain workflow-specific."
+          "RTX users report working CUDA 12.8 configurations, but these reports do not validate the exact current stack. COLMAP vocabulary-tree compatibility and component terms remain open for this assessment; novel-view artifacts and dataset rights are workflow-specific."
         ],
         "sources": [
           {
@@ -34994,7 +34994,7 @@
           },
           "maintenance": {
             "status": "documented",
-            "note": "Current history fixes variable-resolution sampling, image-tiling memory use and viewer integration. However, open reports describe recent COLMAP vocabulary-tree format changes and RTX 5070/CUDA/tiny-cuda-nn installation failures. A current end-to-end supported stack was not established; old pinned reproduction does not close that gap.",
+            "note": "October 17 follow-up: issue 3732 includes first-hand CUDA 12.8/PyTorch configurations and a later user confirmation, so the RTX installation problem is not described as having no workaround. The reports do not establish the exact current supported Nerfacto stack. Issue 3664 remains open and its recent reproduction identifies the legacy COLMAP vocabulary-tree download; a complete current supported fix and dependency review remain unverified.",
             "source_urls": [
               "https://github.com/nerfstudio-project/nerfstudio/commit/50e0e3c70c775e89333256213363badbf074f29d",
               "https://github.com/nerfstudio-project/nerfstudio/issues/3664",
@@ -47973,12 +47973,12 @@
     "github:upscayl/upscayl": {
       "basis_edition": "2026-10-01-r2",
       "record_sha256": "d435ade418533e9fea088746b00e66432bb5448cee5b6de0aaf804bc8eec04d1",
-      "checked_on": "2026-10-13",
+      "checked_on": "2026-10-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-13",
-        "summary": "Independent art-file use is now supported. Output-save failures, selected-model terms and a contextual image-quality review remain open, so the label stays Quality unverified.",
+        "checked_on": "2026-10-17",
+        "summary": "Independent art-file use and a reporter-confirmed workaround for one batch path error are supported. Output-save failures, selected-model terms and contextual image quality remain open; overall quality stays unverified.",
         "scope": "Local image upscaling and batch art-file processing in Upscayl 2.15.0; no assumption that every bundled or custom model has the same terms.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
@@ -48070,7 +48070,7 @@
           },
           "maintenance": {
             "status": "documented",
-            "note": "The reviewed history includes language-selection and installation-documentation fixes. Current support reports describe failed output saving in 2.15.0 and batch path errors. An adequately supported resolution for the scoped batch workflow was not established; availability of a packaged release is insufficient.",
+            "note": "October 17 follow-up: issue 1510 includes the reporter’s confirmation that disabling Double Upscayl in single-image mode before switching to batch avoids that path error. This is a useful workaround, not a verified general fix. Issue 1492 remains open with output-saving reports, including larger inputs; the newest automated stale notice is not evidence of resolution. Sustained support for the entire scoped batch workflow remains unverified.",
             "source_urls": [
               "https://github.com/upscayl/upscayl/commit/729ce04fd6e7e20ffdd4712aed1f9ad811e4e4b4",
               "https://github.com/upscayl/upscayl/issues/1492",
