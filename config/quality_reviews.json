@@ -54191,6 +54191,74 @@
           }
         }
       }
+    },
+    "github:victorcampeanu/opensuno-yue2": {
+      "basis_edition": "2026-10-11",
+      "record_sha256": "899f4e63f8a23fd875663cccd1039b6b00c3dfb0608230de58b7dbfe1cad6e63",
+      "checked_on": "2026-10-19",
+      "assessment": {
+        "tier": "unverified",
+        "method": "source-review",
+        "checked_on": "2026-10-19",
+        "summary": "The complete application includes non-commercial source files. Its root MIT license is insufficient to establish open-source eligibility for the integrated song-generation workflow.",
+        "scope": "Current OpenSuno-YuE2 integrated music-generation workflow; the earlier screened record is preserved as historical evidence.",
+        "caveats": [
+          "Documentation and source-license review only; not installed or run.",
+          "Current third-party notices cover source code, not only model weights. Do not treat the historical MIT label as clearance for the complete app."
+        ],
+        "sources": [
+          {
+            "title": "Current README",
+            "url": "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/README.md"
+          },
+          {
+            "title": "Complete original-code MIT license",
+            "url": "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/LICENSE"
+          },
+          {
+            "title": "Third-party source and model notices",
+            "url": "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/THIRD_PARTY_NOTICES.md"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "failed",
+            "note": "The notices explicitly retain CC BY-NC 4.0 for transcriber/, mert/ and core model files, and require replacement or separate licensing for commercial use. These restrictions fail the library open-source software criterion for this integrated workflow. Original project additions remain MIT.",
+            "source_urls": [
+              "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/THIRD_PARTY_NOTICES.md",
+              "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "unknown",
+            "note": "This follow-up examined licensing; the other quality check remains unverified.",
+            "source_urls": []
+          },
+          "setup": {
+            "status": "unknown",
+            "note": "This follow-up examined licensing; the other quality check remains unverified.",
+            "source_urls": []
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "This follow-up examined licensing; the other quality check remains unverified.",
+            "source_urls": []
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "This follow-up examined licensing; the other quality check remains unverified.",
+            "source_urls": []
+          },
+          "dependencies": {
+            "status": "documented",
+            "note": "YuE2, SheetSage2, MERT-v2 and the optional real-audio tokenizer also have non-commercial model terms. The bundled non-commercial source restriction exists independently of those weight licenses.",
+            "source_urls": [
+              "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/THIRD_PARTY_NOTICES.md",
+              "https://github.com/victorcampeanu/OpenSuno-YuE2/blob/main/README.md"
+            ]
+          }
+        }
+      }
     }
   }
 }
