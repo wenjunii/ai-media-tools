@@ -6,7 +6,7 @@ import math
 from pathlib import Path
 from urllib.parse import urlencode
 
-from .client import Client, SourceError
+from .client import Client, SourceError, repository_document
 from .configuration import load_config
 from .planning import plan_digest, read_search_plan, repository_query, search_id, search_plan
 from .storage import ROOT, locked, now, read_json, report_date, write_json, write_text
@@ -166,7 +166,7 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
         categories = plan["categories"]
         write_json(folder / "queries" / "search-plan.json", plan)
         write_json(folder / "queries" / "config-snapshot.json", config)
-        client = client or Client()
+        client = client or Client(cache_dir=root / "state/http-cache")
         started_at = now()
         cutoff = (date.fromisoformat(day) - timedelta(days=config["lookback_days"])).isoformat()
         candidates, coverage, warnings = {}, [], []
@@ -196,6 +196,8 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
         # Baselines are checked separately; mature tools needn't have been created this month.
         catalog = read_json(root / "state/catalog.json", {})
         queue = read_json(root / "state/review_queue.json", {})
+        failed_watchlist = {}
+        watchlist_reuses = 0
         for category in categories:
             repositories = list(category.get("seeds", []))
             for key, previous in {**queue, **catalog}.items():
@@ -206,10 +208,15 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
                 if key in candidates:
                     merge({"full_name": repository, "html_url": candidates[key]["url"]}, category["id"], "watchlist")
                     continue
+                if key in failed_watchlist:
+                    watchlist_reuses += 1
+                    warnings.append(f"Watchlist {repository}: {failed_watchlist[key]} (earlier attempt in this observation)")
+                    continue
                 try:
                     repo = client.get("https://api.github.com/repos/" + repository)
                     merge(repo, category["id"], "watchlist")
                 except SourceError as error:
+                    failed_watchlist[key] = str(error)
                     warnings.append(f"Watchlist {repository}: {error}")
 
         models = []
@@ -258,8 +265,8 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
             base = "https://api.github.com/repos/" + repository
             try:
                 readme = client.get(base + "/readme", allow_missing=True)
-                if readme and readme.get("download_url"):
-                    value = client.get(readme["download_url"], json_response=False)
+                if readme:
+                    value = repository_document(client, readme)
                     path = folder / "evidence" / (repository.replace("/", "__") + ".md")
                     write_text(path, value)
                     item["readme_path"] = str(path.relative_to(root))
@@ -299,6 +306,8 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
                   "coverage": coverage, "warnings": warnings,
                   "candidates": ordered, "model_watchlist": models,
                   "note": "Search is a bounded sample. Stars and recent pushes are discovery signals, not verified quality or meaningful upgrades."}
+        if hasattr(client, "usage"):
+            result["request_usage"] = dict(client.usage, watchlist_reuses=watchlist_reuses)
         write_json(folder / "discovery.json", result)
         update_discovery_catalog(root, day, ordered)
         return result
@@ -321,14 +330,14 @@ def add_repository(repository, categories, day=None, root=ROOT, client=None):
         known = {c["id"] for c in discovery.get("categories", config["categories"])}
         if not categories or not set(categories).issubset(known):
             raise ValueError("Specify category IDs from this day's search plan")
-        client = client or Client()
+        client = client or Client(cache_dir=root / "state/http-cache")
         base = "https://api.github.com/repos/" + repository
         item = normalize_repo(client.get(base))
         previous = next((c for c in discovery["candidates"] if c["id"] == item["id"]), {})
         item["categories"] = list(dict.fromkeys(previous.get("categories", []) + categories))
         item["discovered_by"] = ["supplementary-primary-source-web-research"]
         readme = client.get(base + "/readme")
-        text = client.get(readme["download_url"], json_response=False)
+        text = repository_document(client, readme)
         path = folder / "evidence" / (item["repository"].replace("/", "__") + ".md")
         write_text(path, text)
         item.update(readme_path=str(path.relative_to(root)), readme_sha256=hashlib.sha256(text.encode()).hexdigest())
@@ -373,9 +382,9 @@ def review_license(repository, spdx, note, day=None, root=ROOT, client=None):
         item = next((c for c in discovery["candidates"] if c["repository"].lower() == repository.lower()), None)
         if not item:
             raise ValueError("Collect this repository first")
-        client = client or Client()
+        client = client or Client(cache_dir=root / "state/http-cache")
         license_data = client.get("https://api.github.com/repos/" + item["repository"] + "/license")
-        license_text = client.get(license_data["download_url"], json_response=False)
+        license_text = repository_document(client, license_data)
         evidence_path = root / "research" / day / "evidence" / (item["repository"].replace("/", "__") + "__LICENSE.txt")
         write_text(evidence_path, license_text)
         item["license_review"] = {"original_spdx": item["code_license"], "reviewed_spdx": spdx, "note": note,

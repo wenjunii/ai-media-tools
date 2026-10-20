@@ -81,6 +81,29 @@ class CoverageTests(unittest.TestCase):
         self.assertEqual(plan["queries"][0]["pages"], 5)
         self.assertEqual(plan["huggingface_pipelines"], ["text-to-image", "audio-to-audio"])
 
+    def test_failed_watchlist_repo_is_read_once_without_dropping_any_field_queries(self):
+        self.config["categories"] = [
+            {"id": "images", "name": "Images", "queries": ["AI image"], "seeds": ["missing/art"]},
+            {"id": "audio", "name": "Audio", "queries": ["AI music"], "seeds": ["Missing/Art"]}]
+        write_json(self.root / "config/scout.json", self.config)
+
+        class MissingWatchlist(PublicSources):
+            def get(self, url, **kwargs):
+                if url.lower() == "https://api.github.com/repos/missing/art":
+                    self.calls.append(url)
+                    raise SourceError("HTTP 404; source not collected")
+                return super().get(url, **kwargs)
+
+        source = MissingWatchlist()
+        observation = collect(self.day, self.root, source)
+        self.assertEqual(sum(url.lower().endswith("/repos/missing/art") for url in source.calls), 1)
+        self.assertEqual(sum("Watchlist" in w for w in observation["warnings"]), 2)
+        self.assertEqual(sum("earlier attempt" in w for w in observation["warnings"]), 1)
+        self.assertEqual(verify_search(self.day, self.root)["attempted_github_queries"], 6)
+        # A new date really checks the source again.
+        collect("2026-10-03", self.root, source)
+        self.assertEqual(sum(url.lower().endswith("/repos/missing/art") for url in source.calls), 2)
+
     def test_resume_rejects_a_changed_explicit_plan_before_source_or_state_updates(self):
         self.collect()
         plan_path = self.root / "plan.json"

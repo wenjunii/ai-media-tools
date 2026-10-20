@@ -341,6 +341,12 @@ def _verified_remote(day, root, manifest, config):
     matches = [run for run in runs if run.get("headSha") == head]
     if not matches or matches[0].get("status") != "completed" or matches[0].get("conclusion") != "success":
         raise RuntimeError("GitHub CI has not succeeded for the synchronized main commit; email is blocked")
+    run = json.loads(_run(["gh", "run", "view", str(matches[0]["databaseId"]), "--repo", repository,
+                          "--json", "headSha,status,conclusion,jobs"], root))
+    pages = [job for job in run.get("jobs", []) if job.get("name") == "deploy-pages"]
+    if (run.get("headSha") != head or run.get("status") != "completed" or run.get("conclusion") != "success"
+            or len(pages) != 1 or pages[0].get("status") != "completed" or pages[0].get("conclusion") != "success"):
+        raise RuntimeError("GitHub Pages deployment has not succeeded for the synchronized main commit; email is blocked")
     final_remote = _run(["git", "ls-remote", "origin", f"refs/heads/{branch}"], root).decode().split()
     if (not final_remote or final_remote[0] != head
             or _run(["git", "rev-parse", "HEAD"], root).decode().strip() != head

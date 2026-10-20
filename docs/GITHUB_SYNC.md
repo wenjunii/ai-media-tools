@@ -23,9 +23,14 @@ export its verified editions before publishing an index that links to them.
 `python3 -m media_scout verify-public-archive` checks every published edition's
 files, hashes, dates, profile/lead counts, and publication metadata, then checks
 the report list and the public library's report links. It is read-only and needs
-no private evidence or GitHub access. CI runs it on both supported Python versions.
+no private evidence or GitHub access. CI runs it for every PR and main push.
 It also checks that the full cumulative library data, HTML, and browser assets
 match all finished public editions and the current UI source.
+
+The [usage policy](GITHUB_USAGE.md) keeps archive and browser validation on every
+PR/main commit while running the full Python matrix and Windows suite for source
+changes or an uncertain diff. Publication-only changes visibly skip those extra
+platform jobs. Main still requires successful validation and Pages deployment.
 
 ## Publish through the protected branch
 
@@ -102,8 +107,9 @@ When the commit changes, `record-sync` preserves the previous checkpoint's exact
 bytes in `state/publication_history/YYYY-MM-DD/` before replacing the current
 checkpoint. This history remains local and does not change any delivery receipt.
 The checkpoint covers the cumulative library JSON, HTML, styles and browser
-code as well as the current edition. Main CI must finish its Pages deployment
-before the sync can authorize email.
+code as well as the current edition. Verification checks the `deploy-pages` job
+on that exact main run as well as its overall result. A skipped, missing or failed
+Pages job blocks sync and email.
 
 Explicitly requested same-day updates use [REPORT_UPDATES.md](REPORT_UPDATES.md).
 Their separately sealed exports are also checked against the actual main commit

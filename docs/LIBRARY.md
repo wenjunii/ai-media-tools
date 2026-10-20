@@ -174,10 +174,13 @@ and enable Pages in that repository.
 
 The existing `ci.yml` workflow checks pull requests and main. After a main push:
 
-1. Python 3.10 and 3.13 pass regression, compilation, archive and search checks.
+1. Archive integrity, derived-library consistency and browser checks pass.
+   Source changes additionally require Python 3.10/3.13 regression and compilation
+   checks and the Windows PC suite. See [CI scope selection](GITHUB_USAGE.md#publication-ci).
 2. The Pages job uploads **only `public/`**, using pinned official actions.
 3. The `github-pages` environment deploys the static library.
-4. The successful main CI run permits `record-sync` and `verify-sync`.
+4. The successful main CI run and its successful `deploy-pages` job permit
+   `record-sync` and `verify-sync`.
 5. The existing daily workflow can then send its report email once.
 
 Use the `github-pages` environment with deployment restricted to protected
