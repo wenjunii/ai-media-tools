@@ -54259,6 +54259,71 @@
           }
         }
       }
+    },
+    "github:hyyyyyyz/dramai": {
+      "basis_edition": "2026-10-19",
+      "record_sha256": "4cb948edd667f5ef094459444057e9b96c350cc3b74ca2577c5953dd77b00c16",
+      "checked_on": "2026-10-20",
+      "assessment": {
+        "tier": "unverified",
+        "method": "source-review",
+        "checked_on": "2026-10-20",
+        "summary": "The current source license has wording differences from standard Apache-2.0. Its earlier software-license clearance is reopened; quality remains unverified.",
+        "scope": "Organizing a short-drama prototype and exporting a Jianying draft for manual editing.",
+        "caveats": [
+          "Source/documentation review only; no application execution.",
+          "The historical screened entry is preserved, with current software licensing explicitly unresolved.",
+          "Generation uses separately paid providers; the code license cannot clear model/service terms."
+        ],
+        "sources": [
+          {
+            "title": "Official documentation",
+            "url": "https://github.com/hyyyyyyz/dramai/blob/main/README.md"
+          },
+          {
+            "title": "Complete software license reviewed",
+            "url": "https://github.com/hyyyyyyz/dramai/blob/main/LICENSE"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "unknown",
+            "note": "Full current LICENSE read and compared word by word with standard Apache-2.0. The trademark exception omits reasonable and customary use in, and section 9 replaces additional liability with support. The SPDX label alone does not resolve these differences. Software-license interpretation needs clarification.",
+            "source_urls": [
+              "https://github.com/hyyyyyyz/dramai/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "unknown",
+            "note": "Published creative results have not received a substantive independent quality review.",
+            "source_urls": []
+          },
+          "setup": {
+            "status": "documented",
+            "note": "Reviewed the browser-only npm development instructions and the storyboard, image, video, composition and export steps. No installation or generation was performed.",
+            "source_urls": [
+              "https://github.com/hyyyyyyz/dramai/blob/main/README.md"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "Workflow-specific maintenance and blocker review remains incomplete.",
+            "source_urls": []
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "Independent first-hand use has not been established in this review.",
+            "source_urls": []
+          },
+          "dependencies": {
+            "status": "documented",
+            "note": "The frontend invokes DeepSeek and image/video services such as 302.AI; code, provider and generated-output terms are separate. Current provider prices and end-to-end access were not tested.",
+            "source_urls": [
+              "https://github.com/hyyyyyyz/dramai/blob/main/README.md"
+            ]
+          }
+        }
+      }
     }
   }
 }
