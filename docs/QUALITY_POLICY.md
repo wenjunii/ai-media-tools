@@ -233,6 +233,14 @@ quality maintenance does not send another email or change the daily schedule.
 
 ## Applying reviewed assessments
 
+The [weekly review](WEEKLY_QUALITY_REVIEW.md) covers every library tool and all
+six criteria, including previously verified checks and Recommended entries.
+It runs within the existing daily automation from Mondays and resumes unfinished
+work during the week. `weekly-quality --full` shows this complete refresh queue;
+the ordinary quality backlog remains a separate evidence-gap view. Weekly coverage
+is not a quality tier, and an unresolved check may remain unknown after an honest
+review. Update dates only after source research, with archived findings or failures.
+
 Use `record-quality-reviews` to preview and apply a researched subset of reviews.
 Keep the input under ignored `state/quality_research/DATE/`. Its JSON object has
 exactly two top-level fields: `format_version: 1` and a nonempty `reviews` object

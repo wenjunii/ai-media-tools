@@ -98,6 +98,15 @@ Keep reasons specific to the assessed workflow. Inspect
 `quality-backlog --full` alongside `review-backlog` to improve existing entries.
 Library reassessments use `config/quality_reviews.json` bound to the latest
 published record; run `build-library`, preserving sealed reports and receipts.
+Read `docs/WEEKLY_QUALITY_REVIEW.md` and inspect `weekly-quality` before the
+already-sent early exit. Starting October 26, 2026, every Monday's existing
+8:00 AM run makes all library tools due for a fresh weekly source review,
+including Recommended tools and screened leads. Recheck all six criteria;
+continue unfinished work on later daily runs and disclose remaining coverage.
+Use explicit cited assessments, never popularity, age or automatic promotion.
+When a report is already sent, perform due library maintenance only; never
+rebuild or resend it. Batch weekly curation with daily publication when possible.
+Keep the single existing scheduler.
 Search adjacent and newly emerging practices, unfamiliar ecosystems and projects
 outside GitHub. Add categories and queries to the daily plan when useful.
 Preserve screened additional discoveries in the report appendix and review queue;

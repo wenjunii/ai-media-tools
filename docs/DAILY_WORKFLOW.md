@@ -28,6 +28,14 @@ Use its default order to address failed checks and focused evidence gaps; also u
 or another check key narrows a research pass without dropping other pending tools.
 These are review priorities, not automatic tier decisions or limits on discovery.
 
+The same daily automation runs the [weekly full-library review](WEEKLY_QUALITY_REVIEW.md).
+Starting October 26, 2026, Mondays make every tier due, including Recommended
+tools and screened leads. Inspect `weekly-quality` after status; use `--full`
+for the entire pending set and all six recheck actions. Resume unfinished work on
+later daily runs and publish reviewed label changes with the daily library update
+when possible. Missing evidence remains explicit, with no automatic promotion
+or requirement to produce our own demo.
+
 ## 1. Resume safely
 
 Run `python3 -m media_scout status --date YYYY-MM-DD`.
@@ -39,7 +47,9 @@ totals. Prepared updates are shown even before they are built. Status verifies
 saved report and library files; its stored publication checkpoint does not
 replace the live `verify-sync` check.
 
-- If delivery is `sent`, verify and stop quietly. Do not re-collect or resend.
+- If delivery is `sent`, verify and skip daily collection/build/delivery.
+  Inspect `weekly-quality`: when due, continue only the weekly library-maintenance
+  path; otherwise stop quietly. Never resend for a quality-label update.
 - If delivery is `reserved` or `uncertain`, search connected Gmail Sent mail for
   the exact report date, subject, and recipient. Read the matching message to
   confirm it is this edition, then record its message ID with `record-delivery

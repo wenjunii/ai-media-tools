@@ -18,6 +18,7 @@ from .status import report_status
 from .storage import ROOT, read_json, report_date
 from .updates import export_update, prepare_update, update_workspace
 from .quality import CHECKS, TIERS, audit_existing, quality_backlog, record_quality_reviews
+from .weekly import weekly_quality
 
 
 def main():
@@ -46,6 +47,9 @@ def main():
     command.add_argument("--check", choices=CHECKS, help="Show tools still needing this evidence check")
     command.add_argument("--tier", choices=TIERS, help="Filter the current quality tier")
     command.add_argument("--sort", choices=("priority", "oldest"), default="priority")
+    command = sub.add_parser("weekly-quality", help="Read-only weekly source-review coverage for every library tool")
+    command.add_argument("--date")
+    command.add_argument("--full", action="store_true", help="Include every pending tool and all six recheck actions")
     command = sub.add_parser("audit-existing-quality", help="Reassess published records without changing dated editions")
     command.add_argument("--date", required=True)
     command = sub.add_parser("record-quality-reviews", help="Preview a cited review batch; --apply merges it into library curation")
@@ -104,6 +108,10 @@ def main():
             output = quality_backlog(root, check=args.check, tier=args.tier, sort=args.sort)
             if not args.full:
                 output.pop("items")
+        elif args.command == "weekly-quality":
+            output = weekly_quality(root, day)
+            if not args.full:
+                output.pop("items")
         elif args.command == "record-quality-reviews":
             output = record_quality_reviews(root, args.file, apply=args.apply)
         elif args.command == "discover":
@@ -157,6 +165,7 @@ def main():
                       "daily_time": config["daily_time"], "categories": len(config["categories"]),
                       "scope": config.get("scope"), "max_profiles": config.get("max_profiles"),
                       "github_sync": config.get("github_sync"),
+                      "weekly_quality_review": config.get("weekly_quality_review", {"enabled": False}),
                       "synthesis": "Codex research agent; no additional model API key required",
                       "delivery": "Connected Gmail plugin; no password stored in this project"}
         print(json.dumps(output, ensure_ascii=False, indent=2))

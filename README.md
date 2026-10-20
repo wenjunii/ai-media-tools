@@ -143,6 +143,25 @@ use remains a gap until independent provenance is verified. No tool limit or own
 requirement is added. New reports must include a structured quality assessment.
 See [quality policy and format](docs/QUALITY_POLICY.md).
 
+The existing 8:00 AM Eastern daily automation also starts a **whole-library
+quality review every Monday**, beginning October 26, 2026. It includes all four
+tiers and screened discoveries, rechecking all six evidence criteria. Unfinished
+work continues on later daily runs; counts distinguish reviewed tools from those
+still pending. Fresh evidence can upgrade or downgrade a label. Missing evidence
+stays Quality unverified, and our own demo is not required.
+
+```sh
+python3 -m media_scout weekly-quality
+python3 -m media_scout weekly-quality --full
+```
+
+This read-only queue includes Recommended tools and makes no GitHub requests.
+Current, cited source reviews already completed this week count toward coverage.
+Dates and coverage do not certify quality or hands-on testing. Label changes
+still use explicit reviewed assessments, then the existing local/Pages publication
+flow. See the [weekly review runbook](docs/WEEKLY_QUALITY_REVIEW.md). There is no
+additional scheduler or automatic weekly email.
+
 Apply researched label updates with a reviewed batch rather than editing the
 whole registry. `quality-backlog --full` now includes the exact record hash and
 edition needed for each binding. Prepare complete cited assessments using the

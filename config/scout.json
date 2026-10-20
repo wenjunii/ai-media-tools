@@ -3,6 +3,10 @@
   "recipient": null,
   "timezone": "America/New_York",
   "daily_time": "08:00",
+  "weekly_quality_review": {
+    "enabled": true,
+    "starts_on": "2026-10-26"
+  },
   "hardware_preference": "All platforms equally",
   "github_sync": {
     "repository": "wenjunii/ai-media-tools",

@@ -96,3 +96,10 @@ project's `ubuntu-latest` and `windows-latest` jobs use standard runners.
 Artifact/cache storage and API limits are different resources.
 See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 Keeping the public repo and GitHub Pages necessarily retains some GitHub use.
+
+The [weekly quality review](WEEKLY_QUALITY_REVIEW.md) runs on the Mac through the
+existing daily chat schedule. Its coverage command reads local published records
+and makes no API requests. It counts applicable current-week source reviews and
+uses conditional reads for supported GitHub evidence refreshes. Fresh research
+still requires source access. Batch reviewed labels with daily publication when
+possible; no separate scheduled GitHub Actions workflow is added.
