@@ -220,7 +220,8 @@ To replay with exactly this run's research reference:
 Validation passed: 261 full Python regression tests under WSL, 68 native Windows
 PC tests, 32 browser-library tests, compile checks, and archive verification for
 21 editions, 63 report files and 891 library tools. Logs and the offline validation
-harness remain under ignored `.local/oct20-usage/`. This implementation is saved
-on local branch `codex/pc-local-library` for the next explicitly requested sync.
-Routine PC work no longer implies a push or an Actions run. The Mac retains its
-existing research, public-library publication and email workflow.
+harness remain under ignored `.local/oct20-usage/`. This implementation was first
+saved locally on `codex/pc-local-library`. The user's subsequent October 20 request
+authorizes this batch for protected GitHub source sync. Future routine PC work
+still stays local until sync is requested. The Mac retains its existing research,
+public-library publication and email workflow.
