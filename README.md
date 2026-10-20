@@ -30,6 +30,17 @@ Daily order: **generate and verify → sync GitHub → send email**. Finished re
 are published in the [public report archive](public/README.md). Private settings,
 raw research, and delivery records remain local.
 
+GitHub usage is reduced without narrowing discovery or removing the public site.
+The collector revalidates a local evidence cache with GitHub, uses complete
+README/license bodies already returned by the API, and avoids repeating a failed
+watchlist read across fields in one observation. Publication-only updates run
+archive and browser checks on both the PR and main, followed by Pages deployment;
+source changes still run the full Python and Windows suites.
+See [GitHub usage and safeguards](docs/GITHUB_USAGE.md), including how to inspect
+the measured savings. Standard GitHub-hosted runner minutes for this public
+repository are [free](https://docs.github.com/en/billing/concepts/product-billing/github-actions);
+API limits, transfers and artifact storage are separate concerns.
+
 Corrections discovered after an edition is sealed are listed in
 [report corrections](docs/REPORT_CORRECTIONS.md), preserving the original archive.
 
@@ -269,6 +280,12 @@ in memory, or supply `GITHUB_TOKEN`/`GH_TOKEN` through your environment. No toke
 is written into reports. Unauthenticated GitHub access has lower rate limits;
 source failures remain visible in the edition. Delivery needs the connected
 Gmail plugin in the Codex chat.
+
+The collector's disposable response cache lives in ignored `state/http-cache/`.
+Every reuse requires a fresh successful GitHub `304 Not Modified` response;
+network errors never fall back to old evidence. Search queries always run live.
+`discover` prints `request_usage` counters for new observations, also saved in
+the local discovery JSON. No credentials or request headers enter this cache.
 
 Publication also requires Git, the GitHub CLI (`gh`), and write access to the
 configured repository. For your own fork, update `github_sync.repository` in

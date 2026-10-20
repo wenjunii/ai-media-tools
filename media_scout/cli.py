@@ -112,6 +112,8 @@ def main():
                       "model_candidates": len(result["model_watchlist"]), "warnings": result["warnings"],
                       "discovery_file": str(root / "research" / day / "discovery.json")}
             output["search_coverage"] = verify_search(day, root, discovery=result, require_expanded=False)
+            if "request_usage" in result:
+                output["request_usage"] = result["request_usage"]
         elif args.command == "build":
             output = build(args.editorial, root)
         elif args.command == "verify":

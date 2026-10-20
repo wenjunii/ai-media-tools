@@ -49,6 +49,12 @@ gaps. Do not claim the full search succeeded merely because all queries started.
 Existing sealed editions remain unchanged and are not retroactively labeled as
 expanded searches.
 
+Repository evidence reads use a freshly revalidated local cache and complete
+inline README/license bodies to reduce GitHub usage. Searches always run live;
+cache failures never substitute stale evidence. See [request accounting and
+cache behavior](GITHUB_USAGE.md#evidence-reads). This changes neither search breadth
+nor license-review requirements.
+
 Each GitHub query records pages retrieved, total matches, incomplete results,
 truncation and failures. If a query is too broad, split it by dates, topic,
 platform or workflow in the daily plan, or add pages up to the source's search

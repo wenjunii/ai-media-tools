@@ -197,6 +197,7 @@ class PublicationCheckpointTests(unittest.TestCase):
         self.git("push", "-u", "origin", "main")
         self.remote_url = "https://github.com/example/scout.git"
         self.ci_status, self.ci_conclusion = "completed", "success"
+        self.pages_conclusion = "success"
         self.include_older_success = False
         actual_run = publication._run
 
@@ -211,6 +212,11 @@ class PublicationCheckpointTests(unittest.TestCase):
                     old = dict(result[0], databaseId=9, status="completed", conclusion="success")
                     result.append(old)
                 return json.dumps(result).encode()
+            if args[:3] == ["gh", "run", "view"]:
+                return json.dumps({"headSha": self.git("rev-parse", "HEAD").decode().strip(),
+                    "status": self.ci_status, "conclusion": self.ci_conclusion,
+                    "jobs": [{"name": "deploy-pages", "status": "completed",
+                              "conclusion": self.pages_conclusion}]}).encode()
             return actual_run(args, root)
 
         runner_patch = patch("media_scout.publication._run", side_effect=local_git_and_ci)
@@ -251,6 +257,14 @@ class PublicationCheckpointTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "CI"):
             publication.record_sync(self.day, self.root)
         self.assertFalse((self.root / "state/publications" / (self.day + ".json")).exists())
+
+    def test_successful_workflow_with_skipped_or_failed_pages_cannot_authorize_email(self):
+        publication.record_sync(self.day, self.root)
+        for conclusion in ("skipped", "failure", "cancelled"):
+            self.pages_conclusion = conclusion
+            with self.subTest(conclusion=conclusion), self.assertRaisesRegex(RuntimeError, "Pages"):
+                delivery.prepare(self.day, self.root)
+            self.assert_unreserved()
 
     def test_wrong_repository_does_not_authorize_delivery(self):
         publication.record_sync(self.day, self.root)
