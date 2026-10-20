@@ -4,7 +4,8 @@ import shutil
 import subprocess
 import traceback
 from datetime import datetime, timezone
-from .common import ROOT, LOCAL, download, execute, read_json, select_profile, sha256, stamp, write_json
+from .common import ROOT, LOCAL, execute, read_json, sha256, stamp, write_json
+from .library import archive_library
 from .setup_runtime import verified_runtime
 from .storyboard import load_storyboard
 from .inputs import input_relative, load_custom_input, save_custom_input
@@ -57,7 +58,7 @@ def finish_draft(run, manifest, receipt):
     write_json(LOCAL/'latest-run.json',{'run':str(run),'video':str(run/'draft.mp4')})
 
 
-def run_demo(gpu_id=-1, storyboard=None, input_image=None):
+def run_demo(gpu_id=-1, storyboard=None, input_image=None, library_file=None):
     from PIL import Image
     story=load_storyboard(storyboard or ROOT/('storyboard-artwork.json' if input_image else 'storyboard.json'))
     prepared=load_custom_input(input_image) if input_image else None
@@ -77,6 +78,8 @@ def run_demo(gpu_id=-1, storyboard=None, input_image=None):
               'isolation':'Portable app + Python virtual environment, not OS sandbox'}
     write_json(run/'manifest.json',manifest)
     try:
+        manifest.update(archive_library(run,lock['app']['library_id'],library_file))
+        write_json(run/'manifest.json',manifest)
         if prepared:
             manifest.update(save_custom_input(run,prepared))
             manifest['settings'].update(input_size=prepared[2]['input_size'])
@@ -87,17 +90,6 @@ def run_demo(gpu_id=-1, storyboard=None, input_image=None):
             make_artwork(run/'inputs')
         manifest['input_sha256']=sha256(run/input_relative(manifest))
         write_json(run/'manifest.json',manifest)
-        try:
-            download(lock['library_url'],run/'evidence/library.json')
-            manifest['library_source']=lock['library_url']
-        except Exception as error:
-            manifest['failures'].append({'stage':'library-download','error':str(error),'fallback':'repository public/library.json'})
-            shutil.copyfile(ROOT.parent/'public/library.json',run/'evidence/library.json')
-            manifest['library_source']='repository public/library.json (offline fallback)'
-        version=select_profile(read_json(run/'evidence/library.json'),lock['app']['library_id'])
-        write_json(run/'evidence/selected-profile.json',version)
-        manifest['profile_edition']=version.get('edition_id',version['date'])
-        manifest['library_sha256']=sha256(run/'evidence/library.json')
         shutil.copyfile(LOCAL/'setup.json',run/'evidence/setup.json')
         shutil.copyfile(LOCAL/'hardware.json',run/'evidence/hardware.json')
         shutil.copyfile(ROOT/'runtime.lock.json',run/'evidence/runtime.lock.json')

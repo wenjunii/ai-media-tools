@@ -11,6 +11,9 @@ and captions using preserved app output. Add `-InputImage "path\to\artwork.png"`
 to `run` to use your own PNG/JPEG illustration, with the original preserved.
 Use `package` to create an offline review folder with the video, subtitles and
 checklist; `review -ReviewFile` records your feedback against that exact draft.
+Installed PC demos use the local `public/library.json` snapshot and make no
+automatic library download. Use `-LibraryFile` with `run` for a supplied local
+snapshot. PC development and checks stay local; batch source sync when requested.
 PC demo media and runtimes stay local;
 social publishing and daily demo scheduling are disabled. Explicitly requested PC source-code sync follows
 the [protected GitHub workflow](docs/GITHUB_SYNC.md#pc-source-and-documentation-sync).
