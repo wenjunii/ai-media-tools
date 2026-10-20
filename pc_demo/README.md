@@ -35,6 +35,39 @@ latest completed draft and reruns full media checks. An existing matching manual
 review is preserved; a changed video requires a new review. The PowerShell
 launcher saves its own output logs under `.local/launcher-logs/`.
 
+## Routine use without GitHub requests
+
+After setup, `run`, `revise`, `verify`, `package`, `review`, `status` and `history`
+use local files and do not fetch GitHub data. `run` reads this checkout's
+`public/library.json` by default, preserving its exact bytes, selected complete
+profile, edition and hash in the new run. `evidence/library-origin.json` records
+that it is a local snapshot, with no live freshness check. A missing or invalid
+snapshot stops the run before inference; it never triggers a hidden download.
+
+Use a local copy of the Mac's published library when needed:
+
+```powershell
+.\pc_demo\demo.ps1 run -GpuId 1 -LibraryFile "C:\Scout exports\library.json"
+```
+
+This changes only that run's reference input. It does not overwrite the repository
+library or execute instructions in a profile. The current wrapper accepts local
+JSON snapshots up to 64 MiB; this is an input guard, not a discovery/profile quota.
+Refresh the local snapshot through an occasional source sync or a deliberate
+file transfer. Older snapshots remain usable and are never described as fresh
+research. Revisions keep their original inference evidence.
+
+The first setup still needs the reviewed official downloads. Later setups reuse
+matching app archives and wheels, plus source documents whose saved hashes, URLs
+and runtime lock match the previous setup receipt. Missing, changed or unverifiable
+documents are fetched again during setup. Routine demos do not run setup for you.
+
+Git keeps source history on the PC without contacting GitHub. PC improvements,
+tests and commits stay local by default. Batch a source push/PR when you explicitly
+request sync. The Mac keeps its existing research, public-library publication and
+email workflow, including required publication checks. See the shared
+[GitHub usage policy](../docs/GITHUB_USAGE.md#pc-demo-production).
+
 ## Package a draft for creator review
 
 ```powershell
@@ -207,6 +240,9 @@ reviewed source documents. [Read the terms review](LICENSE_REVIEW.md), including
 the explicit model-license documentation gap and portable dependency scope.
 An already downloaded matching ZIP/wheel is reused. A fresh machine needs the
 official URLs to remain available; the retained local downloads support recovery.
+Previously archived source documents are reused only when their saved hashes,
+URLs and runtime lock match. A missing or damaged setup receipt requires fresh
+document downloads; unverified local files are not treated as reviewed sources.
 This is dependency isolation, not a security sandbox.
 
 ## Outputs and replay
@@ -262,6 +298,7 @@ exact invocation are retained.
 | `outputs/actual-output.png` | Untouched app output |
 | `manifest.json` | Settings, hashes, timing, state, failures and provenance |
 | `evidence/` | Library snapshot/profile, hardware, setup, terms, complete PC source snapshot |
+| `evidence/library-origin.json` | Local library path, snapshot hash/size and explicit freshness limitation for new inference runs |
 | `logs/` | Commands, exit codes, timings, stdout/stderr, encoder logs |
 | `storyboard.json`, `captions.srt`, `transcript.txt` | Narrative, timing, on-screen callouts and exact spoken subtitles |
 | `audio/` | Voice name, raw utterances, durations and normalized master |
@@ -328,8 +365,11 @@ python -m pc_demo audit-git
 git diff --cached --check
 ```
 
-CI runs the full research/PC suite on Linux with Python 3.10 and 3.13, plus the
-PC guardrail/image tests and launcher smoke check on Windows with Python 3.10.
+When a source change is synchronized, CI runs the full research/PC suite on Linux
+with Python 3.10 and 3.13, plus PC guardrail/image tests and a launcher smoke check
+on Windows with Python 3.10. Known publication-only changes use the narrower
+archive/browser validation described in the shared usage policy. Local development
+does not trigger Actions; source sync remains an explicit operation.
 Windows CI installs only the existing hash-pinned Pillow wheel for temporary
 image fixtures. The image tests also run locally in the PC venv; environments
 without Pillow skip them and can still run the standard-library guardrails.

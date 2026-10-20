@@ -29,6 +29,33 @@ def doctor():
     return inventory
 
 
+def prepare_sources(lock):
+    """Reuse source evidence only when its URL, lock and saved hash still match."""
+    try:
+        previous = read_json(LOCAL / 'setup.json')
+        if not isinstance(previous, dict) or previous.get('runtime_lock_sha256') != sha256(ROOT / 'runtime.lock.json'):
+            previous = {}
+    except (OSError, ValueError):
+        previous = {}
+    saved = previous.get('sources', [])
+    if not isinstance(saved, list):
+        saved = []
+    sources = []
+    for source in lock['sources']:
+        path = LOCAL / 'sources' / source['name']
+        matches = [entry for entry in saved if isinstance(entry, dict)
+                   and entry.get('name') == source['name'] and entry.get('url') == source['url']]
+        digest = matches[0].get('sha256') if len(matches) == 1 else None
+        try:
+            reused = isinstance(digest, str) and path.is_file() and sha256(path) == digest
+        except OSError:
+            reused = False
+        if not reused:
+            path = download(source['url'], path)
+        sources.append({**source, 'sha256': sha256(path), 'reused_verified_copy': reused})
+    return sources
+
+
 def setup():
     if os.name != 'nt' or sys.version_info[:2] != (3, 10) or platform.machine().lower() not in ('amd64', 'x86_64'):
         raise RuntimeError('Pinned wheel requires CPython 3.10 x64 on Windows')
@@ -53,10 +80,7 @@ def setup():
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(archive.read(name))
             files[name] = sha256(target)
-    sources = []
-    for source in lock['sources']:
-        path = download(source['url'], LOCAL / 'sources' / source['name'])
-        sources.append({**source, 'sha256': sha256(path)})
+    sources = prepare_sources(lock)
     wheel = lock['pillow']
     download(wheel['url'], LOCAL / 'downloads' / wheel['filename'], wheel['sha256'])
     env = LOCAL / 'venv'

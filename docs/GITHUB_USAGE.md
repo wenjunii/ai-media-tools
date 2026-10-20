@@ -97,6 +97,30 @@ Artifact/cache storage and API limits are different resources.
 See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 Keeping the public repo and GitHub Pages necessarily retains some GitHub use.
 
+## PC demo production
+
+The user selected occasional source sync on October 20, 2026. Installed PC demos
+use the local `public/library.json` snapshot, or `run -LibraryFile` with an
+explicit local JSON file. Each run archives the selected profile, edition, exact
+library bytes/hash and origin, and says that no live freshness check occurred.
+Missing or invalid local references stop before inference without a network
+fallback. This avoids the former full-library download on each new demo.
+
+Revisions, media verification, packages, creator feedback, status and history
+remain local. Explicit setup reuses matching app archives/wheels and previously
+reviewed documents only when their source URLs, hashes and runtime lock match
+the saved receipt. Initial setup or a damaged/missing cache may still download
+reviewed official files. Local demo commands do not trigger Actions.
+
+Keep PC implementation work, tests and commits local between requested syncs.
+Batch the reviewed changes through the protected PR flow when source sync is
+explicitly requested; preserve exact-commit CI and branch protection. Local Git
+history does not require GitHub. Transfer only published library data to the PC,
+never private Mac settings or delivery/publication receipts. The Mac's existing
+research and publish-before-email requirements remain in force.
+
+## Weekly review
+
 The [weekly quality review](WEEKLY_QUALITY_REVIEW.md) runs on the Mac through the
 existing daily chat schedule. Its coverage command reads local published records
 and makes no API requests. It counts applicable current-week source reviews and

@@ -13,6 +13,7 @@ def main():
     run.add_argument('--gpu-id', type=int, default=-1, help='-1 lets the official app select a Vulkan GPU')
     run.add_argument('--storyboard', help='Edited local storyboard JSON; the supported six-scene template is validated')
     run.add_argument('--input', dest='input_image', help='Local opaque PNG/JPEG artwork, 64–1024 pixels per side; preserved unchanged')
+    run.add_argument('--library-file', help='Local library JSON; defaults to the checkout public/library.json, with no network request')
     revise = sub.add_parser('revise', help='Make a new draft from preserved app output without inference or downloads')
     revise.add_argument('--run', help='Source run; defaults to the latest completed draft')
     revise.add_argument('--storyboard', help='Edited storyboard JSON; defaults to the source run storyboard')
@@ -53,7 +54,7 @@ def main():
         print(json.dumps(doctor(), indent=2))
     elif args.action == 'run':
         from .pipeline import run_demo
-        print(run_demo(args.gpu_id, args.storyboard, args.input_image))
+        print(run_demo(args.gpu_id, args.storyboard, args.input_image, args.library_file))
     elif args.action == 'revise':
         from .common import resolve_run
         from .revisions import revise_demo

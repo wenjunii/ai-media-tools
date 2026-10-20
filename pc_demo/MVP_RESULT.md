@@ -177,3 +177,51 @@ Reproduce with `./pc_demo/demo.ps1 package`. Open its `review.html`, complete yo
 checks, download `review.json`, then import with
 `./pc_demo/demo.ps1 review -ReviewFile "C:\path\to\review.json"`. Use `status` or
 `history` to inspect recorded creator feedback; a revision requires a fresh review.
+
+## Local library and cached setup check: 2026-10-20
+
+Installed demos now use the checkout's published `public/library.json`, or an
+explicit `-LibraryFile`, without downloading the library. Each run preserves the
+exact reference bytes, selected profile, edition, hash and local origin. Missing
+or invalid references stop before inference. Explicit setup can reuse its reviewed
+documents only when their source URLs, content hashes and saved runtime lock match.
+
+The real Windows run at `.local/runs/20261020T171031618376Z-realesrgan/` succeeded
+while Python network access was blocked by the validation harness. All five
+reviewed setup documents were reused without fetching them. This was a Python
+network guard, not an operating-system firewall test; the reviewed application,
+model and media tools were already installed.
+
+Real-ESRGAN enlarged the controlled illustration from **256×256 to 1024×1024 in
+3.064 seconds** on Vulkan GPU 1. Its actual output hash matched the earlier
+successful illustration run. The saved reference profile came from edition
+`2026-10-01-r2`; this run makes no claim of a live research refresh.
+
+The new **45-second, 1080×1920 H.264/AAC** draft passed full decode, output
+provenance, six scene comparisons, caption-fit and audio checks. Mean/peak sample
+levels were −20.3/−1.5 dBFS. All six contact-sheet frames were visually inspected.
+Browser playback and creator listening/approval remain pending for this new video;
+previous drafts' reviews do not apply to it. Its SHA-256 is
+`cab6b0dd1b9ed224fadd28fd16729a5924930790748c03d9fb84680767232e74`.
+The existing model-license documentation gap remains unchanged.
+
+Reproduce on this installed PC without a library download:
+
+```powershell
+.\pc_demo\demo.ps1 run -GpuId 1
+```
+
+To replay with exactly this run's research reference:
+
+```powershell
+.\pc_demo\demo.ps1 run -GpuId 1 -LibraryFile .\pc_demo\.local\runs\20261020T171031618376Z-realesrgan\evidence\library.json
+```
+
+Validation passed: 261 full Python regression tests under WSL, 68 native Windows
+PC tests, 32 browser-library tests, compile checks, and archive verification for
+21 editions, 63 report files and 891 library tools. Logs and the offline validation
+harness remain under ignored `.local/oct20-usage/`. This implementation was first
+saved locally on `codex/pc-local-library`. The user's subsequent October 20 request
+authorizes this batch for protected GitHub source sync. Future routine PC work
+still stays local until sync is requested. The Mac retains its existing research,
+public-library publication and email workflow.

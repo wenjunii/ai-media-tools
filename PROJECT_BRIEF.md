@@ -61,3 +61,12 @@ GitHub sync. This authorizes the PC to publish reviewed source/docs/tests throug
 the shared repository's protected PR flow and verify both PR and merged-main CI.
 It does not transfer research/report publication, email, schedules, or publication
 checkpoint maintenance from the Mac. Runtime downloads and draft media stay local.
+
+## Usage preference: 2026-10-20
+
+Keep GitHub for occasional source sync and the public library while minimizing
+routine use. Installed PC demos should consume local published-library snapshots,
+and routine PC work should be tested and committed locally. Batch GitHub source
+sync when explicitly requested. Keep the existing Mac research, publishing and
+email flow, including publication checks. Public hosting and fresh research still
+require some network use; the selected mode does not remove GitHub entirely.

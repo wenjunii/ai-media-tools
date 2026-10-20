@@ -84,6 +84,8 @@ def local_status():
         'draft_environment_exists': (LOCAL / 'venv/Scripts/python.exe').is_file(),
         'latest_run': None, 'social_publishing_enabled': False,
         'daily_schedule_enabled': False,
+        'demo_library_policy': 'Local snapshot only; no automatic library download or refresh',
+        'default_library_exists': (ROOT.parent / 'public/library.json').is_file(),
     }
     if (LOCAL / 'setup.json').exists():
         try:

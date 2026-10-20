@@ -152,6 +152,9 @@ and raw source snapshots remain ignored; the command itself does not publish.
 
 An explicit user request to sync PC source/docs authorizes a protected PR from
 the Windows checkout. This is separate from the Mac's daily publication flow.
+The user prefers occasional sync: keep routine PC improvements and commits local,
+then use this flow for the next explicitly requested batch. Do not automatically
+fetch, push or inspect remote CI for every local demo or maintenance turn.
 Preserve public reports, the library, private Mac settings, delivery receipts,
 research schedules and publication checkpoints. Do not run research discovery,
 build/export, `record-sync`, `verify-sync`, or email commands on the PC.

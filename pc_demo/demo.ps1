@@ -4,6 +4,7 @@ param(
     [ValidateRange(-1,16)][int]$GpuId = -1,
     [string]$Storyboard,
     [string]$InputImage,
+    [string]$LibraryFile,
     [string]$ReviewFile,
     [ValidateRange(1,10000)][int]$Limit = 20,
     [switch]$Json
@@ -24,6 +25,12 @@ if ($InputImage) {
     if ($InputImage.Contains('"')) { throw 'Invalid image path.' }
     $resolvedImage = (Resolve-Path -LiteralPath $InputImage -ErrorAction Stop).Path
     $processArgs += @('--input', ('"' + $resolvedImage + '"'))
+}
+if ($LibraryFile) {
+    if ($Action -ne 'run') { throw '-LibraryFile is only valid with run; revise preserves its original evidence.' }
+    if ($LibraryFile.Contains('"')) { throw 'Invalid library path.' }
+    $resolvedLibrary = (Resolve-Path -LiteralPath $LibraryFile -ErrorAction Stop).Path
+    $processArgs += @('--library-file', ('"' + $resolvedLibrary + '"'))
 }
 if ($RunDirectory -and $Action -notin @('verify','revise','package','review')) { throw '-RunDirectory is only valid with verify, revise, package or review.' }
 if ($RunDirectory) {

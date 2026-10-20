@@ -19,6 +19,10 @@ When the user explicitly requests PC source/docs GitHub sync, the PC may push a
 `codex/` branch, open a protected PR, and merge after exact-head CI passes. Verify
 CI on the merged main commit as well. Follow `docs/GITHUB_SYNC.md`'s PC section;
 leave Mac publication checkpoints and all research/email operations to the Mac.
+The user's 2026-10-20 preference is occasional GitHub sync. Keep routine PC
+improvements, tests and commits local, then batch source publication on an explicit
+sync request. Do not treat every PC improvement as a request to push a new PR.
+This does not change the Mac's daily publication-before-email requirement.
 
 ## Mac research workflow
 
