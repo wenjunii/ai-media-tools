@@ -4,7 +4,9 @@ from pathlib import Path
 import re
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from .storage import ROOT, read_json
+from datetime import date
+
+from .storage import ROOT, read_json, report_date
 
 LOCAL_FIELDS = {"recipient", "timezone", "daily_time", "hardware_preference"}
 
@@ -41,6 +43,15 @@ def load_config(root=ROOT):
             raise ValueError("Use a github_sync object in the public configuration")
         if "required_before_email" in settings and not isinstance(settings["required_before_email"], bool):
             raise ValueError("github_sync.required_before_email must be true or false")
+    if "weekly_quality_review" in config:
+        settings = config["weekly_quality_review"]
+        if (not isinstance(settings, dict) or set(settings) != {"enabled", "starts_on"}
+                or type(settings["enabled"]) is not bool
+                or not isinstance(settings["starts_on"], str) or not settings["starts_on"]):
+            raise ValueError("weekly_quality_review needs enabled (boolean) and starts_on (Monday date)")
+        start = report_date(settings["starts_on"])
+        if date.fromisoformat(start).weekday() != 0:
+            raise ValueError("weekly_quality_review.starts_on must be a Monday")
     return config
 
 

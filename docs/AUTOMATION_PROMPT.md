@@ -5,9 +5,12 @@ recipient and 8:00 AM America/New_York timing. This checklist is public and cont
 no private destination or credentials. Use the existing single chat automation.
 
 1. Read AGENTS.md, SEARCH_SCOPE.md, DAILY_WORKFLOW.md, GITHUB_SYNC.md,
-   PROFILE_FORMAT.md, LEADS_FORMAT.md, LIBRARY.md and QUALITY_POLICY.md. Read local preferences with
+   PROFILE_FORMAT.md, LEADS_FORMAT.md, LIBRARY.md, QUALITY_POLICY.md and
+   WEEKLY_QUALITY_REVIEW.md. Read local preferences with
    `doctor`. Determine today's date in the configured time zone and inspect
-   `status` first. If the edition was sent, verify and stop quietly. Preserve a
+   `status` first, then inspect `weekly-quality`. If the edition was sent and no
+   weekly work is due, verify and stop quietly. If weekly work is due, skip daily
+   discovery/build/email and follow the weekly library-maintenance path. Preserve a
    sealed edition. Reserved or uncertain sends require confirmed Sent-mail
    reconciliation; never retry them automatically.
 2. For every new observation, conduct the **full expanded search** for only
@@ -57,6 +60,16 @@ no private destination or credentials. Use the existing single chat automation.
    `quality-backlog --full` to improve earlier entries, including complete guides.
    Apply retrospective assessments through the bound library curation registry;
    never rewrite sealed editions or repeat an unchanged tool merely for a new label.
+   Starting October 26, 2026, every Monday's existing 8:00 AM run opens a weekly
+   whole-library review. Follow WEEKLY_QUALITY_REVIEW.md and use
+   `weekly-quality --full`: include every tier, Recommended tools and screened
+   leads, and recheck all six criteria against current evidence. Continue pending
+   tools on later daily runs with no fixed quota. Archive source evidence and
+   failed attempts, apply explicit bound review batches, and rebuild/verify the
+   library. Never claim full coverage while tools remain pending. Current cited
+   source reviews already completed this week count; no automatic tier changes.
+   Batch this curation with daily publication where possible. Already-sent reports
+   allow due library maintenance, never another send.
 6. Build and inspect the full report, its automatically derived search/review
    counts and collection gaps; verify its sealed artifacts. Export the finished
    edition to the cumulative public library and local UI. Audit the full Git index.
@@ -67,6 +80,8 @@ no private destination or credentials. Use the existing single chat automation.
    Never force-push or bypass protection. Keep private settings, evidence,
    operational catalogs, outbox payloads and receipts local.
 7. Run `record-sync`, `verify-sync` and `verify` before any email reservation.
+   The email steps apply only to an unsent daily edition; weekly maintenance of an
+   already-sent edition ends after publication and checkpoint verification.
    Failure in publication, CI, Pages or verification blocks email. Resume unfinished
    publication without rebuilding a sealed edition. Only after verified GitHub
    publication, prepare and send the complete reserved payload exactly once through
