@@ -15422,18 +15422,19 @@
     "github:fastgs/fastgs": {
       "basis_edition": "2026-10-06",
       "record_sha256": "0f13887e7075eed8571ca6f7878faf563365f750a5d233feaff7eaa64cf7c0a4",
-      "checked_on": "2026-10-15",
+      "checked_on": "2026-10-21",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-10-15",
-        "summary": "Top-level MIT does not resolve the non-commercial notice retained in the core training source. Software-license confidence is reopened; no guide expansion or recommendation is granted.",
+        "checked_on": "2026-10-21",
+        "summary": "Current source review confirms a restrictive original Gaussian Splatting grant alongside the root MIT license; the integrated training workflow is not cleared as open-source.",
         "scope": "The current FastGS training workflow and its inherited 3DGS terms; historical published entries remain preserved.",
         "caveats": [
           "Source review only: no discovered app was installed, run or benchmarked by AI Media Scout.",
           "This is a bounded repository review, not an exhaustive issue, dependency or independent-use search. Dated installation guidance remains historical.",
           "This is a screened discovery; its detailed installation/hardware profile is still pending.",
-          "The reviewed train.py retains an Inria non-commercial/research/evaluation notice referring to LICENSE.md, while that file returned 404 at the repository root. The root MIT grant alone does not resolve the inherited notice."
+          "The reviewed train.py retains an Inria non-commercial/research/evaluation notice referring to LICENSE.md, while that file returned 404 at the repository root. The root MIT grant alone does not resolve the inherited notice.",
+          "October 21 follow-up focused on full license and current README evidence; earlier unverified results, setup, support and independent-use checks were not promoted."
         ],
         "sources": [
           {
@@ -15471,16 +15472,20 @@
           {
             "title": "Current dependency and license guidance",
             "url": "https://github.com/fastgs/FastGS/blob/main/README.md"
+          },
+          {
+            "title": "Complete original Gaussian Splatting license reviewed",
+            "url": "https://github.com/fastgs/FastGS/blob/main/LICENSE_ORIGINAL.md"
           }
         ],
         "checks": {
           "license": {
-            "status": "unknown",
-            "note": "Read the complete root MIT license and the current training-source notice. train.py retains non-commercial research/evaluation language and refers to an absent root LICENSE.md. Clarification of the inherited grant is needed before treating the complete training workflow as verified open-source software.",
+            "status": "failed",
+            "note": "The root MIT license does not supersede LICENSE_ORIGINAL.md: that complete text restricts its covered source to non-commercial research/evaluation and requires separate consent for commercial exploitation. The README directs users to honor the inherited 3DGS terms. The integrated training route is not verified open-source.",
             "source_urls": [
-              "https://github.com/fastgs/FastGS/blob/main/LICENSE",
-              "https://github.com/fastgs/FastGS/blob/main/train.py",
-              "https://github.com/fastgs/FastGS/blob/main/README.md"
+              "https://github.com/fastgs/FastGS/blob/main/LICENSE_ORIGINAL.md",
+              "https://github.com/fastgs/FastGS/blob/main/README.md",
+              "https://github.com/fastgs/FastGS/blob/main/LICENSE"
             ]
           },
           "results": {
@@ -15516,10 +15521,9 @@
           },
           "dependencies": {
             "status": "documented",
-            "note": "README directs users to 3DGS, Taming-3DGS and Speedy-Splat terms. Current train.py retains a non-commercial notice in core code, so this is more than a model-weight caveat. No blanket license clearance is established.",
+            "note": "The README requires compliance with 3DGS, Taming-3DGS and Speedy-Splat licenses. The original restriction is a software-source issue, not merely a model-weight caveat. Other quality findings remain unresolved from the earlier review.",
             "source_urls": [
-              "https://github.com/fastgs/FastGS/blob/main/LICENSE",
-              "https://github.com/fastgs/FastGS/blob/main/train.py",
+              "https://github.com/fastgs/FastGS/blob/main/LICENSE_ORIGINAL.md",
               "https://github.com/fastgs/FastGS/blob/main/README.md"
             ]
           }
