@@ -283,5 +283,9 @@ skipped there), all 80 native Windows PC tests including those font checks,
 32 library browser tests, compile checks and public archive verification for
 21 editions, 63 report files and 891 library tools. Validation scripts, launch
 diagnostics and reports are retained under ignored `.local/oct23-preflight/`.
-This improvement stays local on `codex/pc-preflight` for an explicit later sync.
-No GitHub request, research/email operation, schedule or social upload was made.
+This improvement was first saved locally on `codex/pc-preflight` without GitHub
+requests. The user's subsequent October 23 request authorizes this batch for
+protected source sync. Current main includes the Mac's October 21/22 reports and
+library-performance work; those changes are incorporated without rebuilding or
+editing the research artifacts. Routine PC work remains local between requested
+syncs. No research/email operation, schedule or social upload was made.

@@ -15,7 +15,7 @@ Real-ESRGAN is installed on the tested PC as the official **20220424 portable
 Windows CLI** (upstream release `v0.2.5.0`), with the `realesrgan-x4plus-anime`
 model. The executable lives at
 `.local/apps/realesrgan-20220424/realesrgan-ncnn-vulkan.exe`. No desktop GUI or
-system-wide installation is required. [The first draft results](MVP_RESULT.md)
+system-wide installation is required. [The run and recovery notes](MVP_RESULT.md)
 record the actual run and its limitations.
 
 From the repository root in PowerShell:
@@ -397,12 +397,16 @@ Run the PC checks from the repo root on Windows:
 
 ```powershell
 .\pc_demo\.local\venv\Scripts\python.exe -m unittest discover -s tests -p "test_pc_demo*.py" -v
-python -m compileall -q media_scout pc_demo tests
+python -m compileall -q -x '(^|[\\/])\.local([\\/]|$)' media_scout pc_demo tests
 node --test tests/library.test.cjs
 # Stage reviewed source/docs explicitly, then:
 python -m pc_demo audit-git
 git diff --cached --check
 ```
+
+The compile command excludes the ignored `.local` runtime and archived run
+snapshots, so it checks the current project source without walking installed
+dependencies or historical copies. This does not skip the PC source itself.
 
 When a source change is synchronized, CI runs the full research/PC suite on Linux
 with Python 3.10 and 3.13, plus PC guardrail/image tests and a launcher smoke check
