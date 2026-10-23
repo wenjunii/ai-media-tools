@@ -54328,6 +54328,95 @@
           }
         }
       }
+    },
+    "github:esanchezharris/mosh": {
+      "basis_edition": "2026-10-23",
+      "record_sha256": "c7936a0c8763a9342332779e0b74acfeafdf61bef131e59282df5eb7c935e3e4",
+      "checked_on": "2026-10-23",
+      "assessment": {
+        "tier": "experimental",
+        "method": "source-review",
+        "checked_on": "2026-10-23",
+        "summary": "A fresh review of the active Direct SA3 scope and current status retains Experimental for this implementation candidate. The general DAW release does not establish completion of this generative workflow.",
+        "scope": "Trying prompted timbre changes inside an arrangement, then auditioning and keeping or rejecting each generated clip.",
+        "caveats": [
+          "Documentation review only; AI Media Scout did not install or run this software.",
+          "Without installed model weights the service can fall back to a deterministic fake adapter, which is not evidence of AI generation. Autonomous-agent and mixing experiments are deferred.",
+          "The signed general DAW release and its installation guide do not establish that the Direct SA3 candidate is a completed released workflow; this current library assessment supplements the sealed dated guide."
+        ],
+        "sources": [
+          {
+            "title": "Official documentation",
+            "url": "https://github.com/esanchezharris/Mosh/blob/main/README.md"
+          },
+          {
+            "title": "Complete software license reviewed",
+            "url": "https://github.com/esanchezharris/Mosh/blob/main/LICENSE"
+          },
+          {
+            "title": "Active Direct SA3 implementation and acceptance boundary",
+            "url": "https://github.com/esanchezharris/Mosh/blob/main/docs/DIRECT-SA3-SCOPE-2026-09-16.md"
+          },
+          {
+            "title": "Current direction and remaining acceptance gaps",
+            "url": "https://github.com/esanchezharris/Mosh/blob/main/docs/CURRENT_STATUS.md"
+          }
+        ],
+        "experimental_reason": {
+          "text": "The README identifies Direct SA3 Re-Imagine as the active scope, while that scope explicitly keeps the implementation under verification and the current status describes a candidate with remaining application-acceptance gaps. This is current unfinished-work evidence for the selected generative clip workflow, not a verdict on every DAW feature or its optional platform ports.",
+          "source_urls": [
+            "https://github.com/esanchezharris/Mosh/blob/main/docs/DIRECT-SA3-SCOPE-2026-09-16.md",
+            "https://github.com/esanchezharris/Mosh/blob/main/docs/CURRENT_STATUS.md"
+          ]
+        },
+        "checks": {
+          "license": {
+            "status": "verified",
+            "note": "The complete root software license was read and archived. The grant covers this project code; unresolved model, service and asset terms are disclosed separately.",
+            "source_urls": [
+              "https://github.com/esanchezharris/Mosh/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "documented",
+            "note": "The README documents the intended clip workflow and a DAW screenshot. The current scope distinguishes a limited real-model check from completed workflow acceptance; output quality and independent listening results are not verified.",
+            "source_urls": [
+              "https://github.com/esanchezharris/Mosh/blob/main/README.md",
+              "https://github.com/esanchezharris/Mosh/blob/main/docs/DIRECT-SA3-SCOPE-2026-09-16.md",
+              "https://github.com/esanchezharris/Mosh/blob/main/docs/CURRENT_STATUS.md"
+            ]
+          },
+          "setup": {
+            "status": "documented",
+            "note": "General app build/release and service setup steps are documented, but current Direct SA3 candidate, installed-app behavior and independent reproduction remain unverified.",
+            "source_urls": [
+              "https://github.com/esanchezharris/Mosh/blob/main/README.md",
+              "https://github.com/esanchezharris/Mosh/blob/main/docs/DIRECT-SA3-SCOPE-2026-09-16.md",
+              "https://github.com/esanchezharris/Mosh/blob/main/docs/CURRENT_STATUS.md"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "Current scope and status document ongoing candidate verification and remaining boundaries. This does not establish sustained workflow support or resolution of all blockers.",
+            "source_urls": [
+              "https://github.com/esanchezharris/Mosh/blob/main/docs/DIRECT-SA3-SCOPE-2026-09-16.md",
+              "https://github.com/esanchezharris/Mosh/blob/main/docs/CURRENT_STATUS.md"
+            ]
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "Independent first-hand use or a working third-party integration was not established for this selected workflow.",
+            "source_urls": []
+          },
+          "dependencies": {
+            "status": "documented",
+            "note": "Stable Audio 3 model terms apply separately. JUCE, Tracktion and other components retain their licenses. Optional agent APIs have separate terms. Local compute; optional external agent APIs may charge separately.",
+            "source_urls": [
+              "https://github.com/esanchezharris/Mosh/blob/main/README.md"
+            ]
+          }
+        }
+      }
     }
   }
 }
