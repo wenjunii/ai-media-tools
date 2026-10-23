@@ -254,8 +254,11 @@ searches cover 13 model tasks with up to 50 leads per task. Collected metadata
 is retained for subsequent review, including earlier pilot discoveries.
 `plan` previews the full plan without collecting sources; `verify-search` checks
 that every planned GitHub query and model task was attempted. Missing attempts
-block new report builds. Failed, partial and truncated sources are explicitly
-counted as coverage gaps; an attempted query is not proof of complete results.
+block new report builds. Connection drops and incomplete HTTP bodies become
+explicit source failures, so collection can continue and retain the gap without
+silently using stale evidence or retrying the request. Failed, partial and truncated
+sources are explicitly counted as coverage gaps; an attempted query is not proof
+of complete results.
 Reports and the library distinguish raw candidates, screened discoveries and
 complete profiles.
 

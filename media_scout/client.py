@@ -2,6 +2,7 @@
 
 import base64
 import hashlib
+from http.client import HTTPException
 import json
 import os
 from pathlib import Path
@@ -137,7 +138,7 @@ class Client:
             if allow_missing and error.code == 404:
                 return None
             raise SourceError(f"HTTP {error.code} from {parsed.hostname}{parsed.path}; source not collected") from None
-        except (URLError, TimeoutError, ValueError) as error:
+        except (URLError, TimeoutError, ValueError, HTTPException, ConnectionError) as error:
             raise SourceError(f"Could not read {parsed.hostname}{parsed.path}: {type(error).__name__}") from None
 
 

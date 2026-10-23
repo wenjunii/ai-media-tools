@@ -2,6 +2,7 @@
 
 import base64
 import hashlib
+from http.client import IncompleteRead, RemoteDisconnected
 import io
 import json
 from pathlib import Path
@@ -87,6 +88,28 @@ class ClientTests(unittest.TestCase):
             self.assertEqual(client.get(self.url), json.loads(self.raw))
             self.assertIsNone(self.requests[-1].get_header("If-none-match"))
             self.assertEqual(client.usage["cache_errors"], 1)
+
+    def test_interrupted_connections_are_source_gaps_without_retry_or_stale_fallback(self):
+        self.warm()
+        cache_path = next(self.cache.glob("*.json"))
+        before = cache_path.read_bytes()
+        for phase in ("open", "read"):
+            for error in (RemoteDisconnected("private response detail"),
+                          IncompleteRead(b"private partial body", 100),
+                          ConnectionResetError("private connection detail")):
+                with self.subTest(phase=phase, error=type(error).__name__):
+                    response = error
+                    if phase == "read":
+                        response = Reply(self.url, self.raw)
+                        response.read = Mock(side_effect=error)
+                    client = self.client(response)
+                    with self.assertRaises(SourceError) as caught:
+                        client.get(self.url, allow_missing=True)
+                    self.assertIn(type(error).__name__, str(caught.exception))
+                    self.assertNotIn("private", str(caught.exception))
+                    self.assertEqual(client.usage["network_requests"], 1)
+                    self.assertEqual(client.usage["not_modified"], 0)
+                    self.assertEqual(cache_path.read_bytes(), before)
 
     def test_cache_write_failure_preserves_live_response(self):
         client = self.client(Reply(self.url, self.raw))
