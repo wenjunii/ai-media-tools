@@ -33,6 +33,10 @@ and private research remain in the local discovery catalog and review queue.
   text, it shows the latest detailed reviews. Date and name break ties; stable IDs
   break any remaining tie. Stars and quality labels do not affect relevance.
   You can also sort explicitly by latest detailed review, first appearance or name.
+- Typing updates results after a short 150 ms pause; Enter applies a pending
+  search immediately. Text composition finishes before a search is scheduled.
+  Clearing the query or changing a filter applies immediately and cancels pending
+  typing work, so delayed results cannot overwrite the new selection.
 - Search results show matching sections and the dated review they belong to.
   **Open matching review** opens that exact preserved edition, including same-day
   updates; the ordinary card and Explore tool still use the latest available guide
@@ -154,8 +158,15 @@ after applying; see the [review batch format](QUALITY_POLICY.md#applying-reviewe
 Daily `build` prepares a local preview from sealed editions. Daily `export-report`
 updates the cumulative public and local library after adding the finished edition.
 A fresh checkout retains older public tools even when its private catalog is empty.
-The library uses relative URLs and embedded data, so it works at a GitHub Pages
-project path and from local files. There is no remote search API, database,
+The library uses relative URLs and compact embedded data, so it works at a GitHub Pages
+project path and from local files. The embedded data retains every field and dated
+review; `library.json` remains the complete, readable download used by the PC.
+Browsing without text does not build a full-text index. Text search indexes only
+tools eligible for the selected filters and reuses each index within the tab.
+Only the current result set is cached: saving, comparing and pagination can reuse
+it, while changed filters or saved-only selections trigger a fresh search.
+This cache is in memory and stores no persistent search history.
+There is no remote search API, database,
 analytics tracker, external font service or JavaScript build dependency.
 
 The editable UI source is `media_scout/ui/`; cumulative data logic is in

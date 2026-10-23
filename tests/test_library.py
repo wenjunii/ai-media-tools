@@ -83,11 +83,23 @@ class LibraryTests(unittest.TestCase):
 
     def test_inline_source_text_cannot_break_out_of_the_data_script(self):
         data = make_library([self.report], self.config)
+        data["tools"][0]["name"] = ('</script><script>alert("untrusted")</script> & <tag> 中文 🎨 '
+                                    '{{REPORT_PREFIX}} {{REPORT_LINKS}} {{LIBRARY_JSON}}')
         html = library_files(data)["index.html"].decode()
         embedded = html.split('<script id="library-data" type="application/json">', 1)[1].split("</script>", 1)[0]
         self.assertNotIn("<", embedded)
         self.assertEqual(json.loads(embedded), data)
         self.assertIn('src="assets/library.js"', html)
+
+    def test_compact_browser_data_preserves_the_complete_downloadable_library(self):
+        data = make_library([self.report, self.later()], self.config)
+        files = library_files(data)
+        embedded = files["index.html"].decode().split(
+            '<script id="library-data" type="application/json">', 1)[1].split("</script>", 1)[0]
+        self.assertEqual(json.loads(embedded), json.loads(files["library.json"]))
+        self.assertEqual(files["library.json"].decode(), json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+        self.assertLess(len(embedded.encode()), len(files["library.json"]))
+        self.assertEqual(len(json.loads(embedded)["tools"][0]["versions"]), 2)
 
     def test_repeated_generation_is_deterministic_and_keeps_relative_links(self):
         data = make_library([self.report], self.config)

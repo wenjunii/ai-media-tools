@@ -2,7 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {matches, searchText, primaryVersion, sortTools, coverageText, savedIds,
        comparisonSelection, comparisonRows, shortlistJSON, importShortlist,
-       researchNotes, queryTerms, searchIndex, searchDetails} = require("../media_scout/ui/library.js");
+       researchNotes, queryTerms, searchIndex, searchDetails, librarySearch, deferredAction} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -32,6 +32,57 @@ test("edition-scoped search cannot match another review even with an all-review 
   assert.equal(matches(tool, {edition: "2026-10-02", q: '"8 GB"'}), true);
   assert.equal(matches(tool, {edition: "2026-10-01", q: "original texture"}), true);
   assert.equal(matches(tool, {q: "original texture"}), true);
+});
+test("browsing without a query does not inspect full-text sections", () => {
+  const profile = {...tool.versions[0].profile};
+  Object.defineProperty(profile, "introduction", {enumerable: true, get() { throw new Error("Full-text index was read"); }});
+  const browse = {...tool, versions: [{...tool.versions[0], profile}]};
+  const find = librarySearch([browse]);
+  assert.deepEqual(find({q: "", platform: "Browser", sort: "name"}).results.map(t => t.id), [tool.id]);
+  assert.deepEqual(find({q: "  ", platform: "Windows"}).results, []);
+});
+test("repeated searches reuse results without leaking an old edition or filter", () => {
+  const find = librarySearch([tool], new Map([["images", "Still artwork"]]));
+  const filters = {q: "original texture", sort: "relevance"}, first = find(filters);
+  assert.deepEqual(first.results.map(t => t.id), [tool.id]);
+  assert.equal(first.details.get(tool.id).edition, "2026-10-01");
+  assert.equal(find({...filters}), first);
+  assert.deepEqual(find({...filters, edition: "2026-10-02"}).results, []);
+  assert.deepEqual(find({...filters, quality: "recommended"}).results, []);
+  assert.equal(find({q: '"Still artwork"', edition: "2026-10-01"}).details.get(tool.id).edition, "2026-10-01");
+  assert.deepEqual(find({q: "missing"}).results, []);
+  assert.equal(find({q: "", sort: "name"}).results.length, 1);
+});
+test("saved-only search responds to changes in the same saved Set", () => {
+  const second = {...tool, id: "github:example/second", name: "Another tool"};
+  const find = librarySearch([tool, second]), selected = new Set([tool.id]), filters = {q: "paint", sort: "name"};
+  assert.deepEqual(find(filters, selected).results.map(t => t.id), [tool.id]);
+  selected.add(second.id);
+  assert.deepEqual(find(filters, selected).results.map(t => t.id), [second.id, tool.id]);
+  selected.clear();
+  assert.deepEqual(find(filters, selected).results, []);
+  assert.equal(find(filters, null).results.length, 2);
+});
+test("typing bursts use the latest query; Enter flushes and reset cancels delayed work", () => {
+  let now = 0, serial = 0, query = "", seen = [];
+  const jobs = new Map(), timers = {
+    setTimeout(fn, delay) { const id = serial++; jobs.set(id, {at: now + delay, fn}); return id; },
+    clearTimeout(id) { jobs.delete(id); }
+  };
+  function advance(ms) {
+    now += ms;
+    for (const [id, job] of jobs) if (job.at <= now) { jobs.delete(id); job.fn(); }
+  }
+  const schedule = deferredAction(() => seen.push(query), 150, timers);
+  query = "b"; schedule(); advance(100);
+  query = "blender"; schedule(); advance(149);
+  assert.deepEqual(seen, []);
+  advance(1); assert.deepEqual(seen, ["blender"]);
+  query = "music"; schedule(); schedule.flush(); advance(200);
+  assert.deepEqual(seen, ["blender", "music"]);
+  query = "old"; schedule(); schedule.cancel(); query = ""; advance(200);
+  assert.deepEqual(seen, ["blender", "music"]);
+  schedule.flush(); assert.equal(seen.length, 2);
 });
 test("saved tools restore only known unique IDs and recover from invalid browser data", () => {
   assert.deepEqual(savedIds(JSON.stringify([tool.id, tool.id, "github:missing/tool", null, {}]), [tool]), [tool.id]);

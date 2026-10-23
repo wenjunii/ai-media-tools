@@ -38,6 +38,21 @@ authorization failures, rate limits, 404s and server errors never authorize stal
 evidence. The cache can be removed while Scout is idle; it will repopulate.
 It is separate from archived evidence and never enters Git or a public report.
 
+## Library page size and search
+
+The HTML library embeds compact JSON instead of repeating the download's
+indentation. All tool records, quality evidence and historical reviews remain
+available offline; the readable `library.json` and dated reports keep their bytes.
+This reduces the generated HTML size, not discovery requests or the number of
+published tools. HTTP compression and browser caching affect actual transfer
+savings, so compare file sizes separately from network measurements.
+
+Ordinary browsing skips full-text indexing, text search reuses indexes in the
+current tab, and unchanged searches reuse their current results when cards are
+redrawn. Typing is debounced, with immediate Enter/filter/reset behavior and
+support for text composition. No external search service or persistent query
+history is introduced.
+
 ## Publication CI
 
 Every PR and main push runs `publication-checks`: public archive hashes, complete
