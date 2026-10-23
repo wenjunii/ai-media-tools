@@ -236,6 +236,7 @@
     const license = version.kind === "profile" ? profile.license.code : profile.code_license;
     if (filters.license && license !== filters.license) return false;
     const tokens = queryTerms(filters.q), index = text && typeof text === "object" ? text : null;
+    if (!tokens.length) return true;
     // An edition filter must not match requirements or uses from another review.
     const haystack = filters.edition ? (index ? index.versions.find(function (v) { return v.edition === filters.edition; }).text :
       searchText({id: tool.id, date: version.date, profile: profile})) : (index ? index.text :
@@ -254,6 +255,53 @@
       return b[field].localeCompare(a[field]) || a.name.localeCompare(b.name) || a.id.localeCompare(b.id);
     });
   }
+  function librarySearch(tools, categoryNames) {
+    const indexes = new Map();
+    let lastKey, lastResult;
+    function index(tool) {
+      if (!indexes.has(tool.id)) indexes.set(tool.id, searchIndex(tool, categoryNames));
+      return indexes.get(tool.id);
+    }
+    return function (filters, selected) {
+      // Keep only the current result set. Save/compare/pagination redraws can
+      // reuse it; changed filters or a changed saved-only selection cannot.
+      const key = JSON.stringify([Object.keys(filters).sort().map(function (name) { return [name, filters[name]]; }),
+        selected ? Array.from(selected).sort() : null]);
+      if (key === lastKey) return lastResult;
+      const hasQuery = queryTerms(filters.q).length > 0;
+      const narrow = Object.assign({}, filters, {q: ""});
+      let filtered = tools.filter(function (tool) {
+        return (!selected || selected.has(tool.id)) && matches(tool, narrow);
+      });
+      // Ordinary browsing needs no full-text index. Index only the eligible
+      // tools when a text query first needs them, then reuse those indexes.
+      if (hasQuery) filtered = filtered.filter(function (tool) { return matches(tool, filters, index(tool)); });
+      const details = new Map(hasQuery ? filtered.map(function (tool) {
+        return [tool.id, searchDetails(tool, filters, index(tool))];
+      }) : []);
+      lastResult = {results: sortTools(filtered, filters.sort, filters, details), details: details};
+      lastKey = key;
+      return lastResult;
+    };
+  }
+  function deferredAction(action, delay, timers) {
+    timers = timers || globalThis;
+    let pending = null;
+    function cancel() {
+      if (pending !== null) timers.clearTimeout(pending);
+      pending = null;
+    }
+    function schedule() {
+      cancel();
+      pending = timers.setTimeout(function () { pending = null; action(); }, delay);
+    }
+    schedule.cancel = cancel;
+    schedule.flush = function () {
+      if (pending === null) return;
+      cancel(); action();
+    };
+    return schedule;
+  }
   function coverageText(edition) {
     const c = edition.search_coverage;
     if (!c) return "This edition predates expanded search tracking. Its tool count reflects the published reviews; new editions use the full expanded search.";
@@ -266,6 +314,7 @@
   if (typeof module !== "undefined" && module.exports) {
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
                       queryTerms: queryTerms, searchIndex: searchIndex, searchDetails: searchDetails,
+                      librarySearch: librarySearch, deferredAction: deferredAction,
                       coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
                       qualityOf: qualityOf, qualityText: qualityText,
                       comparisonSelection: comparisonSelection, comparisonRows: comparisonRows,
@@ -275,7 +324,7 @@
   const data = JSON.parse(document.getElementById("library-data").textContent);
   const byId = new Map(data.tools.map(function (tool) { return [tool.id, tool]; }));
   const names = new Map(data.categories.map(function (field) { return [field.id, field.name]; }));
-  const cache = new Map(data.tools.map(function (tool) { return [tool.id, searchIndex(tool, names)]; }));
+  const search = librarySearch(data.tools, names);
   const prefix = document.body.dataset.reportPrefix;
   function reportPath(day, extension) {
     const edition = data.editions.find(function (e) { return editionKey(e) === day; });
@@ -290,6 +339,8 @@
   try { saved = new Set(savedIds(localStorage.getItem(savedKey), data.tools)); }
   catch (error) { storageAvailable = false; }
   let visible = 24, currentView = "library", activeTool = null, activeVersion = null, comparison = [];
+  let composing = false;
+  const deferredSearch = deferredAction(function () { visible = 24; render(); }, 150);
   function element(tag, className, text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -453,14 +504,10 @@
     node.append(bottom); return node;
   }
   function render() {
+    deferredSearch.cancel();
     const values = filters();
-    const filtered = data.tools.filter(function (tool) {
-      return (!$("saved-only").checked || saved.has(tool.id)) && matches(tool, values, cache.get(tool.id));
-    });
-    const details = new Map(queryTerms(values.q).length ? filtered.map(function (tool) {
-      return [tool.id, searchDetails(tool, values, cache.get(tool.id))];
-    }) : []);
-    const results = sortTools(filtered, values.sort, values, details);
+    const found = search(values, $("saved-only").checked ? saved : null);
+    const results = found.results, details = found.details;
     $("result-count").textContent = results.length + (results.length === 1 ? " tool" : " tools") + " found" +
       (results.length > visible ? " · showing " + visible : "");
     $("cards").replaceChildren.apply($("cards"), results.slice(0, visible).map(function (tool) { return card(tool, values, details.get(tool.id)); }));
@@ -690,7 +737,17 @@
   Object.keys(controls).forEach(function (name) { if (params.has(name)) $(controls[name]).value = params.get(name); });
   if (!$("sort").value) $("sort").value = "relevance";
   Object.keys(controls).forEach(function (name) {
-    $(controls[name]).addEventListener(name === "q" ? "input" : "change", function () { visible = 24; render(); });
+    if (name !== "q") $(controls[name]).addEventListener("change", function () { visible = 24; render(); });
+  });
+  $("search").addEventListener("input", function (event) {
+    if (composing || event.isComposing) return;
+    if (!this.value) { visible = 24; render(); }
+    else deferredSearch();
+  });
+  $("search").addEventListener("compositionstart", function () { composing = true; deferredSearch.cancel(); });
+  $("search").addEventListener("compositionend", function () { composing = false; deferredSearch(); });
+  $("search").addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !composing && !event.isComposing) deferredSearch.flush();
   });
   $("reset").addEventListener("click", reset); $("empty-reset").addEventListener("click", reset);
   $("saved-only").addEventListener("change", function () { visible = 24; render(); });

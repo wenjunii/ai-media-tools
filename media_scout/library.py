@@ -138,14 +138,18 @@ def library_files(data, report_prefix="reports/"):
     """Return deterministic static files; relative URLs also work on project Pages."""
     serialized = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     # Source text is data, including literal HTML and command snippets.
-    embedded = serialized.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    # The downloadable JSON stays readable; browser data needs no indentation.
+    embedded = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    embedded = embedded.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
     fallback = "<ul>" + "".join(
         '<li><a href="' + e.get("report_path", report_prefix + e.get("report_directory", e["report_date"] + "/")) + 'report.html">' +
         escape(e["report_date"] + (f" · Update {e['revision'] - 1}" if e.get("revision", 1) > 1 else "")) +
         " — " + str(e["profile_count"]) + " full profiles</a></li>"
         for e in data["editions"]) + "</ul>"
-    html = (UI / "library.html").read_text().replace("{{LIBRARY_JSON}}", embedded)
+    html = (UI / "library.html").read_text()
     html = html.replace("{{REPORT_PREFIX}}", report_prefix).replace("{{REPORT_LINKS}}", fallback)
+    # Insert source data last so template-like text in a review stays literal.
+    html = html.replace("{{LIBRARY_JSON}}", embedded)
     output = {"index.html": html.encode("utf-8"), "library.json": serialized.encode("utf-8"),
               ".nojekyll": b""}
     output.update({"assets/" + name: (UI / name).read_bytes() for name in ASSETS})

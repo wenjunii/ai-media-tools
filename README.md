@@ -67,6 +67,12 @@ and quoted phrases stay together. You can still
 choose date or name ordering. Search relevance does not change quality labels or
 use star counts. See [search behavior](docs/LIBRARY.md#search-and-compare).
 
+The library embeds compact data for a lighter page while retaining every dated
+review and the readable JSON download. Browsing without a text query skips
+full-text indexing. Search results are reused when saving, comparing or showing
+more tools; typing waits briefly between updates, and Enter applies it immediately.
+Local files and GitHub Pages use the same behavior, with no search service.
+
 Use **Move saved tools** to transfer a shortlist between your Mac, PC, local
 library and GitHub Pages. Download or copy its JSON and import it in the other
 browser; matching tools are merged into that browser's existing saves. You can
