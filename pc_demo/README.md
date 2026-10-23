@@ -23,6 +23,7 @@ From the repository root in PowerShell:
 ```powershell
 .\pc_demo\demo.ps1 status
 .\pc_demo\demo.ps1 history
+.\pc_demo\demo.ps1 preflight
 .\pc_demo\demo.ps1 run -GpuId 1
 .\pc_demo\demo.ps1 verify
 ```
@@ -35,9 +36,46 @@ latest completed draft and reruns full media checks. An existing matching manual
 review is preserved; a changed video requires a new review. The PowerShell
 launcher saves its own output logs under `.local/launcher-logs/`.
 
+## Check readiness before spending GPU time
+
+`preflight` checks the installed app/model hashes, isolated Python/Pillow,
+FFmpeg/FFprobe hashes, PowerShell availability, reviewed source-document hashes,
+free workspace storage, the selected library profile, input artwork and the
+actual render fonts and text widths. It lists independent blockers together,
+with a suggested fix for each. It does not download, repair, synthesize speech,
+run the app, create a run or change the latest-draft pointer.
+
+```powershell
+.\pc_demo\demo.ps1 preflight
+# Check the same optional inputs you intend to use for a new run:
+.\pc_demo\demo.ps1 preflight -InputImage "C:\Art\my illustration.png" -Storyboard ".\pc_demo\.local\storyboard.local.json"
+# A supplied local research snapshot and structured result are also supported:
+.\pc_demo\demo.ps1 preflight -LibraryFile "C:\Scout exports\library.json" -Json
+```
+
+Use the same options with `run` after resolving any blockers. A blocked check
+returns Python exit code 2; the PowerShell launcher reports failure and preserves
+its output logs. Without an installed virtual environment, the launcher uses the
+existing system Python to explain setup problems. The standalone Python check is
+read-only; only the launcher creates its usual logs.
+
+`run` repeats the production checks before GPU inference, so a previous pass
+cannot hide changed dependencies or an oversized caption. A failed production
+check keeps the new run's inputs, storyboard, library evidence, failure log and
+`qa/preflight.json`. `revise` checks rendering dependencies before narration;
+new renders save `qa/render-preflight.json`. Earlier successful drafts remain
+available. Edited eyebrows, titles and captions must fit the same font sizes and
+safe widths used by the compositor.
+
+The 2 GiB free-space reserve is a wrapper policy, not an upstream requirement or
+a prediction of every run's storage needs. A passing preflight does not test the
+Vulkan device, speech voices, spoken timing or actual media-tool execution. The
+real run still needs full video verification and creator listening/review. The
+library result identifies the saved profile edition without claiming freshness.
+
 ## Routine use without GitHub requests
 
-After setup, `run`, `revise`, `verify`, `package`, `review`, `status` and `history`
+After setup, `preflight`, `run`, `revise`, `verify`, `package`, `review`, `status` and `history`
 use local files and do not fetch GitHub data. `run` reads this checkout's
 `public/library.json` by default, preserving its exact bytes, selected complete
 profile, edition and hash in the new run. `evidence/library-origin.json` records
@@ -193,7 +231,7 @@ Copy-Item -LiteralPath (Join-Path $latest 'storyboard.json') -Destination $edit
 The supported template remains six 7.5-second scenes, 45 seconds total, at
 1080x1920 and 30 fps. Keep scene kinds and timing unchanged; titles and captions
 have one or two lines. The validator rejects unsupported layouts before creating
-a revision. Font-width checks happen before narration, and spoken lines must fit
+a revision. Font-width checks happen before new inference or revision narration, and spoken lines must fit
 their scene without truncation. `run` also accepts `-Storyboard` for a new actual
 inference with edited narration.
 
@@ -224,6 +262,7 @@ From the repository root in PowerShell:
 .\pc_demo\demo.ps1 doctor
 .\pc_demo\demo.ps1 setup
 .\pc_demo\demo.ps1 status
+.\pc_demo\demo.ps1 preflight
 .\pc_demo\demo.ps1 run -GpuId 1
 ```
 

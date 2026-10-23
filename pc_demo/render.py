@@ -61,10 +61,36 @@ def poster(after, custom=False):
     return result
 
 
+def title_size(line):
+    return 75 if len(line) > 19 else 82
+
+
+def validate_layout(story):
+    """Measure the real render fonts without requiring an inference output."""
+    from .storyboard import validate_storyboard
+    validate_storyboard(story)
+    draw = ImageDraw.Draw(Image.new('RGB', (1, 1)))
+    # Also load the monospaced face used by fixed labels and the process card.
+    font(25, mono=True)
+    for index, segment in enumerate(story['segments'], 1):
+        lines = [('eyebrow', segment['eyebrow'], 27, True, 924)]
+        lines += [('title', line, title_size(line), True, 875) for line in segment['title']]
+        lines += [('caption', line, 42, False, 880) for line in segment['caption']]
+        for field, line, size, bold, limit in lines:
+            if '\n' in line or '\r' in line:
+                raise ValueError(f'Scene {index} {field} must use separate single lines')
+            width = draw.textlength(line, font=font(size, bold))
+            if width > limit:
+                raise ValueError(f'Scene {index} {field} exceeds safe width ({width:.0f} > {limit} px); shorten this line')
+    return {'scenes': len(story['segments']), 'fonts': ['Segoe UI', 'Segoe UI Bold', 'Consolas'],
+            'caption_safe_width_px': 880}
+
+
 class Composer:
     def __init__(self, run):
         self.run=run
         self.story=load_storyboard(run/'storyboard.json')
+        validate_layout(self.story)
         self.manifest=read_json(run/'manifest.json')
         self.custom=bool(self.manifest.get('source_asset'))
         self.input_file=input_relative(self.manifest)
@@ -97,13 +123,9 @@ class Composer:
             label(d,(78,192),segment['eyebrow'],27,ACCENT,True)
             for j,line in enumerate(segment['title']):
                 # Long hook gets a slightly smaller font so it fits the safe width.
-                size=75 if len(line)>19 else 82
-                if d.textlength(line,font=font(size,True)) > 875:
-                    raise ValueError('Title exceeds safe width')
+                size=title_size(line)
                 label(d,(72,249+j*92),line,size,PAPER,True)
             for j,line in enumerate(segment['caption']):
-                if d.textlength(line,font=font(42)) > 880:
-                    raise ValueError('Caption exceeds safe width')
                 label(d,(78,1410+j*61),line,42,PAPER)
             label(d,(78,1656),'REAL APP OUTPUT / LOCAL DRAFT',23,MUTED,False,True)
             self.cards.append(base)

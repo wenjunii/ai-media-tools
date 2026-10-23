@@ -6,7 +6,9 @@ For the Windows PC's separate local demo-production project, see
 library/report publication and email ownership. The tested PC adapter uses
 Real-ESRGAN to create a 45-second vertical draft from actual image upscaling.
 Check this PC with `./pc_demo/demo.ps1 status`; see the PC guide for setup on a
-new machine. Use `history` to inspect past runs and `revise` to edit narration
+new machine. Use `preflight` to check local inputs, dependencies and caption fit
+before GPU work. It reports blockers without downloading or running the app.
+Use `history` to inspect past runs and `revise` to edit narration
 and captions using preserved app output. Add `-InputImage "path\to\artwork.png"`
 to `run` to use your own PNG/JPEG illustration, with the original preserved.
 Use `package` to create an offline review folder with the video, subtitles and

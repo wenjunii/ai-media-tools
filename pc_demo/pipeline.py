@@ -9,6 +9,7 @@ from .library import archive_library
 from .setup_runtime import verified_runtime
 from .storyboard import load_storyboard
 from .inputs import input_relative, load_custom_input, save_custom_input
+from .preflight import production_checks, report, require_pass
 
 
 def snapshot_source(run):
@@ -33,9 +34,10 @@ def record_failure(run, manifest, error, stage):
 
 def finish_draft(run, manifest, receipt):
     """Assemble a new draft; inference evidence must already exist in this run."""
+    readiness=report(production_checks(load_storyboard(run/'storyboard.json'),receipt))
+    write_json(run/'qa/render-preflight.json',readiness)
+    require_pass(readiness)
     ffmpeg=receipt['hardware']['media_tools']['ffmpeg']['path']
-    if sha256(ffmpeg)!=receipt['hardware']['media_tools']['ffmpeg']['sha256']:
-        raise RuntimeError('FFmpeg changed since setup; rerun setup to record current dependency')
     from .render import Composer,make_audio,render_video
     # Check fonts and caption/title fit before spending time synthesizing speech.
     Composer(run)
@@ -90,10 +92,13 @@ def run_demo(gpu_id=-1, storyboard=None, input_image=None, library_file=None):
             make_artwork(run/'inputs')
         manifest['input_sha256']=sha256(run/input_relative(manifest))
         write_json(run/'manifest.json',manifest)
+        write_json(run/'storyboard.json',story)
+        readiness=report(production_checks(story,receipt,include_sources=True))
+        write_json(run/'qa/preflight.json',readiness)
+        require_pass(readiness)
         shutil.copyfile(LOCAL/'setup.json',run/'evidence/setup.json')
         shutil.copyfile(LOCAL/'hardware.json',run/'evidence/hardware.json')
         shutil.copyfile(ROOT/'runtime.lock.json',run/'evidence/runtime.lock.json')
-        write_json(run/'storyboard.json',story)
         manifest['source_git_commit']=snapshot_source(run)
         manifest['source_snapshot']='evidence/source/pc_demo (includes current uncommitted source if any)'
         if (ROOT/'LICENSE_REVIEW.md').exists():

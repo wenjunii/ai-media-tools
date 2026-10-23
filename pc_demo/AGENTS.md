@@ -30,6 +30,11 @@ status. A local Git commit does not use GitHub. Preserve protected CI when synci
 - Preserve every run in a new directory. Save settings, source input, exact command,
   stdout/stderr, return code, timing, checksums, outputs, and failure history.
   A failed app invocation must never become a success label or a substitute image.
+- Use offline `preflight` to diagnose local dependencies and chosen inputs before
+  production. Keep the automatic production checks before inference/narration,
+  and use the compositor's actual font measurements. Never equate a readiness
+  pass with tested GPU execution, speech timing, video verification or approval.
+  Failed checks must not repair/download dependencies or move the latest draft.
 - For custom artwork, preserve the original bytes separately from the normalized
   model input. Record orientation, color handling, dimensions and hashes. Keep
   the image's aspect ratio and use accurate dimensions/captions; never describe

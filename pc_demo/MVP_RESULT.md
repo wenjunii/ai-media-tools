@@ -225,3 +225,63 @@ saved locally on `codex/pc-local-library`. The user's subsequent October 20 requ
 authorizes this batch for protected GitHub source sync. Future routine PC work
 still stays local until sync is requested. The Mac retains its existing research,
 public-library publication and email workflow.
+
+## Offline preflight and recovery check: 2026-10-23
+
+The new `preflight` command reports local readiness without downloading,
+running the app or creating a run. It validates the runtime, isolated Python,
+media-tool hashes, source evidence, storage, chosen artwork/library and the same
+font widths used by rendering. New inference and revisions automatically apply
+the relevant production checks. The Windows launcher also accepts `-Json`,
+`-InputImage`, `-Storyboard` and `-LibraryFile` for preflight, including missing
+paths so independent blockers can be reported together.
+
+On this PC all ten default checks passed. A deliberately oversized caption
+failed both standalone preflight and the automatic production gate. The rejected
+run `.local/runs/20261023T113136756656Z-realesrgan/` retains its input, storyboard,
+library and failure evidence; no inference command was invoked and the previous
+latest-draft pointer was preserved. A launcher check from a different working
+directory correctly reported that caption plus two missing local inputs.
+
+The real run `.local/runs/20261023T113137136490Z-realesrgan/` enlarged the controlled
+illustration from **256x256 to 1024x1024 in 2.419 seconds** on Vulkan GPU 1. FFmpeg
+then exited with code `3221225794` while starting audio segment 3. The first
+recovery, `.local/runs/20261023T113324786980Z-realesrgan-revision/`, hit the same
+code at audio segment 1. Both attempts remain failed with their command records.
+Subsequent FFmpeg launch probes passed; the startup failure's cause is unresolved.
+Preflight checks file integrity, not successful native-process execution.
+
+A second revision succeeded at
+`.local/runs/20261023T113451060035Z-realesrgan-revision/`. It reused the actual
+inference output byte-for-byte, preserved every file in the failed source run,
+and made a **45-second, 1080x1920 H.264/AAC** draft. Full decode, six scene
+comparisons, provenance, caption fit and audio checks passed. Mean/peak sample
+levels were -20.3/-1.5 dBFS. The six contact-sheet frames were visually inspected;
+browser playback and creator listening/approval remain pending for this draft.
+Its video SHA-256 is
+`a29b840ca2174ff9cc11ff072b67298b287469861aabba3c4c2a807781243fe8`.
+
+The run and recovery used a Python network guard, not an OS firewall. The saved
+library profile remains edition `2026-10-01-r2`, with no live freshness claim.
+Source/model terms and the documented model-license gap are unchanged.
+
+Reproduce the readiness check and a new inference run:
+
+```powershell
+.\pc_demo\demo.ps1 preflight
+.\pc_demo\demo.ps1 run -GpuId 1
+```
+
+Reproduce the successful recovery without another inference:
+
+```powershell
+.\pc_demo\demo.ps1 revise -RunDirectory .\pc_demo\.local\runs\20261023T113137136490Z-realesrgan
+```
+
+Validation passed: 273 full Python tests under WSL (two Windows-font checks
+skipped there), all 80 native Windows PC tests including those font checks,
+32 library browser tests, compile checks and public archive verification for
+21 editions, 63 report files and 891 library tools. Validation scripts, launch
+diagnostics and reports are retained under ignored `.local/oct23-preflight/`.
+This improvement stays local on `codex/pc-preflight` for an explicit later sync.
+No GitHub request, research/email operation, schedule or social upload was made.
