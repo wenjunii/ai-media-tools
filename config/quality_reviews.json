@@ -54417,6 +54417,78 @@
           }
         }
       }
+    },
+    "github:igrbible/ruach_studio": {
+      "basis_edition": "2026-10-23",
+      "record_sha256": "0da73dbafca4ff4d90f3b8e48a982bdeeb177a729a5c59ddf7a990ca5f7b856d",
+      "checked_on": "2026-10-24",
+      "assessment": {
+        "tier": "unverified",
+        "method": "source-review",
+        "checked_on": "2026-10-24",
+        "summary": "Licensing hold: the current README says inherited YuE2 Kit code has no license of its own. The AGPL grant for original changes does not resolve permission for that inherited implementation. Do not treat the historical library inclusion as current clearance.",
+        "scope": "Current Ruach Studio full distribution and its inherited YuE2 Kit page/scripts; the historical screened entry is retained, but open-source eligibility is unresolved.",
+        "caveats": [
+          "The earlier sealed report is preserved. A full guide and recommendation are held until the inherited-code grant is resolved.",
+          "Source/documentation review only; no software was installed or run."
+        ],
+        "sources": [
+          {
+            "title": "Current distribution and license disclosures",
+            "url": "https://github.com/igrbible/Ruach_Studio/blob/main/README.md"
+          },
+          {
+            "title": "Full original-code AGPL grant",
+            "url": "https://github.com/igrbible/Ruach_Studio/blob/main/LICENSE"
+          },
+          {
+            "title": "Separate asset restrictions",
+            "url": "https://github.com/igrbible/Ruach_Studio/blob/main/LICENSE-ASSETS.md"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "failed",
+            "note": "The full AGPL grant was read, but the README explicitly identifies the inherited YuE2 Kit page/scripts as lacking their own license. The original-change grant does not settle this material distribution-scope contradiction.",
+            "source_urls": [
+              "https://github.com/igrbible/Ruach_Studio/blob/main/README.md",
+              "https://github.com/igrbible/Ruach_Studio/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "documented",
+            "note": "The maintainer supplies samples and probe workspaces; their relevance and output quality have not received an independent substantive review here.",
+            "source_urls": [
+              "https://github.com/igrbible/Ruach_Studio/blob/main/README.md"
+            ]
+          },
+          "setup": {
+            "status": "documented",
+            "note": "Linux/CUDA and Windows WSL2 routes are described, with downloads and pinned models. Independent reproduction of the complete current workflow is unestablished.",
+            "source_urls": [
+              "https://github.com/igrbible/Ruach_Studio/blob/main/README.md"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "Current documentation discloses integration and licensing limitations, but a substantive support/history review has not been completed.",
+            "source_urls": []
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "No independent first-hand use was established for the current full distribution.",
+            "source_urls": []
+          },
+          "dependencies": {
+            "status": "documented",
+            "note": "YuE2/VAE and several adapter/score models carry noncommercial or unresolved terms; Qwen Image 2.1 adds research restrictions. Published assets have CC BY-NC-ND terms. These are separate from both the original AGPL code and the inherited-code licensing hold.",
+            "source_urls": [
+              "https://github.com/igrbible/Ruach_Studio/blob/main/README.md",
+              "https://github.com/igrbible/Ruach_Studio/blob/main/LICENSE-ASSETS.md"
+            ]
+          }
+        }
+      }
     }
   }
 }
