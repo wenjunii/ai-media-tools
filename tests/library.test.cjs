@@ -2,7 +2,8 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {matches, searchText, primaryVersion, sortTools, coverageText, savedIds,
        comparisonSelection, comparisonRows, shortlistJSON, importShortlist,
-       researchNotes, queryTerms, searchIndex, searchDetails, librarySearch, deferredAction} = require("../media_scout/ui/library.js");
+       researchNotes, queryTerms, searchIndex, searchDetails, librarySearch, deferredAction,
+       reviewDay, weeklyCoverage} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -11,6 +12,74 @@ const tool = {
     {date: "2026-10-01", kind: "profile", profile: {name: "Café Paint", categories: ["images"], license: {code: "MIT"}, requirements: {platforms: "Linux"}, introduction: {text: "Original texture workflow"}}}
   ]
 };
+const weeklySchedule = {enabled: true, starts_on: "2026-10-26", timezone: "America/New_York", daily_run_time: "08:00"};
+function sourceReviewed(id, checked_on, extra = {}) {
+  return {...tool, id, quality_assessment: {tier: "unverified", checked_on, method: "source-review",
+    sources: [{title: "Evidence", url: "https://example.com/evidence"}], ...extra}};
+}
+test("weekly coverage counts current cited source reviews across tiers and leads without changing labels", () => {
+  const tools = [sourceReviewed("recommended", "2026-10-26", {tier: "recommended"}),
+    sourceReviewed("unverified", "2026-10-27"),
+    {...sourceReviewed("lead", "2026-10-26", {tier: "experimental"}), review: "screened"},
+    sourceReviewed("old", "2026-10-25"), sourceReviewed("future", "2026-10-28"),
+    sourceReviewed("audit", "2026-10-27", {method: "published-record-audit"}),
+    sourceReviewed("uncited", "2026-10-27", {sources: []}), sourceReviewed("undated", null)];
+  const before = JSON.stringify(tools), week = weeklyCoverage(tools, weeklySchedule, "2026-10-27");
+  assert.equal(week.state, "due");
+  assert.equal(week.total, 8); assert.equal(week.reviewed_this_week, 3); assert.equal(week.remaining, 5);
+  assert.deepEqual([...week.reviewed_ids], ["recommended", "unverified", "lead"]);
+  assert.deepEqual(week.future_assessment_ids, ["future"]);
+  assert.equal(JSON.stringify(tools), before);
+});
+test("weekly date follows New York midnight across daylight saving, independent of the visitor zone", () => {
+  for (const [instant, day] of [["2026-10-26T03:59:59Z", "2026-10-25"], ["2026-10-26T04:00:00Z", "2026-10-26"],
+      ["2026-11-01T05:59:59Z", "2026-11-01"], ["2026-11-01T06:00:00Z", "2026-11-01"],
+      ["2026-11-02T04:59:59Z", "2026-11-01"], ["2026-11-02T05:00:00Z", "2026-11-02"]]) {
+    assert.equal(reviewDay(new Date(instant), weeklySchedule.timezone), day);
+  }
+  assert.equal(reviewDay(new Date(), "Not/A_Timezone"), null);
+  assert.equal(reviewDay(new Date("invalid"), weeklySchedule.timezone), null);
+});
+test("weekly states distinguish a future schedule, completed week, new Monday, disabled and empty library", () => {
+  const tools = [sourceReviewed("current", "2026-10-26")];
+  const scheduled = weeklyCoverage(tools, weeklySchedule, "2026-10-25");
+  assert.equal(scheduled.state, "scheduled"); assert.equal(scheduled.reviewed_this_week, 0);
+  assert.equal(scheduled.next_week_start, "2026-10-26");
+  const sunday = weeklyCoverage(tools, weeklySchedule, "2026-11-01");
+  assert.equal(sunday.state, "complete"); assert.equal(sunday.week_start, "2026-10-26");
+  const monday = weeklyCoverage(tools, weeklySchedule, "2026-11-02");
+  assert.equal(monday.state, "due"); assert.equal(monday.remaining, 1);
+  assert.equal(monday.next_week_start, "2026-11-09");
+  assert.equal(weeklyCoverage([], weeklySchedule, "2026-10-26").state, "empty");
+  assert.equal(weeklyCoverage(tools, undefined, "2026-10-26").state, "disabled");
+  assert.equal(weeklyCoverage(tools, {...weeklySchedule, enabled: false}, "2026-10-26").reviewed_this_week, 0);
+});
+test("invalid clocks and a library newer than the viewer date cannot claim weekly completion", () => {
+  for (const day of [null, "2026-02-30", "2026-10-00", "2026-13-01", "2026-01-01"]) {
+    assert.equal(weeklyCoverage([sourceReviewed("current", "2026-10-26")], weeklySchedule, day).state, "unavailable");
+  }
+  assert.equal(weeklyCoverage([tool], {...weeklySchedule, starts_on: "2026-10-27"}, "2026-10-28").state, "unavailable");
+  const malformed = weeklyCoverage([sourceReviewed("bad-date", "2026-10-99")], weeklySchedule, "2026-10-27");
+  assert.equal(malformed.reviewed_this_week, 0);
+});
+test("weekly filters compose with search, saved tools and historical editions using current assessments", () => {
+  const reviewed = sourceReviewed("current", "2026-10-26"), pending = sourceReviewed("pending", "2026-10-25");
+  const tools = [reviewed, pending], week = weeklyCoverage(tools, weeklySchedule, "2026-10-27");
+  const find = librarySearch(tools);
+  assert.deepEqual(find({weekly: "reviewed", q: "original texture", edition: "2026-10-01", quality: "unverified"}, null, week).results, [reviewed]);
+  assert.deepEqual(find({weekly: "pending", field: "images"}, new Set([pending.id]), week).results, [pending]);
+  assert.deepEqual(find({weekly: "reviewed"}, new Set([pending.id]), week).results, []);
+  assert.deepEqual(find({weekly: "pending"}, null, weeklyCoverage(tools, weeklySchedule, "2026-10-25")).results.length, 2);
+  assert.equal(matches(reviewed, {weekly: "reviewed"}), false);
+  assert.equal(matches(reviewed, {weekly: "invalid"}, undefined, week), false);
+});
+test("cached weekly filters refresh when the week or assessment coverage changes", () => {
+  const tools = [sourceReviewed("current", "2026-10-26")], find = librarySearch(tools), filters = {weekly: "reviewed"};
+  const week = weeklyCoverage(tools, weeklySchedule, "2026-11-01");
+  assert.equal(find(filters, null, week).results.length, 1);
+  assert.equal(find(filters, null, weeklyCoverage(tools, weeklySchedule, "2026-11-02")).results.length, 0);
+  assert.equal(find(filters, null, {...week, reviewed_ids: new Set()}).results.length, 0);
+});
 test("search includes installation, hardware and historical creative uses", () => {
   for (const q of ["paint --animate", '"8 GB"', "original texture", "cafe"]) assert.ok(matches(tool, {q}));
   assert.equal(matches(tool, {q: "paint absent"}), false);

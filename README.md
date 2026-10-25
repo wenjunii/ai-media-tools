@@ -173,6 +173,16 @@ still use explicit reviewed assessments, then the existing local/Pages publicati
 flow. See the [weekly review runbook](docs/WEEKLY_QUALITY_REVIEW.md). There is no
 additional scheduler or automatic weekly email.
 
+The local library and GitHub Pages show **Weekly evidence review** progress:
+reviewed this week, awaiting review and the total across every tier and screened
+lead. Use the **Weekly review** filter to browse either set alongside search,
+saved tools and other filters. Progress uses the public schedule's time zone and
+updates at the next Monday even in an open tab, without network requests. It
+reflects published evidence; unpublished work and future-dated or uncited reviews
+never imply completed coverage. Review completion does not automatically change
+quality labels. The panel also identifies a scheduled first cycle or disabled
+schedule. See [library review progress](docs/LIBRARY.md#weekly-review-progress).
+
 Apply researched label updates with a reviewed batch rather than editing the
 whole registry. `quality-backlog --full` now includes the exact record hash and
 edition needed for each binding. Prepare complete cited assessments using the

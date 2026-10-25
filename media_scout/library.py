@@ -68,7 +68,7 @@ def _profile(source, kind):
     return output
 
 
-def make_library(documents, config, quality_reviews=None):
+def make_library(documents, config, quality_reviews=None, schedule_config=None):
     """Deduplicate tools by stable ID while retaining every published version."""
     names = {c["id"]: c["name"] for c in config["categories"]}
     quality_reviews = quality_reviews or {"audits": {}, "reviews": {}}
@@ -124,7 +124,15 @@ def make_library(documents, config, quality_reviews=None):
     profiles = sum(entry["review"] == "profile" for entry in tools.values())
     if (set(quality_reviews.get("audits", {})) | set(quality_reviews.get("reviews", {}))) - set(tools):
         raise ValueError("Quality registry contains an unknown published tool ID")
+    # Export only the public schedule, never ignored delivery preferences. The
+    # browser computes the current week without dating or changing these files.
+    public_config = config if schedule_config is None else schedule_config
+    schedule = public_config.get("weekly_quality_review", {})
     return {"format_version": 1, "latest_edition": max(dates) if dates else None,
+            "weekly_review": {"enabled": schedule.get("enabled", False),
+                              "starts_on": schedule.get("starts_on"),
+                              "timezone": public_config.get("timezone", "America/New_York"),
+                              "daily_run_time": public_config.get("daily_time", "08:00")},
             "counts": {"tools": len(tools), "profiles": profiles, "screened": len(tools) - profiles,
                        "editions": len(editions)},
             "categories": [{"id": c, "name": names[c]} for c in sorted(used, key=lambda c: names[c].casefold())],
@@ -184,7 +192,8 @@ def write_local_library(root, config):
         identity = edition_key(day, manifest.get("revision", 1))
         reports[identity] = read_json(path.parent / "report.json")
         paths[identity] = "../reports/" + day + "/"
-    data = make_library(list(reports.values()), config, read_reviews(root))
+    data = make_library(list(reports.values()), config, read_reviews(root),
+                        schedule_config=read_json(root / "config/scout.json"))
     for edition in data["editions"]:
         identity = edition_key(edition["report_date"], edition.get("revision", 1))
         edition["report_path"] = paths[identity]

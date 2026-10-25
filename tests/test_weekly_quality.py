@@ -4,6 +4,9 @@ from copy import deepcopy
 from contextlib import redirect_stdout
 from io import StringIO
 import json
+from pathlib import Path
+import shutil
+import subprocess
 import unittest
 from unittest.mock import patch
 
@@ -12,7 +15,7 @@ from media_scout import cli
 from media_scout.configuration import load_config
 from media_scout.library import make_library
 from media_scout.publication import export_report
-from media_scout.quality import CHECKS, TIERS, read_reviews, record_quality_reviews
+from media_scout.quality import CHECKS, TIERS, public_quality_library, read_reviews, record_quality_reviews
 from media_scout.storage import read_json, write_json
 from media_scout.weekly import weekly_quality
 
@@ -182,6 +185,29 @@ class WeeklyQualityTests(unittest.TestCase):
             self.assertEqual(result["total"], 1)
             self.assertEqual(result["remaining"], 1)
             self.assertEqual("items" in result, bool(args))
+
+    @unittest.skipUnless(shutil.which("node"), "Node is needed for CLI/browser coverage parity")
+    def test_browser_progress_matches_cli_for_published_evidence_and_week_rollover(self):
+        script = """
+const {weeklyCoverage} = require('./media_scout/ui/library.js');
+const input = JSON.parse(require('node:fs').readFileSync(0, 'utf8'));
+const result = weeklyCoverage(input.data.tools, input.data.weekly_review, input.day);
+console.log(JSON.stringify({...result, reviewed_ids: [...result.reviewed_ids]}));
+"""
+        for method, sources in (("source-review", True), ("source-review", False), ("published-record-audit", True)):
+            self.record_review("2026-10-26", method=method, sources=sources)
+            data = public_quality_library(self.root)
+            for day in ("2026-10-25", "2026-10-26", "2026-10-27", "2026-11-01", "2026-11-02"):
+                with self.subTest(method=method, sources=sources, day=day):
+                    expected = weekly_quality(self.root, day)
+                    browser = json.loads(subprocess.check_output(
+                        [shutil.which("node"), "-e", script], cwd=Path(__file__).resolve().parents[1],
+                        input=json.dumps({"data": data, "day": day}), text=True))
+                    for field in ("as_of", "state", "week_start", "next_week_start", "total",
+                                  "reviewed_this_week", "remaining", "future_assessment_ids"):
+                        self.assertEqual(browser[field], expected[field], field)
+                    pending = {row["id"] for row in expected["items"]}
+                    self.assertEqual(set(browser["reviewed_ids"]), {t["id"] for t in data["tools"]} - pending)
 
 
 if __name__ == "__main__":
