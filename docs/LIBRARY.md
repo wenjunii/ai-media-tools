@@ -111,6 +111,39 @@ edition. Later full reviews replace pending status while preserving earlier vers
 
 ## Local use and regeneration
 
+### Weekly review progress
+
+**Weekly evidence review** shows reviewed, awaiting-review and total counts for
+every published tool, including Recommended entries and screened leads. It shows
+the first scheduled cycle before the start date, then the current Monday-to-Sunday
+week. A completed week requires every current record to have a dated, cited source
+review in that week. Published-record audits, uncited or future-dated assessments
+do not count. Completion can include unresolved evidence gaps and unchanged labels;
+it is not a claim that an application was installed, tested or recommended.
+
+The **Weekly review** filter selects **Awaiting review** or **Reviewed this week**.
+It combines with search, quality, evidence, saved-tool and historical-edition
+filters. The selected edition keeps its dated guide, while weekly progress uses
+the latest bound assessment. Counts describe the whole library. Shared URLs use
+`weekly=pending` or `weekly=reviewed` and follow the current week when reopened.
+
+The browser computes coverage from published records using the public schedule's
+time zone, normally America/New_York, including daylight-saving changes. Visible
+tabs check for a date rollover once a minute; returning to a hidden tab also
+refreshes the date. No network request, background source review, new scheduler,
+label edit or report rebuild is triggered. Unpublished work is not visible. A
+missing/disabled schedule or invalid browser date is shown explicitly.
+
+The portable `weekly_review` object in library JSON contains only public schedule
+fields: `enabled`, `starts_on`, `timezone`, and `daily_run_time`. Ignored local clock
+and delivery preferences are not exported. Builds remain deterministic and a
+fresh clone can verify them without private settings. The CLI can still use its
+local time-zone preference, so deliberate private clock overrides can differ from
+the public site's review window. See the [weekly runbook](WEEKLY_QUALITY_REVIEW.md)
+for the source-review work behind these counts.
+
+### Regenerate and serve
+
 ```sh
 cd /path/to/ai-media-tools
 python3 -m media_scout build-library

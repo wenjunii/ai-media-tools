@@ -30,6 +30,49 @@
       ". " + (value.tier === "ready_to_try" ? readyToTryNote + " " : "") + value.summary +
       (value.experimental_reason ? " Why Experimental: " + value.experimental_reason.text : "");
   }
+  function calendarDay(value) {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const parsed = new Date(value + "T00:00:00Z");
+    return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value ? parsed : null;
+  }
+  function reviewDay(now, timezone) {
+    try {
+      const parts = new Intl.DateTimeFormat("en-US", {timeZone: timezone,
+        year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(now);
+      const fields = Object.fromEntries(parts.map(function (part) { return [part.type, part.value]; }));
+      return fields.year + "-" + fields.month + "-" + fields.day;
+    } catch (error) { return null; }
+  }
+  function weeklyCoverage(tools, settings, day) {
+    const result = {state: "disabled", as_of: day, week_start: null, next_week_start: null,
+      total: tools.length, reviewed_this_week: 0, remaining: tools.length,
+      reviewed_ids: new Set(), future_assessment_ids: []};
+    if (!settings || settings.enabled !== true) return result;
+    const today = calendarDay(day), start = calendarDay(settings.starts_on);
+    if (!today || !start || start.getUTCDay() !== 1 || tools.some(function (tool) {
+      const latest = tool.versions && tool.versions[0];
+      return !latest || !calendarDay(latest.date) || latest.date > day;
+    })) return Object.assign(result, {state: "unavailable"});
+    const monday = new Date(today);
+    monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7);
+    const window = [monday.toISOString().slice(0, 10), settings.starts_on].sort().pop();
+    const active = day >= window;
+    result.week_start = window;
+    const next = calendarDay(window); if (active) next.setUTCDate(next.getUTCDate() + 7);
+    result.next_week_start = next.toISOString().slice(0, 10);
+    tools.forEach(function (tool) {
+      const assessment = qualityOf(tool), checked = assessment.checked_on;
+      if (calendarDay(checked) && checked > day) result.future_assessment_ids.push(tool.id);
+      // make_library has already resolved the latest-record binding. Review
+      // coverage counts cited source checks, including reviews with open gaps.
+      if (active && assessment.method === "source-review" && (assessment.sources || []).length &&
+          calendarDay(checked) && window <= checked && checked <= day) result.reviewed_ids.add(tool.id);
+    });
+    result.reviewed_this_week = result.reviewed_ids.size;
+    result.remaining = tools.length - result.reviewed_this_week;
+    result.state = !active ? "scheduled" : !tools.length ? "empty" : result.remaining ? "due" : "complete";
+    return result;
+  }
   function savedIds(serialized, tools) {
     try {
       const ids = JSON.parse(serialized), known = new Set(tools.map(function (tool) { return tool.id; }));
@@ -225,7 +268,7 @@
     // Do not claim that one dated review contains the complete query in that case.
     return {score: best ? best.score : 0, scope: "history", edition: null, sections: []};
   }
-  function matches(tool, filters, text) {
+  function matches(tool, filters, text, weekly) {
     const version = primaryVersion(tool, filters.edition), profile = version.profile;
     if (filters.edition && !tool.versions.some(function (v) { return editionKey(v) === filters.edition; })) return false;
     if (filters.field && !(filters.edition ? profile.categories : tool.categories).includes(filters.field)) return false;
@@ -233,6 +276,11 @@
     if (filters.review && (filters.edition ? version.kind : tool.review) !== filters.review) return false;
     if (filters.quality && qualityOf(tool).tier !== filters.quality) return false;
     if (filters.evidence && !(tool.evidence_gaps || []).includes(filters.evidence)) return false;
+    if (filters.weekly) {
+      if (!weekly || ["disabled", "unavailable"].includes(weekly.state) ||
+          !["pending", "reviewed"].includes(filters.weekly)) return false;
+      if ((filters.weekly === "reviewed") !== weekly.reviewed_ids.has(tool.id)) return false;
+    }
     const license = version.kind === "profile" ? profile.license.code : profile.code_license;
     if (filters.license && license !== filters.license) return false;
     const tokens = queryTerms(filters.q), index = text && typeof text === "object" ? text : null;
@@ -262,20 +310,21 @@
       if (!indexes.has(tool.id)) indexes.set(tool.id, searchIndex(tool, categoryNames));
       return indexes.get(tool.id);
     }
-    return function (filters, selected) {
+    return function (filters, selected, weekly) {
       // Keep only the current result set. Save/compare/pagination redraws can
       // reuse it; changed filters or a changed saved-only selection cannot.
       const key = JSON.stringify([Object.keys(filters).sort().map(function (name) { return [name, filters[name]]; }),
-        selected ? Array.from(selected).sort() : null]);
+        selected ? Array.from(selected).sort() : null,
+        filters.weekly && weekly ? [weekly.as_of, weekly.state, weekly.week_start, Array.from(weekly.reviewed_ids).sort()] : null]);
       if (key === lastKey) return lastResult;
       const hasQuery = queryTerms(filters.q).length > 0;
       const narrow = Object.assign({}, filters, {q: ""});
       let filtered = tools.filter(function (tool) {
-        return (!selected || selected.has(tool.id)) && matches(tool, narrow);
+        return (!selected || selected.has(tool.id)) && matches(tool, narrow, undefined, weekly);
       });
       // Ordinary browsing needs no full-text index. Index only the eligible
       // tools when a text query first needs them, then reuse those indexes.
-      if (hasQuery) filtered = filtered.filter(function (tool) { return matches(tool, filters, index(tool)); });
+      if (hasQuery) filtered = filtered.filter(function (tool) { return matches(tool, filters, index(tool), weekly); });
       const details = new Map(hasQuery ? filtered.map(function (tool) {
         return [tool.id, searchDetails(tool, filters, index(tool))];
       }) : []);
@@ -317,6 +366,7 @@
                       librarySearch: librarySearch, deferredAction: deferredAction,
                       coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
                       qualityOf: qualityOf, qualityText: qualityText,
+                      reviewDay: reviewDay, weeklyCoverage: weeklyCoverage,
                       comparisonSelection: comparisonSelection, comparisonRows: comparisonRows,
                       shortlistJSON: shortlistJSON, importShortlist: importShortlist, researchNotes: researchNotes};
   }
@@ -331,7 +381,7 @@
     return (edition && edition.report_path || prefix + (edition && edition.report_directory || day + "/")) + "report." + extension;
   }
   const controls = {q: "search", field: "field-filter", platform: "platform-filter", license: "license-filter",
-                    review: "review-filter", quality: "quality-filter", evidence: "evidence-filter",
+                    review: "review-filter", quality: "quality-filter", evidence: "evidence-filter", weekly: "weekly-filter",
                     edition: "edition-filter", sort: "sort"};
   const $ = function (id) { return document.getElementById(id); };
   const savedKey = "ai-media-scout.saved.v1";
@@ -340,6 +390,7 @@
   catch (error) { storageAvailable = false; }
   let visible = 24, currentView = "library", activeTool = null, activeVersion = null, comparison = [];
   let composing = false;
+  let weekly = null;
   const deferredSearch = deferredAction(function () { visible = 24; render(); }, 150);
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -364,6 +415,40 @@
     entries.forEach(function (entry) {
       const option = element("option", "", entry[1]); option.value = entry[0]; $(id).append(option);
     });
+  }
+  function updateWeeklyReview() {
+    const schedule = data.weekly_review || {}, day = reviewDay(new Date(), schedule.timezone || "America/New_York");
+    if (weekly && weekly.as_of === day) return;
+    weekly = weeklyCoverage(data.tools, schedule, day);
+    const available = !["disabled", "unavailable"].includes(weekly.state);
+    $("weekly-filter").disabled = !available;
+    $("weekly-counts").hidden = !available;
+    $("weekly-progress").hidden = !available || weekly.state === "scheduled" || !weekly.total;
+    const labels = {scheduled: "First cycle starts " + (schedule.starts_on ? date(schedule.starts_on) : "soon"),
+      due: "Weekly review pending", complete: "All published tools reviewed this week",
+      empty: "No published tools to review", disabled: "Weekly review is not enabled",
+      unavailable: "Review coverage is unavailable for this browser date"};
+    $("weekly-status").textContent = labels[weekly.state];
+    $("weekly-status").dataset.state = weekly.state;
+    $("weekly-window").textContent = available ?
+      (weekly.state === "scheduled" ? "Scheduled for Mondays at " + schedule.daily_run_time + " · " + schedule.timezone :
+        "Week of " + date(weekly.week_start) + " · As of " + date(day) + " · " + schedule.timezone) :
+      (weekly.state === "unavailable" ? "Check the device clock and published review schedule. No completion is assumed." :
+        "Individual quality assessments remain available in every tool profile.");
+    $("weekly-reviewed").textContent = weekly.reviewed_this_week.toLocaleString("en-US");
+    $("weekly-remaining").textContent = weekly.remaining.toLocaleString("en-US");
+    $("weekly-total").textContent = weekly.total.toLocaleString("en-US");
+    $("weekly-progress").max = Math.max(1, weekly.total);
+    $("weekly-progress").value = weekly.reviewed_this_week;
+    $("weekly-progress").setAttribute("aria-valuetext", weekly.reviewed_this_week + " of " + weekly.total + " tools reviewed this week");
+    $("weekly-future").hidden = !weekly.future_assessment_ids.length;
+    $("weekly-future").textContent = weekly.future_assessment_ids.length + " future-dated assessments remain pending.";
+    $("weekly-filter").options[1].textContent = "Awaiting review (" + weekly.remaining + ")";
+    $("weekly-filter").options[2].textContent = "Reviewed this week (" + weekly.reviewed_this_week + ")";
+  }
+  function refreshWeeklyDate() {
+    const schedule = data.weekly_review || {};
+    if (!weekly || weekly.as_of !== reviewDay(new Date(), schedule.timezone || "America/New_York")) render();
   }
   function filters() {
     const values = {};
@@ -505,8 +590,9 @@
   }
   function render() {
     deferredSearch.cancel();
+    updateWeeklyReview();
     const values = filters();
-    const found = search(values, $("saved-only").checked ? saved : null);
+    const found = search(values, $("saved-only").checked ? saved : null, weekly);
     const results = found.results, details = found.details;
     $("result-count").textContent = results.length + (results.length === 1 ? " tool" : " tools") + " found" +
       (results.length > visible ? " · showing " + visible : "");
@@ -514,7 +600,10 @@
     $("empty").hidden = results.length !== 0; $("load-more").hidden = results.length <= visible;
     $("search-scope").textContent = values.edition ? "Search this edition" : "Search every review";
     $("search-label").textContent = values.edition ? "Search profiles in the selected edition" : "Search all profiles and review history";
-    $("empty-message").textContent = values.quality === "recommended" && !data.quality_counts.recommended ?
+    $("empty-message").textContent = values.weekly === "reviewed" && !weekly.reviewed_this_week ?
+      (weekly.state === "scheduled" ? "The first weekly cycle starts " + date(weekly.week_start) + ". Choose All review progress to explore existing assessments." :
+        "No current-week source reviews are recorded in this published library yet. Choose All review progress to explore the tools and their existing assessments.") :
+      values.quality === "recommended" && !data.quality_counts.recommended ?
       "No tools have met all recommendation checks yet. Choose All quality tiers to explore the library and its documented evidence gaps." :
       values.quality === "ready_to_try" && !data.quality_counts.ready_to_try ?
       "No tools have completed the five checks for Ready to try yet. Creative-result review can wait; licensing, setup, maintenance, independent use and dependencies still need verified evidence. Choose All quality tiers to explore the library." : $("saved-only").checked ?
@@ -782,6 +871,10 @@
   $("close-comparison").addEventListener("click", function () { $("compare-dialog").close(); });
   $("compare-dialog").addEventListener("close", updateURL);
   window.addEventListener("resize", layoutComparison);
+  // Refresh date-based coverage when a long-lived tab crosses midnight or a
+  // Monday boundary. This reads local data only; it does not start research.
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refreshWeeklyDate(); });
+  window.setInterval(function () { if (!document.hidden) refreshWeeklyDate(); }, 60000);
   $("copy-comparison").addEventListener("click", async function () {
     try { await navigator.clipboard.writeText(location.href); $("comparison-share-status").textContent = "Comparison link copied"; }
     catch (error) { $("comparison-share-status").textContent = "Copy the address from your browser."; }

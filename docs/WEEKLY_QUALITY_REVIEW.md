@@ -118,3 +118,14 @@ The public `weekly_quality_review` configuration contains `enabled` and a Monday
 `starts_on` date. It is a due-work gate for the existing chat automation, not a
 standalone background process. It does not add email recipients or authorize
 separate weekly email delivery.
+
+## Public progress view
+
+The local library and GitHub Pages expose the published review counts and
+awaiting/reviewed filters described in [LIBRARY.md](LIBRARY.md#weekly-review-progress).
+They use the same dated source-review criteria as this queue. The public schedule
+comes from tracked configuration; ignored local preferences remain private.
+The browser advances the week from its clock without modifying evidence or
+contacting GitHub. The CLI may include current registry changes not published
+yet, so use its coverage output for unfinished local work and the site for
+published coverage. Neither view turns scheduling into completed research.

@@ -70,6 +70,19 @@ class LibraryTests(unittest.TestCase):
         data = make_library([self.report], self.config)
         self.assertNotIn("private@example.com", json.dumps(data))
 
+    def test_weekly_schedule_exports_only_public_fields_without_dating_the_build(self):
+        public = {**self.config, "daily_time": "08:00",
+                  "weekly_quality_review": {"enabled": True, "starts_on": "2026-10-26"}}
+        local = {**public, "timezone": "Asia/Tokyo", "daily_time": "19:30", "recipient": "private@example.com"}
+        first = make_library([self.report], local, schedule_config=public)
+        second = make_library([self.report], public)
+        self.assertEqual(first, second)
+        self.assertEqual(first["weekly_review"], {"enabled": True, "starts_on": "2026-10-26",
+                                               "timezone": "America/New_York", "daily_run_time": "08:00"})
+        self.assertNotIn("private@example.com", json.dumps(first))
+        self.assertNotIn("as_of", first["weekly_review"])
+        self.assertFalse(make_library([], self.config)["weekly_review"]["enabled"])
+
     def test_report_search_counts_are_preserved_without_private_research_metadata(self):
         self.report["search_coverage"] = {name: 0 for name in SEARCH_COUNTS}
         self.report["search_coverage"].update(source_candidates=540, full_profiles=1,

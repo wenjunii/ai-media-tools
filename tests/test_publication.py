@@ -92,6 +92,22 @@ class PublicArchiveTests(unittest.TestCase):
         publication.export_report(self.day, self.root)
         self.folder = self.root / "public/reports" / self.day
 
+    def test_public_weekly_schedule_is_portable_without_private_clock_preferences(self):
+        config = read_json(self.root / "config/scout.json")
+        config["weekly_quality_review"] = {"enabled": True, "starts_on": "2026-10-26"}
+        write_json(self.root / "config/scout.json", config)
+        publication.rebuild_library(self.root)
+        before = {str(p): p.read_bytes() for p in (self.root / "public").rglob("*") if p.is_file()}
+        write_json(self.root / "config/scout.local.json", {"recipient": "recipient@example.com",
+                                                          "timezone": "Asia/Tokyo", "daily_time": "19:30"})
+        publication.rebuild_library(self.root)
+        self.assertEqual(before, {str(p): p.read_bytes() for p in (self.root / "public").rglob("*") if p.is_file()})
+        (self.root / "config/scout.local.json").unlink()
+        self.assertEqual(publication.verify_public_archive(self.root)["status"], "passed")
+        schedule = read_json(self.root / "public/library.json")["weekly_review"]
+        self.assertEqual(schedule["timezone"], "America/New_York")
+        self.assertEqual(schedule["daily_run_time"], "08:00")
+
     def test_public_archive_verification_needs_no_private_artifacts_and_does_not_write(self):
         before = {str(path): sha256(path) for path in (self.root / "public").rglob("*") if path.is_file()}
         for name in ("reports", "research", "state", "site"):

@@ -1,6 +1,12 @@
 {
   "format_version": 1,
   "latest_edition": "2026-10-24",
+  "weekly_review": {
+    "enabled": true,
+    "starts_on": "2026-10-26",
+    "timezone": "America/New_York",
+    "daily_run_time": "08:00"
+  },
   "counts": {
     "tools": 1142,
     "profiles": 940,
