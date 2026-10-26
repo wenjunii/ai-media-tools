@@ -148,6 +148,13 @@ Publish the reviewed `config/quality_reviews.json`, documentation and derived
 library together through the same audit and protected PR flow. The batch input
 and raw source snapshots remain ignored; the command itself does not publish.
 
+For a completed weekly review, run `weekly-quality --date YYYY-MM-DD --require-complete`
+before publication and again after the sync checkpoint is verified, using the
+current configured local date. Only a complete review exits 0. A valid partial
+library update can still be published with its exact remaining count, but must
+not be reported as a completed weekly review. Source-only maintenance preserves
+existing assessments and does not start a new review just to satisfy this check.
+
 ## PC source and documentation sync
 
 An explicit user request to sync PC source/docs authorizes a protected PR from

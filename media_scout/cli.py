@@ -50,6 +50,8 @@ def main():
     command = sub.add_parser("weekly-quality", help="Read-only weekly source-review coverage for every library tool")
     command.add_argument("--date")
     command.add_argument("--full", action="store_true", help="Include every pending tool and all six recheck actions")
+    command.add_argument("--require-complete", action="store_true",
+                         help="Exit 1 unless every current library entry has a cited source review this week")
     command = sub.add_parser("audit-existing-quality", help="Reassess published records without changing dated editions")
     command.add_argument("--date", required=True)
     command = sub.add_parser("record-quality-reviews", help="Preview a cited review batch; --apply merges it into library curation")
@@ -169,6 +171,10 @@ def main():
                       "synthesis": "Codex research agent; no additional model API key required",
                       "delivery": "Connected Gmail plugin; no password stored in this project"}
         print(json.dumps(output, ensure_ascii=False, indent=2))
+        if args.command == "weekly-quality" and args.require_complete:
+            # Empty, disabled and future schedules are not completed reviews.
+            # Keep the coverage JSON available when the completion check fails.
+            return 0 if output["state"] == "complete" else 1
         return 0
     except (ValueError, RuntimeError, OSError, KeyError) as error:
         print(json.dumps({"error": str(error)}, ensure_ascii=False), file=sys.stderr)

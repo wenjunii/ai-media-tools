@@ -78,7 +78,9 @@ def weekly_quality(root, day=None):
             "It does not prove source truth, passed checks or hands-on testing. "
             "Every tier and screened lead is included; only explicit evidence reviews can change labels. "
             "Recheck all six criteria and archive sources before recording the actual review date. "
-            "Unfinished tools remain pending on later daily runs; no tool quota or GitHub requests here."
+            "Each week covers the whole current library, including newly added tools. "
+            "Unfinished tools remain pending on later daily runs; no tool quota or GitHub requests here. "
+            "Use --require-complete before declaring the weekly review complete."
         ),
         "items": items,
     }

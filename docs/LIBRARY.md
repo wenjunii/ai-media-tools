@@ -120,6 +120,10 @@ week. A completed week requires every current record to have a dated, cited sour
 review in that week. Published-record audits, uncited or future-dated assessments
 do not count. Completion can include unresolved evidence gaps and unchanged labels;
 it is not a claim that an application was installed, tested or recommended.
+Each new Monday includes every current entry again, including newly added tools
+and unchanged quality labels. The CLI's `weekly-quality --require-complete` prints
+the full-library coverage totals and exits 1 until a weekly review is complete.
+It also rejects empty, disabled and not-yet-started cycles as completion claims.
 
 The **Weekly review** filter selects **Awaiting review** or **Reviewed this week**.
 It combines with search, quality, evidence, saved-tool and historical-edition

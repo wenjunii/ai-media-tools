@@ -186,6 +186,81 @@ class WeeklyQualityTests(unittest.TestCase):
             self.assertEqual(result["remaining"], 1)
             self.assertEqual("items" in result, bool(args))
 
+    def completion_check(self, day="2026-10-26", *, full=False):
+        output = StringIO()
+        args = ["media-scout", "weekly-quality", "--date", day, "--require-complete"]
+        if full:
+            args.append("--full")
+        with patch.object(cli, "ROOT", self.root), redirect_stdout(output), \
+                patch("sys.argv", args):
+            code = cli.main()
+        return code, json.loads(output.getvalue())
+
+    def test_completion_check_requires_all_current_reviews_and_resets_each_week(self):
+        code, pending = self.completion_check(full=True)
+        self.assertEqual(code, 1)
+        self.assertEqual(pending["remaining"], 1)
+        self.assertEqual(len(pending["items"]), 1)
+        self.record_review("2026-10-26")
+        before = {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        with patch("urllib.request.urlopen", side_effect=AssertionError("No network for completion checks")):
+            code, complete = self.completion_check()
+            self.assertEqual(code, 0)
+            self.assertEqual(complete["reviewed_this_week"], complete["total"])
+            self.assertEqual(complete["remaining"], 0)
+            self.assertEqual(complete["quality_counts"]["unverified"], 1)
+            self.assertEqual(self.completion_check("2026-11-01")[0], 0)
+            code, next_week = self.completion_check("2026-11-02")
+            self.assertEqual(code, 1)
+            self.assertEqual(next_week["remaining"], next_week["total"])
+        self.assertEqual(before, {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()})
+
+    def test_completion_check_rejects_inactive_and_empty_schedules(self):
+        code, result = self.completion_check("2026-10-25")
+        self.assertEqual((code, result["state"]), (1, "scheduled"))
+        with patch("media_scout.weekly.public_quality_library", return_value=make_library([], self.fixture.config)):
+            code, result = self.completion_check()
+            self.assertEqual((code, result["state"], result["remaining"]), (1, "empty", 0))
+        self.record_review("2026-10-26")
+        config = read_json(self.config_path)
+        config["weekly_quality_review"]["enabled"] = False
+        write_json(self.config_path, config)
+        code, result = self.completion_check()
+        self.assertEqual((code, result["state"]), (1, "disabled"))
+
+    def test_completion_check_reopens_for_a_new_screened_tool_after_all_tiers_reviewed(self):
+        self.record_review("2026-10-26")
+        data = public_quality_library(self.root)
+        prototype = data["tools"][0]
+        data["tools"] = []
+        for index, tier in enumerate(TIERS):
+            tool = deepcopy(prototype)
+            tool["id"] = f"github:owner/current-{index}"
+            assessment = self.fixture.assessment() if tier == "recommended" else self.fixture.ready_assessment()
+            assessment.update(tier=tier, checked_on="2026-10-26")
+            if tier == "experimental":
+                assessment["experimental_reason"] = {
+                    "text": "The current creative export workflow is explicitly unfinished.",
+                    "source_urls": [assessment["sources"][0]["url"]],
+                }
+            tool["quality_assessment"] = assessment
+            data["tools"].append(tool)
+        data["quality_counts"] = {tier: 1 for tier in TIERS}
+        with patch("media_scout.weekly.public_quality_library", return_value=data):
+            code, complete = self.completion_check()
+            self.assertEqual((code, complete["reviewed_this_week"]), (0, 4))
+            newcomer = deepcopy(prototype)
+            newcomer["id"] = "external:https://example.org/new-creative-tool"
+            newcomer["versions"][0]["kind"] = "screened"
+            newcomer["quality_assessment"]["checked_on"] = "2026-10-25"
+            data["tools"].append(newcomer)
+            data["quality_counts"]["unverified"] += 1
+            code, pending = self.completion_check(full=True)
+        self.assertEqual(code, 1)
+        self.assertEqual((pending["total"], pending["reviewed_this_week"], pending["remaining"]), (5, 4, 1))
+        self.assertEqual(pending["items"][0]["id"], newcomer["id"])
+        self.assertTrue(pending["items"][0]["needs_profile"])
+
     @unittest.skipUnless(shutil.which("node"), "Node is needed for CLI/browser coverage parity")
     def test_browser_progress_matches_cli_for_published_evidence_and_week_rollover(self):
         script = """

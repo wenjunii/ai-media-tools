@@ -9,10 +9,10 @@ no private destination or credentials. Use the existing single chat automation.
    WEEKLY_QUALITY_REVIEW.md. Read local preferences with
    `doctor`. Determine today's date in the configured time zone and inspect
    `status` first, then inspect `weekly-quality`. If the edition was sent and no
-   weekly work is due, verify and stop quietly. If weekly work is due, skip daily
-   discovery/build/email and follow the weekly library-maintenance path. Preserve a
-   sealed edition. Reserved or uncertain sends require confirmed Sent-mail
-   reconciliation; never retry them automatically.
+   weekly work is due, verify and stop quietly. If the edition was sent and weekly
+   work is due, skip daily discovery/build/email and follow the weekly
+   library-maintenance path. Preserve a sealed edition. Reserved or uncertain sends
+   require confirmed Sent-mail reconciliation; never retry them automatically.
 2. For every new observation, conduct the **full expanded search** for only
    open-source AI tools useful in any digital media or creative workflow. User
    examples, starter fields and source groups never define eligibility boundaries.
@@ -62,12 +62,20 @@ no private destination or credentials. Use the existing single chat automation.
    never rewrite sealed editions or repeat an unchanged tool merely for a new label.
    Starting October 26, 2026, every Monday's existing 8:00 AM run opens a weekly
    whole-library review. Follow WEEKLY_QUALITY_REVIEW.md and use
-   `weekly-quality --full`: include every tier, Recommended tools and screened
-   leads, and recheck all six criteria against current evidence. Continue pending
-   tools on later daily runs with no fixed quota. Archive source evidence and
-   failed attempts, apply explicit bound review batches, and rebuild/verify the
-   library. Never claim full coverage while tools remain pending. Current cited
-   source reviews already completed this week count; no automatic tier changes.
+   `weekly-quality --full`: review the entire current library, including every
+   tier, full profiles, screened leads, newly added tools, all platforms and all
+   source hosts. Recheck all six criteria against current evidence. Work through
+   the complete pending list; finishing a daily edition or a batch does not finish
+   the weekly review. If an actual access or execution limit interrupts work,
+   preserve progress, report the exact remaining count and resume automatically
+   on subsequent daily runs. Archive source evidence and failed attempts, apply
+   explicit bound review batches, and rebuild/verify the library.
+   Require `weekly-quality --require-complete` before claiming full
+   coverage; a failed completion check means more review work or an explicit
+   incomplete status. An unavailable source requires a dated failed-attempt record
+   with unknown affected checks; untouched entries stay pending. Current cited
+   source reviews already completed this week count; every new Monday makes
+   prior-week reviews due again. There are no automatic tier changes.
    Batch this curation with daily publication where possible. Already-sent reports
    allow due library maintenance, never another send.
 6. Build and inspect the full report, its automatically derived search/review

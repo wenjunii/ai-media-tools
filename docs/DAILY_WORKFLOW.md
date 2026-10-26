@@ -31,10 +31,14 @@ These are review priorities, not automatic tier decisions or limits on discovery
 The same daily automation runs the [weekly full-library review](WEEKLY_QUALITY_REVIEW.md).
 Starting October 26, 2026, Mondays make every tier due, including Recommended
 tools and screened leads. Inspect `weekly-quality` after status; use `--full`
-for the entire pending set and all six recheck actions. Resume unfinished work on
-later daily runs and publish reviewed label changes with the daily library update
-when possible. Missing evidence remains explicit, with no automatic promotion
-or requirement to produce our own demo.
+for the entire pending set and all six recheck actions, including newly added
+tools on every platform and source host. Work through that set; a completed daily
+edition or review batch does not finish the weekly review. Require
+`weekly-quality --require-complete` before declaring full weekly coverage. If an
+access or execution limit interrupts work, report the exact remaining count and
+resume automatically on later daily runs. Publish reviewed label changes with the
+daily library update when possible. Missing evidence remains explicit, with no
+automatic promotion or requirement to produce our own demo.
 
 ## 1. Resume safely
 
