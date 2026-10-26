@@ -106,7 +106,14 @@ Read `docs/WEEKLY_QUALITY_REVIEW.md` and inspect `weekly-quality` before the
 already-sent early exit. Starting October 26, 2026, every Monday's existing
 8:00 AM run makes all library tools due for a fresh weekly source review,
 including Recommended tools and screened leads. Recheck all six criteria;
-continue unfinished work on later daily runs and disclose remaining coverage.
+every weekly cycle covers the entire current library, including newly added tools,
+all platforms and all source hosts. Work through the complete pending list; do not
+stop at a sample, fixed batch or merely because the daily edition is finished.
+Before declaring completion, require `weekly-quality --require-complete` to pass.
+If an actual access or execution limit interrupts work, preserve completed reviews,
+report the exact unfinished count and resume automatically on later daily runs.
+An unavailable source needs an archived dated attempt and unknown affected checks;
+an untouched entry remains pending. A new week makes the whole library due again.
 Use explicit cited assessments, never popularity, age or automatic promotion.
 When a report is already sent, perform due library maintenance only; never
 rebuild or resend it. Batch weekly curation with daily publication when possible.

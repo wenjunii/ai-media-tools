@@ -12,6 +12,13 @@ platform and from every source host. New eligible discoveries join automatically
 Unscreened raw candidates still belong to the separate discovery/eligibility queue.
 There is no weekly tool quota or fixed sample.
 
+Work through the complete pending list in each weekly cycle. Finishing the daily
+edition or one review batch does not finish the weekly review. If an actual access
+or execution limit interrupts work, preserve the completed assessments, report the
+exact remaining count and resume automatically in subsequent daily runs without
+requiring another user request. Each new week includes the whole current library,
+including tools whose label did not change in the previous cycle.
+
 ## Inspect coverage before work
 
 Read today's `status` first and follow the daily delivery/resume rules. Then run:
@@ -21,6 +28,8 @@ python3 -m media_scout weekly-quality
 python3 -m media_scout weekly-quality --full
 # Explicit local date for reproducible inspection:
 python3 -m media_scout weekly-quality --date YYYY-MM-DD --full
+# Before declaring completion, require a successful exit:
+python3 -m media_scout weekly-quality --date YYYY-MM-DD --require-complete
 ```
 
 These commands are read-only, make no network requests and do not assign labels.
@@ -30,6 +39,13 @@ the first Monday, `due` while tools remain, `complete` when every current record
 a cited source review dated within the current Monday-to-Sunday week, `empty`
 for an empty library, or `disabled` if the schedule is off. The CLI uses the
 configured local date, so daylight-saving changes do not shift the review weekday.
+
+Ordinary status inspection exits 0 when the queue can be read. With
+`--require-complete`, the same coverage JSON is printed, but exit 0 requires
+`state: complete`; pending work, `empty`, `disabled` and `scheduled` exit 1.
+Combine it with `--full` to retain every pending item. This checks recorded review
+coverage, not whether all quality criteria passed. It does not write assessments,
+run applications, contact GitHub or alter delivery state.
 
 `total`, `reviewed_this_week`, `remaining` and `remaining_by_tier` cover all tools.
 The full output lists all pending tools in oldest-source-review order, with exact
@@ -85,13 +101,17 @@ python3 -m media_scout record-quality-reviews --file state/quality_research/DATE
 python3 -m media_scout build-library
 python3 -m media_scout verify-public-archive
 python3 -m media_scout weekly-quality --full
+# Repeat research/apply/verification for the remaining entries, then:
+python3 -m media_scout weekly-quality --require-complete
 ```
 
 The source-review agent checks evidence truth; the commands validate structure
 and record bindings. Preserve a before/after coverage summary locally. Report the
 number reviewed, remaining, labels changed, important regressions and source gaps.
-Continue the pending set on later daily runs without silently treating a partial
-pass as complete.
+Recompute the pending set after applying reviews, including any newly added or
+changed library record. Continue until the completion check passes. If interrupted,
+carry the exact unfinished set into later daily runs; do not treat a partial pass
+as complete or change dates without source research.
 
 ## Publish with the existing daily flow
 
@@ -109,6 +129,11 @@ or uncertain delivery through the existing runbook before changing its state;
 never resend an edition for a quality update. Sealed reports and sent receipts
 remain unchanged. Current labels, evidence and dates appear in the local library
 and GitHub Pages after publication.
+
+Before reporting a completed weekly review, run `weekly-quality --require-complete`
+again after publication verification. Supported partial progress may be published
+with its unfinished count clearly disclosed. The completion check governs the
+weekly completion claim; existing daily publication and delivery checks still apply.
 
 If all weekly work is current and the daily report is already complete, verify
 and stop quietly. Surface partial coverage, meaningful findings, failures or

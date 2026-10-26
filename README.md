@@ -156,17 +156,27 @@ See [quality policy and format](docs/QUALITY_POLICY.md).
 
 The existing 8:00 AM Eastern daily automation also starts a **whole-library
 quality review every Monday**, beginning October 26, 2026. It includes all four
-tiers and screened discoveries, rechecking all six evidence criteria. Unfinished
-work continues on later daily runs; counts distinguish reviewed tools from those
-still pending. Fresh evidence can upgrade or downgrade a label. Missing evidence
-stays Quality unverified, and our own demo is not required.
+tiers, full profiles and screened discoveries across every platform and source
+host, including newly added tools. Every cycle rechecks all six evidence criteria
+for the entire current library. Work continues through the full pending list;
+finishing the daily edition or a review batch does not finish the weekly review.
+If an access or execution limit interrupts the work, the exact unfinished count
+is reported and subsequent daily runs resume it automatically. Fresh evidence can
+upgrade or downgrade a label. Missing evidence stays explicit, and our own demo
+is not required.
 
 ```sh
 python3 -m media_scout weekly-quality
 python3 -m media_scout weekly-quality --full
+# Before declaring the whole weekly review complete:
+python3 -m media_scout weekly-quality --require-complete
 ```
 
 This read-only queue includes Recommended tools and makes no GitHub requests.
+`--require-complete` keeps the coverage JSON and exits **0 only for a complete
+weekly review**. Pending entries, an empty library, a disabled schedule or a
+future first cycle exit **1**. Combine it with `--full` to see every pending tool.
+Every Monday makes prior-week reviews due again, including unchanged labels.
 Current, cited source reviews already completed this week count toward coverage.
 Dates and coverage do not certify quality or hands-on testing. Label changes
 still use explicit reviewed assessments, then the existing local/Pages publication
