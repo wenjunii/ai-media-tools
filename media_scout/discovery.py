@@ -18,7 +18,7 @@ OSI_LICENSES = {
     "GPL-3.0", "GPL-3.0-only", "GPL-3.0-or-later", "LGPL-2.1", "LGPL-3.0",
     "LGPL-2.1-only", "LGPL-2.1-or-later", "LGPL-3.0-only", "LGPL-3.0-or-later",
     "AGPL-3.0", "AGPL-3.0-only", "AGPL-3.0-or-later", "Unlicense", "Zlib",
-    "Artistic-2.0", "BSL-1.0", "EPL-2.0", "OFL-1.1", "CC0-1.0",
+    "Artistic-2.0", "BSL-1.0", "EPL-2.0", "EUPL-1.2", "OFL-1.1", "CC0-1.0",
 }
 
 

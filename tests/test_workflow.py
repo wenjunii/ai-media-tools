@@ -162,6 +162,20 @@ class WorkflowTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "license needs verification"):
             validate(self.editorial, self.discovery, self.config, {})
 
+    def test_eupl_profile_still_requires_complete_cited_license_review(self):
+        self.candidate["code_license"] = "EUPL-1.2"
+        self.editorial["tools"][0]["license"]["code"] = "EUPL-1.2"
+        self.config["scope"] = {"require_license_review": True}
+        with self.assertRaisesRegex(ValueError, "complete reviewed software license"):
+            validate(self.editorial, self.discovery, self.config, {})
+        self.candidate["license_review"] = {
+            "reviewed_spdx": "EUPL-1.2", "sha256": "reviewed-fixture-hash",
+            "path": "research/2026-10-01/evidence/LICENSE.txt",
+            "note": "Read the complete grant, copyleft, source provision and warranty terms.",
+            "url": "https://github.com/test/art/blob/main/LICENSE",
+        }
+        validate(self.editorial, self.discovery, self.config, {})
+
     def test_uncited_hardware_claim_blocks_feature(self):
         self.editorial["tools"][0]["requirements"]["source_urls"] = ["https://invented.example.com/specs"]
         with self.assertRaisesRegex(ValueError, "cite declared"):

@@ -119134,6 +119134,199 @@
           }
         }
       }
+    },
+    "github:megatih/subgenplayer": {
+      "basis_edition": "2026-10-27",
+      "record_sha256": "14e56c5126420f2fddcfbf8aebf4a68a081d8ac1e709e207c45016a2b434c9cd",
+      "checked_on": "2026-10-28",
+      "assessment": {
+        "tier": "unverified",
+        "method": "source-review",
+        "checked_on": "2026-10-28",
+        "summary": "Current evidence is unavailable: October 28 repository, README, license, release and issue requests returned 404. Historical documentation remains preserved; the reason for unavailability is unknown.",
+        "scope": "Previewing foreign-language footage and exporting editable original, English or bilingual subtitle files.",
+        "caveats": [
+          "Source review only; no app was installed or run.",
+          "A 404 is an access finding, not proof of abandonment, revoked historical licensing or defective output."
+        ],
+        "sources": [
+          {
+            "title": "Current source retrieval failed on October 28",
+            "url": "https://github.com/megatih/SubGenPlayer"
+          },
+          {
+            "title": "Current source retrieval failed on October 28",
+            "url": "https://github.com/megatih/SubGenPlayer/blob/main/README.md"
+          },
+          {
+            "title": "Current source retrieval failed on October 28",
+            "url": "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE"
+          },
+          {
+            "title": "Current source retrieval failed on October 28",
+            "url": "https://github.com/megatih/SubGenPlayer/releases"
+          },
+          {
+            "title": "Current source retrieval failed on October 28",
+            "url": "https://github.com/megatih/SubGenPlayer/issues"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "unknown",
+            "note": "Today’s complete-license request returned 404. The archived historical GPL grant is retained, but current source/terms cannot be checked; this is not a claim that the earlier license was revoked.",
+            "source_urls": [
+              "https://github.com/megatih/SubGenPlayer",
+              "https://github.com/megatih/SubGenPlayer/blob/main/README.md",
+              "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE",
+              "https://github.com/megatih/SubGenPlayer/releases",
+              "https://github.com/megatih/SubGenPlayer/issues"
+            ]
+          },
+          "results": {
+            "status": "unknown",
+            "note": "Current README retrieval returned 404. Historical screenshots remain in the dated guide, but today’s output evidence could not be checked.",
+            "source_urls": [
+              "https://github.com/megatih/SubGenPlayer",
+              "https://github.com/megatih/SubGenPlayer/blob/main/README.md",
+              "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE",
+              "https://github.com/megatih/SubGenPlayer/releases",
+              "https://github.com/megatih/SubGenPlayer/issues"
+            ]
+          },
+          "setup": {
+            "status": "unknown",
+            "note": "The current repository/README/release requests returned 404. Current download availability and setup reproducibility cannot be established; no install was attempted.",
+            "source_urls": [
+              "https://github.com/megatih/SubGenPlayer",
+              "https://github.com/megatih/SubGenPlayer/blob/main/README.md",
+              "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE",
+              "https://github.com/megatih/SubGenPlayer/releases",
+              "https://github.com/megatih/SubGenPlayer/issues"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "Current repository, release and issue requests returned 404. The cause and duration of unavailability are unknown; deletion or abandonment is not inferred.",
+            "source_urls": [
+              "https://github.com/megatih/SubGenPlayer",
+              "https://github.com/megatih/SubGenPlayer/blob/main/README.md",
+              "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE",
+              "https://github.com/megatih/SubGenPlayer/releases",
+              "https://github.com/megatih/SubGenPlayer/issues"
+            ]
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "Current source attempts failed and the targeted live web search did not establish an independently reproduced workflow. No pass is inferred from historical author examples.",
+            "source_urls": [
+              "https://github.com/megatih/SubGenPlayer",
+              "https://github.com/megatih/SubGenPlayer/blob/main/README.md",
+              "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE",
+              "https://github.com/megatih/SubGenPlayer/releases",
+              "https://github.com/megatih/SubGenPlayer/issues"
+            ]
+          },
+          "dependencies": {
+            "status": "unknown",
+            "note": "Current README and full-license attempts failed. Historical model/Apple framework notes are preserved, but their current applicability could not be verified.",
+            "source_urls": [
+              "https://github.com/megatih/SubGenPlayer",
+              "https://github.com/megatih/SubGenPlayer/blob/main/README.md",
+              "https://github.com/megatih/SubGenPlayer/blob/main/LICENSE",
+              "https://github.com/megatih/SubGenPlayer/releases",
+              "https://github.com/megatih/SubGenPlayer/issues"
+            ]
+          }
+        }
+      }
+    },
+    "github:tcpipuk/snac-go": {
+      "basis_edition": "2026-10-26",
+      "record_sha256": "a15fcf8852aa3315c7f981194adf67dae4a1c953a2c66ac131b5ddf89235dbba",
+      "checked_on": "2026-10-28",
+      "assessment": {
+        "tier": "experimental",
+        "method": "source-review",
+        "checked_on": "2026-10-28",
+        "summary": "The GitHub metadata request failed, but the maintainer-linked Forgejo repository and its full README/license were directly retrieved today. Experimental remains scoped to the explicitly unstable pre-v1 decoder API.",
+        "scope": "Embedding a 24 kHz neural-codec decoder in a Go TTS pipeline.",
+        "caveats": [
+          "Documentation/source review only; no decoder or speech model was run.",
+          "The documented go-get path still points to the unavailable GitHub address; module-proxy or mirror installation was not tested.",
+          "Historical numerical claims are maintainer evidence, not an independent listening or performance evaluation."
+        ],
+        "sources": [
+          {
+            "title": "Live official Forgejo repository",
+            "url": "https://git.tomfos.tr/tom/snac-go"
+          },
+          {
+            "title": "Complete current README",
+            "url": "https://git.tomfos.tr/tom/snac-go/raw/branch/main/README.md"
+          },
+          {
+            "title": "Complete Apache-2.0 license reviewed",
+            "url": "https://git.tomfos.tr/tom/snac-go/raw/branch/main/LICENSE"
+          },
+          {
+            "title": "GitHub address returned 404 to metadata request",
+            "url": "https://github.com/tcpipuk/snac-go"
+          }
+        ],
+        "experimental_reason": {
+          "text": "The currently retrieved official README explicitly says the decoder API can change before version 1.0; the label is scoped to integrating this unstable API.",
+          "source_urls": [
+            "https://git.tomfos.tr/tom/snac-go/raw/branch/main/README.md"
+          ]
+        },
+        "checks": {
+          "license": {
+            "status": "verified",
+            "note": "Read the complete live Apache-2.0 software license. Its normalized body matches the previously reviewed standard text, with the project copyright notice; model weights remain separate.",
+            "source_urls": [
+              "https://git.tomfos.tr/tom/snac-go/raw/branch/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "documented",
+            "note": "The current README claims numerical agreement with a Python decoder and supplies a three-stream example. This does not establish independent listening quality or a scout runtime result.",
+            "source_urls": [
+              "https://git.tomfos.tr/tom/snac-go/raw/branch/main/README.md"
+            ]
+          },
+          "setup": {
+            "status": "unknown",
+            "note": "The current README’s Go installation/import path points to GitHub, whose metadata request returned 404 today. The Forgejo source is available, but module-proxy and alternate-host build behavior were not established.",
+            "source_urls": [
+              "https://git.tomfos.tr/tom/snac-go/raw/branch/main/README.md",
+              "https://git.tomfos.tr/tom/snac-go",
+              "https://github.com/tcpipuk/snac-go"
+            ]
+          },
+          "maintenance": {
+            "status": "documented",
+            "note": "The live Forgejo page exposes a five-commit history with the latest displayed commit in October 2025 and a failing historical test indicator. Current resolved support or a passing tested release was not established; age alone is not a defect finding.",
+            "source_urls": [
+              "https://git.tomfos.tr/tom/snac-go"
+            ]
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "The inspected current sources contain maintainer verification claims and a linked integration, but do not establish independently reproduced first-hand use for this scoped review.",
+            "source_urls": [
+              "https://git.tomfos.tr/tom/snac-go/raw/branch/main/README.md"
+            ]
+          },
+          "dependencies": {
+            "status": "documented",
+            "note": "The current README names SNAC 24 kHz checkpoints and an optional Orpheus/llama-go speech pipeline. Those models and upstream runtime terms are separate; complete current checkpoint terms were not verified here.",
+            "source_urls": [
+              "https://git.tomfos.tr/tom/snac-go/raw/branch/main/README.md"
+            ]
+          }
+        }
+      }
     }
   }
 }
