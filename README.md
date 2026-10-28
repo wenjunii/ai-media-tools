@@ -445,6 +445,10 @@ extra terms, then archive the review with `review-license OWNER/REPO --spdx ID
 label alone does not fulfill this requirement. Cite the archived license URL.
 An open-source claim in a README is not enough.
 Non-commercial source licenses cannot be relabeled as open source.
+The recognized software-license list includes
+[EUPL-1.2](https://opensource.org/license/EUPL-1.2). Its OSI approval does not
+replace the full project-specific license review or establish rights to separate
+models, assets or services.
 
 ## Library and files
 
