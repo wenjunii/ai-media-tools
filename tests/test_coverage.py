@@ -4,6 +4,7 @@ import copy
 from pathlib import Path
 import tempfile
 import unittest
+from urllib.parse import urlparse
 
 from media_scout.client import SourceError
 from media_scout.coverage import plan_summary, review_backlog, verify_search
@@ -26,12 +27,12 @@ class PublicSources:
             return {"total_count": 1, "items": [{"full_name": "example/art", "name": "Art",
                 "html_url": "https://github.com/example/art", "license": {"spdx_id": "MIT"},
                 "stargazers_count": 0, "created_at": "2026-01-01T00:00:00Z"}]}
-        if "huggingface.co/api/models" in url:
+        if urlparse(url).hostname == "huggingface.co" and urlparse(url).path == "/api/models":
             return [{"id": "example/image-model", "lastModified": "2026-10-01T00:00:00Z"}]
         if url.endswith("/readme"):
             return {"download_url": "https://raw.githubusercontent.com/example/art/main/README.md",
                     "html_url": "https://github.com/example/art/blob/main/README.md", "sha": "readme"}
-        if "raw.githubusercontent.com" in url:
+        if urlparse(url).hostname == "raw.githubusercontent.com":
             return "Official documentation: local AI inference generates editable creative images."
         if "/commits?" in url:
             return [{"sha": "head", "html_url": "https://github.com/example/art/commit/head"}]
@@ -53,6 +54,20 @@ class CoverageTests(unittest.TestCase):
 
     def collect(self, fail_created=False):
         return collect(self.day, self.root, PublicSources(fail_created))
+
+    def test_fixture_sources_match_real_hostnames_instead_of_url_substrings(self):
+        source = PublicSources()
+        self.assertIsInstance(source.get("https://raw.githubusercontent.com/example/art/main/README.md"), str)
+        self.assertEqual(len(source.get("https://huggingface.co/api/models")), 1)
+        for url in (
+            "https://raw.githubusercontent.com.attacker.example/example/art/main/README.md",
+            "https://attacker.example/raw.githubusercontent.com/example/art/main/README.md",
+            "https://attacker.example/README.md?host=raw.githubusercontent.com",
+            "https://huggingface.co.attacker.example/api/models",
+            "https://attacker.example/huggingface.co/api/models",
+        ):
+            with self.subTest(url=url):
+                self.assertEqual(source.get(url), [])
 
     def snapshot(self):
         return {str(path.relative_to(self.root)): path.read_bytes()

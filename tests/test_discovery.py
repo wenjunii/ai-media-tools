@@ -130,7 +130,7 @@ class DiscoveryTests(unittest.TestCase):
                 if url.endswith("/readme"):
                     return {"download_url": "https://raw.githubusercontent.com/test/creative-ai/main/README.md",
                             "html_url": "https://github.com/test/creative-ai/blob/main/README.md", "sha": "readme001"}
-                if "raw.githubusercontent.com" in url:
+                if urlparse(url).hostname == "raw.githubusercontent.com":
                     return "Official documentation of local creative AI inference."
                 if "/commits?" in url:
                     return [{"sha": "head001", "html_url": "https://github.com/test/creative-ai/commit/head001"}]
@@ -195,7 +195,7 @@ class DailyComparisonTests(unittest.TestCase):
             filename = "README.md" if url.endswith("/readme") else "LICENSE"
             return {"download_url": "https://raw.githubusercontent.com/test/creative-ai/main/" + filename,
                     "html_url": "https://github.com/test/creative-ai/blob/main/" + filename, "sha": "blob"}
-        if "raw.githubusercontent.com" in url:
+        if urlparse(url).hostname == "raw.githubusercontent.com":
             return self.readme if url.endswith("README.md") else self.license
         if "/commits?" in url:
             if self.failed_commit:
@@ -209,6 +209,16 @@ class DailyComparisonTests(unittest.TestCase):
 
     def candidate(self):
         return read_json(self.root / "research" / self.day / "discovery.json")["candidates"][0]
+
+    def test_raw_document_fixture_rejects_hostnames_embedded_elsewhere_in_url(self):
+        self.assertEqual(self.get("https://raw.githubusercontent.com/test/creative-ai/main/README.md"), self.readme)
+        for url in (
+            "https://raw.githubusercontent.com.attacker.example/test/creative-ai/main/README.md",
+            "https://attacker.example/raw.githubusercontent.com/test/creative-ai/main/README.md",
+            "https://attacker.example/README.md?host=raw.githubusercontent.com",
+        ):
+            with self.subTest(url=url), self.assertRaises(AssertionError):
+                self.get(url)
 
     def review(self):
         review_license(self.repository, "MIT", "Reviewed all complete license terms in the fixture.",

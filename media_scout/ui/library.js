@@ -14,6 +14,19 @@
       function (match) { return (match[1] || match[2]).trim(); }).filter(Boolean)));
   }
   function editionKey(entry) { return entry.edition_id || entry.report_date || entry.date; }
+  function setWebLink(node, value, baseURL) {
+    // Remove an older destination before validating a replacement.
+    node.removeAttribute("href");
+    if (typeof value !== "string" || !value.trim()) return false;
+    let target;
+    try { target = new URL(value, baseURL); }
+    catch (error) { return false; }
+    if (target.protocol === "https:" || target.protocol === "http:") {
+      node.href = target.href;
+      return true;
+    }
+    return false;
+  }
   function primaryVersion(tool, edition) {
     return (edition && tool.versions.find(function (v) { return editionKey(v) === edition; })) ||
       tool.versions.find(function (v) { return v.kind === "profile"; }) || tool.versions[0];
@@ -364,7 +377,7 @@
     module.exports = {matches: matches, searchText: searchText, primaryVersion: primaryVersion, sortTools: sortTools,
                       queryTerms: queryTerms, searchIndex: searchIndex, searchDetails: searchDetails,
                       librarySearch: librarySearch, deferredAction: deferredAction,
-                      coverageText: coverageText, editionKey: editionKey, savedIds: savedIds,
+                      coverageText: coverageText, editionKey: editionKey, savedIds: savedIds, setWebLink: setWebLink,
                       qualityOf: qualityOf, qualityText: qualityText,
                       reviewDay: reviewDay, weeklyCoverage: weeklyCoverage,
                       comparisonSelection: comparisonSelection, comparisonRows: comparisonRows,
@@ -404,7 +417,10 @@
     return node;
   }
   function link(text, href, className, external) {
-    const node = element("a", className, text); node.href = href;
+    const node = element("a", className, text);
+    if (!setWebLink(node, href, document.baseURI)) {
+      node.setAttribute("aria-disabled", "true"); node.title = "Link unavailable: unsupported or invalid URL.";
+    }
     if (external) { node.target = "_blank"; node.rel = "noopener noreferrer"; }
     return node;
   }
@@ -481,7 +497,9 @@
     catch (error) { storageAvailable = false; }
   }
   function download(text, type, name) {
-    const objectURL = URL.createObjectURL(new Blob([text], {type: type})), anchor = link("", objectURL);
+    // Blob URLs are created here, never accepted from library/profile data.
+    const objectURL = URL.createObjectURL(new Blob([text], {type: type})), anchor = element("a");
+    anchor.href = objectURL;
     anchor.download = name; document.body.append(anchor); anchor.click(); anchor.remove();
     window.setTimeout(function () { URL.revokeObjectURL(objectURL); }, 10000);
   }
@@ -818,7 +836,7 @@
     const latest = data.editions[0]; $("latest-date").textContent = editionLabel(latest);
     $("latest-summary").textContent = latest.summary.length > 105 ? latest.summary.slice(0, 102) + "…" : latest.summary;
     $("latest-coverage").textContent = coverageText(latest);
-    $("latest-report").href = reportPath(editionKey(latest), "html"); $("latest-report").hidden = false;
+    $("latest-report").hidden = !setWebLink($("latest-report"), reportPath(editionKey(latest), "html"), document.baseURI);
   }
   const params = new URLSearchParams(location.search);
   comparison = comparisonSelection(params.get("compare"), data.tools);

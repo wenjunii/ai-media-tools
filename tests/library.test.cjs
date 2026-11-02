@@ -3,7 +3,7 @@ const assert = require("node:assert/strict");
 const {matches, searchText, primaryVersion, sortTools, coverageText, savedIds,
        comparisonSelection, comparisonRows, shortlistJSON, importShortlist,
        researchNotes, queryTerms, searchIndex, searchDetails, librarySearch, deferredAction,
-       reviewDay, weeklyCoverage} = require("../media_scout/ui/library.js");
+       reviewDay, weeklyCoverage, setWebLink} = require("../media_scout/ui/library.js");
 const tool = {
   id: "github:example/paint", name: "Café Paint", categories: ["images", "video"],
   platform_mentions: ["Linux", "Browser"], review: "profile", profile_date: "2026-10-02", first_seen: "2026-10-01",
@@ -224,12 +224,44 @@ test("research notes export only saved tools and keep pending requirements and t
   assert.match(researchNotes([tested.id], [tested], {}), /Hands-on testing recorded; see the quality review for its scope/);
 });
 test("exported research text cannot break out of Markdown command fences or insert raw HTML", () => {
-  const hostile = {...tool, versions: [{...tool.versions[0], profile: {...tool.versions[0].profile,
-    name: "<img src=x> [untrusted]", installation: {text: "<script>untrusted</script>", commands: ["echo hello\n```\n# still a command"]}}}]};
-  const notes = researchNotes([tool.id], [hostile], {installation: "Install"});
-  assert.doesNotMatch(notes, /<img|<script>/);
-  assert.ok(notes.includes("\\[untrusted\\]"));
-  assert.ok(notes.includes("````text\necho hello\n```\n# still a command\n````"));
+  for (const markup of ["<script>untrusted</script>", "<SCRIPT>untrusted</SCRIPT>", "<ScRiPt>untrusted</ScRiPt>"]) {
+    const hostile = {...tool, versions: [{...tool.versions[0], profile: {...tool.versions[0].profile,
+      name: "<img src=x> [untrusted]", installation: {text: markup, commands: ["echo hello\n```\n# still a command"]}}}]};
+    const notes = researchNotes([tool.id], [hostile], {installation: "Install"});
+    assert.ok(!notes.includes("<"));
+    assert.ok(notes.includes("\\[untrusted\\]"));
+    assert.ok(notes.includes("````text\necho hello\n```\n# still a command\n````"));
+  }
+});
+
+test("web links resolve report paths and allow only parsed HTTP or HTTPS destinations", () => {
+  const base = "https://wenjunii.github.io/ai-media-tools/";
+  for (const [value, expected] of [
+    ["https://example.com/source?q=AI#license", "https://example.com/source?q=AI#license"],
+    ["HTTP://EXAMPLE.COM/docs", "http://example.com/docs"],
+    ["reports/2026-11-01/report.html", base + "reports/2026-11-01/report.html"],
+    ["../reports/report.md", "https://wenjunii.github.io/reports/report.md"],
+    ["#review", base + "#review"], ["//example.com/source", "https://example.com/source"],
+    ["reports/report.json", "http://127.0.0.1:8766/site/reports/report.json"],
+  ]) {
+    const node = {removeAttribute(name) { delete this[name]; }};
+    const currentBase = value.endsWith("report.json") ? "http://127.0.0.1:8766/site/" : base;
+    assert.equal(setWebLink(node, value, currentBase), true);
+    assert.equal(node.href, expected);
+  }
+});
+
+test("web links reject executable schemes, browser control-character bypasses and invalid inputs", () => {
+  for (const value of ["javascript:alert(1)", "JaVaScRiPt:alert(1)", "\tjavascript:alert(1)",
+    "java\nscript:alert(1)", "java\tscript:alert(1)", "data:text/html,<script>alert(1)</script>",
+    "vbscript:msgbox(1)", "file:///etc/passwd", "blob:https://example.com/untrusted", "https://[invalid",
+    "", "   ", null, undefined, 42, {}, "\u0000javascript:alert(1)"]) {
+    let assigned = false, removed = false;
+    const node = {set href(value) { assigned = true; }, removeAttribute(name) { removed = name === "href"; }};
+    assert.equal(setWebLink(node, value, "https://example.com/library/"), false, String(value));
+    assert.equal(assigned, false, String(value));
+    assert.equal(removed, true);
+  }
 });
 test("shared comparisons preserve exact review identities and reject missing or duplicated entries", () => {
   const second = {...tool, id: "github:example/second", versions: [

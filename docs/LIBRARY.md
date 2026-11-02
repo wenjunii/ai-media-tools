@@ -50,6 +50,10 @@ and private research remain in the local discovery catalog and review queue.
   date. A brief subsequent mention does not replace a complete guide.
 - Copy a profile link to return to the tool and chosen review. Search/filter
   settings are also represented in the URL.
+- Source and report links accept only parsed HTTP or HTTPS destinations, including
+  relative report paths resolved against the page address. Unsupported or invalid
+  destinations remain unlinked text. Shortlist and notes downloads use separate
+  browser-created file URLs. Use the documented local HTTP preview for local views.
 - Select **Save** on a card or profile to build a shortlist. **Saved tools**
   filters the library to that shortlist and works with the other filters.
   Saves persist in the browser on the same site; the local and Pages sites,
