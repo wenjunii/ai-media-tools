@@ -45597,133 +45597,71 @@
     "github:palmier-io/palmier-pro": {
       "basis_edition": "2026-10-07",
       "record_sha256": "d50d254880d496552638bcea6be26ebd01dd4c4b711b00e96b153b091e96d869",
-      "checked_on": "2026-11-02",
+      "checked_on": "2026-11-03",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-02",
-        "summary": "Palmier Pro published source: current sources and all six evidence questions reviewed. Incomplete evidence remains unverified; this is documentation review, not an execution test.",
-        "scope": "Studying an AI-assisted native Mac video editor and its agent-control workflow.",
+        "checked_on": "2026-11-03",
+        "summary": "Historical GPL source through v0.7.6 is preserved. The current README and full binary license explicitly identify later binary releases as proprietary and corresponding newer source as unpublished. The latest-download route does not qualify as open-source software; no recommendation or upgrade is made.",
+        "scope": "Historical Palmier Pro source through last-gpl-source/v0.7.6, plus an explicit eligibility check on the current latest-binary download route; later proprietary binaries do not inherit the historical GPL grant.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation."
+          "Documentation review only; nothing installed or run.",
+          "Earlier GPL grants are not revoked by a later proprietary release. The latest-release button may select proprietary software."
         ],
         "sources": [
           {
-            "title": "Current project documentation",
-            "url": "https://github.com/palmier-io/palmier-pro/blob/c948160b8fc304a3b2a86bf4492329cfedf0230f/README.md"
-          },
-          {
-            "title": "Complete software license",
-            "url": "https://github.com/palmier-io/palmier-pro/blob/c948160b8fc304a3b2a86bf4492329cfedf0230f/LICENSE"
-          },
-          {
-            "title": "Source change history",
-            "url": "https://github.com/palmier-io/palmier-pro/commits"
-          },
-          {
-            "title": "Support and issue history",
-            "url": "https://github.com/palmier-io/palmier-pro/issues"
-          },
-          {
-            "title": "Reviewed change: [build] Publish v0.11.0 appcast",
-            "url": "https://github.com/palmier-io/palmier-pro/commit/c948160b8fc304a3b2a86bf4492329cfedf0230f"
-          },
-          {
-            "title": "Release history",
-            "url": "https://github.com/palmier-io/palmier-pro/releases"
-          },
-          {
-            "title": "Sampled support discussion",
-            "url": "https://github.com/palmier-io/palmier-pro/issues/580"
-          },
-          {
-            "title": "Current README reviewed on 2026-10-26",
+            "title": "Current official source/distribution distinction",
             "url": "https://github.com/palmier-io/palmier-pro/blob/main/README.md"
           },
           {
-            "title": "Complete current software license",
+            "title": "Complete historical source GPL grant",
             "url": "https://github.com/palmier-io/palmier-pro/blob/main/LICENSE"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/releases/tag/v0.11.0"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/pull/398"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/commit/5b806b35165da70d2834b53dfc022abc8e00a12e"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/releases/tag/v0.12.0"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/issues/586"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/issues/581"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/palmier-io/palmier-pro/issues/585"
+            "title": "Complete current proprietary binary license",
+            "url": "https://github.com/palmier-io/palmier-pro/blob/main/BINARY_LICENSE.md"
           }
         ],
         "checks": {
           "license": {
-            "status": "verified",
-            "note": "Complete current software-license text matches the archived full review byte for byte (2026-10-26). The complete current software license was compared byte for byte with the archived full-text review (2026-10-10) and is unchanged. The complete current GPL-3.0 software license is byte-identical to the previously archived full-text review. This verifies the repository software grant; model, bundled-asset and service terms are addressed separately.",
+            "status": "failed",
+            "note": "The full GPL source grant remains valid for historical source, but the current binary license grants no general copying/modification/redistribution rights for binaries after v0.7.6. This fails open-source eligibility for the current latest-binary route.",
             "source_urls": [
-              "https://github.com/palmier-io/palmier-pro/blob/main/LICENSE"
+              "https://github.com/palmier-io/palmier-pro/blob/main/README.md",
+              "https://github.com/palmier-io/palmier-pro/blob/main/LICENSE",
+              "https://github.com/palmier-io/palmier-pro/blob/main/BINARY_LICENSE.md"
             ]
           },
           "results": {
             "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: The current documentation describes the creative workflow; no contextual output evaluation is established in this bounded review. This pass does not verify aesthetic quality or repeatability. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
-            "source_urls": [
-              "https://github.com/palmier-io/palmier-pro/blob/main/README.md",
-              "https://github.com/palmier-io/palmier-pro/blob/c948160b8fc304a3b2a86bf4492329cfedf0230f/README.md"
-            ]
+            "note": "A fresh independent creative-output evaluation of the historical GPL version was not established in this source review.",
+            "source_urls": []
           },
           "setup": {
-            "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: Installation is documented; independent successful reproduction of this exact workflow remains unverified. Current installation was not independently reproduced in this pass. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "status": "documented",
+            "note": "Current documentation distinguishes last-gpl-source/v0.7.6 from later proprietary packages; no clean reproduction of that historical build was verified.",
             "source_urls": [
-              "https://github.com/palmier-io/palmier-pro/blob/main/README.md",
-              "https://github.com/palmier-io/palmier-pro/blob/c948160b8fc304a3b2a86bf4492329cfedf0230f/README.md"
+              "https://github.com/palmier-io/palmier-pro/blob/main/README.md"
             ]
           },
           "maintenance": {
             "status": "documented",
-            "note": "Sampled commit 2026-10-30: [build] Publish v0.12.0 appcast. Latest sampled release v0.12.0. Current support sample: Exported audio shifts early after a clip that ends on a source file's last frame (some camera files) (open); Exported audio drifts out of sync on clips with speed ≠ 1× (≈30 ms/min late at 1.15×) (open); Video export intermittently hangs: job stays rendering at 0% CPU with no error (0.12.0) (open). Activity and open PRs do not alone verify support quality or resolution.",
+            "note": "The source repository no longer accepts code contributions and corresponding source for later binary releases is not published. This is a maintenance/distribution limitation for the preserved GPL route.",
             "source_urls": [
-              "https://github.com/palmier-io/palmier-pro/commit/5b806b35165da70d2834b53dfc022abc8e00a12e",
-              "https://github.com/palmier-io/palmier-pro/releases/tag/v0.12.0",
-              "https://github.com/palmier-io/palmier-pro/issues/586",
-              "https://github.com/palmier-io/palmier-pro/issues/581",
-              "https://github.com/palmier-io/palmier-pro/issues/585"
+              "https://github.com/palmier-io/palmier-pro/blob/main/README.md"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current documentation and the bounded support sample were examined; they do not establish independently reproduced creative use for this scoped workflow in this pass. This does not assert that independent users do not exist.",
-            "source_urls": [
-              "https://github.com/palmier-io/palmier-pro/blob/main/README.md",
-              "https://github.com/palmier-io/palmier-pro/issues"
-            ]
+            "note": "Independent first-hand reproduction of the preserved GPL workflow was not established.",
+            "source_urls": []
           },
           "dependencies": {
             "status": "documented",
-            "note": "The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: Existing dependency disclosure retained; a complete workflow-specific clearance was not established by this pass. This entry covers the GPL-published source only. Distributed binaries after v0.7.6 are proprietary; the latest download must not be described as GPL. Source build, dependency licenses and hardware review remain pending. Documentation screened; not installed or tested. A complete current model, service and cost clearance is still open. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The current app documents Apple Silicon/macOS 26 and paid/hosted generation services, but compatibility and model rights of the historical GPL route need their own version-specific review. Later binary terms are separate.",
             "source_urls": [
               "https://github.com/palmier-io/palmier-pro/blob/main/README.md",
-              "https://github.com/palmier-io/palmier-pro/blob/c948160b8fc304a3b2a86bf4492329cfedf0230f/README.md"
+              "https://github.com/palmier-io/palmier-pro/blob/main/BINARY_LICENSE.md"
             ]
           }
         }
