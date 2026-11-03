@@ -539,6 +539,13 @@ failed source reads and recovery, and blocked repeat profiles while a comparison
 is pending. Existing fingerprint formats and sealed editions are preserved.
 Library checks cover shortlist transfer, merge/deduplication, malformed imports,
 missing tools, and research-note exports with dated evidence and pending details.
+Browser source/report links accept only parsed HTTP or HTTPS URLs, including
+relative report paths resolved against the page address. Tests reject executable
+schemes disguised with mixed case or control characters, and URL mocks match
+actual hostnames. Browser-generated download URLs use a separate local path.
+See [library link handling](docs/LIBRARY.md#search-and-compare). CodeQL findings
+are confirmed resolved by a new scan after publication, rather than dismissed
+based only on local regression checks.
 Checks also cover pagination, partial source failures, zero-star candidates,
 new daily fields, external-project evidence, creative AI eligibility, editions
 above 12 profiles, and complete large-report attachments.
