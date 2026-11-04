@@ -376,6 +376,25 @@ Mac-published library and require a separately reviewed adapter for each app.
 Profile installation commands are reference text and are never automatically
 executed. A daily demo schedule is a later user decision after MVP review.
 
+## Cleanup after tasks
+
+The demo's reusable installation consists of Real-ESRGAN and its selected model
+under `.local/apps/`, plus Pillow in `.local/venv/`. Recent security checks use
+the existing Python and Node tools; they do not install another AI app or model.
+
+After verification, clean up known disposable task files without another prompt:
+one-off validation scripts, scratch files, redundant copies, abandoned partial
+downloads and completed installers that are no longer needed. Verify exact paths
+and dependencies first; age alone does not make a file disposable. Prefer the
+Windows Recycle Bin, and report material cleanup and whether it is recoverable.
+Do not empty the Recycle Bin as part of routine cleanup.
+
+Keep active/shared tools, environments and models, reference inputs, source
+evidence and saved outputs. A verified installer/wheel may remain when deliberately
+retained for offline repair. When the user retires a workflow, check dependencies
+and remove models used exclusively by it. These are task-completion steps, with
+no background cleanup schedule.
+
 ## Git and handoff
 
 `.local/` is ignored: no models, environments, videos, machine paths, credentials,
