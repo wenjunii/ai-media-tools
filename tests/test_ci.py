@@ -1,11 +1,32 @@
 """Classify real Git diffs, including deletes, renames, and multi-commit pushes."""
 
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import unittest
 
 from media_scout.ci import classify
+
+
+class PagesWorkflowTests(unittest.TestCase):
+    def test_pages_upload_and_deploy_share_an_artifact_unique_to_each_attempt(self):
+        workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/ci.yml").read_text()
+        pages = workflow.split("  deploy-pages:\n", 1)[1]
+        template = re.search(r"(?m)^      PAGES_ARTIFACT_NAME: (.+)$", pages).group(1)
+        upload, deploy = pages.split("      - name: Upload only the finished public library\n", 1)[1].split(
+            "      - name: Deploy GitHub Pages\n", 1)
+        self.assertIn("name: ${{ env.PAGES_ARTIFACT_NAME }}", upload)
+        self.assertIn("artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}", deploy)
+        self.assertIn("path: public\n", upload)
+        names = set()
+        for run_id, attempt in [(100, 1), (100, 2), (101, 1), (101, 2)]:
+            context = {"run_id": str(run_id), "run_attempt": str(attempt)}
+            name = re.sub(r"\$\{\{\s*github\.(run_id|run_attempt)\s*\}\}",
+                          lambda match: context[match[1]], template)
+            self.assertRegex(name, r"\Agithub-pages-[A-Za-z0-9_-]+\Z")
+            names.add(name)
+        self.assertEqual(len(names), 4, "A rerun must not reuse another attempt's artifact name")
 
 
 class ScopeTests(unittest.TestCase):
