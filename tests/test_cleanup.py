@@ -149,6 +149,67 @@ class CleanupTests(unittest.TestCase):
             self.run_cleanup(apply=True)
         self.assertTrue(path.exists())
 
+    def test_recovery_state_changes_after_planning_block_every_deletion(self):
+        path = self.old("tests/__pycache__/old.pyc")
+        receipt = self.root / f"state/deliveries/{self.edition}.json"
+        publication = self.root / f"state/publications/{self.edition}.json"
+        unfinished = self.root / "research/2026-11-05/queries/in-progress.json"
+        original = housekeeping._plan
+        changes = [
+            ("reserved", lambda: write_json(receipt, {"status": "reserved"})),
+            ("uncertain", lambda: write_json(receipt, {"status": "uncertain"})),
+            ("publication", publication.unlink),
+            ("research", lambda: write_json(unfinished, {})),
+        ]
+        for name, mutate in changes:
+            with self.subTest(name=name):
+                write_json(receipt, {"status": "sent"})
+                write_json(publication, {"status": "synced"})
+
+                def changed(*args):
+                    plan = original(*args)
+                    mutate()
+                    return plan
+
+                with patch.object(housekeeping, "_plan", side_effect=changed), \
+                        self.assertRaises(RuntimeError):
+                    self.run_cleanup(apply=True)
+                self.assertTrue(path.exists())
+                self.assertFalse((self.root / "state/cleanup").exists())
+
+    def test_new_sealed_manifest_after_planning_blocks_every_deletion(self):
+        path = self.old("tests/__pycache__/old.pyc")
+        original = housekeeping._plan
+
+        def changed(*args):
+            plan = original(*args)
+            write_json(self.root / f"reports/{self.edition}/updates/r2/manifest.json",
+                       {"report_date": self.edition,
+                        "sha256": {path.relative_to(self.root).as_posix(): sha256(path)}})
+            return plan
+
+        with patch.object(housekeeping, "_plan", side_effect=changed), \
+                self.assertRaisesRegex(ValueError, "Sealed archive changed"):
+            self.run_cleanup(apply=True)
+        self.assertTrue(path.exists())
+        self.assertFalse((self.root / "state/cleanup").exists())
+
+    def test_candidate_staged_after_planning_is_preserved(self):
+        path = self.old("tests/__pycache__/old.pyc")
+        with patch.object(housekeeping, "_tracked", side_effect=[set(), {path.relative_to(self.root).as_posix()}]), \
+                self.assertRaisesRegex(RuntimeError, "became protected"):
+            self.run_cleanup(apply=True)
+        self.assertTrue(path.exists())
+        self.assertFalse((self.root / "state/cleanup").exists())
+
+    def test_unreadable_index_after_planning_blocks_every_deletion(self):
+        path = self.old("tests/__pycache__/old.pyc")
+        with patch.object(housekeeping, "_tracked", side_effect=[set(), RuntimeError("Cannot inspect the Git index")]), \
+                self.assertRaisesRegex(RuntimeError, "Git index"):
+            self.run_cleanup(apply=True)
+        self.assertTrue(path.exists())
+        self.assertFalse((self.root / "state/cleanup").exists())
+
     def test_keep_cache_skips_repeat_analysis_but_never_authorizes_deletion(self):
         path = self.metadata([dict(self.row, unique_note="Retain this research")])
         self.assertEqual(self.run_cleanup(apply=True)["deleted_files"], 0)

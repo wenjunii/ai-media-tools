@@ -40,6 +40,14 @@ changed query evidence also block it. Apply recomputes the plan under the lock,
 rechecks source provenance and verifies each candidate's identity and hash before
 unlinking it. A changed candidate is kept and reported; partial cleanup exits 1.
 
+Immediately before opening the deletion journal, apply checks the full sealed
+manifest inventory, delivery/publication and dated-research guards, and the Git
+index again. A new or changed seal, pending delivery, unfinished work, newly
+tracked candidate or unreadable index blocks the whole apply before deletion.
+The idle lock coordinates Scout commands; external editors and Git operations do
+not take it. Avoid modifying recovery files or staging cleanup candidates while
+cleanup runs. Per-candidate identity and hash checks still protect changed files.
+
 Each applied run keeps a private journal under `state/cleanup/`, containing the
 candidate paths, hashes, retained-source proofs, deletion totals and any errors.
 It records an in-progress plan before deletion, checkpoints progress and records
