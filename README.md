@@ -53,6 +53,9 @@ record is recoverable from retained sealed queries. Reports, source evidence,
 catalogs, receipts, settings and PC media stay intact. Preview with
 `python3 -m media_scout cleanup`; apply with `python3 -m media_scout cleanup --apply`.
 See the [cleanup policy and safeguards](docs/CLEANUP.md).
+Immediately before deletion, cleanup rechecks recovery state, the sealed archive
+and the Git index. A newly pending send, unfinished research/publication, new seal
+or newly tracked candidate stops the run before any files are removed.
 
 Corrections discovered after an edition is sealed are listed in
 [report corrections](docs/REPORT_CORRECTIONS.md), preserving the original archive.

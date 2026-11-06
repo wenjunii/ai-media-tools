@@ -144,9 +144,8 @@ def _source_records(root, day, hashes):
     return records, sources
 
 
-def _plan(root, day, stamp):
-    protected, editions, manifests = _sealed(root)
-    protected.update({p: None for p in _tracked(root)})
+def _require_completed_work(root, editions):
+    """Recovery state can change outside Scout's lock; check again before apply."""
     deliveries = root / "state/deliveries"
     if deliveries.is_symlink():
         raise ValueError("Unsafe delivery directory; cleanup refused")
@@ -170,6 +169,12 @@ def _plan(root, day, stamp):
             raise ValueError("Symlinked research observation; cleanup refused")
         if folder.is_dir() and folder.name not in editions and any(folder.iterdir()):
             raise RuntimeError("Unfinished dated research; cleanup refused")
+
+
+def _plan(root, day, stamp):
+    protected, editions, manifests = _sealed(root)
+    protected.update({p: None for p in _tracked(root)})
+    _require_completed_work(root, editions)
     cache_path = root / "state/cleanup/kept-metadata.json"
     try:
         cached = read_json(cache_path, {}) if _regular(root, cache_path) else {}
@@ -303,6 +308,16 @@ def cleanup(day=None, root=ROOT, *, apply=False, stamp=None):
             for rel, digest in proof["source_queries"].items():
                 if not _regular(root, root / rel, single_link=False) or sha256(root / rel) != digest:
                     raise ValueError("Sealed query changed during cleanup planning")
+        # The idle lock coordinates Scout commands, but external Git/editor
+        # operations do not take it. Recheck the complete manifest inventory,
+        # recovery guards and current index before opening a deletion journal.
+        current_protected, current_editions, current_manifests = _sealed(root)
+        if current_manifests != manifests:
+            raise ValueError("Sealed archive changed during cleanup planning")
+        _require_completed_work(root, current_editions)
+        current_protected.update({p: None for p in _tracked(root)})
+        if any(entry["path"] in current_protected for entry in entries):
+            raise RuntimeError("Cleanup candidate became protected during planning; cleanup refused")
         journal = root / "state/cleanup" / (
             datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:12] + ".json")
         output["receipt"] = journal.relative_to(root).as_posix()

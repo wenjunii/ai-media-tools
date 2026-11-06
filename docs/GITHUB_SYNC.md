@@ -138,6 +138,10 @@ On the owning Mac, after returning to a clean, current main, run `record-sync` a
 the existing published edition. This updates the publication checkpoint and
 retains its prior version locally. Do not run discovery, build, export, email
 preparation, or email delivery as part of source maintenance.
+After successful verification, the authorized bounded cleanup may run under its
+idle lock; see [CLEANUP.md](CLEANUP.md). If its final recovery/archive/index check
+blocks or cleanup is partial, retain the journal and report the maintenance issue.
+Do not rebuild, resend, broaden deletion or bypass guards to resolve cleanup.
 If the requested change affects the library UI or data schema, use
 `build-library` to refresh only the derived views before staging. It preserves
 all dated report files, source evidence and delivery records.
