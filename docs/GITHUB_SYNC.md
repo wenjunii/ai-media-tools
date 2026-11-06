@@ -88,6 +88,14 @@ platform jobs. Main still requires successful validation and Pages deployment.
    The main CI run deploys only `public/` to GitHub Pages after all checks pass.
    PRs validate the site but do not deploy it. See `LIBRARY.md` for Pages setup.
 
+   Pages artifacts use a name unique to the workflow run and attempt. Both the
+   upload and deploy steps use `PAGES_ARTIFACT_NAME`, so a failed-job rerun does
+   not collide with an earlier attempt's retained artifact. If a deployment
+   fails, inspect its logs and confirm its terminal/canceled status before a
+   targeted rerun. Preserve the same commit and successful test results. Wait for
+   the latest attempt's overall CI and Pages success before recording sync;
+   an active, failed or canceled deployment cannot authorize a checkpoint.
+
 ## Verify the checkpoint, then deliver
 
 ```sh

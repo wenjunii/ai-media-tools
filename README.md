@@ -41,6 +41,8 @@ README/license bodies already returned by the API, and avoids repeating a failed
 watchlist read across fields in one observation. Publication-only updates run
 archive and browser checks on both the PR and main, followed by Pages deployment;
 source changes still run the full Python and Windows suites.
+Pages upload and deployment share an artifact name unique to the workflow run
+and attempt, so deployment retries cannot select an earlier attempt's artifact.
 See [GitHub usage and safeguards](docs/GITHUB_USAGE.md), including how to inspect
 the measured savings. Standard GitHub-hosted runner minutes for this public
 repository are [free](https://docs.github.com/en/billing/concepts/product-billing/github-actions);
