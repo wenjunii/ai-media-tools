@@ -6,10 +6,10 @@ no private destination or credentials. Use the existing single chat automation.
 
 1. Read AGENTS.md, SEARCH_SCOPE.md, DAILY_WORKFLOW.md, GITHUB_SYNC.md,
    PROFILE_FORMAT.md, LEADS_FORMAT.md, LIBRARY.md, QUALITY_POLICY.md and
-   WEEKLY_QUALITY_REVIEW.md. Read local preferences with
+   WEEKLY_QUALITY_REVIEW.md and CLEANUP.md. Read local preferences with
    `doctor`. Determine today's date in the configured time zone and inspect
    `status` first, then inspect `weekly-quality`. If the edition was sent and no
-   weekly work is due, verify and stop quietly. If the edition was sent and weekly
+   weekly work is due, verify, run `cleanup --apply` and stop quietly. If the edition was sent and weekly
    work is due, skip daily discovery/build/email and follow the weekly
    library-maintenance path. Preserve a sealed edition. Reserved or uncertain sends
    require confirmed Sent-mail reconciliation; never retry them automatically.
@@ -98,6 +98,13 @@ no private destination or credentials. Use the existing single chat automation.
    Record the actual message ID and inspect final status/integrity. Gmail acceptance
    is not independent inbox confirmation. Surface meaningful completion, findings,
    failures or required user action; keep unchanged/non-actionable checks quiet.
+8. After successful final delivery verification, or after verified weekly library
+   maintenance of an already-sent edition, run `python3 -m media_scout cleanup
+   --apply --date YYYY-MM-DD`. Follow CLEANUP.md. The command retains all sealed
+   artifacts, evidence, catalogs, receipts, settings and PC runtimes; only proven
+   redundant metadata copies and disposable old cache/temporary files qualify.
+   Keep its private journal. If cleanup is blocked or partial, preserve remaining
+   files and report the maintenance issue without rebuilding or resending email.
 
 The daily order is **research and verify → GitHub/library/Pages sync → email**.
 The schedule remains one existing 8:00 AM Eastern chat task. Research begins then;

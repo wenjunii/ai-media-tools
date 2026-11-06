@@ -19,6 +19,7 @@ from .storage import ROOT, read_json, report_date
 from .updates import export_update, prepare_update, update_workspace
 from .quality import CHECKS, TIERS, audit_existing, quality_backlog, record_quality_reviews
 from .weekly import weekly_quality
+from .cleanup import cleanup
 
 
 def main():
@@ -68,6 +69,10 @@ def main():
     sub.add_parser("audit-publication")
     sub.add_parser("verify-public-archive")
     sub.add_parser("build-library")
+    command = sub.add_parser("cleanup", help="Preview disposable local files; preserve sealed research and receipts")
+    command.add_argument("--date")
+    command.add_argument("--apply", action="store_true", help="Delete only proven disposable files under the idle lock")
+    command.add_argument("--full", action="store_true", help="Include candidate paths and retained-source proofs")
     command = sub.add_parser("add-repository")
     command.add_argument("repository")
     command.add_argument("--categories", nargs="+", required=True)
@@ -141,6 +146,11 @@ def main():
             output = verify_public_archive()
         elif args.command == "build-library":
             output = rebuild_library()
+        elif args.command == "cleanup":
+            output = cleanup(day, root, apply=args.apply)
+            if not args.full:
+                output.pop("candidates")
+                output.pop("proofs")
         elif args.command == "record-sync":
             output = record_sync(day)
         elif args.command == "verify-sync":
@@ -175,6 +185,8 @@ def main():
             # Empty, disabled and future schedules are not completed reviews.
             # Keep the coverage JSON available when the completion check fails.
             return 0 if output["state"] == "complete" else 1
+        if args.command == "cleanup" and output["status"] == "partial":
+            return 1
         return 0
     except (ValueError, RuntimeError, OSError, KeyError) as error:
         print(json.dumps({"error": str(error)}, ensure_ascii=False), file=sys.stderr)

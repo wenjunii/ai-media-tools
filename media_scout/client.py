@@ -77,6 +77,12 @@ class Client:
             # Check JSON before making a conditional request; a bad cache becomes
             # an ordinary live fetch, never a stale-data fallback.
             value = json.loads(raw.decode("utf-8", errors="replace"))
+            # Housekeeping expires unused cache entries, not frequently reused
+            # validators. This changes no evidence or freshness requirement.
+            try:
+                os.utime(path, None, follow_symlinks=False)
+            except OSError:
+                pass
             return etag, value
         except FileNotFoundError:
             return None

@@ -5,6 +5,7 @@ import hashlib
 from http.client import IncompleteRead, RemoteDisconnected
 import io
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -66,6 +67,16 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(client.get(self.url), json.loads(new))
         self.assertEqual(client.get(self.url), json.loads(new))
         self.assertEqual(self.requests[-1].get_header("If-none-match"), '"v2"')
+
+    def test_verified_cache_use_refreshes_retention_without_changing_its_bytes(self):
+        self.warm()
+        path = next(self.cache.glob("*.json"))
+        before = path.read_bytes()
+        os.utime(path, (1, 1))
+        client = self.client(HTTPError(self.url, 304, "Not modified", {}, None))
+        self.assertEqual(client.get(self.url), json.loads(self.raw))
+        self.assertGreater(path.stat().st_mtime, 1)
+        self.assertEqual(path.read_bytes(), before)
 
     def test_network_http_and_missing_errors_never_use_stale_evidence(self):
         self.warm()

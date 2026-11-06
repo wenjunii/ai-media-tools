@@ -46,6 +46,14 @@ the measured savings. Standard GitHub-hosted runner minutes for this public
 repository are [free](https://docs.github.com/en/billing/concepts/product-billing/github-actions);
 API limits, transfers and artifact storage are separate concerns.
 
+Local cleanup now runs through that same daily automation after successful
+completion. It removes stale temporary/bytecode files, HTTP-cache entries unused
+for 60 days, and metadata working copies older than seven days only when every
+record is recoverable from retained sealed queries. Reports, source evidence,
+catalogs, receipts, settings and PC media stay intact. Preview with
+`python3 -m media_scout cleanup`; apply with `python3 -m media_scout cleanup --apply`.
+See the [cleanup policy and safeguards](docs/CLEANUP.md).
+
 Corrections discovered after an edition is sealed are listed in
 [report corrections](docs/REPORT_CORRECTIONS.md), preserving the original archive.
 

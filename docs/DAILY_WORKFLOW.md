@@ -53,7 +53,8 @@ replace the live `verify-sync` check.
 
 - If delivery is `sent`, verify and skip daily collection/build/delivery.
   Inspect `weekly-quality`: when due, continue only the weekly library-maintenance
-  path; otherwise stop quietly. Never resend for a quality-label update.
+  path; otherwise run `python3 -m media_scout cleanup --apply` and stop quietly.
+  Never resend for a quality-label update.
 - If delivery is `reserved` or `uncertain`, search connected Gmail Sent mail for
   the exact report date, subject, and recipient. Read the matching message to
   confirm it is this edition, then record its message ID with `record-delivery
@@ -67,6 +68,11 @@ replace the live `verify-sync` check.
 The normal schedule does not create same-day revisions. If the owning user
 explicitly requests an update to a completed edition, follow REPORT_UPDATES.md
 to create a separate sealed update while preserving the original send record.
+
+After successful final verification of a delivery or weekly library maintenance,
+run `python3 -m media_scout cleanup --apply`. This uses the same daily schedule;
+it is local housekeeping, not another report or send. Follow [CLEANUP.md](CLEANUP.md):
+retain the private journal and preserve any blocked/partial result for follow-up.
 
 ## 2. Search broadly
 
