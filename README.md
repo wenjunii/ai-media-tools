@@ -130,9 +130,15 @@ and continue to change as daily discoveries and evidence reviews are published.
 
 Depth Anything V2 Small relative-depth guidance, Whisper human-reviewed draft
 English transcription and SAM 2.1 corrected masks are Recommended for their
-stated workflows. BiRefNet general masks, rembg with that model, ComfyUI with
-SDXL Base and Chatterbox Turbo English are Ready to try. Their specific output
-reviews remain pending. Recommendations use reviewed evaluations and independent
+stated workflows. BiRefNet general masks and rembg with that model remain Ready
+to try after the November 9 source review; their specific output reviews remain
+pending. The [November 9 weekly review](docs/QUALITY_REVIEW_2026-11-09.md)
+rechecks all 1,990 entries present at the start of that cycle.
+The October 13 ComfyUI/SDXL assessment is historical: the latest ComfyUI
+record assesses a different H3/ProRes workflow and is Quality unverified.
+Chatterbox Turbo is now Quality unverified because its current README declares
+the research archive retired, unsupported and no longer maintained.
+Recommendations use reviewed evaluations and independent
 integrations; no app was installed or run by AI Media Scout. Detailed citations,
 version limits and remaining work appear in each assessment and the review note.
 The other entries retain their evidence gaps; source collection alone does not
