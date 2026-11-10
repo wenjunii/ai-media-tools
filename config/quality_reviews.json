@@ -215730,6 +215730,118 @@
           }
         }
       }
+    },
+    "github:renderkit/oidn": {
+      "basis_edition": "2026-11-09",
+      "record_sha256": "4cd0c7cee2eb245eee0c9d420665247b963c4a50e890a1714853f29f04964630",
+      "checked_on": "2026-11-10",
+      "assessment": {
+        "tier": "ready_to_try",
+        "method": "source-review",
+        "checked_on": "2026-11-10",
+        "summary": "Ready to try for a bounded CPU single-frame workflow: the code and bundled weight grants, complete setup, current maintenance, independent creative integration and dependency boundaries are supported. Output quality for a chosen scene remains documented rather than verified.",
+        "scope": "CPU RT denoising of ordinary single beauty frames using the documented OIDN API/CLI, with independent Blender Cycles CPU integration. This assessment does not cover temporal animation consistency, thin hair/fur, volumes, additive AOV workflows, automatic GPU selection or untested ports.",
+        "caveats": [
+          "AI Media Scout did not install or run OIDN or Blender; this is a source review, not our own demo.",
+          "Independent Blender integration is verified from its current manual and actual CPU filter implementation, not from popularity or the award.",
+          "Open reports include temporal, fine-detail, lightmap, default-GPU-device and older Apple high-resolution issues. No claim is made that these are fixed for every version, host or device.",
+          "A Blender distribution may bundle a different OIDN version; inspect its version and platform support. The standalone 2.5.1 fixes must not be attributed to an unidentified host binary."
+        ],
+        "sources": [
+          {
+            "title": "Current API, binary install and CPU requirements",
+            "url": "https://github.com/RenderKit/oidn/blob/master/README.md"
+          },
+          {
+            "title": "Full software grant",
+            "url": "https://github.com/RenderKit/oidn/blob/master/LICENSE.txt"
+          },
+          {
+            "title": "Pinned included model-weight grant",
+            "url": "https://github.com/RenderKit/oidn-weights/blob/28883d1769d5930e13cf7f1676dd852bd81ed9e7/LICENSE.txt"
+          },
+          {
+            "title": "Independent Blender Cycles workflow",
+            "url": "https://docs.blender.org/manual/en/latest/render/cycles/render_settings/sampling.html"
+          },
+          {
+            "title": "Independent CPU integration implementation",
+            "url": "https://github.com/blender/blender/blob/main/intern/cycles/integrator/denoiser_oidn.cpp"
+          },
+          {
+            "title": "Current stable fixes",
+            "url": "https://github.com/RenderKit/oidn/blob/master/CHANGELOG.md"
+          },
+          {
+            "title": "Independent production-user report and AOV limits",
+            "url": "https://github.com/RenderKit/oidn/issues/246"
+          },
+          {
+            "title": "Bounded current issue review",
+            "url": "https://github.com/RenderKit/oidn/issues"
+          },
+          {
+            "title": "Packaged third-party terms",
+            "url": "https://github.com/RenderKit/oidn/blob/master/third-party-programs.txt"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "verified",
+            "note": "Complete current OIDN software grant matches Apache-2.0. The exact referenced oidn-weights submodule license was also compared in full to Apache-2.0; using the shipped filter does not require access to proprietary training data.",
+            "source_urls": [
+              "https://github.com/RenderKit/oidn/blob/master/LICENSE.txt",
+              "https://github.com/RenderKit/oidn-weights/blob/28883d1769d5930e13cf7f1676dd852bd81ed9e7/LICENSE.txt"
+            ]
+          },
+          "results": {
+            "status": "documented",
+            "note": "Author before/after examples document the intended still-render task. The independent production-user AOV report confirms beauty denoising use but also describes per-channel limitations. Scene-specific visual quality, hair/volume behavior and temporal quality are not verified by this assessment.",
+            "source_urls": [
+              "https://github.com/RenderKit/oidn/blob/master/README.md",
+              "https://github.com/RenderKit/oidn/issues/246"
+            ]
+          },
+          "setup": {
+            "status": "verified",
+            "note": "The current source provides matching-platform binary and oidnDenoise/API first-use steps and explicit x64 SSE4.1/ARM64 CPU prerequisites. Independent Blender documentation exposes OpenImageDenoise, pass choices and CPU/GPU controls, and its current implementation creates a CPU device and commits/executes the RT filter. This supports a reproducible CPU integration without claiming our own execution.",
+            "source_urls": [
+              "https://github.com/RenderKit/oidn/blob/master/README.md",
+              "https://docs.blender.org/manual/en/latest/render/cycles/render_settings/sampling.html",
+              "https://github.com/blender/blender/blob/main/intern/cycles/integrator/denoiser_oidn.cpp"
+            ]
+          },
+          "maintenance": {
+            "status": "verified",
+            "note": "Current stable documentation is v2.5.1 with concrete bounds/weights-validation and allocation-recovery fixes. Thirty current open issue/PR records were inspected: known GPU selection, temporal, fine-detail, lightmap and older Apple high-resolution concerns are retained as scope exclusions, not declared resolved. Current Blender code and manual retain the CPU integration.",
+            "source_urls": [
+              "https://github.com/RenderKit/oidn/blob/master/CHANGELOG.md",
+              "https://github.com/RenderKit/oidn/issues",
+              "https://github.com/blender/blender/blob/main/intern/cycles/integrator/denoiser_oidn.cpp"
+            ]
+          },
+          "independent_use": {
+            "status": "verified",
+            "note": "Blender is an independently maintained creative application: its current manual and CPU implementation both use OIDN. A public production-user report from Animal Logic/Netflix Animation describes preserving beauty denoising while identifying AOV limitations; this is first-hand use, not a star/fork count.",
+            "source_urls": [
+              "https://docs.blender.org/manual/en/latest/render/cycles/render_settings/sampling.html",
+              "https://github.com/blender/blender/blob/main/intern/cycles/integrator/denoiser_oidn.cpp",
+              "https://github.com/RenderKit/oidn/issues/246"
+            ],
+            "source_kind": "independent"
+          },
+          "dependencies": {
+            "status": "verified",
+            "note": "The scoped CPU inference path uses included Apache-2.0 CNN weights and documented CPU/runtime dependencies, with packaged third-party notices. It requires no hosted model account, paid service or GPU backend; custom retraining data and other host/GPU versions remain separate. Ordinary system RAM and scene memory remain workload-dependent, not an invented minimum.",
+            "source_urls": [
+              "https://github.com/RenderKit/oidn/blob/master/README.md",
+              "https://github.com/RenderKit/oidn-weights/blob/28883d1769d5930e13cf7f1676dd852bd81ed9e7/LICENSE.txt",
+              "https://github.com/RenderKit/oidn/blob/master/third-party-programs.txt",
+              "https://docs.blender.org/manual/en/latest/render/cycles/render_settings/sampling.html"
+            ]
+          }
+        }
+      }
     }
   }
 }
