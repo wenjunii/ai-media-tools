@@ -21803,95 +21803,81 @@
     "github:gtwatts/ferrocut": {
       "basis_edition": "2026-10-10",
       "record_sha256": "0d02dffe84fa31bd87436895134f8c53542b6df7d589961203126b7fcb86a8a9",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "Current documentation was unavailable in dated source attempts. Historical evidence remains preserved; current quality and affected checks are unknown.",
+        "checked_on": "2026-11-14",
+        "summary": "Fresh current source attempts were unavailable; the dated historical entry is preserved with affected checks unknown.",
         "scope": "The current source-only agent-controlled video editing engine.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation.",
-          "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected This does not establish deletion, abandonment, or a license revocation.",
-          "Archived source gaps: HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected"
+          "No discovered app was installed or run.",
+          "HTTP 404 is an availability gap, not proof of abandonment, license revocation or poor output.",
+          "This is a current-source availability follow-up, not an exhaustive independent-user survey."
         ],
         "sources": [
           {
-            "title": "Current project documentation",
-            "url": "https://github.com/gtwatts/ferrocut/blob/701b88f0991a6f9a5fa7c9123b065c60c6904079/README.md"
+            "title": "Current failed primary-source attempt: metadata",
+            "url": "https://api.github.com/repos/gtwatts/ferrocut"
           },
           {
-            "title": "Complete software license",
-            "url": "https://github.com/gtwatts/ferrocut/blob/701b88f0991a6f9a5fa7c9123b065c60c6904079/LICENSE"
+            "title": "Current failed primary-source attempt: readme",
+            "url": "https://api.github.com/repos/gtwatts/ferrocut/readme"
           },
           {
-            "title": "Source change history",
-            "url": "https://github.com/gtwatts/ferrocut/commits"
+            "title": "Current failed primary-source attempt: license",
+            "url": "https://api.github.com/repos/gtwatts/ferrocut/license"
           },
           {
-            "title": "Support and issue history",
-            "url": "https://github.com/gtwatts/ferrocut/issues"
+            "title": "Current failed primary-source attempt: releases",
+            "url": "https://api.github.com/repos/gtwatts/ferrocut/releases?per_page=1"
           },
           {
-            "title": "Reviewed change: engine: native GPU video effect stack + adjustment layers",
-            "url": "https://github.com/gtwatts/ferrocut/commit/701b88f0991a6f9a5fa7c9123b065c60c6904079"
-          },
-          {
-            "title": "Current documented software stage",
-            "url": "https://github.com/gtwatts/ferrocut"
-          },
-          {
-            "title": "Current README reviewed on 2026-10-26",
-            "url": "https://github.com/gtwatts/ferrocut/blob/main/README.md"
-          },
-          {
-            "title": "Complete current software license",
-            "url": "https://github.com/gtwatts/ferrocut/blob/main/LICENSE"
+            "title": "Current failed primary-source attempt: commits",
+            "url": "https://api.github.com/repos/gtwatts/ferrocut/commits?per_page=1"
           }
         ],
         "checks": {
           "license": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected Current license evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/gtwatts/ferrocut/blob/main/README.md"
+              "https://api.github.com/repos/gtwatts/ferrocut/license"
             ]
           },
           "results": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected Current results evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/gtwatts/ferrocut/blob/main/README.md"
+              "https://api.github.com/repos/gtwatts/ferrocut/readme"
             ]
           },
           "setup": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected Current setup evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/gtwatts/ferrocut/blob/main/README.md"
+              "https://api.github.com/repos/gtwatts/ferrocut/readme"
             ]
           },
           "maintenance": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected Current maintenance evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/gtwatts/ferrocut/blob/main/README.md"
+              "https://api.github.com/repos/gtwatts/ferrocut/releases?per_page=1"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected Current independent use evidence could not be rechecked; earlier information remains historical.",
+            "note": "Independent first-hand use was not established in the retained assessment, and this current primary-source availability check does not supply it. No popularity or successful-install claim is inferred.",
             "source_urls": [
-              "https://github.com/gtwatts/ferrocut/blob/main/README.md"
+              "https://api.github.com/repos/gtwatts/ferrocut/readme"
             ]
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/gtwatts/ferrocut; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/commits; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/readme; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/issues; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/releases; source not collected; HTTP 404 from api.github.com/repos/gtwatts/ferrocut/license; source not collected Current dependencies evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/gtwatts/ferrocut/blob/main/README.md"
+              "https://api.github.com/repos/gtwatts/ferrocut/readme"
             ]
           }
         }
@@ -71438,92 +71424,100 @@
     "github:filip-dobrocky/yolo-sonification": {
       "basis_edition": "2026-10-13",
       "record_sha256": "d5eab5f5fbc10fd7dd930634a800015fea3ff27283b20e0ff7fbd7882a01f528",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "YOLO Sonification: current sources and all six evidence questions reviewed. Incomplete evidence remains unverified; this is documentation review, not an execution test.",
-        "scope": "Exploring object-oriented video-to-sound interaction.",
+        "checked_on": "2026-11-14",
+        "summary": "A fresh source review confirms the YOLO-to-audio implementation but finds a missing default graph resource and unresolved runtime/model requirements.",
+        "scope": "Object-tracking signals driving the project’s SuperCollider sonification graph.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation."
+          "Source review only; no app, model, GUI, audio engine or headset was installed or run.",
+          "Unresolved setup and dependency details remain pending rather than being promoted by an AI label or a source-code walkthrough.",
+          "This was a targeted primary-source review, not a complete independent-user survey."
         ],
         "sources": [
           {
-            "title": "Official documentation",
+            "title": "Current official documentation",
             "url": "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/README.md"
           },
           {
-            "title": "Complete software license reviewed",
+            "title": "Complete current software license",
             "url": "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/LICENSE"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/filip-dobrocky/YOLO-sonification/commit/f8d2258dc96d764fc36a7fc769ab9aaf7a1b11ae"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/gui.py"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/filip-dobrocky/YOLO-sonification/pull/2"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/synths.py"
           },
           {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/filip-dobrocky/yolo-sonification/issues"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/yolo.py"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/filip-dobrocky/YOLO-sonification/pull/1"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/requirements.txt"
           },
           {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/filip-dobrocky/YOLO-sonification/issues"
+            "title": "Dated missing resource attempt",
+            "url": "https://api.github.com/repos/filip-dobrocky/YOLO-sonification/contents/patches/default-patch.json"
+          },
+          {
+            "title": "Current repository and support context",
+            "url": "https://github.com/filip-dobrocky/YOLO-sonification"
           }
         ],
         "checks": {
           "license": {
             "status": "verified",
-            "note": "Complete current software-license text matches the archived full review byte for byte (2026-11-02). Complete current software-license text matches the archived full review byte for byte (2026-10-26). The complete current software license was compared byte for byte with the archived full-text review (2026-10-13) and is unchanged. Complete software license read and archived; this grant does not cover separate models, services or assets.",
+            "note": "The complete GPL-3.0 software grant, conditions and disclaimers were reviewed. The informational URL difference from the standard does not alter the grant; native runtime, model and media rights remain separate.",
             "source_urls": [
               "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/LICENSE"
             ]
           },
           "results": {
             "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: Published creative results have not received a substantive independent quality review. This pass does not verify aesthetic quality or repeatability. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The implementation and project description establish the intended creative route, but a substantive independently verified output-quality result was not established.",
             "source_urls": [
               "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/README.md"
             ]
           },
           "setup": {
             "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: A complete installation and reproducibility review is pending. Current installation was not independently reproduced in this pass. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The GUI unconditionally requests patches/default-patch.json; its current file endpoint returned 404 and the root directory has no patches folder. This is an unresolved setup/resource gap, not an observed runtime test or proof that manual graph authoring is impossible.",
             "source_urls": [
-              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/README.md"
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/README.md",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/gui.py",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/synths.py",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/yolo.py",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/requirements.txt",
+              "https://api.github.com/repos/filip-dobrocky/YOLO-sonification/contents/patches/default-patch.json"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "Sampled commit 2023-06-02: Create LICENSE. Current support sample: merge to main (closed); Merge branch (closed). Activity and open PRs do not alone verify support quality or resolution.",
+            "status": "unknown",
+            "note": "Current metadata, release/commit responses and implementation were inspected; sustained support and resolution of the identified setup gap are not established.",
             "source_urls": [
-              "https://github.com/filip-dobrocky/YOLO-sonification/commit/f8d2258dc96d764fc36a7fc769ab9aaf7a1b11ae",
-              "https://github.com/filip-dobrocky/YOLO-sonification/pull/2",
-              "https://github.com/filip-dobrocky/YOLO-sonification/pull/1"
+              "https://github.com/filip-dobrocky/YOLO-sonification"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current documentation and the bounded support sample were examined; they do not establish independently reproduced creative use for this scoped workflow in this pass. This does not assert that independent users do not exist.",
-            "source_urls": [
-              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/README.md",
-              "https://github.com/filip-dobrocky/YOLO-sonification/issues"
-            ]
+            "note": "Independent first-hand reproduction or integration was not established for this scoped workflow.",
+            "source_urls": []
           },
           "dependencies": {
-            "status": "documented",
-            "note": "The complete current README matches the archived reviewed text. Documented context: The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: GPL-3.0 software; the very short README does not yet establish installation, platform requirements, model terms or reproducible output. A full guide needs code/documentation review. A complete current model, service and cost clearance is still open. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "status": "unknown",
+            "note": "Source code boots a SuperCollider server through Supriya, uses Qt/NodeGraphQt and loads external YOLOv7 code through torch.hub. Those native runtimes, model artifacts and audio-sample rights are not completely covered by the root GPL review. The .gitmodules YOLOv5 reference is not evidence that the current loader uses v5.",
             "source_urls": [
-              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/README.md"
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/gui.py",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/synths.py",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/yolo.py",
+              "https://github.com/filip-dobrocky/YOLO-sonification/blob/main/requirements.txt",
+              "https://api.github.com/repos/filip-dobrocky/YOLO-sonification/contents/patches/default-patch.json"
             ]
           }
         }
@@ -75122,75 +75116,81 @@
     "github:justynberk/reel-kit": {
       "basis_edition": "2026-10-14",
       "record_sha256": "6a9f497350a57014b38378096ad8eb56cd7e5807d7f36bda3a37e32882de6198",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "Current documentation was unavailable in dated source attempts. Historical evidence remains preserved; current quality and affected checks are unknown.",
+        "checked_on": "2026-11-14",
+        "summary": "Fresh current source attempts were unavailable; the dated historical entry is preserved with affected checks unknown.",
         "scope": "Preparing a storyboard-led social-video edit from one recorded take.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation.",
-          "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected This does not establish deletion, abandonment, or a license revocation.",
-          "Archived source gaps: HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected"
+          "No discovered app was installed or run.",
+          "HTTP 404 is an availability gap, not proof of abandonment, license revocation or poor output.",
+          "This is a current-source availability follow-up, not an exhaustive independent-user survey."
         ],
         "sources": [
           {
-            "title": "Official documentation",
-            "url": "https://github.com/justynberk/reel-kit/blob/main/README.md"
+            "title": "Current failed primary-source attempt: metadata",
+            "url": "https://api.github.com/repos/justynberk/reel-kit"
           },
           {
-            "title": "Complete software license reviewed",
-            "url": "https://github.com/justynberk/reel-kit/blob/main/LICENSE"
+            "title": "Current failed primary-source attempt: readme",
+            "url": "https://api.github.com/repos/justynberk/reel-kit/readme"
           },
           {
-            "title": "Reviewed evidence for license",
-            "url": "https://github.com/justynberk/reel-kit"
+            "title": "Current failed primary-source attempt: license",
+            "url": "https://api.github.com/repos/justynberk/reel-kit/license"
+          },
+          {
+            "title": "Current failed primary-source attempt: releases",
+            "url": "https://api.github.com/repos/justynberk/reel-kit/releases?per_page=1"
+          },
+          {
+            "title": "Current failed primary-source attempt: commits",
+            "url": "https://api.github.com/repos/justynberk/reel-kit/commits?per_page=1"
           }
         ],
         "checks": {
           "license": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected Current license evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/justynberk/reel-kit/blob/main/README.md"
+              "https://api.github.com/repos/justynberk/reel-kit/license"
             ]
           },
           "results": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected Current results evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/justynberk/reel-kit/blob/main/README.md"
+              "https://api.github.com/repos/justynberk/reel-kit/readme"
             ]
           },
           "setup": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected Current setup evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/justynberk/reel-kit/blob/main/README.md"
+              "https://api.github.com/repos/justynberk/reel-kit/readme"
             ]
           },
           "maintenance": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected Current maintenance evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/justynberk/reel-kit/blob/main/README.md"
+              "https://api.github.com/repos/justynberk/reel-kit/releases?per_page=1"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected Current independent use evidence could not be rechecked; earlier information remains historical.",
+            "note": "Independent first-hand use was not established in the retained assessment, and this current primary-source availability check does not supply it. No popularity or successful-install claim is inferred.",
             "source_urls": [
-              "https://github.com/justynberk/reel-kit/blob/main/README.md"
+              "https://api.github.com/repos/justynberk/reel-kit/readme"
             ]
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/justynberk/reel-kit; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/commits; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/readme; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/issues; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/releases; source not collected; HTTP 404 from api.github.com/repos/justynberk/reel-kit/license; source not collected Current dependencies evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/justynberk/reel-kit/blob/main/README.md"
+              "https://api.github.com/repos/justynberk/reel-kit/readme"
             ]
           }
         }
@@ -77787,75 +77787,81 @@
     "github:amitbaz/music-production-ai-mentor": {
       "basis_edition": "2026-10-15",
       "record_sha256": "26d82029e10e674a37baf9a6fcda54375108a4d49c461c56a2b75b68506900c2",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "Current documentation was unavailable in dated source attempts. Historical evidence remains preserved; current quality and affected checks are unknown.",
+        "checked_on": "2026-11-14",
+        "summary": "Fresh current source attempts were unavailable; the dated historical entry is preserved with affected checks unknown.",
         "scope": "Discussing a session’s tracks, routing and basic mix state with an AI assistant.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation.",
-          "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected This does not establish deletion, abandonment, or a license revocation.",
-          "Archived source gaps: HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected"
+          "No discovered app was installed or run.",
+          "HTTP 404 is an availability gap, not proof of abandonment, license revocation or poor output.",
+          "This is a current-source availability follow-up, not an exhaustive independent-user survey."
         ],
         "sources": [
           {
-            "title": "Official documentation",
-            "url": "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+            "title": "Current failed primary-source attempt: metadata",
+            "url": "https://api.github.com/repos/amitbaz/music-production-ai-mentor"
           },
           {
-            "title": "Complete software license reviewed",
-            "url": "https://github.com/amitbaz/music-production-ai-mentor/blob/main/LICENSE"
+            "title": "Current failed primary-source attempt: readme",
+            "url": "https://api.github.com/repos/amitbaz/music-production-ai-mentor/readme"
           },
           {
-            "title": "Reviewed evidence for license",
-            "url": "https://github.com/amitbaz/music-production-ai-mentor"
+            "title": "Current failed primary-source attempt: license",
+            "url": "https://api.github.com/repos/amitbaz/music-production-ai-mentor/license"
+          },
+          {
+            "title": "Current failed primary-source attempt: releases",
+            "url": "https://api.github.com/repos/amitbaz/music-production-ai-mentor/releases?per_page=1"
+          },
+          {
+            "title": "Current failed primary-source attempt: commits",
+            "url": "https://api.github.com/repos/amitbaz/music-production-ai-mentor/commits?per_page=1"
           }
         ],
         "checks": {
           "license": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected Current license evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+              "https://api.github.com/repos/amitbaz/music-production-ai-mentor/license"
             ]
           },
           "results": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected Current results evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+              "https://api.github.com/repos/amitbaz/music-production-ai-mentor/readme"
             ]
           },
           "setup": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected Current setup evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+              "https://api.github.com/repos/amitbaz/music-production-ai-mentor/readme"
             ]
           },
           "maintenance": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected Current maintenance evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+              "https://api.github.com/repos/amitbaz/music-production-ai-mentor/releases?per_page=1"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected Current independent use evidence could not be rechecked; earlier information remains historical.",
+            "note": "Independent first-hand use was not established in the retained assessment, and this current primary-source availability check does not supply it. No popularity or successful-install claim is inferred.",
             "source_urls": [
-              "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+              "https://api.github.com/repos/amitbaz/music-production-ai-mentor/readme"
             ]
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Dated source attempts on 2026-11-09 did not return a usable current README. HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/commits; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/readme; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/issues; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/releases; source not collected; HTTP 404 from api.github.com/repos/amitbaz/music-production-ai-mentor/license; source not collected Current dependencies evidence could not be rechecked; earlier information remains historical.",
+            "note": "Dated current primary requests returned HTTP 404; the latest source could not be inspected. Historical evidence remains available, but this does not establish current availability or revoke its old license.",
             "source_urls": [
-              "https://github.com/amitbaz/music-production-ai-mentor/blob/main/README.md"
+              "https://api.github.com/repos/amitbaz/music-production-ai-mentor/readme"
             ]
           }
         }
@@ -84361,92 +84367,94 @@
     "github:tallivm/brain2music": {
       "basis_edition": "2026-10-16",
       "record_sha256": "b7494526f22a8e6a42e8f580f7a92cd127eccdf0048cd5956530e4c371a4cb58",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "brain2music: current sources and all six evidence questions reviewed. Incomplete evidence remains unverified; this is documentation review, not an execution test.",
-        "scope": "Prototyping a biosignal-driven musical artwork.",
+        "checked_on": "2026-11-14",
+        "summary": "Fresh code review distinguishes the optional neural transform from the default offline pipeline and leaves a complete AI-enabled startup route unverified.",
+        "scope": "Optional Riffusion transformation within the EEG-feature-to-audio pipeline.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation."
+          "Source review only; no app, model, GUI, audio engine or headset was installed or run.",
+          "Unresolved setup and dependency details remain pending rather than being promoted by an AI label or a source-code walkthrough.",
+          "This was a targeted primary-source review, not a complete independent-user survey."
         ],
         "sources": [
           {
-            "title": "Official documentation",
+            "title": "Current official documentation",
             "url": "https://github.com/Tallivm/brain2music/blob/main/README.md"
           },
           {
-            "title": "Complete software license reviewed",
+            "title": "Complete current software license",
             "url": "https://github.com/Tallivm/brain2music/blob/main/LICENSE"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Tallivm/brain2music/commit/3a4f2f9f5381de7a622b0a18e0afd995cc1e10d4"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/Tallivm/brain2music/blob/main/src/pipe/pipe.py"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Tallivm/brain2music/pull/2"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/Tallivm/brain2music/blob/main/src/data/spectral_transform.py"
           },
           {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/tallivm/brain2music/issues"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/Tallivm/brain2music/blob/main/src/unicorn/unicorn.py"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Tallivm/brain2music/pull/1"
+            "title": "Reviewed current implementation",
+            "url": "https://github.com/Tallivm/brain2music/blob/main/requirements.txt"
           },
           {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/Tallivm/brain2music/issues"
+            "title": "Current repository and support context",
+            "url": "https://github.com/Tallivm/brain2music"
           }
         ],
         "checks": {
           "license": {
             "status": "verified",
-            "note": "Complete current software-license text matches the archived full review byte for byte (2026-11-02). Complete current software-license text matches the archived full review byte for byte (2026-10-26). The complete current software license was compared byte for byte with the archived full-text review (2026-10-16) and is unchanged. Complete software license read and archived; this grant does not cover separate models, services or assets.",
+            "note": "The complete GPL-3.0 software grant, conditions and disclaimers were reviewed. The informational URL difference from the standard does not alter the grant; native runtime, model and media rights remain separate.",
             "source_urls": [
               "https://github.com/Tallivm/brain2music/blob/main/LICENSE"
             ]
           },
           "results": {
             "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: Published creative results have not received a substantive independent quality review. This pass does not verify aesthetic quality or repeatability. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The implementation and project description establish the intended creative route, but a substantive independently verified output-quality result was not established.",
             "source_urls": [
               "https://github.com/Tallivm/brain2music/blob/main/README.md"
             ]
           },
           "setup": {
             "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: A complete installation and reproducibility review is pending. Current installation was not independently reproduced in this pass. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The README documents package setup, but the checked-in pipe module’s default main calls main_pipe without a Riffusion model. spectral_transform.py applies the neural transformation only when that optional model is supplied. A complete documented AI-enabled entrypoint and supported platform combination were not established.",
             "source_urls": [
-              "https://github.com/Tallivm/brain2music/blob/main/README.md"
+              "https://github.com/Tallivm/brain2music/blob/main/README.md",
+              "https://github.com/Tallivm/brain2music/blob/main/src/pipe/pipe.py",
+              "https://github.com/Tallivm/brain2music/blob/main/src/data/spectral_transform.py",
+              "https://github.com/Tallivm/brain2music/blob/main/src/unicorn/unicorn.py",
+              "https://github.com/Tallivm/brain2music/blob/main/requirements.txt"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "Sampled commit 2024-08-24: Update README.md. Current support sample: Add Rave sample (closed); Fix `segment_eeg` function (closed). Activity and open PRs do not alone verify support quality or resolution.",
+            "status": "unknown",
+            "note": "Current metadata, release/commit responses and implementation were inspected; sustained support and resolution of the identified setup gap are not established.",
             "source_urls": [
-              "https://github.com/Tallivm/brain2music/commit/3a4f2f9f5381de7a622b0a18e0afd995cc1e10d4",
-              "https://github.com/Tallivm/brain2music/pull/2",
-              "https://github.com/Tallivm/brain2music/pull/1"
+              "https://github.com/Tallivm/brain2music"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current documentation and the bounded support sample were examined; they do not establish independently reproduced creative use for this scoped workflow in this pass. This does not assert that independent users do not exist.",
-            "source_urls": [
-              "https://github.com/Tallivm/brain2music/blob/main/README.md",
-              "https://github.com/Tallivm/brain2music/issues"
-            ]
+            "note": "Independent first-hand reproduction or integration was not established for this scoped workflow.",
+            "source_urls": []
           },
           "dependencies": {
-            "status": "documented",
-            "note": "The complete current README matches the archived reviewed text. Documented context: The complete current README matches the archived reviewed text. Documented context: Current README matches the complete archived source used by the earlier review. Reviewed context: GPL-3.0 source; the documented EEG hardware is Unicorn Hybrid Black, with separate PyTorch and Riffusion requirements. A neural transformation of EEG data is not evidence of decoding a person’s thoughts or intended music. A complete current model, service and cost clearance is still open. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "status": "unknown",
+            "note": "The pinned requirements include CUDA-specific torch 2.0.0+cu118 and torchaudio 2.0.1+cu118. Live input separately imports the vendor UnicornPy SDK for the Unicorn Hybrid Black headset, and model/voice/checkpoint grants remain separate. These are not universal hardware minima or verified SDK/model permissions.",
             "source_urls": [
-              "https://github.com/Tallivm/brain2music/blob/main/README.md"
+              "https://github.com/Tallivm/brain2music/blob/main/src/pipe/pipe.py",
+              "https://github.com/Tallivm/brain2music/blob/main/src/data/spectral_transform.py",
+              "https://github.com/Tallivm/brain2music/blob/main/src/unicorn/unicorn.py",
+              "https://github.com/Tallivm/brain2music/blob/main/requirements.txt"
             ]
           }
         }
@@ -109223,146 +109231,100 @@
     "github:stitchwright/stitchfoundry": {
       "basis_edition": "2026-10-21",
       "record_sha256": "09f3dc49da1b075a6897be8ce33def5060ed55f072a26af7525fba0e78f6db13",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "StitchFoundry: current sources and all six evidence questions reviewed. Incomplete evidence remains unverified; this is documentation review, not an execution test.",
-        "scope": "Developing a motif, choosing thread colors and planning stitch sequences for machine embroidery.",
+        "checked_on": "2026-11-14",
+        "summary": "Current canonical source review updates the already published StitchFoundry entry after a verified repository move; no second tool is added.",
+        "scope": "Draft editable embroidery art with a coding agent, assign thread/stitch properties and inspect exported machine files before any physical sewing.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation."
+          "Documentation review only; AI Media Scout did not install or run this software.",
+          "Current docs contradict each other about GUI BYOK: some paragraphs advertise an Anthropic key, but the Foundry Account section says the GUI now uses credits and ignores/deletes the older saved key. CLI/MCP documentation describes separate key/agent routes. Verify the chosen version before funding it. HUS/SEW/VIP format limitations are scoped features, not an automatic Experimental verdict for the entire app.",
+          "The former stitchwright/stitchfoundry API resolves to StitchFoundry/StitchFoundry with the same repository ID. Historical editions and identity are preserved."
         ],
         "sources": [
           {
             "title": "Official documentation",
-            "url": "https://github.com/Stitchwright/StitchFoundry/blob/main/README.md"
-          },
-          {
-            "title": "Complete software license reviewed",
-            "url": "https://github.com/Stitchwright/StitchFoundry/blob/main/LICENSE-APACHE"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/commit/94fcb0abc78d397ff4c0a7ac0001c3b2b2b2bbd8"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/releases/tag/latest-build"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/pull/7"
-          },
-          {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/stitchwright/stitchfoundry/issues"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/commit/0bd00d3caf9eb61b1bad499ec1338de8872ea9eb"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/releases/tag/v0.14.0-rc.1"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/pull/38"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/pull/37"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/Stitchwright/StitchFoundry/pull/36"
-          },
-          {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/Stitchwright/StitchFoundry/issues"
-          },
-          {
-            "title": "Current documentation reviewed 2026-11-09",
             "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md"
           },
           {
-            "title": "Current full software grant",
+            "title": "Complete software license reviewed",
             "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/LICENSE-APACHE"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/StitchFoundry/StitchFoundry/commit/8778657c5d0dafd4881e77d8ac4afc2639aeb3f8"
+            "title": "Additional primary documentation",
+            "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/mcp.md"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/StitchFoundry/StitchFoundry/releases/tag/v0.14.0"
+            "title": "Additional primary documentation",
+            "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/embroidery.md"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/StitchFoundry/StitchFoundry/issues/93"
+            "title": "Additional primary documentation",
+            "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/apps/vectorcraft-cli/Cargo.toml"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/StitchFoundry/StitchFoundry/issues/92"
+            "title": "Additional primary documentation",
+            "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/NOTICE"
           },
           {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/StitchFoundry/StitchFoundry/issues/91"
-          },
-          {
-            "title": "Reviewed evidence for independent use",
-            "url": "https://github.com/StitchFoundry/StitchFoundry/issues"
+            "title": "Additional primary documentation",
+            "url": "https://github.com/StitchFoundry/StitchFoundry/blob/main/ASSETS.md"
           }
         ],
         "checks": {
           "license": {
             "status": "verified",
-            "note": "Complete current software-license text matches the archived full review byte for byte (2026-11-02). Complete current software-license text matches the archived full review byte for byte (2026-10-26). The complete current software license was compared byte for byte with the archived full-text review (2026-10-21) and is unchanged. The complete root software license was read and archived. The grant covers this project code; unresolved model, service and asset terms are disclosed separately.",
+            "note": "The complete root software license was read and archived. The grant covers this project code; unresolved model, service and asset terms are disclosed separately.",
             "source_urls": [
               "https://github.com/StitchFoundry/StitchFoundry/blob/main/LICENSE-APACHE"
             ]
           },
           "results": {
             "status": "documented",
-            "note": "Current documentation changes were inspected; the older guide is historical. Current overview: . Specific older setup versions, output claims and model/service terms are not carried forward as current verification. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The author shows artwork, stitch-player views and software round-trip checks. Its current note says no designs have yet been sewn on a real machine. Software compatibility checks and screenshots do not establish a physical sew-out or independently evaluated AI result.",
             "source_urls": [
-              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md"
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/mcp.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/embroidery.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/apps/vectorcraft-cli/Cargo.toml",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/NOTICE",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/ASSETS.md"
             ]
           },
           "setup": {
             "status": "documented",
-            "note": "Current documentation changes were inspected; the older guide is historical. Current overview: . Specific older setup versions, output claims and model/service terms are not carried forward as current verification. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "Choose a documented desktop release or build with Rust 1.97+. For the scoped agent workflow, start the CLI MCP server headless or connect to the app running --control 7979, then configure an authorized model client. The repository still names its Cargo package vectorcraft-cli, while the installed binary is stitchfoundry-cli; some MCP installation prose uses a different directory name, so this guide uses the checked Cargo package directly. Independent reproduction has not been established in this review.",
             "source_urls": [
-              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md"
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/mcp.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/embroidery.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/apps/vectorcraft-cli/Cargo.toml",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/NOTICE",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/ASSETS.md"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "Sampled commit 2026-11-09: Fix #79: cap run, zigzag and satin stitches per object (#85) A very long path asked for a needle point every 0.1-0.3 mm along its whole length, times up to nine passes, so a 1 km line could need hundreds of millions of p. Latest sampled release v0.14.0. Current support sample: Learn button: short in-app video lessons (open); Monogram templates: ~20 decorative frames with editable initials (open); Send to my phone: QR download for machines loaded from a phone app (open). Activity and open PRs do not alone verify support quality or resolution.",
-            "source_urls": [
-              "https://github.com/StitchFoundry/StitchFoundry/commit/8778657c5d0dafd4881e77d8ac4afc2639aeb3f8",
-              "https://github.com/StitchFoundry/StitchFoundry/releases/tag/v0.14.0",
-              "https://github.com/StitchFoundry/StitchFoundry/issues/93",
-              "https://github.com/StitchFoundry/StitchFoundry/issues/92",
-              "https://github.com/StitchFoundry/StitchFoundry/issues/91"
-            ]
+            "status": "unknown",
+            "note": "A release or active repository alone does not establish sustained support. Workflow-specific support and unresolved blockers need a deeper review.",
+            "source_urls": []
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current documentation and the bounded support sample were examined; they do not establish independently reproduced creative use for this scoped workflow in this pass. This does not assert that independent users do not exist.",
-            "source_urls": [
-              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md",
-              "https://github.com/StitchFoundry/StitchFoundry/issues"
-            ]
+            "note": "Independent first-hand use or a working third-party integration was not established for this selected workflow.",
+            "source_urls": []
           },
           "dependencies": {
-            "status": "documented",
-            "note": "Current documentation changes were inspected; the older guide is historical. Current overview: . Specific older setup versions, output claims and model/service terms are not carried forward as current verification. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "status": "unknown",
+            "note": "Complete Apache-2.0 software grant reviewed; MIT is also offered separately. NOTICE and ASSETS preserve font, icon, library and downloaded-font terms. External model/agent accounts and the built-in Foundry service remain separate. Local code/build and a separately configured agent/model service. Built-in prompt/redraw can require a funded Foundry account; optional external picture generation can add another provider charge. Current entitlement/pricing was not verified.",
             "source_urls": [
-              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md"
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/README.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/mcp.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/docs/embroidery.md",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/apps/vectorcraft-cli/Cargo.toml",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/NOTICE",
+              "https://github.com/StitchFoundry/StitchFoundry/blob/main/ASSETS.md"
             ]
           }
         }
@@ -187437,91 +187399,74 @@
     "github:imgly/codesign": {
       "basis_edition": "2026-11-07",
       "record_sha256": "8918ec878fed3e8381f5adb7e907d873f9b0edf765da7400c26aeffe158387a3",
-      "checked_on": "2026-11-09",
+      "checked_on": "2026-11-14",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-09",
-        "summary": "CoDesign agent plugin: current sources and all six evidence questions reviewed. Incomplete evidence remains unverified; this is documentation review, not an execution test.",
-        "scope": "Editable agent-generated layouts instead of flattened image-only design drafts.",
+        "checked_on": "2026-11-14",
+        "summary": "Current distributed launcher and design runtime fail the open-source-only software criterion; the historical listing is preserved, without recommending the proprietary product.",
+        "scope": "Current CoDesign plugin launcher and @imgly/codesign-mcp design-runtime distribution.",
         "caveats": [
-          "Source review only; AI Media Scout did not install, execute or benchmark this application.",
-          "Bounded weekly review: current complete README/license comparison and at most one release, one commit and ten recently updated issue/PR records per GitHub project, plus selected cited workflow sources. This is not an exhaustive dependency audit or independent-user census.",
-          "Dated installation guides and editions remain historical. A source failure is an evidence gap, not proof of deletion, abandonment or license revocation."
+          "Source and complete-license review only; no runtime was installed or run.",
+          "The root MIT grant covers the repository manifests/documentation, while the complete runtime NOTICE explicitly excludes the launcher and its shipped files from open-source repository licenses.",
+          "Current terms prohibit copying, modifying, redistributing and bundling the CoDesign software/CE.SDK engine. Free local preview use is separate from open-source permission. Historical editions remain unchanged; this finding does not retroactively revoke an earlier grant."
         ],
         "sources": [
           {
-            "title": "Official documentation",
+            "title": "Current licensing and architecture documentation",
             "url": "https://github.com/imgly/codesign/blob/main/README.md"
           },
           {
-            "title": "Complete software license reviewed",
+            "title": "Complete root MIT license",
             "url": "https://github.com/imgly/codesign/blob/main/LICENSE"
           },
           {
-            "title": "Dated release/support history snapshot",
-            "url": "https://api.github.com/repos/imgly/codesign/releases?per_page=5"
-          },
-          {
-            "title": "Dated release/support history snapshot",
-            "url": "https://api.github.com/repos/imgly/codesign/commits?per_page=10"
-          },
-          {
-            "title": "Dated release/support history snapshot",
-            "url": "https://api.github.com/repos/imgly/codesign/issues?state=all&sort=updated&per_page=15"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/imgly/codesign/commit/d19fb441640105d7f941e1adb8d6b37d9e6261d3"
-          },
-          {
-            "title": "Reviewed evidence for maintenance",
-            "url": "https://github.com/imgly/codesign/issues"
+            "title": "Complete proprietary launcher/runtime notice",
+            "url": "https://github.com/imgly/codesign/blob/main/plugins/codesign/runtime/NOTICE"
           }
         ],
         "checks": {
           "license": {
-            "status": "verified",
-            "note": "Complete current software-license text matches the archived full review byte for byte (2026-11-07). Complete software license read and archived; this grant does not cover separate models, services or assets.",
+            "status": "failed",
+            "note": "The complete runtime NOTICE assigns proprietary terms to codesign-shim.mjs, launcher modules and shipped runtime files, explicitly overriding repository open-source grants for those files. Root MIT does not cover the delivered AI design tool.",
             "source_urls": [
-              "https://github.com/imgly/codesign/blob/main/LICENSE"
+              "https://github.com/imgly/codesign/blob/main/LICENSE",
+              "https://github.com/imgly/codesign/blob/main/plugins/codesign/runtime/NOTICE",
+              "https://github.com/imgly/codesign/blob/main/README.md"
             ]
           },
           "results": {
-            "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: Published creative results have not received a substantive independent quality review. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "status": "documented",
+            "note": "The README describes editable layouts and media/print exports; this review does not independently grade those outputs.",
             "source_urls": [
               "https://github.com/imgly/codesign/blob/main/README.md"
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "The complete current README matches the archived reviewed text. Documented context: A complete installation and reproducibility review is pending. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "status": "documented",
+            "note": "The README documents plugin/direct MCP routes, Node versions and platform limitations; none was reproduced here.",
             "source_urls": [
               "https://github.com/imgly/codesign/blob/main/README.md"
             ]
           },
           "maintenance": {
-            "status": "documented",
-            "note": "Sampled commit 2026-11-04: sync: from imgly-codesign@e1c2186. The bounded support query returned no usable items; this does not establish reliable support.. Activity and open PRs do not alone verify support quality or resolution.",
+            "status": "unknown",
+            "note": "Preview terms allow changes or expiry; sustained support for the assessed version has not been established.",
             "source_urls": [
-              "https://github.com/imgly/codesign/commit/d19fb441640105d7f941e1adb8d6b37d9e6261d3",
-              "https://github.com/imgly/codesign/issues"
+              "https://github.com/imgly/codesign/blob/main/plugins/codesign/runtime/NOTICE"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current documentation and the bounded support sample were examined; they do not establish independently reproduced creative use for this scoped workflow in this pass. This does not assert that independent users do not exist.",
-            "source_urls": [
-              "https://github.com/imgly/codesign/blob/main/README.md",
-              "https://github.com/imgly/codesign/issues"
-            ]
+            "note": "Independent first-hand creative use or reproduction was not established by this licensing-focused source review.",
+            "source_urls": []
           },
           "dependencies": {
             "status": "documented",
-            "note": "The complete current README matches the archived reviewed text. Documented context: Only integration resources are MIT. CE.SDK CreativeEngine, the published runtime package and carried launcher retain separate licenses; the actual engine is proprietary and performs license/usage calls. This entry does not label that engine open-source. Full rendering/import fidelity and service terms need review. This weekly pass does not establish a new output-quality, independent installation or complete model/service/cost clearance.",
+            "note": "The launcher and CE.SDK engine have proprietary preview terms. Runtime downloads, engine license/usage checks and selected hosted AI generation/sign-in are separate from root MIT.",
             "source_urls": [
-              "https://github.com/imgly/codesign/blob/main/README.md"
+              "https://github.com/imgly/codesign/blob/main/README.md",
+              "https://github.com/imgly/codesign/blob/main/plugins/codesign/runtime/NOTICE"
             ]
           }
         }
@@ -215838,6 +215783,91 @@
               "https://github.com/RenderKit/oidn-weights/blob/28883d1769d5930e13cf7f1676dd852bd81ed9e7/LICENSE.txt",
               "https://github.com/RenderKit/oidn/blob/master/third-party-programs.txt",
               "https://docs.blender.org/manual/en/latest/render/cycles/render_settings/sampling.html"
+            ]
+          }
+        }
+      }
+    },
+    "github:qianyouliang/llm-mapbook": {
+      "basis_edition": "2026-11-13",
+      "record_sha256": "1d28a978cf853e21de1e132dec3905fca097cc0dda41fd143174472cd147dd97",
+      "checked_on": "2026-11-14",
+      "assessment": {
+        "tier": "unverified",
+        "method": "source-review",
+        "checked_on": "2026-11-14",
+        "summary": "Fresh source review found a missing dependency file referenced by the documented backend installation route. Historical inclusion is preserved; the current setup route needs repair or replacement.",
+        "scope": "LLM extraction of narrative geography into the Vue/OpenLayers story map.",
+        "caveats": [
+          "Source review only; not installed or run.",
+          "The failed check applies to the README backend dependency-installation step, not proof that every possible manual deployment is impossible.",
+          "No complete independent-user or current model-provider rights audit was established."
+        ],
+        "sources": [
+          {
+            "title": "Current setup and workflow documentation",
+            "url": "https://github.com/qianyouliang/LLM-MapBook/blob/main/README.md"
+          },
+          {
+            "title": "Complete current software grant",
+            "url": "https://github.com/qianyouliang/LLM-MapBook/blob/main/LICENSE"
+          },
+          {
+            "title": "Dated missing requirements-file attempt",
+            "url": "https://api.github.com/repos/qianyouliang/LLM-MapBook/contents/backend/requirements.txt"
+          },
+          {
+            "title": "Current backend directory listing",
+            "url": "https://api.github.com/repos/qianyouliang/LLM-MapBook/contents/backend"
+          },
+          {
+            "title": "Current repository and release/support context",
+            "url": "https://github.com/qianyouliang/LLM-MapBook"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "verified",
+            "note": "The complete current AGPL-3.0 grant was read and archived; separate book, map and model/service rights are not covered by it.",
+            "source_urls": [
+              "https://github.com/qianyouliang/LLM-MapBook/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "documented",
+            "note": "The README explains extraction, geocoding and map display with an architecture illustration; independent geographic accuracy and a complete demonstrated creative result were not established.",
+            "source_urls": [
+              "https://github.com/qianyouliang/LLM-MapBook/blob/main/README.md"
+            ]
+          },
+          "setup": {
+            "status": "failed",
+            "note": "The current README tells users to install backend/requirements.txt, but the live file endpoint returned 404 and the current backend listing contains only app/. That documented dependency step is unavailable; a corrected reproducible setup has not been established.",
+            "source_urls": [
+              "https://github.com/qianyouliang/LLM-MapBook/blob/main/README.md",
+              "https://api.github.com/repos/qianyouliang/LLM-MapBook/contents/backend/requirements.txt",
+              "https://api.github.com/repos/qianyouliang/LLM-MapBook/contents/backend"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "Current metadata, release/commit responses and documentation were inspected, but this missing-file blocker and sustained workflow support are unresolved.",
+            "source_urls": [
+              "https://github.com/qianyouliang/LLM-MapBook",
+              "https://github.com/qianyouliang/LLM-MapBook/blob/main/README.md"
+            ]
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "This targeted primary-source review did not establish independent first-hand use or integration of the selected story-map workflow.",
+            "source_urls": []
+          },
+          "dependencies": {
+            "status": "unknown",
+            "note": "The frontend manifest and README show Vue/OpenLayers and LLM/geocoding processing, but a complete current backend dependency set, configured provider/model terms and service costs could not be verified.",
+            "source_urls": [
+              "https://github.com/qianyouliang/LLM-MapBook/blob/main/README.md",
+              "https://api.github.com/repos/qianyouliang/LLM-MapBook/contents/backend"
             ]
           }
         }
