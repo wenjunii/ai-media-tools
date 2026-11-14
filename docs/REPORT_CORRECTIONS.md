@@ -2,6 +2,23 @@
 
 Sealed editions remain unchanged. This log records corrections with their evidence.
 
+## November 14, 2026 — CoDesign current launcher and runtime terms
+
+The preserved [November 7 screened entry](../public/reports/2026-11-07/report.md)
+identified the repository's root MIT grant. The current
+[licensing documentation](https://github.com/imgly/codesign/blob/main/README.md#licensing)
+limits that grant to the plugin manifests and documentation. The complete
+[runtime notice](https://github.com/imgly/codesign/blob/main/plugins/codesign/runtime/NOTICE)
+expressly assigns proprietary terms to the launcher, its modules and shipped files,
+and prohibits modifying, redistributing or bundling the CoDesign/CE.SDK software.
+Free local preview use is separate from open-source permission.
+
+The historical entry remains preserved. Its current library assessment marks the
+software-license check **failed**, retains **Quality unverified**, and explains
+why the current delivered workflow does not meet the open-source-only criterion.
+This clarification does not retroactively revoke any earlier grant or grant a
+recommendation for the proprietary product.
+
 ## October 19, 2026 — OpenSuno-YuE2 software-license scope
 
 The [October 11 screened entry](../public/reports/2026-10-11/report.md) identified
