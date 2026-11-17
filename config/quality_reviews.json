@@ -60380,17 +60380,17 @@
     "external:https://codeberg.org/Imaginer/Imaginer": {
       "basis_edition": "2026-10-15",
       "record_sha256": "38a6cdd7c5c23e1aa15e36065c449e98da653c0b3c3bcdbf243a4d42313cf3de",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "Imaginer: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "Imaginer: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "A Linux desktop front end for prompt-to-image experiments with selectable providers.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -60413,7 +60413,7 @@
         "checks": {
           "license": {
             "status": "unknown",
-            "note": "Codeberg README/COPYING responses are HTTP-200 automated Cookie monster bot checks, not source/license files. They were archived and not bypassed. The project site describes a Linux image-generation client, but current complete software grant/setup/support could not be revalidated.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the license criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/README.md",
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/COPYING",
@@ -60422,8 +60422,8 @@
             ]
           },
           "results": {
-            "status": "documented",
-            "note": "Codeberg README/COPYING responses are HTTP-200 automated Cookie monster bot checks, not source/license files. They were archived and not bypassed. The project site describes a Linux image-generation client, but current complete software grant/setup/support could not be revalidated.",
+            "status": "unknown",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the results criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/README.md",
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/COPYING",
@@ -60433,7 +60433,7 @@
           },
           "setup": {
             "status": "unknown",
-            "note": "Codeberg README/COPYING responses are HTTP-200 automated Cookie monster bot checks, not source/license files. They were archived and not bypassed. The project site describes a Linux image-generation client, but current complete software grant/setup/support could not be revalidated.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the setup criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/README.md",
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/COPYING",
@@ -60443,7 +60443,7 @@
           },
           "maintenance": {
             "status": "unknown",
-            "note": "Codeberg README/COPYING responses are HTTP-200 automated Cookie monster bot checks, not source/license files. They were archived and not bypassed. The project site describes a Linux image-generation client, but current complete software grant/setup/support could not be revalidated.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the maintenance criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/README.md",
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/COPYING",
@@ -60453,7 +60453,7 @@
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Codeberg README/COPYING responses are HTTP-200 automated Cookie monster bot checks, not source/license files. They were archived and not bypassed. The project site describes a Linux image-generation client, but current complete software grant/setup/support could not be revalidated. Independent first-hand use was not established in this bounded pass.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the independent use criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/README.md",
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/COPYING",
@@ -60463,7 +60463,7 @@
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Codeberg README/COPYING responses are HTTP-200 automated Cookie monster bot checks, not source/license files. They were archived and not bypassed. The project site describes a Linux image-generation client, but current complete software grant/setup/support could not be revalidated. No complete selected model/service/cost clearance is established.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the dependencies criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/README.md",
               "https://codeberg.org/Imaginer/Imaginer/src/branch/master/COPYING",
@@ -66847,17 +66847,17 @@
     "external:https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion": {
       "basis_edition": "2026-10-17",
       "record_sha256": "6f9c1d57b3bb3e9a9dd95caa20d9e10b27a7f88d26db55759ba1fcdd7db05226",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "Raspberry Pi 5 Diffusion: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "Raspberry Pi 5 Diffusion: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "The supplied CPU Mitsua Diffusion One script.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -66884,7 +66884,7 @@
         "checks": {
           "license": {
             "status": "unknown",
-            "note": "Current Codeberg script/LICENSE/README endpoints returned automated bot-check HTML, not the requested source. The separate Mitsua model page does not establish the current script grant, reproduction or Pi performance. Actual dated attempts are retained; affected checks are unknown.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the license criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/mitsua_app.py",
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/LICENSE",
@@ -66895,7 +66895,7 @@
           },
           "results": {
             "status": "unknown",
-            "note": "Current Codeberg script/LICENSE/README endpoints returned automated bot-check HTML, not the requested source. The separate Mitsua model page does not establish the current script grant, reproduction or Pi performance. Actual dated attempts are retained; affected checks are unknown.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the results criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/mitsua_app.py",
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/LICENSE",
@@ -66906,7 +66906,7 @@
           },
           "setup": {
             "status": "unknown",
-            "note": "Current Codeberg script/LICENSE/README endpoints returned automated bot-check HTML, not the requested source. The separate Mitsua model page does not establish the current script grant, reproduction or Pi performance. Actual dated attempts are retained; affected checks are unknown.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the setup criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/mitsua_app.py",
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/LICENSE",
@@ -66917,7 +66917,7 @@
           },
           "maintenance": {
             "status": "unknown",
-            "note": "Current Codeberg script/LICENSE/README endpoints returned automated bot-check HTML, not the requested source. The separate Mitsua model page does not establish the current script grant, reproduction or Pi performance. Actual dated attempts are retained; affected checks are unknown.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the maintenance criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/mitsua_app.py",
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/LICENSE",
@@ -66928,7 +66928,7 @@
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current Codeberg script/LICENSE/README endpoints returned automated bot-check HTML, not the requested source. The separate Mitsua model page does not establish the current script grant, reproduction or Pi performance. Actual dated attempts are retained; affected checks are unknown. Independent first-hand use was not established in this bounded pass.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the independent use criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/mitsua_app.py",
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/LICENSE",
@@ -66939,7 +66939,7 @@
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Current Codeberg script/LICENSE/README endpoints returned automated bot-check HTML, not the requested source. The separate Mitsua model page does not establish the current script grant, reproduction or Pi performance. Actual dated attempts are retained; affected checks are unknown. No complete selected model/service/cost clearance is established.",
+            "note": "Current Codeberg source-file requests again returned a608-byte Cookie monster bot-check page despite HTTP200. The later challenge and failed file attempts were archived and not bypassed; two earlier unsealed challenge bodies were superseded, with their metadata and incomplete-retention limitation preserved separately; repository/landing context does not recover the full grant, setup or model evidence. This leaves the dependencies criterion unresolved.",
             "source_urls": [
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/mitsua_app.py",
               "https://codeberg.org/MightyOwlbear/Raspberry-Pi-5-Diffusion/src/branch/main/LICENSE",
@@ -110890,17 +110890,17 @@
     "external:https://gitlab.com/open-dubapp/OpenDub": {
       "basis_edition": "2026-10-30",
       "record_sha256": "899e8ba7f485c34562aca4b1049171686fa2dd7dbe7e604a24be3d830666f138",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "OpenDub: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "OpenDub: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "Timed, editable translation and neural voice dubbing of authorized short videos.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -110970,12 +110970,24 @@
           {
             "title": "Current source or dated attempted source",
             "url": "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
           }
         ],
         "checks": {
           "license": {
-            "status": "unknown",
-            "note": "Current GitLab blob pages were loading shells; raw README/LICENSE/NOTICE/engine sources and support/API endpoints returned HTTP 429, while the public site returned a TLS error. A sampled commit alone does not recover the six missing evidence checks. Attempts were archived without bypassing access controls or declaring deletion.",
+            "status": "verified",
+            "note": "The complete current AGPL3 source grant recovered from the file API matches the retained entire standard. The current NOTICE was also read: bundled FFmpeg/PyAV/codecs, source offers, web vendor libraries and fonts retain separate terms.",
             "source_urls": [
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/README.md",
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/LICENSE",
@@ -110993,12 +111005,15 @@
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/README.md/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/LICENSE/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/NOTICE/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
             ]
           },
           "results": {
-            "status": "unknown",
-            "note": "Current GitLab blob pages were loading shells; raw README/LICENSE/NOTICE/engine sources and support/API endpoints returned HTTP 429, while the public site returned a TLS error. A sampled commit alone does not recover the six missing evidence checks. Attempts were archived without bypassing access controls or declaring deletion.",
+            "status": "documented",
+            "note": "Owner workflow/timing examples describe local separation/timing/mix with translated/dubbed speech. Adapter-written-but-untested optional engines do not establish a whole-app Experimental verdict or independently verified voice quality.",
             "source_urls": [
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/README.md",
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/LICENSE",
@@ -111016,12 +111031,15 @@
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/README.md/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/LICENSE/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/NOTICE/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Current GitLab blob pages were loading shells; raw README/LICENSE/NOTICE/engine sources and support/API endpoints returned HTTP 429, while the public site returned a TLS error. A sampled commit alone does not recover the six missing evidence checks. Attempts were archived without bypassing access controls or declaring deletion.",
+            "status": "documented",
+            "note": "Mac Apple Silicon/Windows packages and a Python3.12source route are documented, with FFmpeg libass/rubberband and separate Demucs/Whisper/voice-model downloads. Owner timing on an M1Max is not a universal minimum. Pipeline/translation/engine code follow-ups returned429.",
             "source_urls": [
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/README.md",
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/LICENSE",
@@ -111039,12 +111057,15 @@
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/README.md/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/LICENSE/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/NOTICE/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
             ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "Current GitLab blob pages were loading shells; raw README/LICENSE/NOTICE/engine sources and support/API endpoints returned HTTP 429, while the public site returned a TLS error. A sampled commit alone does not recover the six missing evidence checks. Attempts were archived without bypassing access controls or declaring deletion.",
+            "status": "documented",
+            "note": "Fresh official project metadata and one commit record were inspected. The bounded issue query returned an empty list; that does not prove no bugs, working support or sustained workflow reliability. Several deeper file requests remain rate-limited.",
             "source_urls": [
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/README.md",
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/LICENSE",
@@ -111062,12 +111083,15 @@
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/README.md/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/LICENSE/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/NOTICE/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current GitLab blob pages were loading shells; raw README/LICENSE/NOTICE/engine sources and support/API endpoints returned HTTP 429, while the public site returned a TLS error. A sampled commit alone does not recover the six missing evidence checks. Attempts were archived without bypassing access controls or declaring deletion. Independent first-hand use was not established in this bounded pass.",
+            "note": "No current independent first-hand successful use was established by the retrieved owner documentation and bounded empty issue response. Owner tests, collaborator activity and popularity are not substituted.",
             "source_urls": [
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/README.md",
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/LICENSE",
@@ -111085,12 +111109,15 @@
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/README.md/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/LICENSE/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/NOTICE/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
             ]
           },
           "dependencies": {
-            "status": "unknown",
-            "note": "Current GitLab blob pages were loading shells; raw README/LICENSE/NOTICE/engine sources and support/API endpoints returned HTTP 429, while the public site returned a TLS error. A sampled commit alone does not recover the six missing evidence checks. Attempts were archived without bypassing access controls or declaring deletion. No complete selected model/service/cost clearance is established.",
+            "status": "documented",
+            "note": "The README default table uses Higgs cloud STT/LLM/TTS alongside local timing/mixing. Selecting local TTS alone does not establish the nothing-leaves claim: cloud transcription/translation may remain. OmniVoice weights are CC BY-NC; other voice engines/model grants differ. Re-says can add service calls; exact paths/costs remain unverified.",
             "source_urls": [
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/README.md",
               "https://gitlab.com/open-dubapp/OpenDub/-/blob/main/LICENSE",
@@ -111108,7 +111135,10 @@
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/README.md/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/LICENSE/raw?ref=main",
               "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/NOTICE/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/engines%2FREADME.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fpipeline.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Ftranslate.py/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/open-dubapp%2FOpenDub/repository/files/opendub%2Fengines.py/raw?ref=main"
             ]
           }
         }
@@ -111117,17 +111147,17 @@
     "external:https://gitlab.com/open-slides/openslides": {
       "basis_edition": "2026-10-30",
       "record_sha256": "4952baf235d930fad541a9e91299ad3dcca93865fbb3e15d9a9f202bc2ea543f",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "OpenSlides: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "OpenSlides: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "Agent-assisted animated deck authoring, narration and reviewed video/static exports.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -111198,7 +111228,7 @@
         "checks": {
           "license": {
             "status": "unknown",
-            "note": "Current OpenSlides source, both named license files, dependency/setup documents and support/history requests returned HTTP 429; its public site also failed TLS. No fresh complete license or workflow evidence was available. Historical records remain unchanged; every affected check is unknown.",
+            "note": "Current OpenSlides raw README, software grants, metadata/support requests remain429 or return loading shells; the project site fails TLS. The actual failures are archived, without substituting historical source bytes. This leaves the license criterion unresolved.",
             "source_urls": [
               "https://gitlab.com/open-slides/openslides/-/blob/main/README.md",
               "https://gitlab.com/open-slides/openslides/-/blob/main/LICENSE-MIT",
@@ -111220,7 +111250,7 @@
           },
           "results": {
             "status": "unknown",
-            "note": "Current OpenSlides source, both named license files, dependency/setup documents and support/history requests returned HTTP 429; its public site also failed TLS. No fresh complete license or workflow evidence was available. Historical records remain unchanged; every affected check is unknown.",
+            "note": "Current OpenSlides raw README, software grants, metadata/support requests remain429 or return loading shells; the project site fails TLS. The actual failures are archived, without substituting historical source bytes. This leaves the results criterion unresolved.",
             "source_urls": [
               "https://gitlab.com/open-slides/openslides/-/blob/main/README.md",
               "https://gitlab.com/open-slides/openslides/-/blob/main/LICENSE-MIT",
@@ -111242,7 +111272,7 @@
           },
           "setup": {
             "status": "unknown",
-            "note": "Current OpenSlides source, both named license files, dependency/setup documents and support/history requests returned HTTP 429; its public site also failed TLS. No fresh complete license or workflow evidence was available. Historical records remain unchanged; every affected check is unknown.",
+            "note": "Current OpenSlides raw README, software grants, metadata/support requests remain429 or return loading shells; the project site fails TLS. The actual failures are archived, without substituting historical source bytes. This leaves the setup criterion unresolved.",
             "source_urls": [
               "https://gitlab.com/open-slides/openslides/-/blob/main/README.md",
               "https://gitlab.com/open-slides/openslides/-/blob/main/LICENSE-MIT",
@@ -111264,7 +111294,7 @@
           },
           "maintenance": {
             "status": "unknown",
-            "note": "Current OpenSlides source, both named license files, dependency/setup documents and support/history requests returned HTTP 429; its public site also failed TLS. No fresh complete license or workflow evidence was available. Historical records remain unchanged; every affected check is unknown.",
+            "note": "Current OpenSlides raw README, software grants, metadata/support requests remain429 or return loading shells; the project site fails TLS. The actual failures are archived, without substituting historical source bytes. This leaves the maintenance criterion unresolved.",
             "source_urls": [
               "https://gitlab.com/open-slides/openslides/-/blob/main/README.md",
               "https://gitlab.com/open-slides/openslides/-/blob/main/LICENSE-MIT",
@@ -111286,7 +111316,7 @@
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current OpenSlides source, both named license files, dependency/setup documents and support/history requests returned HTTP 429; its public site also failed TLS. No fresh complete license or workflow evidence was available. Historical records remain unchanged; every affected check is unknown. Independent first-hand use was not established in this bounded pass.",
+            "note": "Current OpenSlides raw README, software grants, metadata/support requests remain429 or return loading shells; the project site fails TLS. The actual failures are archived, without substituting historical source bytes. This leaves the independent use criterion unresolved.",
             "source_urls": [
               "https://gitlab.com/open-slides/openslides/-/blob/main/README.md",
               "https://gitlab.com/open-slides/openslides/-/blob/main/LICENSE-MIT",
@@ -111308,7 +111338,7 @@
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Current OpenSlides source, both named license files, dependency/setup documents and support/history requests returned HTTP 429; its public site also failed TLS. No fresh complete license or workflow evidence was available. Historical records remain unchanged; every affected check is unknown. No complete selected model/service/cost clearance is established.",
+            "note": "Current OpenSlides raw README, software grants, metadata/support requests remain429 or return loading shells; the project site fails TLS. The actual failures are archived, without substituting historical source bytes. This leaves the dependencies criterion unresolved.",
             "source_urls": [
               "https://gitlab.com/open-slides/openslides/-/blob/main/README.md",
               "https://gitlab.com/open-slides/openslides/-/blob/main/LICENSE-MIT",
@@ -142748,17 +142778,17 @@
     "external:https://gitlab.com/algomus.fr/perso-ai": {
       "basis_edition": "2026-11-05",
       "record_sha256": "f97b7a51d277808625958e396831c74a5b7ae119a470c62cece5123092fca47d",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "Personalizing AI for co-creative music composition: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "Personalizing AI for co-creative music composition: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "Explore a composer-directed melody/structure study from authorized symbolic examples, then inspect the resulting MusicXML in a separately chosen score editor.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -142800,8 +142830,8 @@
         ],
         "checks": {
           "license": {
-            "status": "unknown",
-            "note": "Current project README, factor-oracle melody source and GitLab API/history/support returned HTTP 429. The full GNU GPL-3.0 reference text was fetched, but that reference by itself does not establish the current project source grant. Current setup/results/dependencies remain unknown.",
+            "status": "verified",
+            "note": "The current README explicitly licenses the project GPL3.0-or-later. Its linked complete GNU GPL3 text was archived and compared throughout; only quote/copyright typography and the nonoperative why-not-LGPL URL differ from the retained standard. The declaration and full referenced terms were reviewed together.",
             "source_urls": [
               "https://gitlab.com/algomus.fr/perso-ai/-/raw/master/README.md",
               "https://gitlab.com/algomus.fr/perso-ai/-/blob/master/factor-oracle/melodygen.py",
@@ -142815,8 +142845,8 @@
             ]
           },
           "results": {
-            "status": "unknown",
-            "note": "Current project README, factor-oracle melody source and GitLab API/history/support returned HTTP 429. The full GNU GPL-3.0 reference text was fetched, but that reference by itself does not establish the current project source grant. Current setup/results/dependencies remain unknown.",
+            "status": "documented",
+            "note": "The owner describes co-composing The Last Moment Before You Fly with composer Sébastien Gulluni using melody/chord/structure methods. The2021contest ranking and co-author collaboration are not independent first-hand tool validation.",
             "source_urls": [
               "https://gitlab.com/algomus.fr/perso-ai/-/raw/master/README.md",
               "https://gitlab.com/algomus.fr/perso-ai/-/blob/master/factor-oracle/melodygen.py",
@@ -142830,8 +142860,8 @@
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Current project README, factor-oracle melody source and GitLab API/history/support returned HTTP 429. The full GNU GPL-3.0 reference text was fetched, but that reference by itself does not establish the current project source grant. Current setup/results/dependencies remain unknown.",
+            "status": "documented",
+            "note": "The current README declares Python3.5 and gives factor-oracle chordgen.py/melodygen.py and structure-generation examples with supplied data. Current melodygen.py was readable. Modern dependency resolution, platform support and a clean reproduction remain unverified.",
             "source_urls": [
               "https://gitlab.com/algomus.fr/perso-ai/-/raw/master/README.md",
               "https://gitlab.com/algomus.fr/perso-ai/-/blob/master/factor-oracle/melodygen.py",
@@ -142845,8 +142875,8 @@
             ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "Current project README, factor-oracle melody source and GitLab API/history/support returned HTTP 429. The full GNU GPL-3.0 reference text was fetched, but that reference by itself does not establish the current project source grant. Current setup/results/dependencies remain unknown.",
+            "status": "documented",
+            "note": "Fresh official project metadata and one commit record were inspected. The bounded issue query returned an empty list; that does not prove no bugs, working support or sustained workflow reliability. Several deeper file requests remain rate-limited.",
             "source_urls": [
               "https://gitlab.com/algomus.fr/perso-ai/-/raw/master/README.md",
               "https://gitlab.com/algomus.fr/perso-ai/-/blob/master/factor-oracle/melodygen.py",
@@ -142861,7 +142891,7 @@
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current project README, factor-oracle melody source and GitLab API/history/support returned HTTP 429. The full GNU GPL-3.0 reference text was fetched, but that reference by itself does not establish the current project source grant. Current setup/results/dependencies remain unknown. Independent first-hand use was not established in this bounded pass.",
+            "note": "No current independent first-hand successful use was established by the retrieved owner documentation and bounded empty issue response. Owner tests, collaborator activity and popularity are not substituted.",
             "source_urls": [
               "https://gitlab.com/algomus.fr/perso-ai/-/raw/master/README.md",
               "https://gitlab.com/algomus.fr/perso-ai/-/blob/master/factor-oracle/melodygen.py",
@@ -142875,8 +142905,8 @@
             ]
           },
           "dependencies": {
-            "status": "unknown",
-            "note": "Current project README, factor-oracle melody source and GitLab API/history/support returned HTTP 429. The full GNU GPL-3.0 reference text was fetched, but that reference by itself does not establish the current project source grant. Current setup/results/dependencies remain unknown. No complete selected model/service/cost clearance is established.",
+            "status": "documented",
+            "note": "Nonprobabilistic/probabilistic factor oracles and human-crafted Markov constraints are distinct algorithmic routes. Dummy pretrained data, training corpora, MusicXML/MIDI inputs and modern library compatibility need separate grants/version checks; no hardware requirements are inferred.",
             "source_urls": [
               "https://gitlab.com/algomus.fr/perso-ai/-/raw/master/README.md",
               "https://gitlab.com/algomus.fr/perso-ai/-/blob/master/factor-oracle/melodygen.py",
@@ -266358,17 +266388,17 @@
     "external:https://gitlab.com/afsh4ck/openedit": {
       "basis_edition": "2026-11-10",
       "record_sha256": "a9b1472ea4f5279a1933599213a662447964f8951f9f39ced5f4c15ef8204cd7",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "openedit (afsh4ck): current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "openedit (afsh4ck): fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "Prepare reviewed transcript-based cuts, animated overlays, captions and a local multi-track edit from owned footage.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -266398,12 +266428,16 @@
           {
             "title": "Current source or dated attempted source",
             "url": "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
           }
         ],
         "checks": {
           "license": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Dated per-source attempts are archived; no fresh current grant or workflow claim is inferred from old guides.",
+            "status": "verified",
+            "note": "The complete current MIT source grant was recovered through the official GitLab file API and compared across the entire permission, notice and disclaimer body with the retained standard; it matches. The old429 gap is closed for code, not models or services.",
             "source_urls": [
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/README.md",
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/LICENSE",
@@ -266411,12 +266445,13 @@
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
             ]
           },
           "results": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Dated per-source attempts are archived; no fresh current grant or workflow claim is inferred from old guides.",
+            "status": "documented",
+            "note": "Current owner material supplies an inspectable62-second showcase, transcript editing, captions and AI-generated edit previews. Neither that demonstration nor owner benchmark commands establish independent creative quality.",
             "source_urls": [
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/README.md",
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/LICENSE",
@@ -266424,12 +266459,13 @@
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Dated per-source attempts are archived; no fresh current grant or workflow claim is inferred from old guides.",
+            "status": "documented",
+            "note": "Node20+, FFmpeg and a recent Chromium/WebCodecs browser are documented; npm install then npm run app serves localhost:4747. Optional whisper.cpp/model installation and logged-in Claude/Codex sessions are separate. No independent installation was performed.",
             "source_urls": [
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/README.md",
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/LICENSE",
@@ -266437,12 +266473,13 @@
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
             ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Dated per-source attempts are archived; no fresh current grant or workflow claim is inferred from old guides.",
+            "status": "documented",
+            "note": "Fresh official project metadata and one commit record were inspected. The bounded issue query returned an empty list; that does not prove no bugs, working support or sustained workflow reliability. Several deeper file requests remain rate-limited.",
             "source_urls": [
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/README.md",
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/LICENSE",
@@ -266450,12 +266487,13 @@
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Dated per-source attempts are archived; no fresh current grant or workflow claim is inferred from old guides. Independent first-hand use was not established in this bounded pass.",
+            "note": "No current independent first-hand successful use was established by the retrieved owner documentation and bounded empty issue response. Owner tests, collaborator activity and popularity are not substituted.",
             "source_urls": [
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/README.md",
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/LICENSE",
@@ -266463,12 +266501,13 @@
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
             ]
           },
           "dependencies": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Dated per-source attempts are archived; no fresh current grant or workflow claim is inferred from old guides. No complete selected model/service/cost clearance is established.",
+            "status": "documented",
+            "note": "MIT app code is distinct from FFmpeg/codecs, optional Whisper and AI-host/session terms. The owner claims local files, but remote AI reasoning can receive transcripts/frame context; this review does not certify an all-local inference path. Model/version/cost and privacy scope remain incomplete.",
             "source_urls": [
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/README.md",
               "https://gitlab.com/afsh4ck/openedit/-/blob/main/LICENSE",
@@ -266476,7 +266515,8 @@
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/afsh4ck%2Fopenedit/repository/files/requirements.txt/raw?ref=main"
             ]
           }
         }
@@ -266485,17 +266525,17 @@
     "external:https://gitlab.com/ahkamboh/agent-caption": {
       "basis_edition": "2026-11-10",
       "record_sha256": "adc61c9d04994f863a9584abe88a220e1b0a108b9f310d60e6a5a4da6a90c73d",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "agent-caption: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "agent-caption: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "Prepare editable subtitle drafts and captioned interview or lyric-video copies, including mixed Hindi/English source material.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -266525,12 +266565,20 @@
           {
             "title": "Current source or dated attempted source",
             "url": "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
           }
         ],
         "checks": {
           "license": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Earlier Hindi/English caption documentation is retained historically; current six-check evidence could not be revalidated.",
+            "status": "verified",
+            "note": "The complete current MIT software grant was recovered from the official file API; its entire operative body matches the retained standard. This closes the previous inaccessible-code-license check.",
             "source_urls": [
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/README.md",
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/LICENSE",
@@ -266538,12 +266586,14 @@
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/README.md/raw?ref=master",
-              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
             ]
           },
           "results": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Earlier Hindi/English caption documentation is retained historically; current six-check evidence could not be revalidated.",
+            "status": "documented",
+            "note": "The README documents Whisper transcription, forced alignment, styled subtitles and burned MP4. Perfect/100%-script claims are owner assertions, not calibrated timing or transcription evidence;1100+MMS alignment languages are not1100+Whisper ASR languages.",
             "source_urls": [
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/README.md",
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/LICENSE",
@@ -266551,12 +266601,14 @@
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/README.md/raw?ref=master",
-              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Earlier Hindi/English caption documentation is retained historically; current six-check evidence could not be revalidated.",
+            "status": "documented",
+            "note": "Python3.10+, FFmpeg and about4GB disk are declared; models download separately. Disk size is not a RAM requirement. The supplemental requirements/MMS source requests returned429, so current exact pins and backend behavior were not recovered.",
             "source_urls": [
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/README.md",
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/LICENSE",
@@ -266564,12 +266616,14 @@
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/README.md/raw?ref=master",
-              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
             ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Earlier Hindi/English caption documentation is retained historically; current six-check evidence could not be revalidated.",
+            "status": "documented",
+            "note": "Fresh official project metadata and one commit record were inspected. The bounded issue query returned an empty list; that does not prove no bugs, working support or sustained workflow reliability. Several deeper file requests remain rate-limited.",
             "source_urls": [
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/README.md",
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/LICENSE",
@@ -266577,12 +266631,14 @@
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/README.md/raw?ref=master",
-              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Earlier Hindi/English caption documentation is retained historically; current six-check evidence could not be revalidated. Independent first-hand use was not established in this bounded pass.",
+            "note": "No current independent first-hand successful use was established by the retrieved owner documentation and bounded empty issue response. Owner tests, collaborator activity and popularity are not substituted.",
             "source_urls": [
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/README.md",
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/LICENSE",
@@ -266590,12 +266646,14 @@
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/README.md/raw?ref=master",
-              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
             ]
           },
           "dependencies": {
-            "status": "unknown",
-            "note": "Current GitLab README/LICENSE, metadata, commits and issue endpoints returned HTTP 429. Earlier Hindi/English caption documentation is retained historically; current six-check evidence could not be revalidated. No complete selected model/service/cost clearance is established.",
+            "status": "documented",
+            "note": "Whisper, whisperX/MMS, Demucs, model checkpoints and supplied fonts retain terms distinct from MIT. Exact MMS/model and font grants, practical costs and device limits remain incomplete; the current request failures are retained.",
             "source_urls": [
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/README.md",
               "https://gitlab.com/ahkamboh/agent-caption/-/blob/master/LICENSE",
@@ -266603,7 +266661,9 @@
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/README.md/raw?ref=master",
-              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master"
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/LICENSE/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/requirements.txt/raw?ref=master",
+              "https://gitlab.com/api/v4/projects/ahkamboh%2Fagent-caption/repository/files/scripts%2Fmms_align.py/raw?ref=master"
             ]
           }
         }
@@ -266612,17 +266672,17 @@
     "external:https://gitlab.com/celestialtech/joyai-video-edit-mlx": {
       "basis_edition": "2026-11-11",
       "record_sha256": "6617aefc2b103e612bdf370570223c9af13117131562c02cef3debd5e32f0330",
-      "checked_on": "2026-11-16",
+      "checked_on": "2026-11-17",
       "assessment": {
         "tier": "unverified",
         "method": "source-review",
-        "checked_on": "2026-11-16",
-        "summary": "JoyAI-Video-Edit MLX: current host sources or dated access failures reviewed across all six criteria; Quality unverified retained.",
+        "checked_on": "2026-11-17",
+        "summary": "JoyAI-Video-Edit MLX: fresh source follow-up across all six checks; recovered grants close code-license gaps where supported, without a quality promotion.",
         "scope": "Offline instruction-guided editing of short source videos on Apple Silicon using the released checkpoints.",
         "caveats": [
-          "Source review only; no installation, inference or benchmark by AI Media Scout.",
-          "Unavailable/gated sources are evidence gaps, not proof of deletion or license revocation.",
-          "A successful HTTP status on a bot-check/loading page does not validate its claimed source contents."
+          "Source review only; no discovered application was installed or run.",
+          "Current captures and dated failures are archived; an HTTP200 bot/loading page is not the requested source.",
+          "Review coverage is distinct from recommendation confidence and independent reproduction."
         ],
         "sources": [
           {
@@ -266652,12 +266712,24 @@
           {
             "title": "Current source or dated attempted source",
             "url": "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main"
+          },
+          {
+            "title": "Dated attempted supplemental source",
+            "url": "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
           }
         ],
         "checks": {
           "license": {
-            "status": "unknown",
-            "note": "Current GitLab raw README/LICENSE, metadata, commits and issue requests returned HTTP 429. The earlier Apple Silicon/MLX guide remains historical; no current model/installation/output permission is inferred from it.",
+            "status": "verified",
+            "note": "The entire current Apache2 grant was recovered and is canonically identical to the retained full-text standard. The separate NOTICE request returned429, so upstream notices and model conditions are not declared fully cleared.",
             "source_urls": [
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
@@ -266665,12 +266737,15 @@
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
             ]
           },
           "results": {
-            "status": "unknown",
-            "note": "Current GitLab raw README/LICENSE, metadata, commits and issue requests returned HTTP 429. The earlier Apple Silicon/MLX guide remains historical; no current model/installation/output permission is inferred from it.",
+            "status": "documented",
+            "note": "Owner parity/style results and an M3Ultra512GB measurement around1.11seconds/frame at480p document one offline/nearline route, not the upstream CUDA24FPS result on Mac. A claimed independent adversarial review inside the owner README is not separately verified first-hand use.",
             "source_urls": [
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
@@ -266678,12 +266753,15 @@
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
             ]
           },
           "setup": {
-            "status": "unknown",
-            "note": "Current GitLab raw README/LICENSE, metadata, commits and issue requests returned HTTP 429. The earlier Apple Silicon/MLX guide remains historical; no current model/installation/output permission is inferred from it.",
+            "status": "documented",
+            "note": "Apple Silicon/macOS14+, Python3.12+, MLX0.31+, uv and separate raw/converted weights are documented. bf16~57GB and an owner64GB/96GB comfort range differ from q4/q8 memory presets; README planned/available wording conflicts, so32GB readiness is not verified.",
             "source_urls": [
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
@@ -266691,12 +266769,15 @@
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
             ]
           },
           "maintenance": {
-            "status": "unknown",
-            "note": "Current GitLab raw README/LICENSE, metadata, commits and issue requests returned HTTP 429. The earlier Apple Silicon/MLX guide remains historical; no current model/installation/output permission is inferred from it.",
+            "status": "documented",
+            "note": "Fresh official project metadata and one commit record were inspected. The bounded issue query returned an empty list; that does not prove no bugs, working support or sustained workflow reliability. Several deeper file requests remain rate-limited.",
             "source_urls": [
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
@@ -266704,12 +266785,15 @@
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
             ]
           },
           "independent_use": {
             "status": "unknown",
-            "note": "Current GitLab raw README/LICENSE, metadata, commits and issue requests returned HTTP 429. The earlier Apple Silicon/MLX guide remains historical; no current model/installation/output permission is inferred from it. Independent first-hand use was not established in this bounded pass.",
+            "note": "No current independent first-hand successful use was established by the retrieved owner documentation and bounded empty issue response. Owner tests, collaborator activity and popularity are not substituted.",
             "source_urls": [
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
               "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
@@ -266717,20 +266801,113 @@
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
               "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
+            ]
+          },
+          "dependencies": {
+            "status": "documented",
+            "note": "JoyAI16B DiT, xVAE and MiMo-VL conditioning require separately governed weights and substantial storage (~120GBraw plus conversions as documented). Apache2 code does not clear the upstream model/service grants; NOTICE, pyproject and benchmark follow-up requests returned429.",
+            "source_urls": [
+              "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
+              "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/NOTICE/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/pyproject.toml/raw?ref=main",
+              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/bench%2FBENCHMARK.md/raw?ref=main"
+            ]
+          }
+        }
+      }
+    },
+    "github:tejasn-2545/low-poly-face-generator": {
+      "basis_edition": "2026-11-16",
+      "record_sha256": "b2c749171669f766bfed9e5a4045a913473a98e7a47dd829a1b32c1e74ba516a",
+      "checked_on": "2026-11-17",
+      "assessment": {
+        "tier": "unverified",
+        "method": "source-review",
+        "checked_on": "2026-11-17",
+        "summary": "Current source-tree review finds no published implementation; setup is explicitly failed while the existing Quality unverified label remains.",
+        "scope": "The advertised MediaPipe/low-polygon portrait workflow; historical screened record preserved.",
+        "caveats": [
+          "Source review only; no code was installed or run.",
+          "An incomplete public implementation is recorded as a concrete gap; no prototype label is inferred merely from popularity, research provenance or a missing demo."
+        ],
+        "sources": [
+          {
+            "title": "Current primary source or bounded support query",
+            "url": "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator"
+          },
+          {
+            "title": "Current primary source or bounded support query",
+            "url": "https://api.github.com/repos/TEJAsN-2545/Low-Poly-Face-Generator/git/trees/HEAD?recursive=1"
+          },
+          {
+            "title": "Current primary source or bounded support query",
+            "url": "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/README.md"
+          },
+          {
+            "title": "Current primary source or bounded support query",
+            "url": "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/LICENSE"
+          },
+          {
+            "title": "Current primary source or bounded support query",
+            "url": "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/issues"
+          }
+        ],
+        "checks": {
+          "license": {
+            "status": "verified",
+            "note": "The complete MIT permission/notice/disclaimer body was reviewed. This grants repository material permissions; it does not prove a software implementation is present.",
+            "source_urls": [
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/LICENSE"
+            ]
+          },
+          "results": {
+            "status": "unknown",
+            "note": "The README advertises MediaPipe-based low-poly facial art, but no output implementation or independently verified creative result is established.",
+            "source_urls": [
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/README.md",
+              "https://api.github.com/repos/TEJAsN-2545/Low-Poly-Face-Generator/git/trees/HEAD?recursive=1"
+            ]
+          },
+          "setup": {
+            "status": "failed",
+            "note": "The current untruncated recursive source tree contains only LICENSE and README.md: no implementation, dependencies or launcher. A functioning setup cannot be reproduced from this current repository as published.",
+            "source_urls": [
+              "https://api.github.com/repos/TEJAsN-2545/Low-Poly-Face-Generator/git/trees/HEAD?recursive=1",
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/README.md"
+            ]
+          },
+          "maintenance": {
+            "status": "unknown",
+            "note": "The source tree and bounded current support/metadata were checked. A repository timestamp does not establish support for an implementation that is not supplied.",
+            "source_urls": [
+              "https://api.github.com/repos/TEJAsN-2545/Low-Poly-Face-Generator/git/trees/HEAD?recursive=1",
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/issues"
+            ]
+          },
+          "independent_use": {
+            "status": "unknown",
+            "note": "No independent successful use of this repository implementation was established; broad application claims are not first-hand evidence.",
+            "source_urls": [
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/README.md",
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/issues"
             ]
           },
           "dependencies": {
             "status": "unknown",
-            "note": "Current GitLab raw README/LICENSE, metadata, commits and issue requests returned HTTP 429. The earlier Apple Silicon/MLX guide remains historical; no current model/installation/output permission is inferred from it. No complete selected model/service/cost clearance is established.",
+            "note": "Python/OpenCV/MediaPipe/NumPy are named, but no program, version pins, model artifact or actual workflow configuration is supplied in the published tree.",
             "source_urls": [
-              "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/README.md",
-              "https://gitlab.com/celestialtech/joyai-video-edit-mlx/-/raw/main/LICENSE",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/commits?per_page=1",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/issues?scope=all&state=all&order_by=updated_at&per_page=10",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/README.md/raw?ref=main",
-              "https://gitlab.com/api/v4/projects/celestialtech%2Fjoyai-video-edit-mlx/repository/files/LICENSE/raw?ref=main"
+              "https://github.com/TEJAsN-2545/Low-Poly-Face-Generator/blob/main/README.md",
+              "https://api.github.com/repos/TEJAsN-2545/Low-Poly-Face-Generator/git/trees/HEAD?recursive=1"
             ]
           }
         }
