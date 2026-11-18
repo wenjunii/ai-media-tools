@@ -88,6 +88,8 @@ no private destination or credentials. Use the existing single chat automation.
    Never force-push or bypass protection. Keep private settings, evidence,
    operational catalogs, outbox payloads and receipts local.
 7. Run `record-sync`, `verify-sync` and `verify` before any email reservation.
+   `record-sync` verifies the live Pages bytes after deployment. `verify-sync`
+   checks the saved proof against the current commit and CI.
    The email steps apply only to an unsent daily edition; weekly maintenance of an
    already-sent edition ends after publication and checkpoint verification.
    Failure in publication, CI, Pages or verification blocks email. Resume unfinished

@@ -248,6 +248,8 @@ python3 -m media_scout verify --date YYYY-MM-DD
 
 These checks confirm the configured repository, local/tracking/remote commit
 agreement, a clean checkout, complete report/archive bytes, and successful main CI.
+`record-sync` also compares the deployed Pages files with the verified commit
+before saving a checkpoint. `verify-sync` checks the saved proof for that commit.
 If any publication step fails, stop before email reservation or sending. Resume
 only the unfinished publication later; do not regenerate a sealed report or
 publish credentials, personal settings, raw research, or operational receipts.
