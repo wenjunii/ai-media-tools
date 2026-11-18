@@ -2,6 +2,7 @@
 
 import json
 import copy
+from io import BytesIO
 from pathlib import Path
 import subprocess
 import shutil
@@ -238,6 +239,23 @@ class PublicationCheckpointTests(unittest.TestCase):
         runner_patch = patch("media_scout.publication._run", side_effect=local_git_and_ci)
         self.addCleanup(runner_patch.stop)
         runner_patch.start()
+        self.page_overrides = {}
+
+        def live_pages(request, *, timeout):
+            prefix = "https://example.github.io/scout/"
+            self.assertTrue(request.full_url.startswith(prefix))
+            name = request.full_url.removeprefix(prefix)
+            content = self.page_overrides.get(name)
+            if content is None:
+                content = (self.root / "public" / name).read_bytes()
+            response = BytesIO(content)
+            response.status = 200
+            response.geturl = lambda: request.full_url
+            return response
+
+        pages_patch = patch("media_scout.publication.urlopen", side_effect=live_pages)
+        self.addCleanup(pages_patch.stop)
+        self.pages_requests = pages_patch.start()
 
     def git(self, *args):
         return subprocess.run(["git", *args], cwd=self.root, capture_output=True, check=True).stdout
@@ -253,8 +271,17 @@ class PublicationCheckpointTests(unittest.TestCase):
 
     def test_verified_remote_and_ci_allow_exactly_one_email_reservation(self):
         receipt = publication.record_sync(self.day, self.root)
+        self.assertEqual(receipt["pages_url"], "https://example.github.io/scout/")
+        self.assertTrue(receipt["pages_verified_at"])
+        self.assertEqual({c.args[0].full_url.removeprefix(receipt["pages_url"])
+                          for c in self.pages_requests.call_args_list}, {
+            "index.html", "library.json", "assets/library.css", "assets/library.js",
+            *(f"reports/{self.day}/{name}" for name in publication.REPORT_FILES + ("publication.json",)),
+        })
+        self.pages_requests.reset_mock()
         self.assertEqual(receipt, publication.verify_sync(self.day, self.root))
         self.assertEqual(delivery.prepare(self.day, self.root)["status"], "reserved")
+        self.pages_requests.assert_not_called()
         delivery_receipt = read_json(self.root / "state/deliveries" / (self.day + ".json"))
         self.assertEqual(delivery_receipt["github_commit"], receipt["commit"])
         self.assertEqual(delivery_receipt["github_report_url"], receipt["report_url"])
@@ -273,6 +300,25 @@ class PublicationCheckpointTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "CI"):
             publication.record_sync(self.day, self.root)
         self.assertFalse((self.root / "state/publications" / (self.day + ".json")).exists())
+
+    def test_stale_live_pages_blocks_checkpoint_even_with_successful_ci(self):
+        path = self.root / "state/publications" / (self.day + ".json")
+        data = (self.root / "public/library.json").read_bytes()
+        # Stale content may have the correct size and a successful HTTP status.
+        self.page_overrides["library.json"] = b"?" + data[1:]
+        with self.assertRaisesRegex(RuntimeError, "Live GitHub Pages differs.*library.json"):
+            publication.record_sync(self.day, self.root)
+        self.assertFalse(path.exists())
+        self.assert_unreserved()
+
+    def test_legacy_checkpoint_requires_live_verification_before_reserving_email(self):
+        path = self.root / "state/publications" / (self.day + ".json")
+        receipt = publication.record_sync(self.day, self.root)
+        del receipt["pages_verified_at"]
+        write_json(path, receipt)
+        with self.assertRaisesRegex(ValueError, "lacks current live Pages verification"):
+            delivery.prepare(self.day, self.root)
+        self.assert_unreserved()
 
     def test_successful_workflow_with_skipped_or_failed_pages_cannot_authorize_email(self):
         publication.record_sync(self.day, self.root)

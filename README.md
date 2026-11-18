@@ -43,6 +43,10 @@ archive and browser checks on both the PR and main, followed by Pages deployment
 source changes still run the full Python and Windows suites.
 Pages upload and deployment share an artifact name unique to the workflow run
 and attempt, so deployment retries cannot select an earlier attempt's artifact.
+After successful deployment, `record-sync` verifies the SHA-256 hashes of the
+live library, browser assets and edition files before recording the checkpoint.
+Email preparation checks that proof against the current GitHub commit and CI
+without downloading the live library again.
 See [GitHub usage and safeguards](docs/GITHUB_USAGE.md), including how to inspect
 the measured savings. Standard GitHub-hosted runner minutes for this public
 repository are [free](https://docs.github.com/en/billing/concepts/product-billing/github-actions);
@@ -415,9 +419,10 @@ The date defaults to today in the configured time zone. `discover` resumes an ex
 daily observation. `build` resumes the same sealed edition. Neither command
 silently refreshes a completed report. `prepare-email` only creates a send
 reservation and MIME payload; it does not send mail. Never call it as a casual
-preview. It blocks before reservation when GitHub sync or CI is missing, failed,
-or stale. `status`, `verify`, `verify-public-archive`, and `verify-sync` are read-only
-checks; the last one contacts GitHub to check the actual commit and CI.
+preview. It blocks before reservation when GitHub sync, CI or the live Pages
+proof is missing, failed or stale. `status`, `verify`, `verify-public-archive`, and
+`verify-sync` are read-only checks. `verify-sync` checks the actual commit, CI and
+the checkpoint's recorded Pages proof.
 `verify-public-archive` checks the published files without private research,
 delivery settings, or GitHub access, so it also works in a fresh clone.
 

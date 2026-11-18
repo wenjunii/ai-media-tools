@@ -107,10 +107,21 @@ python3 -m media_scout prepare-email --date YYYY-MM-DD
 
 `record-sync` checks the actual origin destination, main branch, clean working
 tree, local/tracking/remote commit agreement, complete public edition and library,
-and the latest matching main CI run. It writes an ignored checkpoint in
-`state/publications/YYYY-MM-DD.json`. `verify-sync` repeats those checks and rejects
-a checkpoint for different content, repository, or commit. If a later reviewed
-project update changes main, verify and record the current publication again.
+and the latest matching main CI run. After the Pages job succeeds, it streams the
+files from the repository's default GitHub Pages URL and compares their SHA-256
+hashes and sizes with the verified commit. This covers the live index, library JSON,
+browser assets, selected edition files and separately sealed updates. It then
+rechecks the checkout and remote branch before writing an ignored checkpoint in
+`state/publications/YYYY-MM-DD.json` with the Pages URL and verification time.
+If Pages is unavailable or still serves older content, check the deployment and
+rerun `record-sync` after the new files are available.
+
+`verify-sync` rechecks the commit, archive and CI, then validates the saved Pages
+proof for that content and CI run. This avoids downloading the live files again
+for `verify-sync` and `prepare-email`. A checkpoint created before live verification
+was added needs a fresh `record-sync` before it can authorize a new reservation.
+If a later reviewed project update changes main, verify and record the current
+publication again.
 When the commit changes, `record-sync` preserves the previous checkpoint's exact
 bytes in `state/publication_history/YYYY-MM-DD/` before replacing the current
 checkpoint. This history remains local and does not change any delivery receipt.
