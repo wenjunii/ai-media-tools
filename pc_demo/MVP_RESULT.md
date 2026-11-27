@@ -289,3 +289,42 @@ protected source sync. Current main includes the Mac's October 21/22 reports and
 library-performance work; those changes are incorporated without rebuilding or
 editing the research artifacts. Routine PC work remains local between requested
 syncs. No research/email operation, schedule or social upload was made.
+
+## Narration timing and audio assembly (2026-11-27)
+
+`run` now measures the synthesized narration before launching Real-ESRGAN.
+A deliberately extended first scene produced 14.50 seconds of speech against
+the 7.15-second limit. The failed run
+`.local/runs/20261127T185526051873Z-realesrgan/` kept all six voice clips and
+`audio/timings.json`. Inference never started, and the previous draft stayed
+current.
+
+The first normal-storyboard attempt mastered the full audio track, then failed
+because the former Vulkan device index 1 was unavailable. The run
+`.local/runs/20261127T185641608582Z-realesrgan/` preserves the device enumeration
+and error. This PC now enumerates the NVIDIA RTX 3080 Ti Laptop GPU as device 0.
+The README examples use automatic selection.
+
+The next attempt succeeded at
+`.local/runs/20261127T185727097231Z-realesrgan/`. Real-ESRGAN produced the
+1024-by-1024 image from the 256-by-256 illustration in 4.503 seconds. The
+output image matched the earlier successful run byte for byte. The library
+profile came from the saved `2026-10-01-r2` edition.
+
+One FFmpeg command assembled the six clips into a 45-second 48 kHz stereo
+master. Its SHA-256 matched the master made by the previous seven-command
+method for the same storyboard. The verified 1080-by-1920 H.264/AAC draft
+passed full decode, audio levels, and all six scene comparisons. The contact
+sheet was visually inspected and the browser played to the end. The playback
+record is in `qa/manual-review.json`. Creator listening and approval are pending.
+
+Reproduce on this PC with automatic device selection:
+
+```powershell
+.\pc_demo\demo.ps1 preflight
+.\pc_demo\demo.ps1 run
+```
+
+Validation covered 285 Python tests under WSL (two Windows font checks skipped
+there), all 81 native Windows PC tests, 44 JavaScript tests, compilation, and
+the public archive verification.

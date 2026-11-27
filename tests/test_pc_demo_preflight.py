@@ -9,6 +9,7 @@ import struct
 import sys
 import tempfile
 import unittest
+import wave
 import zlib
 from unittest.mock import patch
 from pc_demo.common import read_json, sha256, write_json
@@ -33,7 +34,8 @@ class PreflightTests(unittest.TestCase):
         self.story = read_json(PROJECT / 'pc_demo/storyboard.json')
         for name in ('storyboard.json', 'storyboard-artwork.json'):
             write_json(self.root / name, self.story)
-        self.lock = {'app': {'library_id': 'github:xinntao/real-esrgan', 'extract': ['tool.exe', 'model.bin']},
+        self.lock = {'app': {'library_id': 'github:xinntao/real-esrgan', 'extract': ['tool.exe', 'model.bin'],
+                             'model': 'test-model', 'executable': 'tool.exe'},
                      'pillow': {'version': '11.3.0'},
                      'sources': [{'name': 'license.txt', 'url': 'https://example.invalid/LICENSE'}]}
         write_json(self.root / 'runtime.lock.json', self.lock)
@@ -185,6 +187,40 @@ class PreflightTests(unittest.TestCase):
         self.assertEqual((run / 'inputs/source.png').read_bytes(), source.read_bytes())
         self.assertTrue((run / 'storyboard.json').is_file())
         self.assertTrue((run / 'logs/failure.txt').is_file())
+        self.assertFalse((run / 'logs/inference.command.json').exists())
+        self.assertEqual((self.local / 'latest-run.json').read_bytes(), pointer)
+
+    @unittest.skipIf(Image is None, 'Pipeline entry needs the reviewed Pillow dependency')
+    def test_overlong_narration_stops_before_gpu_and_preserves_every_scene_timing(self):
+        from pc_demo.pipeline import run_demo
+
+        write_json(self.local / 'hardware.json', self.receipt['hardware'])
+        write_json(self.local / 'latest-run.json', {'run': 'existing draft'})
+        pointer = (self.local / 'latest-run.json').read_bytes()
+
+        def synthesize_fixture(args, directory, label):
+            self.assertEqual(label, 'narration', 'FFmpeg master must wait for the timing check')
+            audio = directory.parent / 'audio'
+            for index, seconds in enumerate((8, 5, 5, 5, 9, 5)):
+                with wave.open(str(audio / f'voice-{index:02d}.wav'), 'wb') as wav:
+                    wav.setparams((1, 2, 8000, 0, 'NONE', 'not compressed'))
+                    wav.writeframes(b'\x00\x00' * (8000 * seconds))
+
+        with patch('pc_demo.pipeline.LOCAL', self.local), patch(
+                'pc_demo.pipeline.snapshot_source', return_value='test-commit'), patch(
+                'pc_demo.narration.shutil.which', return_value='powershell.exe'), patch(
+                'pc_demo.narration.execute', side_effect=synthesize_fixture), patch(
+                'pc_demo.pipeline.execute', side_effect=AssertionError('GPU must wait for narration')):
+            with self.assertRaisesRegex(ValueError, r'scene 1 \(result\).*scene 5 \(use\)'):
+                run_demo()
+        run, = (self.local / 'runs').iterdir()
+        manifest = read_json(run / 'manifest.json')
+        self.assertEqual(manifest['status'], 'failed')
+        self.assertEqual(manifest['failures'][0]['stage'], 'narration')
+        timings = read_json(run / 'audio/timings.json')
+        self.assertEqual(len(timings), 6)
+        self.assertEqual([item['speech_seconds'] for item in timings if not item['fits']], [8, 9])
+        self.assertFalse((run / 'audio/narration.wav').exists())
         self.assertFalse((run / 'logs/inference.command.json').exists())
         self.assertEqual((self.local / 'latest-run.json').read_bytes(), pointer)
 

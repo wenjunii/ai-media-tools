@@ -44,6 +44,9 @@ status. A local Git commit does not use GitHub. Preserve protected CI when synci
   and use the compositor's actual font measurements. Never equate a readiness
   pass with tested GPU execution, speech timing, video verification or approval.
   Failed checks must not repair/download dependencies or move the latest draft.
+- Measure the actual synthesized narration before new inference. Preserve the
+  raw scene clips and timing results, report every overlong scene, and leave
+  room at the end of each scene without truncating speech.
 - For custom artwork, preserve the original bytes separately from the normalized
   model input. Record orientation, color handling, dimensions and hashes. Keep
   the image's aspect ratio and use accurate dimensions/captions; never describe

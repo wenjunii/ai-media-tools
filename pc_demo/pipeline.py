@@ -9,6 +9,7 @@ from .library import archive_library
 from .setup_runtime import verified_runtime
 from .storyboard import load_storyboard
 from .inputs import input_relative, load_custom_input, save_custom_input
+from .narration import prepare_narration
 from .preflight import production_checks, report, require_pass
 
 
@@ -32,20 +33,17 @@ def record_failure(run, manifest, error, stage):
     print(f'FAILED RUN PRESERVED: {run}',flush=True)
 
 
-def finish_draft(run, manifest, receipt):
+def finish_draft(run, manifest, receipt, *, narration_prepared=False):
     """Assemble a new draft; inference evidence must already exist in this run."""
     readiness=report(production_checks(load_storyboard(run/'storyboard.json'),receipt))
     write_json(run/'qa/render-preflight.json',readiness)
     require_pass(readiness)
     ffmpeg=receipt['hardware']['media_tools']['ffmpeg']['path']
-    from .render import Composer,make_audio,render_video
-    # Check fonts and caption/title fit before spending time synthesizing speech.
-    Composer(run)
-    ps=shutil.which('powershell.exe')
-    if not ps:
-        raise RuntimeError('Narration requires Windows PowerShell')
-    execute([ps,'-NoProfile','-File',ROOT/'narrate.ps1','-RunDirectory',run],run/'logs','narration')
-    make_audio(run,ffmpeg)
+    from .render import Composer,render_video
+    if not narration_prepared:
+        # A revision validates the copied images and layout before synthesizing.
+        Composer(run)
+        prepare_narration(run,ffmpeg)
     render_video(run,ffmpeg)
     manifest['status']='rendered'
     manifest['video_sha256']=sha256(run/'draft.mp4')
@@ -79,6 +77,7 @@ def run_demo(gpu_id=-1, storyboard=None, input_image=None, library_file=None):
               'audio':'Separate Windows synthetic narration; Real-ESRGAN produces a still image',
               'isolation':'Portable app + Python virtual environment, not OS sandbox'}
     write_json(run/'manifest.json',manifest)
+    stage='preflight'
     try:
         manifest.update(archive_library(run,lock['app']['library_id'],library_file))
         write_json(run/'manifest.json',manifest)
@@ -105,6 +104,10 @@ def run_demo(gpu_id=-1, storyboard=None, input_image=None, library_file=None):
             shutil.copyfile(ROOT/'LICENSE_REVIEW.md',run/'evidence/LICENSE_REVIEW.md')
         for source in receipt['sources']:
             shutil.copyfile(LOCAL/'sources'/source['name'],run/'evidence'/source['name'])
+        stage='narration'
+        print('Checking spoken timing before GPU inference',flush=True)
+        prepare_narration(run,receipt['hardware']['media_tools']['ffmpeg']['path'])
+        stage='inference'
         args=[app/lock['app']['executable'],'-i',run/input_relative(manifest),'-o',run/'outputs/actual-output.png',
               '-n',lock['app']['model'],'-s','4','-t','256','-m',app/'models','-v']
         if gpu_id>=0:
@@ -118,10 +121,11 @@ def run_demo(gpu_id=-1, storyboard=None, input_image=None, library_file=None):
         manifest['output_sha256']=sha256(run/'outputs/actual-output.png')
         print(f'Real app inference completed in {manifest["inference"]["elapsed_seconds"]:.3f}s',flush=True)
         write_json(run/'manifest.json',manifest)
-        finish_draft(run,manifest,receipt)
+        stage='render'
+        finish_draft(run,manifest,receipt,narration_prepared=True)
         return run
     except Exception as error:
-        record_failure(run,manifest,error,'pipeline')
+        record_failure(run,manifest,error,stage)
         raise
 
 

@@ -4,10 +4,9 @@ import os
 import pathlib
 import subprocess
 import time
-import wave
 from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont
-from .common import ROOT, execute, read_json, sha256, stamp, write_json
+from .common import read_json, sha256, stamp, write_json
 from .storyboard import load_storyboard
 from .inputs import input_relative, validate_size
 from .captions import write_captions
@@ -197,36 +196,6 @@ class Composer:
             if x<=948:
                 d.ellipse((x-4,1574,x+4,1582),fill=ACCENT if i<=index else MUTED)
         return im
-
-
-def make_audio(run, ffmpeg):
-    story=read_json(run/'storyboard.json')
-    concat=[]
-    timings=[]
-    overlong=[]
-    for index,segment in enumerate(story['segments']):
-        with wave.open(str(run/f'audio/voice-{index:02d}.wav'),'rb') as wav:
-            duration=wav.getnframes()/wav.getframerate()
-        if duration>segment['end']-segment['start']-.35:
-            overlong.append(f'{index}: {duration:.2f}s')
-    if overlong:
-        raise ValueError('Shorten narration segments instead of truncating speech: '+', '.join(overlong))
-    for index,segment in enumerate(story['segments']):
-        source=run/f'audio/voice-{index:02d}.wav'
-        with wave.open(str(source),'rb') as wav:
-            duration=wav.getnframes()/wav.getframerate()
-        allocated=segment['end']-segment['start']
-        if duration>allocated-.35:
-            raise ValueError(f'Narration {index} is {duration:.2f}s; shorten text instead of truncating speech')
-        target=run/f'audio/segment-{index:02d}.wav'
-        execute([ffmpeg,'-y','-i',source,'-af',f'apad,atrim=duration={allocated},afade=t=out:st={allocated-.15}:d=0.15',
-                 '-ar','48000','-ac','2','-c:a','pcm_s16le',target],run/'logs',f'audio-{index}')
-        concat.append(f"file 'segment-{index:02d}.wav'")
-        timings.append({'index':index,'speech_seconds':duration,'allocated_seconds':allocated})
-    (run/'audio/concat.txt').write_text('\n'.join(concat)+'\n',encoding='utf-8')
-    execute([ffmpeg,'-y','-f','concat','-safe','0','-i','concat.txt','-af','loudnorm=I=-16:TP=-1.5:LRA=11',
-             '-ar','48000','-ac','2','-c:a','pcm_s16le',run/'audio/narration.wav'],run/'logs','audio-master',cwd=run/'audio')
-    write_json(run/'audio/timings.json',timings)
 
 
 def render_video(run,ffmpeg):
