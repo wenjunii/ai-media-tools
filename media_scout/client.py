@@ -2,7 +2,7 @@
 
 import base64
 import hashlib
-from http.client import HTTPException
+from http.client import HTTPException, HTTPSConnection
 import json
 import os
 from pathlib import Path
@@ -12,7 +12,7 @@ import subprocess
 import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPRedirectHandler, HTTPSHandler, Request, build_opener
 
 from .storage import write_json
 
@@ -32,8 +32,51 @@ class SafeRedirect(HTTPRedirectHandler):
         return redirected
 
 
+class _GitHubHTTPSHandler(HTTPSHandler):
+    """Reuse one HTTPS connection for serial, direct GitHub repository reads."""
+
+    def __init__(self, usage):
+        super().__init__()
+        self._connection = None
+        self._usage = usage
+
+    def https_open(self, request):
+        if (request.host != "api.github.com" or request._tunnel_host
+                or request.get_method() != "GET" or not request.selector.startswith("/repos/")):
+            self.close()
+            return super().https_open(request)
+        if self._connection is None:
+            self._connection = HTTPSConnection(request.host, timeout=request.timeout, context=self._context)
+        connection = self._connection
+        if connection.sock is not None:
+            self._usage["github_connection_reuses"] += 1
+        headers = dict(request.headers)
+        headers.update(request.unredirected_hdrs)
+        try:
+            connection.request("GET", request.selector, headers=headers)
+            response = connection.getresponse()
+        except OSError as error:
+            raise URLError(error) from error
+
+        if response.status == 304:
+            response.read()
+        elif not 200 <= response.status < 300:
+            # The opener still handles redirects and errors using these headers.
+            # Discard the connection so an unread body cannot affect another read.
+            response.close()
+            self.close()
+        response.url = request.full_url
+        response.msg = response.reason
+        return response
+
+    def close(self):
+        if self._connection is not None:
+            self._connection.close()
+            self._connection = None
+
+
 class Client:
-    def __init__(self, cache_dir=None):
+    def __init__(self, cache_dir=None, *, reuse_github_connection=False):
         self.token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
         if not self.token and shutil.which("gh"):
             result = subprocess.run(["gh", "auth", "token", "--hostname", "github.com"],
@@ -41,11 +84,20 @@ class Client:
             if result.returncode == 0:
                 self.token = result.stdout.strip()
         self.last_search = 0.0
-        self.opener = build_opener(SafeRedirect())
         self.cache_dir = Path(cache_dir) if cache_dir is not None else None
         self.usage = {"network_requests": 0, "conditional_requests": 0,
                       "not_modified": 0, "downloaded_bytes": 0,
-                      "inline_documents": 0, "cache_errors": 0}
+                      "inline_documents": 0, "cache_errors": 0,
+                      "github_connection_reuses": 0}
+        self._github_https = _GitHubHTTPSHandler(self.usage) if reuse_github_connection else None
+        handlers = [SafeRedirect()]
+        if self._github_https is not None:
+            handlers.append(self._github_https)
+        self.opener = build_opener(*handlers)
+
+    def close(self):
+        if self._github_https is not None:
+            self._github_https.close()
 
     def _cache_path(self, url, json_response):
         # Discovery queries are always live. Cache only known repository reads;
@@ -131,6 +183,8 @@ class Client:
                 self.usage["downloaded_bytes"] += len(raw)
                 if len(raw) > MAX_RESPONSE_BYTES:
                     raise SourceError("Source response exceeded the 2 MB collection limit")
+                if getattr(response, "length", None):
+                    raise SourceError("Source response ended before its declared length")
                 value = raw.decode("utf-8", errors="replace")
                 result = json.loads(value) if json_response else value
                 # A redirected response's validator belongs to the other URL.
@@ -144,7 +198,11 @@ class Client:
             if allow_missing and error.code == 404:
                 return None
             raise SourceError(f"HTTP {error.code} from {parsed.hostname}{parsed.path}; source not collected") from None
+        except SourceError:
+            self.close()
+            raise
         except (URLError, TimeoutError, ValueError, HTTPException, ConnectionError) as error:
+            self.close()
             raise SourceError(f"Could not read {parsed.hostname}{parsed.path}: {type(error).__name__}") from None
 
 

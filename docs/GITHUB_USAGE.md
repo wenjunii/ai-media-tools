@@ -19,6 +19,12 @@ See [GitHub's conditional-request guidance](https://docs.github.com/en/rest/usin
 Savings depend on how many responses remain unchanged; the first run warms the
 cache and is not expected to have the same benefit as later runs.
 
+During a new collection, serial GitHub repository reads can share a direct HTTPS
+connection. This saves repeated TLS handshakes while each read still gets a fresh
+response. Search requests, proxy traffic and other source hosts use the standard
+HTTPS path. Interrupted or incomplete reads stay visible as source failures,
+and the next direct GitHub read starts with a fresh connection.
+
 Search requests and Hugging Face queries always run live, with the same fields,
 lanes and pagination. All per-query coverage records remain required.
 A failed watchlist read is attempted once per repository in an observation;
@@ -93,6 +99,8 @@ For new observations, `discover` prints `request_usage`, also stored in
 
 - `network_requests`: direct client requests across all collector source hosts;
   redirects can cause additional HTTP exchanges.
+- `github_connection_reuses`: direct GitHub repository reads started using an already
+  open HTTPS connection.
 - `conditional_requests`: repository requests sent with a validated ETag.
 - `not_modified`: successful fresh 304 validations, included in network requests.
 - `downloaded_bytes`: response body bytes read by the client.
