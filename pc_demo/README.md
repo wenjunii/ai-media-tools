@@ -24,7 +24,7 @@ From the repository root in PowerShell:
 .\pc_demo\demo.ps1 status
 .\pc_demo\demo.ps1 history
 .\pc_demo\demo.ps1 preflight
-.\pc_demo\demo.ps1 run -GpuId 1
+.\pc_demo\demo.ps1 run
 .\pc_demo\demo.ps1 verify
 ```
 
@@ -67,6 +67,12 @@ new renders save `qa/render-preflight.json`. Earlier successful drafts remain
 available. Edited eyebrows, titles and captions must fit the same font sizes and
 safe widths used by the compositor.
 
+After those checks, `run` synthesizes the six narration lines and measures the
+actual audio before launching Real-ESRGAN. Each line has up to 7.15 seconds in its
+7.5-second scene. If a line runs long, the error identifies the scene and its
+measured duration. Edit that line in the storyboard and run again.
+`audio/timings.json` records all six measurements, including on a timing failure.
+
 The 2 GiB free-space reserve is a wrapper policy, not an upstream requirement or
 a prediction of every run's storage needs. A passing preflight does not test the
 Vulkan device, speech voices, spoken timing or actual media-tool execution. The
@@ -85,12 +91,13 @@ snapshot stops the run before inference; it never triggers a hidden download.
 Use a local copy of the Mac's published library when needed:
 
 ```powershell
-.\pc_demo\demo.ps1 run -GpuId 1 -LibraryFile "C:\Scout exports\library.json"
+.\pc_demo\demo.ps1 run -LibraryFile "C:\Scout exports\library.json"
 ```
 
 This changes only that run's reference input. It does not overwrite the repository
-library or execute instructions in a profile. The current wrapper accepts local
-JSON snapshots up to 64 MiB; this is an input guard, not a discovery/profile quota.
+library or execute instructions in a profile. The PC loader accepts local JSON
+files up to 128 MiB to leave room for more published editions. The limit applies
+to the size of each file read by the PC.
 Refresh the local snapshot through an occasional source sync or a deliberate
 file transfer. Older snapshots remain usable and are never described as fresh
 research. Revisions keep their original inference evidence.
@@ -163,7 +170,7 @@ opening was blocked by the browser testing tool and has not been verified.
 ## Make a draft from your own artwork
 
 ```powershell
-.\pc_demo\demo.ps1 run -InputImage "C:\Art\my illustration.png" -GpuId 1
+.\pc_demo\demo.ps1 run -InputImage "C:\Art\my illustration.png"
 .\pc_demo\demo.ps1 verify
 ```
 
@@ -254,7 +261,8 @@ The first version deliberately pins **Windows CPython 3.10 x64** and Pillow
 Segoe UI/Consolas fonts, and an installed English US System.Speech voice. The
 setup command records their identity. It does not install Python/FFmpeg globally,
 update graphics drivers, or change system settings. FFmpeg must support libx264,
-AAC, loudnorm and ebur128. This PC's pre-existing FFmpeg 4.3.1 was tested.
+AAC, audio concatenation, loudnorm and ebur128. This PC's pre-existing FFmpeg
+4.3.1 was tested.
 
 From the repository root in PowerShell:
 
@@ -263,12 +271,13 @@ From the repository root in PowerShell:
 .\pc_demo\demo.ps1 setup
 .\pc_demo\demo.ps1 status
 .\pc_demo\demo.ps1 preflight
-.\pc_demo\demo.ps1 run -GpuId 1
+.\pc_demo\demo.ps1 run
 ```
 
-`1` is the NVIDIA Vulkan device index observed on this PC. On another Windows
-machine, omit `-GpuId` for the application's automatic selection; review its
-logged device list. Vulkan device indices are not CUDA indices and can change.
+The application selects a Vulkan device automatically by default. To choose
+one manually, check the device list in a recent `logs/inference.stderr.log`
+from this PC, then pass its index as `-GpuId`. Device numbers can change after
+a driver or hardware change.
 The wrapper uses a waiting process and saved output logs so the command cannot
 silently finish before its Python child on this host.
 
@@ -340,7 +349,7 @@ exact invocation are retained.
 | `evidence/library-origin.json` | Local library path, snapshot hash/size and explicit freshness limitation for new inference runs |
 | `logs/` | Commands, exit codes, timings, stdout/stderr, encoder logs |
 | `storyboard.json`, `captions.srt`, `transcript.txt` | Narrative, timing, on-screen callouts and exact spoken subtitles |
-| `audio/` | Voice name, raw utterances, durations and normalized master |
+| `audio/` | Voice name, raw scene clips, timing results and normalized master |
 | `qa/` | Decoded scenes, visual comparisons, codec/audio verification |
 | `draft.mp4`, `review.html` | Finished draft and local review page |
 
@@ -360,10 +369,14 @@ verification evidence. The video and matching manual review stay intact.
 ## Failure recovery and next apps
 
 Read `logs/failure.txt` and `manifest.json` in the failed run; fix the cause and
-start a new run, or use `revise` when the saved inference succeeded. Audio lines
-must fit their scene with a 0.35-second margin.
-Do not trim speech to force success. The concat step uses the audio directory as
-its working directory for compatibility with this PC's older FFmpeg.
+start a new run, or use `revise` when the saved inference succeeded. A narration
+timing rejection preserves the clips and measurements without starting inference.
+Shorten the named lines in the storyboard to clear the 0.35-second margin.
+
+Audio mastering uses one FFmpeg command to pad the six clips to their scene
+boundaries, join them in order, and normalize the complete track. The command and
+stderr are saved under `logs/audio-master.*`. Earlier runs can still contain their
+original per-scene WAVs and concat lists.
 
 For a GPU/driver failure, inspect the Vulkan device list and try the automatic
 device choice. A lower tile size is a reviewed configuration change, not an
