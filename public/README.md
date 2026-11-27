@@ -6,6 +6,30 @@ Finished AI Media Scout editions, with full profiles and primary-source citation
 
 | Date | Full profiles | Additional discoveries | Editions |
 | --- | ---: | ---: | --- |
+| 2026-11-27 | 105 | 16 | [Markdown](reports/2026-11-27/report.md) · [HTML](reports/2026-11-27/report.html) · [JSON](reports/2026-11-27/report.json) |
+| 2026-11-26 | 122 | 10 | [Markdown](reports/2026-11-26/report.md) · [HTML](reports/2026-11-26/report.html) · [JSON](reports/2026-11-26/report.json) |
+| 2026-11-25 | 84 | 7 | [Markdown](reports/2026-11-25/report.md) · [HTML](reports/2026-11-25/report.html) · [JSON](reports/2026-11-25/report.json) |
+| 2026-11-24 | 55 | 16 | [Markdown](reports/2026-11-24/report.md) · [HTML](reports/2026-11-24/report.html) · [JSON](reports/2026-11-24/report.json) |
+| 2026-11-23 | 87 | 19 | [Markdown](reports/2026-11-23/report.md) · [HTML](reports/2026-11-23/report.html) · [JSON](reports/2026-11-23/report.json) |
+| 2026-11-22 | 100 | 13 | [Markdown](reports/2026-11-22/report.md) · [HTML](reports/2026-11-22/report.html) · [JSON](reports/2026-11-22/report.json) |
+| 2026-11-21 | 96 | 21 | [Markdown](reports/2026-11-21/report.md) · [HTML](reports/2026-11-21/report.html) · [JSON](reports/2026-11-21/report.json) |
+| 2026-11-20 | 84 | 2 | [Markdown](reports/2026-11-20/report.md) · [HTML](reports/2026-11-20/report.html) · [JSON](reports/2026-11-20/report.json) |
+| 2026-11-19 | 76 | 6 | [Markdown](reports/2026-11-19/report.md) · [HTML](reports/2026-11-19/report.html) · [JSON](reports/2026-11-19/report.json) |
+| 2026-11-18 | 76 | 51 | [Markdown](reports/2026-11-18/report.md) · [HTML](reports/2026-11-18/report.html) · [JSON](reports/2026-11-18/report.json) |
+| 2026-11-17 | 30 | 52 | [Markdown](reports/2026-11-17/report.md) · [HTML](reports/2026-11-17/report.html) · [JSON](reports/2026-11-17/report.json) |
+| 2026-11-16 | 34 | 56 | [Markdown](reports/2026-11-16/report.md) · [HTML](reports/2026-11-16/report.html) · [JSON](reports/2026-11-16/report.json) |
+| 2026-11-15 | 34 | 36 | [Markdown](reports/2026-11-15/report.md) · [HTML](reports/2026-11-15/report.html) · [JSON](reports/2026-11-15/report.json) |
+| 2026-11-14 | 40 | 61 | [Markdown](reports/2026-11-14/report.md) · [HTML](reports/2026-11-14/report.html) · [JSON](reports/2026-11-14/report.json) |
+| 2026-11-13 | 41 | 159 | [Markdown](reports/2026-11-13/report.md) · [HTML](reports/2026-11-13/report.html) · [JSON](reports/2026-11-13/report.json) |
+| 2026-11-12 | 66 | 66 | [Markdown](reports/2026-11-12/report.md) · [HTML](reports/2026-11-12/report.html) · [JSON](reports/2026-11-12/report.json) |
+| 2026-11-11 | 44 | 47 | [Markdown](reports/2026-11-11/report.md) · [HTML](reports/2026-11-11/report.html) · [JSON](reports/2026-11-11/report.json) |
+| 2026-11-10 | 28 | 161 | [Markdown](reports/2026-11-10/report.md) · [HTML](reports/2026-11-10/report.html) · [JSON](reports/2026-11-10/report.json) |
+| 2026-11-09 | 26 | 207 | [Markdown](reports/2026-11-09/report.md) · [HTML](reports/2026-11-09/report.html) · [JSON](reports/2026-11-09/report.json) |
+| 2026-11-08 | 51 | 185 | [Markdown](reports/2026-11-08/report.md) · [HTML](reports/2026-11-08/report.html) · [JSON](reports/2026-11-08/report.json) |
+| 2026-11-07 | 31 | 51 | [Markdown](reports/2026-11-07/report.md) · [HTML](reports/2026-11-07/report.html) · [JSON](reports/2026-11-07/report.json) |
+| 2026-11-06 | 42 | 46 | [Markdown](reports/2026-11-06/report.md) · [HTML](reports/2026-11-06/report.html) · [JSON](reports/2026-11-06/report.json) |
+| 2026-11-05 | 45 | 6 | [Markdown](reports/2026-11-05/report.md) · [HTML](reports/2026-11-05/report.html) · [JSON](reports/2026-11-05/report.json) |
+| 2026-11-04 | 52 | 9 | [Markdown](reports/2026-11-04/report.md) · [HTML](reports/2026-11-04/report.html) · [JSON](reports/2026-11-04/report.json) |
 | 2026-11-03 | 45 | 1 | [Markdown](reports/2026-11-03/report.md) · [HTML](reports/2026-11-03/report.html) · [JSON](reports/2026-11-03/report.json) |
 | 2026-11-02 | 25 | 0 | [Markdown](reports/2026-11-02/report.md) · [HTML](reports/2026-11-02/report.html) · [JSON](reports/2026-11-02/report.json) |
 | 2026-11-01 | 53 | 18 | [Markdown](reports/2026-11-01/report.md) · [HTML](reports/2026-11-01/report.html) · [JSON](reports/2026-11-01/report.json) |

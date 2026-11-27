@@ -43,10 +43,27 @@ README/license bodies already returned by the API, and avoids repeating a failed
 watchlist read across fields in one observation. Publication-only updates run
 archive and browser checks on both the PR and main, followed by Pages deployment;
 source changes still run the full Python and Windows suites.
+Pages upload and deployment share an artifact name unique to the workflow run
+and attempt, so deployment retries cannot select an earlier attempt's artifact.
+After successful deployment, `record-sync` verifies the SHA-256 hashes of the
+live library, browser assets and edition files before recording the checkpoint.
+Email preparation checks that proof against the current GitHub commit and CI
+without downloading the live library again.
 See [GitHub usage and safeguards](docs/GITHUB_USAGE.md), including how to inspect
 the measured savings. Standard GitHub-hosted runner minutes for this public
 repository are [free](https://docs.github.com/en/billing/concepts/product-billing/github-actions);
 API limits, transfers and artifact storage are separate concerns.
+
+Local cleanup now runs through that same daily automation after successful
+completion. It removes stale temporary/bytecode files, HTTP-cache entries unused
+for 60 days, and metadata working copies older than seven days only when every
+record is recoverable from retained sealed queries. Reports, source evidence,
+catalogs, receipts, settings and PC media stay intact. Preview with
+`python3 -m media_scout cleanup`; apply with `python3 -m media_scout cleanup --apply`.
+See the [cleanup policy and safeguards](docs/CLEANUP.md).
+Immediately before deletion, cleanup rechecks recovery state, the sealed archive
+and the Git index. A newly pending send, unfinished research/publication, new seal
+or newly tracked candidate stops the run before any files are removed.
 
 Corrections discovered after an edition is sealed are listed in
 [report corrections](docs/REPORT_CORRECTIONS.md), preserving the original archive.
@@ -119,9 +136,15 @@ and continue to change as daily discoveries and evidence reviews are published.
 
 Depth Anything V2 Small relative-depth guidance, Whisper human-reviewed draft
 English transcription and SAM 2.1 corrected masks are Recommended for their
-stated workflows. BiRefNet general masks, rembg with that model, ComfyUI with
-SDXL Base and Chatterbox Turbo English are Ready to try. Their specific output
-reviews remain pending. Recommendations use reviewed evaluations and independent
+stated workflows. BiRefNet general masks and rembg with that model remain Ready
+to try after the November 9 source review; their specific output reviews remain
+pending. The [November 9 weekly review](docs/QUALITY_REVIEW_2026-11-09.md)
+rechecks all 1,990 entries present at the start of that cycle.
+The October 13 ComfyUI/SDXL assessment is historical: the latest ComfyUI
+record assesses a different H3/ProRes workflow and is Quality unverified.
+Chatterbox Turbo is now Quality unverified because its current README declares
+the research archive retired, unsupported and no longer maintained.
+Recommendations use reviewed evaluations and independent
 integrations; no app was installed or run by AI Media Scout. Detailed citations,
 version limits and remaining work appear in each assessment and the review note.
 The other entries retain their evidence gaps; source collection alone does not
@@ -339,6 +362,9 @@ Gmail plugin in the Codex chat.
 The collector's disposable response cache lives in ignored `state/http-cache/`.
 Every reuse requires a fresh successful GitHub `304 Not Modified` response;
 network errors never fall back to old evidence. Search queries always run live.
+`discover` reuses a direct HTTPS connection across serial GitHub repository
+reads when the server keeps it open. Search requests, proxy traffic and other
+source hosts use the standard HTTPS path.
 `discover` prints `request_usage` counters for new observations, also saved in
 the local discovery JSON. No credentials or request headers enter this cache.
 
@@ -398,9 +424,10 @@ The date defaults to today in the configured time zone. `discover` resumes an ex
 daily observation. `build` resumes the same sealed edition. Neither command
 silently refreshes a completed report. `prepare-email` only creates a send
 reservation and MIME payload; it does not send mail. Never call it as a casual
-preview. It blocks before reservation when GitHub sync or CI is missing, failed,
-or stale. `status`, `verify`, `verify-public-archive`, and `verify-sync` are read-only
-checks; the last one contacts GitHub to check the actual commit and CI.
+preview. It blocks before reservation when GitHub sync, CI or the live Pages
+proof is missing, failed or stale. `status`, `verify`, `verify-public-archive`, and
+`verify-sync` are read-only checks. `verify-sync` checks the actual commit, CI and
+the checkpoint's recorded Pages proof.
 `verify-public-archive` checks the published files without private research,
 delivery settings, or GitHub access, so it also works in a fresh clone.
 

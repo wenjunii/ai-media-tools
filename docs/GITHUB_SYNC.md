@@ -88,6 +88,14 @@ platform jobs. Main still requires successful validation and Pages deployment.
    The main CI run deploys only `public/` to GitHub Pages after all checks pass.
    PRs validate the site but do not deploy it. See `LIBRARY.md` for Pages setup.
 
+   Pages artifacts use a name unique to the workflow run and attempt. Both the
+   upload and deploy steps use `PAGES_ARTIFACT_NAME`, so a failed-job rerun does
+   not collide with an earlier attempt's retained artifact. If a deployment
+   fails, inspect its logs and confirm its terminal/canceled status before a
+   targeted rerun. Preserve the same commit and successful test results. Wait for
+   the latest attempt's overall CI and Pages success before recording sync;
+   an active, failed or canceled deployment cannot authorize a checkpoint.
+
 ## Verify the checkpoint, then deliver
 
 ```sh
@@ -99,10 +107,21 @@ python3 -m media_scout prepare-email --date YYYY-MM-DD
 
 `record-sync` checks the actual origin destination, main branch, clean working
 tree, local/tracking/remote commit agreement, complete public edition and library,
-and the latest matching main CI run. It writes an ignored checkpoint in
-`state/publications/YYYY-MM-DD.json`. `verify-sync` repeats those checks and rejects
-a checkpoint for different content, repository, or commit. If a later reviewed
-project update changes main, verify and record the current publication again.
+and the latest matching main CI run. After the Pages job succeeds, it streams the
+files from the repository's default GitHub Pages URL and compares their SHA-256
+hashes and sizes with the verified commit. This covers the live index, library JSON,
+browser assets, selected edition files and separately sealed updates. It then
+rechecks the checkout and remote branch before writing an ignored checkpoint in
+`state/publications/YYYY-MM-DD.json` with the Pages URL and verification time.
+If Pages is unavailable or still serves older content, check the deployment and
+rerun `record-sync` after the new files are available.
+
+`verify-sync` rechecks the commit, archive and CI, then validates the saved Pages
+proof for that content and CI run. This avoids downloading the live files again
+for `verify-sync` and `prepare-email`. A checkpoint created before live verification
+was added needs a fresh `record-sync` before it can authorize a new reservation.
+If a later reviewed project update changes main, verify and record the current
+publication again.
 When the commit changes, `record-sync` preserves the previous checkpoint's exact
 bytes in `state/publication_history/YYYY-MM-DD/` before replacing the current
 checkpoint. This history remains local and does not change any delivery receipt.
@@ -138,6 +157,10 @@ On the owning Mac, after returning to a clean, current main, run `record-sync` a
 the existing published edition. This updates the publication checkpoint and
 retains its prior version locally. Do not run discovery, build, export, email
 preparation, or email delivery as part of source maintenance.
+After successful verification, the authorized bounded cleanup may run under its
+idle lock; see [CLEANUP.md](CLEANUP.md). If its final recovery/archive/index check
+blocks or cleanup is partial, retain the journal and report the maintenance issue.
+Do not rebuild, resend, broaden deletion or bypass guards to resolve cleanup.
 If the requested change affects the library UI or data schema, use
 `build-library` to refresh only the derived views before staging. It preserves
 all dated report files, source evidence and delivery records.

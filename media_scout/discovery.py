@@ -1,5 +1,6 @@
 """Broad discovery, explicit coverage, and archived primary-source evidence."""
 
+from contextlib import ExitStack
 from datetime import date, timedelta
 import hashlib
 import math
@@ -142,7 +143,7 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
     config = load_config(root)
     day = report_date(day, config["timezone"])
     folder = root / "research" / day
-    with locked(root):
+    with locked(root), ExitStack() as resources:
         existing = read_json(folder / "discovery.json")
         if existing:
             if plan_path:
@@ -166,7 +167,9 @@ def collect(day=None, root=ROOT, client=None, plan_path=None):
         categories = plan["categories"]
         write_json(folder / "queries" / "search-plan.json", plan)
         write_json(folder / "queries" / "config-snapshot.json", config)
-        client = client or Client(cache_dir=root / "state/http-cache")
+        if client is None:
+            client = Client(cache_dir=root / "state/http-cache", reuse_github_connection=True)
+            resources.callback(client.close)
         started_at = now()
         cutoff = (date.fromisoformat(day) - timedelta(days=config["lookback_days"])).isoformat()
         candidates, coverage, warnings = {}, [], []

@@ -7,11 +7,14 @@ an edited local receipt alone cannot authorize delivery.
 
 import hashlib
 import json
-from datetime import datetime
-from html.parser import HTMLParser
-from pathlib import Path
 import re
 import subprocess
+from datetime import datetime
+from html.parser import HTMLParser
+from http.client import HTTPException
+from pathlib import Path
+from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 from .configuration import load_config
 from .library import library_files, make_library, write_library_files
@@ -307,7 +310,40 @@ def _github_settings(config):
     return repository, branch, workflow
 
 
-def _verified_remote(day, root, manifest, config):
+def _pages_url(repository):
+    owner, name = repository.split("/", 1)
+    hostname = f"{owner.lower()}.github.io"
+    suffix = "" if name.lower() == hostname else quote(name) + "/"
+    return f"https://{hostname}/{suffix}"
+
+
+def _verify_live_pages(base_url, contents):
+    """Compare the live site with the already verified commit, one file at a time."""
+    # The archive README is for GitHub, and .nojekyll controls deployment.
+    for name, expected in contents.items():
+        if name in {"public/README.md", "public/.nojekyll"}:
+            continue
+        url = base_url + quote(name.removeprefix("public/"))
+        request = Request(url, headers={"Cache-Control": "no-cache", "Accept-Encoding": "identity"})
+        received = 0
+        digest = hashlib.sha256()
+        try:
+            with urlopen(request, timeout=45) as response:
+                if response.status != 200 or response.geturl() != url:
+                    raise RuntimeError(f"Unexpected live GitHub Pages response for {name}")
+                while received <= len(expected):
+                    chunk = response.read(min(1024 * 1024, len(expected) - received + 1))
+                    if not chunk:
+                        break
+                    received += len(chunk)
+                    digest.update(chunk)
+        except (OSError, HTTPException) as error:
+            raise RuntimeError(f"Could not verify live GitHub Pages for {name}; check the deployment") from error
+        if received != len(expected) or digest.hexdigest() != _digest(expected):
+            raise RuntimeError(f"Live GitHub Pages differs from the synchronized commit for {name}")
+
+
+def _verified_remote(day, root, manifest, config, *, check_live_pages=False):
     repository, branch, workflow = _github_settings(config)
     remote_url = _run(["git", "remote", "get-url", "origin"], root).decode().strip()
     allowed = {f"https://github.com/{repository}", f"https://github.com/{repository}.git",
@@ -348,6 +384,11 @@ def _verified_remote(day, root, manifest, config):
     if (run.get("headSha") != head or run.get("status") != "completed" or run.get("conclusion") != "success"
             or len(pages) != 1 or pages[0].get("status") != "completed" or pages[0].get("conclusion") != "success"):
         raise RuntimeError("GitHub Pages deployment has not succeeded for the synchronized main commit; email is blocked")
+    pages_proof = {}
+    if check_live_pages:
+        base_url = _pages_url(repository)
+        _verify_live_pages(base_url, contents)
+        pages_proof = {"pages_url": base_url, "pages_verified_at": now()}
     final_remote = _run(["git", "ls-remote", "origin", f"refs/heads/{branch}"], root).decode().split()
     if (not final_remote or final_remote[0] != head
             or _run(["git", "rev-parse", "HEAD"], root).decode().strip() != head
@@ -355,7 +396,8 @@ def _verified_remote(day, root, manifest, config):
         raise ValueError("The project or GitHub changed during verification; email is blocked")
     return {"repository": repository, "branch": branch, "commit": head,
             "ci_run_id": matches[0]["databaseId"], "ci_url": matches[0]["url"],
-            "public_files_sha256": {name: _digest(value) for name, value in contents.items()}}
+            "public_files_sha256": {name: _digest(value) for name, value in contents.items()},
+            **pages_proof}
 
 
 def record_sync(day, root=ROOT):
@@ -363,7 +405,7 @@ def record_sync(day, root=ROOT):
     day = report_date(day)
     with locked(root):
         manifest = verify_report(day, root)
-        verified = _verified_remote(day, root, manifest, load_config(root))
+        verified = _verified_remote(day, root, manifest, load_config(root), check_live_pages=True)
         verify_report(day, root)
         receipt = dict(verified, report_date=day, status="synced", verified_at=now(),
             report_sha256=manifest["sha256"][f"reports/{day}/report.html"],
@@ -394,5 +436,9 @@ def verify_sync(day, root=ROOT):
     for field in ("repository", "branch", "commit", "public_files_sha256"):
         if receipt.get(field) != verified[field]:
             raise ValueError("GitHub sync checkpoint is stale; verify and record the current publication")
+    if (receipt.get("pages_url") != _pages_url(verified["repository"])
+            or not receipt.get("pages_verified_at")
+            or receipt.get("ci_run_id") != verified["ci_run_id"]):
+        raise ValueError("GitHub sync checkpoint lacks current live Pages verification; run record-sync")
     verify_report(day, root)
     return receipt
