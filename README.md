@@ -360,6 +360,9 @@ Gmail plugin in the Codex chat.
 The collector's disposable response cache lives in ignored `state/http-cache/`.
 Every reuse requires a fresh successful GitHub `304 Not Modified` response;
 network errors never fall back to old evidence. Search queries always run live.
+`discover` reuses a direct HTTPS connection across serial GitHub repository
+reads when the server keeps it open. Search requests, proxy traffic and other
+source hosts use the standard HTTPS path.
 `discover` prints `request_usage` counters for new observations, also saved in
 the local discovery JSON. No credentials or request headers enter this cache.
 

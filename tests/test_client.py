@@ -1,8 +1,9 @@
 """Fresh conditional reads, complete document bodies, and cache failure boundaries."""
 
 import base64
+from contextlib import contextmanager
 import hashlib
-from http.client import IncompleteRead, RemoteDisconnected
+from http.client import HTTPResponse, IncompleteRead, RemoteDisconnected, responses
 import io
 import json
 import os
@@ -23,6 +24,28 @@ class Reply(io.BytesIO):
 
     def geturl(self):
         return self.url
+
+
+def http_response(status, body=b"", **headers):
+    headers.setdefault("Content-Length", str(len(body)))
+    head = f"HTTP/1.1 {status} {responses[status]}\r\n"
+    head += "".join(f"{name}: {value}\r\n" for name, value in headers.items())
+    socket = Mock()
+    socket.makefile.return_value = io.BytesIO(head.encode("ascii") + b"\r\n" + body)
+    response = HTTPResponse(socket)
+    response.begin()
+    return response
+
+
+def https_connection(*responses):
+    connection = Mock(sock=None)
+
+    def send(*args, **kwargs):
+        connection.sock = Mock()
+
+    connection.request.side_effect = send
+    connection.getresponse.side_effect = responses
+    return connection
 
 
 class ClientTests(unittest.TestCase):
@@ -49,6 +72,94 @@ class ClientTests(unittest.TestCase):
 
     def warm(self):
         self.client(Reply(self.url, self.raw)).get(self.url)
+
+    @contextmanager
+    def persistent_client(self, *connections, proxies=None):
+        with patch.dict("os.environ", {"GITHUB_TOKEN": "private-token-for-test-only"}), \
+                patch("urllib.request.getproxies", return_value=proxies or {}), \
+                patch("media_scout.client.HTTPSConnection", side_effect=connections) as connect:
+            client = Client(cache_dir=self.cache, reuse_github_connection=True)
+            try:
+                yield client, connect
+            finally:
+                client.close()
+
+    def test_direct_github_reads_reuse_the_connection_through_a_fresh_304(self):
+        new = b'{"content":"updated documentation"}'
+        connection = https_connection(http_response(200, self.raw, ETag='"v1"'),
+                                      http_response(304),
+                                      http_response(200, new, ETag='"v2"'))
+        with self.persistent_client(connection) as (client, connect):
+            self.assertEqual(client.get(self.url), json.loads(self.raw))
+            self.assertEqual(client.get(self.url), json.loads(self.raw))
+            self.assertEqual(client.get(self.url), json.loads(new))
+            calls = connection.request.call_args_list
+            self.assertEqual(calls[1].kwargs["headers"]["If-none-match"], '"v1"')
+            connect.assert_called_once()
+            self.assertEqual(client.usage["network_requests"], 3)
+            self.assertEqual(client.usage["github_connection_reuses"], 2)
+            self.assertEqual(client.usage["not_modified"], 1)
+        connection.close.assert_called_once()
+
+    def test_failed_or_incomplete_persistent_reads_discard_the_connection(self):
+        self.warm()
+        for failure in (
+                RemoteDisconnected("disconnected"),
+                http_response(429, b"rate limited"),
+                http_response(200, b"{}", **{"Content-Length": "10"}),
+                http_response(200, b"x" * (MAX_RESPONSE_BYTES + 1)),
+        ):
+            with self.subTest(failure=failure):
+                connection = https_connection(failure)
+                new = b'{"content":"live result"}'
+                next_connection = https_connection(http_response(200, new, ETag='"v2"'))
+                with self.persistent_client(connection, next_connection) as (client, connect):
+                    with self.assertRaises(SourceError):
+                        client.get(self.url)
+                    self.assertEqual(client.usage["network_requests"], 1)
+                    self.assertEqual(client.usage["not_modified"], 0)
+                    self.assertEqual(connect.call_count, 1)
+                    connection.close.assert_called_once()
+                    self.assertEqual(client.get(self.url), json.loads(new))
+                    self.assertEqual(connect.call_count, 2)
+
+    def test_persistent_redirect_keeps_cross_host_credentials_and_validators_off_target(self):
+        self.warm()
+        destination = "https://raw.githubusercontent.com/example/art/main/README.md"
+        connection = https_connection(http_response(302, b"redirect", Location=destination))
+        response = http_response(200, b'{"content":"redirected"}')
+        response.url = destination
+        with self.persistent_client(connection) as (client, _), \
+                patch("media_scout.client.HTTPSHandler.https_open", return_value=response) as standard_open:
+            self.assertEqual(client.get(self.url), {"content": "redirected"})
+            request = standard_open.call_args.args[0]
+            self.assertEqual(request.full_url, destination)
+            self.assertIsNone(request.get_header("Authorization"))
+            self.assertIsNone(request.get_header("If-none-match"))
+
+    def test_persistent_client_uses_the_standard_https_handler_for_a_proxy(self):
+        response = http_response(200, self.raw)
+        response.url = self.url
+        with self.persistent_client(proxies={"https": "http://proxy.example:3128"}) as (client, connect), \
+                patch("urllib.request.proxy_bypass", return_value=False), \
+                patch("media_scout.client.HTTPSHandler.https_open", return_value=response) as standard_open:
+            self.assertEqual(client.get(self.url), json.loads(self.raw))
+            connect.assert_not_called()
+            self.assertEqual(standard_open.call_args.args[0].host, "proxy.example:3128")
+
+    def test_persistent_client_leaves_search_on_the_standard_paced_path(self):
+        url = "https://api.github.com/search/repositories?q=AI"
+        responses = [http_response(200, b"{}"), http_response(200, b"{}")]
+        for response in responses:
+            response.url = url
+        with self.persistent_client() as (client, connect), \
+                patch("media_scout.client.HTTPSHandler.https_open", side_effect=responses) as standard_open, \
+                patch("media_scout.client.time.sleep") as sleep:
+            client.get(url)
+            client.get(url)
+            self.assertEqual(sleep.call_count, 2)
+            self.assertEqual(standard_open.call_count, 2)
+            connect.assert_not_called()
 
     def test_fresh_304_reuses_verified_body_across_processes_without_storing_credentials(self):
         self.warm()
