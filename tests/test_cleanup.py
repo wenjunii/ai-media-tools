@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import py_compile
 import tempfile
 import time
 import unittest
@@ -46,6 +47,63 @@ class CleanupTests(unittest.TestCase):
     def run_cleanup(self, apply=False):
         return housekeeping.cleanup(self.day, self.root, apply=apply, stamp=self.stamp)
 
+    def research_cache(self, name, mode=py_compile.PycInvalidationMode.TIMESTAMP):
+        source = self.old(f"research/{self.edition}/{name}.py", "value = 1\n")
+        bytecode = Path(py_compile.compile(str(source), doraise=True, invalidation_mode=mode))
+        os.utime(bytecode, (self.stamp - 2 * housekeeping.DAY,) * 2)
+        return source, bytecode
+
+    def test_matching_old_research_bytecode_is_reclaimed_with_source_proof(self):
+        paths = [
+            self.research_cache("timestamped"),
+            self.research_cache("hashed", py_compile.PycInvalidationMode.CHECKED_HASH),
+        ]
+        preview = self.run_cleanup()
+        self.assertEqual(preview["candidate_files"], 2)
+        entries = {entry["path"]: entry for entry in preview["candidates"]}
+        for source, bytecode in paths:
+            self.assertTrue(bytecode.exists())
+            entry = entries[bytecode.relative_to(self.root).as_posix()]
+            self.assertEqual(entry["kind"], "research-python-bytecode")
+            self.assertEqual(entry["retained_source"]["sha256"], sha256(source))
+        result = self.run_cleanup(apply=True)
+        self.assertEqual(result["deleted_files"], 2)
+        for source, bytecode in paths:
+            self.assertFalse(bytecode.exists())
+            self.assertEqual(source.read_text(), "value = 1\n")
+        self.assertEqual(sha256(self.query), self.hashes[self.query.relative_to(self.root).as_posix()])
+
+    def test_unproven_and_recent_research_bytecode_is_retained(self):
+        stale, stale_cache = self.research_cache("stale")
+        write_text(stale, "value = 2\n")
+        missing, orphan = self.research_cache("missing")
+        missing.unlink()
+        _, fresh = self.research_cache("fresh")
+        os.utime(fresh, (self.stamp,) * 2)
+        unfamiliar = self.old(f"research/{self.edition}/__pycache__/unknown.pyc")
+        nested_source = self.old(f"research/{self.edition}/evidence/example.py", "value = 1\n")
+        nested = Path(py_compile.compile(str(nested_source), doraise=True))
+        os.utime(nested, (self.stamp - 2 * housekeeping.DAY,) * 2)
+        self.assertEqual(self.run_cleanup(apply=True)["deleted_files"], 0)
+        self.assertTrue(all(path.exists() for path in (stale_cache, orphan, fresh, unfamiliar, nested)))
+
+    def test_research_cache_is_kept_if_retained_source_changes_after_planning(self):
+        source, bytecode = self.research_cache("working")
+        original = housekeeping._plan
+
+        def changed(*args):
+            plan = original(*args)
+            info = source.stat()
+            write_text(source, "value = 2\n")
+            os.utime(source, ns=(info.st_atime_ns, info.st_mtime_ns))
+            return plan
+
+        with patch.object(housekeeping, "_plan", side_effect=changed):
+            result = self.run_cleanup(apply=True)
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["errors"][0]["reason"], "Retained Python source changed; kept")
+        self.assertTrue(bytecode.exists())
+
     def test_preview_then_apply_removes_only_proven_copy_and_journals_recovery(self):
         path = self.metadata()
         before = self.query.read_bytes()
@@ -82,11 +140,13 @@ class CleanupTests(unittest.TestCase):
         self.hashes[path.relative_to(self.root).as_posix()] = sha256(path)
         bytecode = self.old("media_scout/__pycache__/proof.pyc")
         self.hashes[bytecode.relative_to(self.root).as_posix()] = sha256(bytecode)
+        _, research_cache = self.research_cache("sealed")
+        self.hashes[research_cache.relative_to(self.root).as_posix()] = sha256(research_cache)
         self.seal()
         tracked = self.old("tests/__pycache__/tracked.pyc")
         with patch.object(housekeeping, "_tracked", return_value={tracked.relative_to(self.root).as_posix()}):
             self.assertEqual(self.run_cleanup(apply=True)["deleted_files"], 0)
-        self.assertTrue(all(p.exists() for p in [path, bytecode, tracked]))
+        self.assertTrue(all(p.exists() for p in [path, bytecode, research_cache, tracked]))
 
     def test_active_unsealed_recent_and_pc_runtime_work_are_kept(self):
         path = self.metadata()

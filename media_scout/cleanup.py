@@ -2,12 +2,14 @@
 
 from datetime import date, datetime, timezone
 import hashlib
+from importlib.util import MAGIC_NUMBER, source_hash
 import json
 import os
 from pathlib import Path, PurePosixPath
 import re
 import stat
 import subprocess
+import sys
 import time
 import uuid
 from urllib.parse import urlparse
@@ -46,6 +48,42 @@ def _regular(root, path, *, single_link=True):
 
 def _identity(info):
     return [info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns]
+
+
+def _research_bytecode_proof(root, path, cache_info):
+    """Match a recognizable CPython cache to a retained, regular source file."""
+    name = re.fullmatch(r"([^.]+)\.(cpython-[0-9]+)(?:\.opt-[12])?\.pyc", path.name)
+    if not name or name[2] != sys.implementation.cache_tag:
+        return None
+    source = path.parent.parent / (name[1] + ".py")
+    info = _regular(root, source, single_link=False)
+    if info is None:
+        return None
+    try:
+        bytecode = path.read_bytes()
+        if len(bytecode) <= 16 or bytecode[:4] != MAGIC_NUMBER:
+            return None
+        source_bytes = source.read_bytes()
+    except OSError:
+        return None
+    current = _regular(root, source, single_link=False)
+    if current is None or _identity(current) != _identity(info) or len(source_bytes) != info.st_size:
+        return None
+    flags = int.from_bytes(bytecode[4:8], "little")
+    if flags in {1, 3}:
+        expected = source_hash(source_bytes)
+    elif flags == 0 and info.st_mtime_ns <= cache_info.st_mtime_ns:
+        timestamp = int(info.st_mtime) & 0xffffffff
+        size = info.st_size & 0xffffffff
+        expected = timestamp.to_bytes(4, "little") + size.to_bytes(4, "little")
+    else:
+        return None
+    if bytecode[8:16] != expected:
+        return None
+    return hashlib.sha256(bytecode).hexdigest(), {
+        "path": source.relative_to(root).as_posix(),
+        "sha256": hashlib.sha256(source_bytes).hexdigest(),
+    }
 
 
 def _sealed(root):
@@ -189,8 +227,15 @@ def _plan(root, day, stamp):
         info = _regular(root, path)
         if rel in protected or info is None or stamp - info.st_mtime < minimum_age * DAY:
             return False
+        if kind == "research-python-bytecode":
+            proof = _research_bytecode_proof(root, path, info)
+            if proof is None:
+                return False
+            digest, extra["retained_source"] = proof
+        else:
+            digest = sha256(path)
         entries.append(dict(path=rel, kind=kind, bytes=info.st_size,
-                            identity=_identity(info), sha256=sha256(path), **extra))
+                            identity=_identity(info), sha256=digest, **extra))
         return True
 
     # These trees contain generated caches only. Never scan PC runtimes,
@@ -234,9 +279,16 @@ def _plan(root, day, stamp):
                 if re.fullmatch(r"\.scout-[a-z0-9_]{8}", path.name):
                     add(path, "abandoned-atomic-write", TEMP_DAYS)
 
-    # Delete only complete copies of raw repository metadata whose every record
-    # is independently present in this edition's hash-verified sealed queries.
     for edition, (manifest, hashes) in sorted(editions.items()):
+        folder = root / "research" / edition
+        if folder.is_symlink():
+            continue
+        working_cache = folder / "__pycache__"
+        if not working_cache.is_symlink():
+            for path in sorted(working_cache.glob("*.pyc")):
+                add(path, "research-python-bytecode", TEMP_DAYS, edition=edition)
+
+        # Metadata requires a complete record match in the sealed queries.
         if (date.fromisoformat(day) - date.fromisoformat(edition)).days < METADATA_DAYS:
             continue
         receipt = root / "state/deliveries" / (edition + ".json")
@@ -244,9 +296,6 @@ def _plan(root, day, stamp):
         if (not _regular(root, receipt, single_link=False) or not _regular(root, publication, single_link=False)
                 or read_json(receipt).get("status") != "sent"
                 or read_json(publication).get("status") != "synced"):
-            continue
-        folder = root / "research" / edition
-        if folder.is_symlink():
             continue
         candidates = [p for p in folder.glob("*metadata*.json")
                       if p.relative_to(root).as_posix() not in protected
@@ -329,6 +378,11 @@ def cleanup(day=None, root=ROOT, *, apply=False, stamp=None):
                 info = _regular(root, path)
                 if info is None or _identity(info) != entry["identity"] or sha256(path) != entry["sha256"]:
                     raise RuntimeError("Candidate changed; kept")
+                retained = entry.get("retained_source")
+                if retained:
+                    source = root / retained["path"]
+                    if not _regular(root, source, single_link=False) or sha256(source) != retained["sha256"]:
+                        raise RuntimeError("Retained Python source changed; kept")
                 path.unlink()
                 entry["deleted"] = True
                 output["deleted_files"] += 1

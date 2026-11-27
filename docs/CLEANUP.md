@@ -16,6 +16,11 @@ python3 -m media_scout cleanup --apply
 The command removes only:
 
 - Python bytecode and Finder metadata in source/test trees older than one day.
+- Python bytecode at least one day old directly inside a completed edition's
+  `research/YYYY-MM-DD/__pycache__/` folder. The cache must match the current
+  CPython format and the retained sibling `.py` by its source hash or by
+  timestamp and size. Cleanup records and rechecks the source's SHA-256 before
+  removing the cache. [CPython cache format](https://peps.python.org/pep-0552/)
 - Abandoned `.scout-xxxxxxxx` atomic-write temporary files older than one day in
   the local state/cache directories.
 - Recognized HTTP-cache entries unused for 60 days. Validated cache reads refresh
