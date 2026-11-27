@@ -4,7 +4,8 @@ import hashlib
 import pathlib
 from .common import ROOT, select_profile, sha256, stamp, write_json
 
-MAX_LIBRARY_BYTES = 64 * 1024 * 1024
+MAX_LIBRARY_MIB = 128
+MAX_LIBRARY_BYTES = MAX_LIBRARY_MIB * 1024 * 1024
 
 
 def read_library_source(source=None):
@@ -17,7 +18,7 @@ def read_library_source(source=None):
         raise ValueError('Cannot read the local library snapshot. Sync it when needed or pass '
                          '-LibraryFile with a local JSON file; demos do not download the library.') from error
     if len(raw) > MAX_LIBRARY_BYTES:
-        raise ValueError('Local library exceeds the 64 MiB snapshot limit')
+        raise ValueError(f'Local library exceeds the {MAX_LIBRARY_MIB} MiB snapshot limit')
     return path, raw
 
 

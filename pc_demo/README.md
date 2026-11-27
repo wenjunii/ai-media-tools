@@ -95,8 +95,9 @@ Use a local copy of the Mac's published library when needed:
 ```
 
 This changes only that run's reference input. It does not overwrite the repository
-library or execute instructions in a profile. The current wrapper accepts local
-JSON snapshots up to 64 MiB; this is an input guard, not a discovery/profile quota.
+library or execute instructions in a profile. The PC loader accepts local JSON
+files up to 128 MiB to leave room for more published editions. The limit applies
+to the size of each file read by the PC.
 Refresh the local snapshot through an occasional source sync or a deliberate
 file transfer. Older snapshots remain usable and are never described as fresh
 research. Revisions keep their original inference evidence.
@@ -260,7 +261,8 @@ The first version deliberately pins **Windows CPython 3.10 x64** and Pillow
 Segoe UI/Consolas fonts, and an installed English US System.Speech voice. The
 setup command records their identity. It does not install Python/FFmpeg globally,
 update graphics drivers, or change system settings. FFmpeg must support libx264,
-AAC, loudnorm and ebur128. This PC's pre-existing FFmpeg 4.3.1 was tested.
+AAC, audio concatenation, loudnorm and ebur128. This PC's pre-existing FFmpeg
+4.3.1 was tested.
 
 From the repository root in PowerShell:
 
